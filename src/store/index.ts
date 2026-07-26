@@ -1,0 +1,35 @@
+import { configureStore } from '@reduxjs/toolkit';
+
+import appReducer, { type AppState } from './slices/appSlice';
+import progressReducer, { type ProgressState } from './slices/progressSlice';
+import quizReducer, { type QuizState } from './slices/quizSlice';
+import streakReducer, { type StreakState } from './slices/streakSlice';
+
+/**
+ * Declared explicitly rather than inferred from `store.getState()`. The thunk
+ * modules need `RootState` for their `getState` typing, and inferring it from
+ * the store would make that a circular type reference.
+ */
+export interface RootState {
+  app: AppState;
+  progress: ProgressState;
+  quiz: QuizState;
+  streak: StreakState;
+}
+
+export const rootReducer = {
+  app: appReducer,
+  progress: progressReducer,
+  quiz: quizReducer,
+  streak: streakReducer,
+};
+
+/** Builds an isolated store — used by the app root and by tests. */
+export function createStore() {
+  return configureStore({ reducer: rootReducer });
+}
+
+export const store = createStore();
+
+export type AppStore = ReturnType<typeof createStore>;
+export type AppDispatch = AppStore['dispatch'];
