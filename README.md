@@ -33,7 +33,7 @@ npm run test:coverage  # coverage report (threshold: 70% lines)
 npm run format:check   # Prettier
 ```
 
-Current state: 104 tests across 14 suites, no TypeScript errors, no ESLint
+Current state: 110 tests across 15 suites, no TypeScript errors, no ESLint
 warnings. Verified running on an Android emulator (Pixel 7, API 35), and a
 signed production AAB builds on EAS.
 
@@ -73,7 +73,7 @@ src/
   components/  ui/ (Button, Card, Badge, ProgressBar, …) and common/
   theme/       colours, typography, spacing, radius, shadows
   data/        categories.ts, products.ts, catalogue/ (lesson + quiz content)
-  hooks/       typed Redux hooks, navigation, quiz, progress, fonts
+  hooks/       typed Redux hooks, navigation, hardware back, quiz, progress, fonts
   navigation/  RootNavigator, deep-link parsing
   utils/       AsyncStorage wrappers, formatters, analytics facade
 ```
@@ -112,17 +112,15 @@ roll at the user's midnight rather than UTC. The app hydrates from storage on
 launch and then records the day's activity, so the rules always see the stored
 `lastActivityDate`.
 
-## Known issues
+### Hardware back
 
-- **The Android hardware back button is not handled.** `RootNavigator` renders
-  from Redux rather than a navigator, and nothing registers a `BackHandler`, so
-  in a standalone build pressing back closes the app from any screen instead of
-  navigating up. The in-app back controls work correctly. Fixing this means
-  dispatching the existing `appSlice` navigation actions from a
-  `hardwareBackPress` listener.
-- **`android.versionCode` in `app.json` is dead config.** `eas.json` sets
-  `appVersionSource: "remote"`, so EAS owns the counter and the value in
-  `app.json` is ignored.
+A stack navigator would have given us the Android back button for free; a Redux
+switch does not, so `useHardwareBack` supplies it. Mounted once in
+`RootNavigator`, it maps each screen to the destination its on-screen back
+control already uses — category → home, lesson/quiz/results → the product's
+asset class — and returns `false` on home so the OS default closes the app at
+the root of the flow. `BackHandler` is inert outside Android, so the hook is
+mounted unconditionally.
 
 ## Building and releasing
 

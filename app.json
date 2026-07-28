@@ -22,7 +22,6 @@
     },
     "android": {
       "package": "com.otclearn.app",
-      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#181611"
