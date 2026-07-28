@@ -34,9 +34,17 @@
     "mobile-learning",
     "otc"
   ],
-  "author": "Your Team",
+  "author": "Sachin Singhal",
   "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singhalsachin2003/OTC_Learn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/singhalsachin2003/OTC_Learn/issues"
+  },
+  "homepage": "https://github.com/singhalsachin2003/OTC_Learn#readme",
   "dependencies": {
     "@expo-google-fonts/plus-jakarta-sans": "^0.2.3",
     "@expo/metro-runtime": "~57.0.7",
