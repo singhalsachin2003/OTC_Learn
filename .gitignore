@@ -14,11 +14,23 @@ yarn-debug.*
 yarn-error.*
 
 .DS_Store
+*.orig.*
+*.tsbuildinfo
+
+# Signing material — never commit these
 *.p8
 *.p12
 *.key
+*.jks
+*.keystore
 *.mobileprovision
-*.orig.*
 
+# Local env. `.env.example` is the tracked template.
+.env
 .env.local
 .env.*.local
+!.env.example
+
+# Editors
+.idea/
+*.iml

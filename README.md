@@ -1,19 +1,28 @@
 # OTC Learn
 
-A mobile learning app for OTC derivatives. Five asset classes, ten products,
-each with a three-step lesson and a three-question true/false quiz. Progress and
-day streaks persist locally; the app works fully offline.
+A mobile learning app for OTC derivatives. Five asset classes, twenty products,
+each with a five-step lesson and a five-question true/false quiz. Progress and
+day streaks persist locally; the app works fully offline with no sign-up.
 
-React Native 0.73 · Expo SDK 50 · Redux Toolkit · TypeScript (strict)
+React Native 0.86 · Expo SDK 57 · Redux Toolkit · TypeScript (strict)
 
 ## Getting started
 
 ```bash
 npm install
+cp .env.example .env
+
 npm start          # Metro — press i / a for a simulator, or scan with Expo Go
 npm run ios        # iOS simulator (requires Xcode)
 npm run android    # Android emulator
 npm run web        # browser preview, no Xcode needed
+```
+
+If the Android emulator cannot reach Metro, forward the port instead of relying
+on your machine's LAN address, which changes between networks:
+
+```bash
+adb reverse tcp:8081 tcp:8081
 ```
 
 ## Verification
@@ -24,8 +33,36 @@ npm run test:coverage  # coverage report (threshold: 70% lines)
 npm run format:check   # Prettier
 ```
 
-Current state: 95 tests passing, 96% line coverage, no TypeScript errors, no
-ESLint warnings. Both the iOS and web bundles build (`npx expo export`).
+Current state: 104 tests across 14 suites, no TypeScript errors, no ESLint
+warnings. Verified running on an Android emulator (Pixel 7, API 35), and a
+signed production AAB builds on EAS.
+
+## Content
+
+Twenty products, four per asset class:
+
+| Asset class | Products |
+| --- | --- |
+| Interest Rate | Interest Rate Swap · Swaption · Forward Rate Agreement · Cap and Floor |
+| FX | FX Forward · FX Option · FX Swap · Non-Deliverable Forward |
+| Credit | Credit Default Swap · CDX Index · Total Return Swap · Credit-Linked Note |
+| Equity | Equity Swap · OTC Equity Option · Variance Swap · Contract for Difference |
+| Commodity | Commodity Swap · Commodity Option · Commodity Forward · Crack Spread Swap |
+
+Every product follows the same arc — what it is, how it works, why it's used,
+key terms, risks to watch — for 100 lesson steps and 100 quiz questions in
+total.
+
+Content lives in `src/data/catalogue/`, one file per asset class, with
+`src/data/products.ts` as the barrel that composes them. **Product ids are part
+of the persisted schema**: completed products are stored in AsyncStorage keyed
+by id, so renaming one silently discards a user's progress for it. Add freely;
+rename only with a migration.
+
+`__tests__/data/catalogue.test.ts` guards the structural invariants — unique
+ids, resolvable category references, consecutive step numbering, uniform lesson
+and quiz lengths, non-empty text, and a mix of true and false answers in every
+quiz.
 
 ## Architecture
 
@@ -35,7 +72,7 @@ src/
   screens/     Home, Category, Lesson, Quiz — each with local components/
   components/  ui/ (Button, Card, Badge, ProgressBar, …) and common/
   theme/       colours, typography, spacing, radius, shadows
-  data/        categories.ts, products.ts (all lesson + quiz content)
+  data/        categories.ts, products.ts, catalogue/ (lesson + quiz content)
   hooks/       typed Redux hooks, navigation, quiz, progress, fonts
   navigation/  RootNavigator, deep-link parsing
   utils/       AsyncStorage wrappers, formatters, analytics facade
@@ -52,6 +89,14 @@ flat screens with no nested stacks, so nothing needs a stack navigator.
 `navigation/linking.ts` resolves `otclearn://category/<id>` and
 `otclearn://product/<id>` into the same actions.
 
+### Screens are data-driven
+
+Nothing hardcodes how many lesson steps or quiz questions a product has —
+`LessonScreen` reads `product.lessons.length` and `useQuiz` reads
+`questions.length`. Adding content is a data change alone, which is why the
+journey tests derive their expected counts from the catalogue rather than from
+literals.
+
 ### Colour
 
 Every colour in the design handoff is specified in OKLCH, which React Native's
@@ -59,57 +104,41 @@ Every colour in the design handoff is specified in OKLCH, which React Native's
 each value with the source OKLCH kept in a comment beside it, so the tokens stay
 traceable back to the design.
 
-### Content
-
-All 30 lesson steps and 30 quiz questions are transcribed verbatim from
-`design_handoff_otc_learning_app/OTC Derivatives Learning App.dc.html` into
-`src/data/products.ts`. The prototype's product list is authoritative and
-differs from the one sketched in the spec's summary — it ships CDX Index rather
-than "Default Swaps", OTC Equity Option rather than "Variance Swaps", and
-Commodity Swap/Option rather than "Futures".
-
 ### Streaks
 
 `streakSlice` applies the rules (same day → unchanged, next day → +1, longer gap
 or a backwards clock → reset to 1) against a local `YYYY-MM-DD` key, so streaks
 roll at the user's midnight rather than UTC. The app hydrates from storage on
 launch and then records the day's activity, so the rules always see the stored
-`lastActivityDate`. The prototype's hard-coded "4" is replaced by the real
-count.
+`lastActivityDate`.
 
-## Changes made to the supplied config
+## Known issues
 
-The scaffolding files that came with the spec had a few things that would have
-broken the build:
+- **The Android hardware back button is not handled.** `RootNavigator` renders
+  from Redux rather than a navigator, and nothing registers a `BackHandler`, so
+  in a standalone build pressing back closes the app from any screen instead of
+  navigating up. The in-app back controls work correctly. Fixing this means
+  dispatching the existing `appSlice` navigation actions from a
+  `hardwareBackPress` listener.
+- **`android.versionCode` in `app.json` is dead config.** `eas.json` sets
+  `appVersionSource: "remote"`, so EAS owns the counter and the value in
+  `app.json` is ignored.
 
-- **`main` pointed at `expo-app.json`.** Now `index.js`, which registers the
-  root component.
-- **React Navigation package names were wrong** (`react-navigation-native`,
-  `react-navigation-stack` — the real ones are `@react-navigation/*`). Dropped
-  entirely, since navigation is Redux-driven.
-- **Font files did not exist.** `assets/fonts/PlusJakartaSans-*.ttf` were
-  referenced by the `expo-font` plugin but never shipped. Replaced with
-  `@expo-google-fonts/plus-jakarta-sans`, which bundles the four weights, loaded
-  in `hooks/useAppFonts.ts`.
-- **Missing icon/splash assets** (`./assets/icon.png` and friends) were
-  referenced in `app.json` but never shipped, which would fail `expo prebuild`.
-  Placeholder artwork is now generated into `assets/` and wired back up — see
-  below.
-- **Invalid `app.json` keys**: `supportsTabletMode` → `supportsTablet`;
-  `supportsLandscape` removed (`orientation: "portrait"` already covers it);
-  `UIRequiredDeviceCapabilities: ["armv7"]` removed, since it would exclude
-  every 64-bit-only device — that is, every iOS 13+ device.
-- **Firebase, Sentry and Detox were listed but unused.** Removed to keep
-  `npm install && npm start` working without native configuration or a DSN.
-  `utils/analytics.ts` is a no-op facade with a `setAnalyticsSink` seam, so
-  wiring a provider later touches one file.
-- **Jest was unconfigured** (no preset, so RN/Expo modules would not transform).
-  Now `jest-expo` with the alias map, `transformIgnorePatterns`, and a 70%
-  coverage threshold.
-- **`tsconfig.json` excluded `__tests__`**, so `npm run type-check` never saw
-  the tests. Now extends `expo/tsconfig.base` and includes both.
-- **`babel-plugin-module-resolver` was configured but not installed**, so the
-  `@/*` path aliases would have failed at runtime. Added.
+## Building and releasing
+
+```bash
+npm run build:android          # production AAB via EAS
+npm run build:android:preview  # installable APK, useful for screenshots
+npm run submit:android         # upload the latest build to Play
+```
+
+Signing is handled by EAS-managed credentials — there is no keystore in this
+repo, and there should never be one. `expo prebuild` regenerates `android/` and
+`ios/`, both of which are gitignored.
+
+`ANDROID_DEPLOYMENT_COMPLETE.md` walks the full path from testing to a live Play
+Store listing. Note that its Phase 4 describes a bare-workflow keystore setup
+that does not apply here.
 
 ## Placeholder artwork
 
@@ -131,13 +160,6 @@ the cream foreground would be invisible on a light background.
 correctly formatted, but they are blocky pixel letterforms, not designed
 artwork. Re-running the script overwrites them.
 
-## Not yet verified
+## Licence
 
-- **iOS simulator and Android emulator runs.** This machine has Command Line
-  Tools but not Xcode, and no Android SDK, so neither simulator was available.
-  The iOS and web bundles build via `npx expo export`; a real device run is
-  still outstanding.
-- **`eas build`.** Requires an Expo account and `eas init` to add the project
-  id. `eas.json` is the supplied file, unmodified and not yet exercised against
-  a real build.
-- **Store submission metadata** — screenshots, descriptions, privacy details.
+MIT — see [LICENSE](LICENSE).
