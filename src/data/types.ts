@@ -1,7 +1,7 @@
 /** Domain types for the OTC derivatives learning content. */
 
-/** Step index within a product's lesson. Every product has exactly 3 steps. */
-export type LessonStepNumber = 1 | 2 | 3;
+/** Step index within a product's lesson. Every product has exactly 5 steps. */
+export type LessonStepNumber = 1 | 2 | 3 | 4 | 5;
 
 export interface Lesson {
   step: LessonStepNumber;
