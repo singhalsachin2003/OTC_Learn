@@ -1,0 +1,11 @@
+# GitHub Pages config for the public site served from /docs.
+#
+# This exists to give the Play Store listing a stable privacy policy URL:
+#   https://singhalsachin2003.github.io/OTC_Learn/privacy/
+#
+# Enable it once under Settings → Pages → Source: "Deploy from a branch",
+# branch "main", folder "/docs". Nothing else in the repo is published.
+
+title: OTC Learn
+description: Learn OTC derivatives — 20 products, short lessons and quizzes.
+theme: jekyll-theme-minimal

@@ -356,7 +356,7 @@ Log in with Google account
    https://github.com/singhalsachin2003/OTC_Learn
    ```
 
-9. **Privacy policy:** required. Publish `PRIVACY.md` and paste its URL here.
+9. **Privacy policy:** required. Publish `docs/privacy.md` and paste its URL here.
    GitHub Pages off this repo is enough:
    ```
    https://singhalsachin2003.github.io/OTC_Learn/privacy
@@ -394,7 +394,7 @@ version — a version check, not user data, and nothing tied to a person.
 **This answer changes the moment crash reporting is turned on.** A build with a
 Sentry DSN collects **Crash logs** (App activity and performance), collected but
 not shared, required, for app functionality and diagnostics. Update the form
-*before* releasing that build, and update `PRIVACY.md` with it.
+*before* releasing that build, and update `docs/privacy.md` with it.
 
 ### Step 7.3: Upload App Icon
 

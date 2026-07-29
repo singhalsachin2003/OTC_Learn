@@ -9,7 +9,7 @@ lint and format), 97% statement / 79% branch coverage, CI green on every push.
 
 v1.0 ships **without crash reporting** — the code is in place and inert. OTA
 updates stay on, so the app's one network call is a version check against
-`u.expo.dev` at launch. Both choices are reflected in `PRIVACY.md` and in the
+`u.expo.dev` at launch. Both choices are reflected in `docs/privacy.md` and in the
 Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
 
 ---
@@ -41,8 +41,8 @@ Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
   event, so the boundary knows nothing about the provider.
 - `src/utils/errorReporting.ts` installs a Sentry sink when a DSN is configured:
   `app_error` becomes an exception with the component stack attached, every
-  other event becomes a breadcrumb. With no DSN the app makes no network calls
-  at all, which stays the default.
+  other event becomes a breadcrumb. With no DSN nothing is reported, which stays
+  the default and is what v1.0 ships.
 - Config is passed as an argument with `EXPO_PUBLIC_*` only as defaults, because
   Babel inlines those at build time — they are literals by the time the code
   runs, which is also why the first attempt at testing this by mutating
@@ -76,7 +76,7 @@ Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
 ### Store-facing content
 
 - Home screen carries an "educational content only, not financial advice" line.
-- `PRIVACY.md` holds policy text matching what the app actually does.
+- `docs/privacy.md` holds policy text matching what the app actually does.
 
 ---
 
@@ -89,7 +89,7 @@ Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
    inside the centre 66% safe zone, `splash.png` 1284×2778, plus a Play feature
    graphic (1024×500) and at least two phone screenshots, which the repo does
    not have at all. The README table is the spec.
-2. **Publish the privacy policy.** `PRIVACY.md` is complete — contact address
+2. **Publish the privacy policy.** `docs/privacy.md` is complete — contact address
    included — and needs a live URL. Play requires one for every app and rejects
    an unreachable link, so confirm the page loads before submitting.
    `ANDROID_DEPLOYMENT_COMPLETE.md` suggests GitHub Pages off this repo.
@@ -114,7 +114,7 @@ Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
 - **Crash reporting.** v1.0 ships dark: the Sentry code is merged and tested but
   no DSN is set, and the native SDK sets `io.sentry.auto-init` to `false`, so it
   is genuinely dormant rather than quiet. Turning it on for a later release is
-  three steps, in this order: update `PRIVACY.md`, update the Play Data safety
+  three steps, in this order: update `docs/privacy.md`, update the Play Data safety
   form to declare **Crash logs** (collected, not shared, required, for app
   functionality and diagnostics), then set `EXPO_PUBLIC_SENTRY_DSN` and
   `EXPO_PUBLIC_APP_ENV=production` as EAS build secrets. Also add the

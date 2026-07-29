@@ -1,3 +1,8 @@
+---
+title: Privacy Policy
+permalink: /privacy/
+---
+
 # Privacy Policy for OTC Learn
 
 **Last updated: 29 July 2026**

@@ -13,14 +13,26 @@ React Native 0.86 · Expo SDK 57 · Redux Toolkit · TypeScript (strict)
 npm install
 cp .env.example .env
 
-npm start          # Metro — press i / a for a simulator, or scan with Expo Go
-npm run ios        # iOS simulator (requires Xcode)
-npm run android    # Android emulator
-npm run web        # browser preview, no Xcode needed
+npm start          # Metro on its own
+npm run android    # prebuild + native debug build, installs on a device/emulator
+npm run web        # browser preview
 ```
 
-If the Android emulator cannot reach Metro, forward the port instead of relying
-on your machine's LAN address, which changes between networks:
+**Expo Go will not run this app.** It carries native modules Expo Go does not
+bundle — `expo-updates` and `@sentry/react-native` — so `npm run android` builds
+and installs a real APK via `expo run:android`. First run takes a few minutes;
+later runs are incremental.
+
+Gradle needs the Android SDK location. If you see "SDK location not found",
+export it before building:
+
+```bash
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+```
+
+If the emulator cannot reach Metro, forward the port instead of relying on your
+machine's LAN address, which changes between networks:
 
 ```bash
 adb reverse tcp:8081 tcp:8081
@@ -147,7 +159,7 @@ exception and every other event as a breadcrumb for context. No DSN means no
 reporting, which is the default and what **v1.0 ships** — the Sentry native SDK
 sets `io.sentry.auto-init` to `false`, so an unset DSN leaves it genuinely
 dormant rather than merely quiet. Turning it on for a release means updating
-`PRIVACY.md` and the Play Data safety form first.
+`docs/privacy.md` and the Play Data safety form first.
 
 `EXPO_PUBLIC_*` values are inlined by Babel at build time, not read at runtime,
 which is why `initErrorReporting` takes its config as an argument with the env
@@ -176,7 +188,7 @@ upgrade.
 Store listing. Note that its Phase 4 describes a bare-workflow keystore setup
 that does not apply here.
 
-`PRIVACY.md` is the policy text to publish at the URL Play requires. It needs a
+`docs/privacy.md` is the policy text to publish at the URL Play requires. It needs a
 contact email filling in, and it describes crash reporting as conditional — keep
 it in step with whether the shipped build actually has a DSN.
 
