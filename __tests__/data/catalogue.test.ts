@@ -29,8 +29,7 @@ describe('product catalogue', () => {
 
   it('gives every category at least one product', () => {
     const empty = categories.filter(
-      (category) =>
-        !products.some((product) => product.categoryId === category.id),
+      (category) => !products.some((product) => product.categoryId === category.id),
     );
     expect(empty).toEqual([]);
   });
@@ -49,8 +48,7 @@ describe('product catalogue', () => {
 
     const odd = products.filter(
       (product) =>
-        product.lessons.length !== lessonCount ||
-        product.quiz.length !== quizCount,
+        product.lessons.length !== lessonCount || product.quiz.length !== quizCount,
     );
     expect(odd.map((product) => product.id)).toEqual([]);
   });
