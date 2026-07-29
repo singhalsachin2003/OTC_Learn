@@ -8,6 +8,7 @@ import {
   useSelectedProductId,
 } from './useAppState';
 import { useNavigation } from './useNavigation';
+import { useQuizExit } from './useQuizExit';
 
 /**
  * Mirrors each screen's in-app back control on the Android hardware button.
@@ -25,6 +26,7 @@ export function useHardwareBack() {
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
   const { goHome, goToCategory } = useNavigation();
+  const exitQuiz = useQuizExit();
 
   useEffect(() => {
     function onBackPress() {
@@ -37,9 +39,16 @@ export function useHardwareBack() {
         return true;
       }
 
-      // Lesson, quiz and results all go up to the product's asset class, the
-      // same destination their on-screen back controls use — including the
-      // fallback to the product's own category when nothing is selected.
+      // A part-finished quiz confirms before discarding answers, so back goes
+      // through the same exit the on-screen control uses.
+      if (screen === 'quiz') {
+        exitQuiz();
+        return true;
+      }
+
+      // Lesson and results go up to the product's asset class, the same
+      // destination their on-screen back controls use — including the fallback
+      // to the product's own category when nothing is selected.
       const product = getProductById(productId);
       goToCategory(categoryId ?? product?.categoryId ?? '');
       return true;
@@ -51,5 +60,5 @@ export function useHardwareBack() {
     );
 
     return () => subscription.remove();
-  }, [screen, categoryId, productId, goHome, goToCategory]);
+  }, [screen, categoryId, productId, goHome, goToCategory, exitQuiz]);
 }

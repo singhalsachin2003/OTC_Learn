@@ -85,12 +85,12 @@ describe('Android hardware back button', () => {
     expect(screen.getByText('FX')).toBeTruthy();
   });
 
-  it('exits a quiz to its category, matching the on-screen control', async () => {
+  // An answered quiz prompts first; that path is covered in quizExit.test.tsx.
+  it('exits an untouched quiz to its category, matching the on-screen control', async () => {
     const { store } = await renderWithStore(<RootNavigator />);
     await fireEvent.press(screen.getByTestId('category-card-fx'));
     await fireEvent.press(screen.getByTestId('product-row-fxfwd'));
     await startQuiz(fxfwd.lessons.length);
-    await fireEvent.press(screen.getByTestId('quiz-answer-true'));
 
     expect(await pressBack()).toBe(true);
     expect(screen.getByTestId('category-screen')).toBeTruthy();

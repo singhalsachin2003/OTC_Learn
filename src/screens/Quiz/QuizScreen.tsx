@@ -9,8 +9,8 @@ import {
   useSelectedCategoryId,
   useSelectedProductId,
 } from '../../hooks/useAppState';
-import { useNavigation } from '../../hooks/useNavigation';
 import { useQuiz } from '../../hooks/useQuiz';
+import { useQuizExit } from '../../hooks/useQuizExit';
 import { colors, getCategoryColors, spacing, typography } from '../../theme';
 import { formatStepLabel } from '../../utils/formatters';
 import { QuizButtons } from './components/QuizButtons';
@@ -20,7 +20,7 @@ import { QuizQuestion } from './components/QuizQuestion';
 export function QuizScreen() {
   const productId = useSelectedProductId();
   const categoryId = useSelectedCategoryId();
-  const { goToCategory } = useNavigation();
+  const exitQuiz = useQuizExit();
   const {
     question,
     questionIndex,
@@ -37,13 +37,16 @@ export function QuizScreen() {
   const category = getCategoryById(categoryId ?? product?.categoryId ?? null);
   const { accent } = getCategoryColors(category?.id ?? '');
 
-  const exitQuiz = () => goToCategory(category?.id ?? '');
-
   if (question === null) {
     return (
       <SafeAreaWrapper testID="quiz-screen">
         <View style={styles.body}>
-          <BackButton label="Exit quiz" onPress={exitQuiz} testID="quiz-back" />
+          <BackButton
+            label="Exit quiz"
+            accessibilityLabel="Exit quiz"
+            onPress={exitQuiz}
+            testID="quiz-back"
+          />
           <Text style={styles.counter}>This quiz is unavailable.</Text>
         </View>
       </SafeAreaWrapper>
@@ -55,7 +58,12 @@ export function QuizScreen() {
   return (
     <SafeAreaWrapper testID="quiz-screen">
       <View style={styles.body}>
-        <BackButton label="Exit quiz" onPress={exitQuiz} testID="quiz-back" />
+        <BackButton
+          label="Exit quiz"
+          accessibilityLabel="Exit quiz"
+          onPress={exitQuiz}
+          testID="quiz-back"
+        />
 
         <Text style={styles.counter}>{counter}</Text>
         <ProgressBar
