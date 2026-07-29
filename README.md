@@ -224,3 +224,7 @@ stable against layout changes. `STORE_LISTING.md` holds the listing copy.
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
+
+Third-party material redistributed by the app is listed in [NOTICE.md](NOTICE.md).
+The embedded Plus Jakarta Sans weights are under the SIL Open Font License,
+which asks that its notice ships with the font.

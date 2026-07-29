@@ -94,9 +94,10 @@ Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
    an unreachable link, so confirm the page loads before submitting.
    `ANDROID_DEPLOYMENT_COMPLETE.md` suggests GitHub Pages off this repo.
 3. **Play Data safety form.** Answers for v1.0 are written out in
-   `ANDROID_DEPLOYMENT_COMPLETE.md` (Step 7.2b): **no data collected**, because
-   nothing leaves the device and crash reporting is off. Encrypted in transit:
-   yes. Deletion route: the contact email.
+   `ANDROID_DEPLOYMENT_COMPLETE.md` (Step 7.2b): declare **Device or other IDs**,
+   collected but not shared, required, for app functionality. That is the
+   install-scoped UUID the expo-updates launch check sends. Progress and streak
+   are not declared — they never leave the device, and auto-backup is off.
 
 ### Verification gaps
 

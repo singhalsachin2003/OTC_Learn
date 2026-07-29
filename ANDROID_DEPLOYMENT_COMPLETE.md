@@ -377,24 +377,36 @@ Log in with Google account
 ### Step 7.2b: Data safety form (required)
 
 **App content → Data safety.** Mandatory for every app, and the answers are
-enforceable — they must match what the shipped build actually does. For v1.0:
+enforceable — a declaration that does not match the shipped build is one of the
+most common causes of Play enforcement. For v1.0:
 
 | Question | Answer |
 | --- | --- |
-| Does your app collect or share any of the required user data types? | **No** |
+| Does your app collect or share any of the required user data types? | **Yes** |
+| Data type | **Device or other IDs** — nothing else |
+| Collected or shared? | Collected, not shared |
+| Required or optional? | Required |
+| Purpose | App functionality |
 | Is all user data encrypted in transit? | Yes |
-| Do you provide a way for users to request data deletion? | Yes — the contact email, though there is nothing stored to delete |
+| Do you provide a way for users to request data deletion? | Yes — the contact email |
 
-Why "No": completed products and the day streak never leave the device, and
-crash reporting is deliberately switched off in v1.0 (no `EXPO_PUBLIC_SENTRY_DSN`
-in the build). The app does contact `u.expo.dev` on launch to check for an OTA
-update, which sends an install-scoped UUID, the platform and the runtime
-version — a version check, not user data, and nothing tied to a person.
+Why "Device or other IDs" and not "no data collected": the app contacts
+`u.expo.dev` on every launch to check for an OTA update, and that request
+carries an install-scoped UUID along with the platform and runtime version.
+Play's definition of that data type covers app-scoped identifiers, and the
+ephemeral-processing exemption does not apply because Expo's servers receive and
+retain it. Declaring it costs almost nothing on the listing and removes the only
+real enforcement risk in this submission.
 
-**This answer changes the moment crash reporting is turned on.** A build with a
-Sentry DSN collects **Crash logs** (App activity and performance), collected but
-not shared, required, for app functionality and diagnostics. Update the form
-*before* releasing that build, and update `docs/privacy.md` with it.
+What is **not** declared, because it never leaves the device: the completed
+product list and the day streak. Android auto-backup is disabled
+(`android.allowBackup: false`), so those do not reach Google Drive either.
+
+**These answers change the moment crash reporting is turned on.** A build with a
+Sentry DSN also collects **Crash logs** (App activity and performance),
+collected but not shared, required, for app functionality and diagnostics.
+Update the form *before* releasing that build, and update `docs/privacy.md` with
+it.
 
 ### Step 7.3: Upload App Icon
 

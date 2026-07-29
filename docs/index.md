@@ -11,6 +11,7 @@ lesson and a five-question quiz.
 No account, no ads, no tracking. Progress is stored on your device.
 
 - [Privacy policy](privacy/)
+- [Third-party notices](https://github.com/singhalsachin2003/OTC_Learn/blob/main/NOTICE.md)
 - [Source code](https://github.com/singhalsachin2003/OTC_Learn)
 - Support: [singhalsachin2003@gmail.com](mailto:singhalsachin2003@gmail.com)
 
