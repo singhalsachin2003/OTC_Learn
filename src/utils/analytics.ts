@@ -17,7 +17,13 @@ export type AnalyticsEvent =
       questionId: string;
       correct: boolean;
     }
-  | { name: 'quiz_completed'; productId: string; score: number; total: number };
+  | { name: 'quiz_completed'; productId: string; score: number; total: number }
+  | {
+      /** A render error caught by `ErrorBoundary`. */
+      name: 'app_error';
+      error: Error;
+      componentStack: string | null;
+    };
 
 type Sink = (event: AnalyticsEvent) => void;
 
