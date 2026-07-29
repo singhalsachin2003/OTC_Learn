@@ -12,10 +12,15 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9e528e66-ec1a-4668-96fb-464b253c8f99"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.otclearn.app",
-      "buildNumber": "1",
       "config": {
         "usesNonExemptEncryption": false
       }

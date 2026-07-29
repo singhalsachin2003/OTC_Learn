@@ -24,6 +24,10 @@ export function HomeScreen() {
           Asset classes
         </Text>
         <CategoryGrid />
+        <Text testID="home-disclaimer" style={styles.disclaimer}>
+          Educational content only. Nothing here is financial advice or an offer to
+          trade.
+        </Text>
       </ScrollView>
     </SafeAreaWrapper>
   );
@@ -39,5 +43,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.text.primary,
     marginBottom: spacing.md,
+  },
+  disclaimer: {
+    ...typography.micro,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginTop: spacing.xl,
   },
 });

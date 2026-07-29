@@ -28,14 +28,17 @@ adb reverse tcp:8081 tcp:8081
 ## Verification
 
 ```bash
-npm run verify         # type-check + lint + tests
+npm run verify         # type-check + lint + format:check + tests
 npm run test:coverage  # coverage report (threshold: 70% lines)
-npm run format:check   # Prettier
 ```
 
-Current state: 110 tests across 15 suites, no TypeScript errors, no ESLint
+`verify` is what CI runs on every push and pull request
+(`.github/workflows/ci.yml`).
+
+Current state: 137 tests across 20 suites, no TypeScript errors, no ESLint
 warnings. Verified running on an Android emulator (Pixel 7, API 35), and a
-signed production AAB builds on EAS.
+signed production AAB builds on EAS. **iOS is unverified** — v1.0 targets
+Android; the iOS scripts and config are present but no iOS build has been run.
 
 ## Content
 
@@ -73,9 +76,9 @@ src/
   components/  ui/ (Button, Card, Badge, ProgressBar, …) and common/
   theme/       colours, typography, spacing, radius, shadows
   data/        categories.ts, products.ts, catalogue/ (lesson + quiz content)
-  hooks/       typed Redux hooks, navigation, hardware back, quiz, progress, fonts
+  hooks/       typed Redux hooks, navigation, hardware back, deep links, quiz, progress, fonts
   navigation/  RootNavigator, deep-link parsing
-  utils/       AsyncStorage wrappers, formatters, analytics facade
+  utils/       AsyncStorage wrappers, formatters, analytics facade, crash reporting
 ```
 
 ### Navigation lives in Redux
@@ -87,7 +90,10 @@ switch over it. The spec defines navigation entirely through `appSlice`
 Navigation on top would duplicate that state in two places. The flow is five
 flat screens with no nested stacks, so nothing needs a stack navigator.
 `navigation/linking.ts` resolves `otclearn://category/<id>` and
-`otclearn://product/<id>` into the same actions.
+`otclearn://product/<id>` into the same actions, and `useDeepLinks` dispatches
+them — on a cold start via `getInitialURL`, and while running via the `url`
+event. Ids are validated against the catalogue, so an unrecognised link leaves
+the user where they were rather than on a broken screen.
 
 ### Screens are data-driven
 
@@ -122,6 +128,27 @@ asset class — and returns `false` on home so the OS default closes the app at
 the root of the flow. `BackHandler` is inert outside Android, so the hook is
 mounted unconditionally.
 
+Leaving a quiz always discards it, so `useQuizExit` confirms first when at least
+one question has been answered. Both the on-screen control and the hardware
+button go through that hook, so the two cannot drift apart; an untouched quiz
+has nothing to lose and exits without a prompt.
+
+### Failure handling
+
+`ErrorBoundary` wraps `RootNavigator`, so a render error shows a recovery screen
+instead of a blank one, and its "Back to home" action resets navigation — the
+screen that threw is still the selected one, so remounting it alone would loop.
+
+Errors are reported through the `track` facade in `utils/analytics.ts` rather
+than to a provider directly. `utils/errorReporting.ts` installs a Sentry sink
+when `EXPO_PUBLIC_SENTRY_DSN` holds a value, forwarding `app_error` as an
+exception and every other event as a breadcrumb for context. With no DSN
+configured the app makes no network calls at all, which is the default.
+
+`EXPO_PUBLIC_*` values are inlined by Babel at build time, not read at runtime,
+which is why `initErrorReporting` takes its config as an argument with the env
+values only as defaults.
+
 ## Building and releasing
 
 ```bash
@@ -134,9 +161,20 @@ Signing is handled by EAS-managed credentials — there is no keystore in this
 repo, and there should never be one. `expo prebuild` regenerates `android/` and
 `ios/`, both of which are gitignored.
 
+`expo-updates` is configured with a `runtimeVersion` policy of `appVersion` and
+one EAS Update channel per build profile, so a JS-only fix can ship with
+`eas update --channel production` instead of a store review. Anything touching
+native code still needs a new build, and bumping `version` in `app.json` starts
+a new runtime version — older installs stop receiving updates until they
+upgrade.
+
 `ANDROID_DEPLOYMENT_COMPLETE.md` walks the full path from testing to a live Play
 Store listing. Note that its Phase 4 describes a bare-workflow keystore setup
 that does not apply here.
+
+`PRIVACY.md` is the policy text to publish at the URL Play requires. It needs a
+contact email filling in, and it describes crash reporting as conditional — keep
+it in step with whether the shipped build actually has a DSN.
 
 ## Placeholder artwork
 
