@@ -1,4 +1,5 @@
 import { useCurrentScreen } from '../hooks/useAppState';
+import { useDeepLinks } from '../hooks/useDeepLinks';
 import { useHardwareBack } from '../hooks/useHardwareBack';
 import { CategoryScreen } from '../screens/Category/CategoryScreen';
 import { HomeScreen } from '../screens/Home/HomeScreen';
@@ -13,13 +14,14 @@ import { QuizScreen } from '../screens/Quiz/QuizScreen';
  * reads `app.currentScreen`, `selectedCategoryId` and `selectedProductId`), so
  * a switch here avoids duplicating that state inside a stack navigator. The
  * flat five-screen flow has no nested stacks or gestures that would need one.
- * The one thing a navigator would have given us for free is the Android
- * hardware back button, so `useHardwareBack` registers it here.
+ * The two things a navigator would have given us for free — the Android
+ * hardware back button and deep links — are registered here instead.
  */
 export function RootNavigator() {
   const screen = useCurrentScreen();
 
   useHardwareBack();
+  useDeepLinks();
 
   switch (screen) {
     case 'category':
