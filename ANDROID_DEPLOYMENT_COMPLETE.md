@@ -348,20 +348,21 @@ Log in with Google account
 
 7. **Support email:**
    ```
-   support@your-domain.com
-   (or your personal email)
+   singhalsachin2003@gmail.com
    ```
 
-8. **Support website:**
+8. **Support website:** optional — the GitHub repo works if you want one:
    ```
-   https://your-domain.com/support
-   (optional)
+   https://github.com/singhalsachin2003/OTC_Learn
    ```
 
-9. **Privacy policy:**
+9. **Privacy policy:** required. Publish `PRIVACY.md` and paste its URL here.
+   GitHub Pages off this repo is enough:
    ```
-   https://your-domain.com/privacy
+   https://singhalsachin2003.github.io/OTC_Learn/privacy
    ```
+   Confirm the page is live before submitting — Play rejects an unreachable
+   policy URL.
 
 10. **Category:** Finance (or Education)
 

@@ -57,6 +57,5 @@ Store Data safety section as well.
 
 ## Contact
 
-Questions about this policy: file an issue at
-<https://github.com/singhalsachin2003/OTC_Learn/issues>, or contact
-[ADD A CONTACT EMAIL BEFORE PUBLISHING].
+Questions about this policy: email <singhalsachin2003@gmail.com>, or file an
+issue at <https://github.com/singhalsachin2003/OTC_Learn/issues>.

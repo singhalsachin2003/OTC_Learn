@@ -85,10 +85,10 @@ command on every push.
    inside the centre 66% safe zone, `splash.png` 1284×2778, plus a Play feature
    graphic (1024×500) and at least two phone screenshots, which the repo does
    not have at all. The README table is the spec.
-2. **Publish the privacy policy.** `PRIVACY.md` needs a contact email filled in
-   and a live URL, which then goes into Play Console and replaces the
-   `https://your-domain.com/privacy` placeholder at
-   `ANDROID_DEPLOYMENT_COMPLETE.md:363`.
+2. **Publish the privacy policy.** `PRIVACY.md` is complete — contact address
+   included — and needs a live URL. Play requires one for every app and rejects
+   an unreachable link, so confirm the page loads before submitting.
+   `ANDROID_DEPLOYMENT_COMPLETE.md` suggests GitHub Pages off this repo.
 3. **Play Data safety form.** If the shipped build has a Sentry DSN, it must
    declare crash-log collection; if not, it declares nothing collected. Answer
    it to match the build you actually submit.
