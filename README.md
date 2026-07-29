@@ -2,7 +2,8 @@
 
 A mobile learning app for OTC derivatives. Five asset classes, twenty products,
 each with a five-step lesson and a five-question true/false quiz. Progress and
-day streaks persist locally; the app works fully offline with no sign-up.
+day streaks persist locally; there is no sign-up, and all content is bundled, so
+the app works offline apart from a launch-time check for OTA updates.
 
 React Native 0.86 · Expo SDK 57 · Redux Toolkit · TypeScript (strict)
 
@@ -142,8 +143,11 @@ screen that threw is still the selected one, so remounting it alone would loop.
 Errors are reported through the `track` facade in `utils/analytics.ts` rather
 than to a provider directly. `utils/errorReporting.ts` installs a Sentry sink
 when `EXPO_PUBLIC_SENTRY_DSN` holds a value, forwarding `app_error` as an
-exception and every other event as a breadcrumb for context. With no DSN
-configured the app makes no network calls at all, which is the default.
+exception and every other event as a breadcrumb for context. No DSN means no
+reporting, which is the default and what **v1.0 ships** — the Sentry native SDK
+sets `io.sentry.auto-init` to `false`, so an unset DSN leaves it genuinely
+dormant rather than merely quiet. Turning it on for a release means updating
+`PRIVACY.md` and the Play Data safety form first.
 
 `EXPO_PUBLIC_*` values are inlined by Babel at build time, not read at runtime,
 which is why `initErrorReporting` takes its config as an argument with the env

@@ -5,8 +5,12 @@ working through it. **v1.0 targets Android only** — iOS config and scripts sta
 in the repo but nothing iOS-specific is verified or blocking.
 
 Current state: `npm run verify` green (137 tests across 20 suites, type-check,
-lint and format), 97% statement / 79% branch coverage, CI running the same
-command on every push.
+lint and format), 97% statement / 79% branch coverage, CI green on every push.
+
+v1.0 ships **without crash reporting** — the code is in place and inert. OTA
+updates stay on, so the app's one network call is a version check against
+`u.expo.dev` at launch. Both choices are reflected in `PRIVACY.md` and in the
+Data safety answers in `ANDROID_DEPLOYMENT_COMPLETE.md`.
 
 ---
 
@@ -89,34 +93,34 @@ command on every push.
    included — and needs a live URL. Play requires one for every app and rejects
    an unreachable link, so confirm the page loads before submitting.
    `ANDROID_DEPLOYMENT_COMPLETE.md` suggests GitHub Pages off this repo.
-3. **Play Data safety form.** If the shipped build has a Sentry DSN, it must
-   declare crash-log collection; if not, it declares nothing collected. Answer
-   it to match the build you actually submit.
-
-### Sentry follow-ups
-
-4. **A DSN.** Nothing is reported until `EXPO_PUBLIC_SENTRY_DSN` is set in the
-   build environment. Set it as an EAS build secret for the production profile,
-   with `EXPO_PUBLIC_APP_ENV=production` alongside.
-5. **Source maps are not uploaded.** The `@sentry/react-native/expo` config
-   plugin handles that and needs your Sentry org and project slugs, which I did
-   not have. Without it, reports arrive but stack traces are minified.
-6. **Sentry adds native code**, so it only takes effect in a new build — Expo Go
-   and any existing dev client will not report.
+3. **Play Data safety form.** Answers for v1.0 are written out in
+   `ANDROID_DEPLOYMENT_COMPLETE.md` (Step 7.2b): **no data collected**, because
+   nothing leaves the device and crash reporting is off. Encrypted in transit:
+   yes. Deletion route: the contact email.
 
 ### Verification gaps
 
-7. **Nothing here has been run on a device.** The error boundary, deep links,
+4. **Nothing here has been run on a device.** The error boundary, deep links,
    the back-button confirmation and OTA updates are covered by tests against
    mocks; none has been exercised on real Android. Before submitting: install a
    preview APK, force a crash, open `otclearn://product/irs` from a browser,
    back out of a half-finished quiz, and push an `eas update` to the preview
    channel.
-8. **Font scaling.** Several styles pin `lineHeight` next to `fontSize`; text
+5. **Font scaling.** Several styles pin `lineHeight` next to `fontSize`; text
    may clip at the largest accessibility sizes. One pass on a device.
 
 ### Deferred by choice
 
+- **Crash reporting.** v1.0 ships dark: the Sentry code is merged and tested but
+  no DSN is set, and the native SDK sets `io.sentry.auto-init` to `false`, so it
+  is genuinely dormant rather than quiet. Turning it on for a later release is
+  three steps, in this order: update `PRIVACY.md`, update the Play Data safety
+  form to declare **Crash logs** (collected, not shared, required, for app
+  functionality and diagnostics), then set `EXPO_PUBLIC_SENTRY_DSN` and
+  `EXPO_PUBLIC_APP_ENV=production` as EAS build secrets. Also add the
+  `@sentry/react-native/expo` config plugin with your Sentry org and project
+  slugs, or stack traces arrive minified. Sentry is native code, so it needs a
+  new build — an OTA update cannot switch it on.
 - **iOS.** Scripts, `bundleIdentifier` and config remain, unverified. Revisit
   after Android ships.
 - **In-app progress reset.** `clearAll()` in `src/utils/storage.ts` is still

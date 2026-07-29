@@ -24,19 +24,30 @@ or shared with anyone. Uninstalling the app deletes it.
 
 ## Crash reporting
 
-If crash reporting is enabled in a release, the app uses
-[Sentry](https://sentry.io) to report unexpected errors so we can fix them. A
-crash report contains technical information only: the error and where in the
-code it happened, the app version, and the device model and operating system
-version. It does not contain your learning progress, your streak, or any
-personal identifier, and we have disabled Sentry's collection of IP addresses
-and other default personal data.
+Version 1.0 has crash reporting switched off. The app does not send us error
+reports, and we have no visibility into problems you encounter.
 
-Sentry processes this data on our behalf. Their privacy policy is at
-<https://sentry.io/privacy/>.
+The app contains the Sentry crash-reporting library, but it is inert without a
+configuration key, which version 1.0 does not ship. If a future version turns it
+on, this policy and the app's Play Store Data safety section will be updated
+before that version is released. Such a report would contain technical
+information only — the error and where in the code it happened, the app version,
+the device model and OS version — and never your progress, your streak, or a
+personal identifier.
 
-If crash reporting is disabled in the build you have installed, the app makes no
-network requests at all.
+## Checking for updates
+
+The app contacts Expo's update service (`u.expo.dev`) when it starts, to see
+whether a corrected version of the app's code is available. That request
+contains a random identifier generated when you install the app, the platform
+name, and the app's version. It contains no personal information, is not linked
+to you or to any account, and is not used for advertising, profiling or
+analytics. The identifier changes if you reinstall the app.
+
+Expo processes this on our behalf; their privacy policy is at
+<https://expo.dev/privacy>.
+
+Apart from this update check, the app makes no network requests.
 
 ## Children
 
@@ -47,7 +58,9 @@ information from anyone, including children.
 ## Advertising and analytics
 
 The app contains no advertising, no advertising identifiers, and no third-party
-analytics or tracking of any kind.
+analytics or tracking of any kind. The update check described above is not
+analytics: it asks one question — is there a newer version of the code — and
+carries nothing about how you use the app.
 
 ## Changes to this policy
 

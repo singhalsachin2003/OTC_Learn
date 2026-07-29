@@ -11,7 +11,8 @@ export interface ErrorReportingConfig {
  * Crash reporting.
  *
  * Disabled unless a DSN is configured, which keeps local and test runs from
- * talking to the network and makes the fully offline build the default.
+ * reporting anywhere and makes the no-reporting build the default. v1.0 ships
+ * that way deliberately; see PRODUCTION_READINESS.md.
  *
  * The defaults are read from `EXPO_PUBLIC_*`, which Babel inlines into the
  * bundle at build time — they are literals by the time this runs, not lookups,

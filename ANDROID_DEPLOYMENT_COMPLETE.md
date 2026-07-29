@@ -374,6 +374,28 @@ Log in with Google account
 
 12. Save all changes
 
+### Step 7.2b: Data safety form (required)
+
+**App content → Data safety.** Mandatory for every app, and the answers are
+enforceable — they must match what the shipped build actually does. For v1.0:
+
+| Question | Answer |
+| --- | --- |
+| Does your app collect or share any of the required user data types? | **No** |
+| Is all user data encrypted in transit? | Yes |
+| Do you provide a way for users to request data deletion? | Yes — the contact email, though there is nothing stored to delete |
+
+Why "No": completed products and the day streak never leave the device, and
+crash reporting is deliberately switched off in v1.0 (no `EXPO_PUBLIC_SENTRY_DSN`
+in the build). The app does contact `u.expo.dev` on launch to check for an OTA
+update, which sends an install-scoped UUID, the platform and the runtime
+version — a version check, not user data, and nothing tied to a person.
+
+**This answer changes the moment crash reporting is turned on.** A build with a
+Sentry DSN collects **Crash logs** (App activity and performance), collected but
+not shared, required, for app functionality and diagnostics. Update the form
+*before* releasing that build, and update `PRIVACY.md` with it.
+
 ### Step 7.3: Upload App Icon
 
 1. Go to **"Store listing"** → **"Preview images"**
