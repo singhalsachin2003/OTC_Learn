@@ -30,7 +30,10 @@ export function BackButton({
       hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
     >
-      <Text style={styles.label}>{`←  ${label}`}</Text>
+      {/* Single line always: `alignSelf: flex-start` sizes the container to the
+          text's shrink width, which on device wraps two-word destinations onto
+          a second line ("← Interest / Rate"). */}
+      <Text numberOfLines={1} style={styles.label}>{`←  ${label}`}</Text>
     </Pressable>
   );
 }

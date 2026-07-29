@@ -56,10 +56,13 @@ tap() {
 echo "Capturing to $OUT/"
 
 # Clear progress so the home screen shows a fresh state rather than whatever
-# the last manual run left behind.
+# the last manual run left behind. `monkey` is deliberately not used to launch:
+# it returns non-zero on a busy device, which `set -e` turns into a silent exit.
 "$ADB" shell pm clear "$PKG" >/dev/null
-"$ADB" shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
-sleep 4
+"$ADB" shell am start -n "$PKG/.MainActivity" >/dev/null
+# A debug build fetches its bundle from Metro on launch, which is slow the first
+# time; a release build is ready much sooner.
+sleep 25
 
 shot 01-home
 shot 02-category "otclearn://category/ir"
@@ -71,8 +74,10 @@ for _ in 1 2 3 4; do tap 0.70 0.93; done
 tap 0.70 0.93
 shot 04-quiz
 
-# Answer the first question to show the feedback panel.
-tap 0.28 0.88
+# Answer the first question to show the feedback panel. The True/False row sits
+# just above the gesture bar.
+tap 0.27 0.93
+sleep 1
 shot 05-quiz-feedback
 
 echo
