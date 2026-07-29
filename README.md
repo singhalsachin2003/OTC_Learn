@@ -203,6 +203,7 @@ the curves stay smooth at any size.
 | File | Size | Alpha | Notes |
 | --- | --- | --- | --- |
 | `icon.png` | 1024×1024 | **no** | App Store Connect rejects icons with an alpha channel, even a fully opaque one. Lockup takes 60% of the width so launcher masks have room |
+| `icon-play-512.png` | 512×512 | yes | Play store listing icon — a separate upload from the launcher icon above |
 | `adaptive-icon.png` | 1024×1024 | yes | Android foreground; drawn at 45% width to stay inside the centre 66% mask safe zone |
 | `splash.png` | 1284×2778 | no | Shown on `#EAE8E0`, so the mark is dark rather than cream |
 | `favicon.png` | 48×48 | yes | Web build; wordmark only — the accent bar cannot read at that size |

@@ -304,49 +304,16 @@ Log in with Google account
 
 1. Go to **"Store listing"** (left sidebar)
 
-2. **Title** (50 chars max):
-   ```
-   OTC Learn - Finance Derivatives
-   ```
+2. **Title, short description and full description: copy them from
+   `STORE_LISTING.md`.** That file is the single source for listing copy, with
+   character counts against Play's limits.
 
-3. **Short description** (80 chars max):
-   ```
-   Master OTC derivatives with interactive lessons and quizzes
-   ```
+   The text that used to live here described 10 products, 3-step lessons and
+   3-question quizzes. The catalogue doubled to 20 products with 5-step lessons
+   and 5-question quizzes, so pasting it would have misdescribed the app on its
+   own store page. Keep the copy in one place so it cannot drift again.
 
-4. **Full description** (4000 chars max):
-   ```
-   OTC Learn is your free mobile guide to mastering over-the-counter 
-   derivatives. Whether you're new to finance or brushing up on your 
-   knowledge, learn at your own pace through:
-   
-   FEATURES:
-   • 5 Asset Classes: Interest Rates, FX, Credit, Equity, Commodities
-   • 10 Derivative Products: Swaps, Swaptions, Forwards, Options, CDS
-   • 3 Interactive Lessons per Product
-   • 3-Question True/False Quizzes with Instant Feedback
-   • Progress Tracking and Daily Streak System
-   • No Sign-Up Required - Start Learning Immediately
-   • 100% Free - All Content Included
-   • Offline Playable - Learn Anywhere, Anytime
-   
-   Perfect for finance students, professionals, traders, and anyone 
-   interested in understanding OTC derivatives.
-   
-   Download today and start mastering derivatives!
-   ```
-
-5. **Promotional text** (80 chars max):
-   ```
-   Learn OTC derivatives at your own pace. Free forever!
-   ```
-
-6. **Keywords** (comma-separated):
-   ```
-   derivatives learning, finance education, OTC trading, investment app, mobile learning
-   ```
-
-7. **Support email:**
+3. **Support email:**
    ```
    singhalsachin2003@gmail.com
    ```

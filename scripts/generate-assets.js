@@ -281,6 +281,14 @@ const capFor = (width, fraction) => (width * fraction) / 3.02;
   write('icon.png', w, h, render(w, h, DARK, lockup(w / 2, h / 2, capFor(w, 0.6), CREAM)), false);
 }
 
+// icon-play-512.png — the Play store listing icon, which is a separate upload
+// from the launcher icon compiled into the app. Play requires exactly 512x512.
+{
+  const w = 512;
+  const h = 512;
+  write('icon-play-512.png', w, h, render(w, h, DARK, lockup(w / 2, h / 2, capFor(w, 0.6), CREAM)));
+}
+
 // adaptive-icon.png — foreground only, transparent, art inside the centre 66%
 // safe zone. Android composites this over adaptiveIcon.backgroundColor and can
 // crop anything outside that zone, so this is drawn smaller than icon.png.

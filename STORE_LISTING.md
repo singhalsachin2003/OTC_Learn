@@ -81,14 +81,27 @@ First release.
 
 [~280]
 
+## Graphics to upload
+
+Play checks dimensions exactly and rejects anything off by a pixel.
+
+| Play field | File | Spec |
+| --- | --- | --- |
+| App icon | `assets/icon-play-512.png` | 512×512 — a separate upload from the launcher icon compiled into the app, which is `icon.png` at 1024×1024 |
+| Feature graphic | `assets/feature-graphic.png` | 1024×500 |
+| Phone screenshots | `store-assets/screenshots/*.png` | 1080×2400; Play needs at least 2, you have 5 |
+
+Do not upload `adaptive-icon.png`, `splash.png` or `favicon.png` — those are
+built into the app, not listing assets.
+
 ## Other listing fields
 
 | Field | Value |
 | --- | --- |
 | Category | Education (Finance is the alternative; Education matches the content better and sits in a less crowded, less scrutinised category) |
 | Tags | Choose from Play's fixed list — "Education" and "Reference" fit |
-| Contact email | singhalsachin2003@gmail.com |
-| Website | https://github.com/singhalsachin2003/OTC_Learn (optional) |
+| Contact emai| Website | https://github.com/singhalsachin2003/OTC_Learn (optional) |
+l | singhalsachin2003@gmail.com |
 | Privacy policy | The published `docs/privacy.md` URL — see README |
 | Content rating | Everyone / 3+. The questionnaire is all "No" — no violence, no user content, no purchases |
 | Ads | No ads |
