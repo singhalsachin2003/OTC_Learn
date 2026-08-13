@@ -3,6 +3,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import appReducer, { type AppState } from './slices/appSlice';
 import progressReducer, { type ProgressState } from './slices/progressSlice';
 import quizReducer, { type QuizState } from './slices/quizSlice';
+import reviewReducer, { type ReviewState } from './slices/reviewSlice';
+import settingsReducer, { type SettingsState } from './slices/settingsSlice';
 import streakReducer, { type StreakState } from './slices/streakSlice';
 
 /**
@@ -14,6 +16,8 @@ export interface RootState {
   app: AppState;
   progress: ProgressState;
   quiz: QuizState;
+  review: ReviewState;
+  settings: SettingsState;
   streak: StreakState;
 }
 
@@ -21,6 +25,8 @@ export const rootReducer = {
   app: appReducer,
   progress: progressReducer,
   quiz: quizReducer,
+  review: reviewReducer,
+  settings: settingsReducer,
   streak: streakReducer,
 };
 

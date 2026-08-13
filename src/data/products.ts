@@ -3,7 +3,7 @@ import { creditProducts } from './catalogue/credit';
 import { equityProducts } from './catalogue/equity';
 import { fxProducts } from './catalogue/fx';
 import { interestRateProducts } from './catalogue/interestRate';
-import type { Product } from './types';
+import type { Product, Question } from './types';
 
 /**
  * The full OTC product catalogue, four products per asset class.
@@ -37,4 +37,47 @@ export function getProductsByCategory(categoryId: string | null): Product[] {
   return categoryId === null
     ? []
     : products.filter((p) => p.categoryId === categoryId);
+}
+
+/**
+ * Every question in the catalogue, indexed by id.
+ *
+ * The review queue stores question ids without their product, because a
+ * question belongs to exactly one and carrying both would let the two disagree.
+ * This index is what turns an id back into something renderable.
+ */
+const questionIndex = new Map(
+  products.flatMap((product) =>
+    product.quiz.map((question) => [question.id, { question, product }] as const),
+  ),
+);
+
+export function getQuestionById(
+  id: string,
+): { question: Question; product: Product } | undefined {
+  return questionIndex.get(id);
+}
+
+/** Total questions across the catalogue — shown on the home screen. */
+export const TOTAL_QUESTIONS = questionIndex.size;
+
+/** Every key term in the catalogue, flattened for the glossary. */
+export function allKeyTerms(): {
+  term: string;
+  definition: string;
+  productId: string;
+  productName: string;
+  categoryId: string;
+}[] {
+  return products
+    .flatMap((product) =>
+      product.keyTerms.map((entry) => ({
+        term: entry.term,
+        definition: entry.definition,
+        productId: product.id,
+        productName: product.name,
+        categoryId: product.categoryId,
+      })),
+    )
+    .sort((a, b) => a.term.localeCompare(b.term));
 }

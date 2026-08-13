@@ -1,22 +1,33 @@
 import { useCallback, useMemo } from 'react';
 
 import {
+  navigateToAchievements,
   navigateToCategory,
+  navigateToGlossary,
   navigateToHome,
   navigateToLesson,
+  navigateToProduct,
   navigateToQuiz,
   navigateToResults,
+  navigateToTab,
+  type TabName,
 } from '../store/slices/appSlice';
 import { resetQuiz } from '../store/slices/quizSlice';
 import { track } from '../utils/analytics';
-import { useAppDispatch } from './useAppState';
+import { hapticSelection } from '../utils/haptics';
+import { useAppDispatch, useHapticsEnabled } from './useAppState';
 
 export interface AppNavigation {
+  goToTab: (tab: TabName) => void;
   goHome: () => void;
   goToCategory: (categoryId: string) => void;
+  goToProduct: (productId: string) => void;
   goToLesson: (productId: string) => void;
   goToQuiz: (productId: string) => void;
+  goToReviewQuiz: () => void;
   goToResults: () => void;
+  goToGlossary: () => void;
+  goToAchievements: () => void;
 }
 
 /**
@@ -26,6 +37,16 @@ export interface AppNavigation {
  */
 export function useNavigation(): AppNavigation {
   const dispatch = useAppDispatch();
+  const haptics = useHapticsEnabled();
+
+  const goToTab = useCallback(
+    (tab: TabName) => {
+      hapticSelection(haptics);
+      dispatch(resetQuiz());
+      dispatch(navigateToTab(tab));
+    },
+    [dispatch, haptics],
+  );
 
   const goHome = useCallback(() => {
     dispatch(resetQuiz());
@@ -41,6 +62,15 @@ export function useNavigation(): AppNavigation {
     [dispatch],
   );
 
+  const goToProduct = useCallback(
+    (productId: string) => {
+      dispatch(resetQuiz());
+      dispatch(navigateToProduct(productId));
+      track({ name: 'product_opened', productId });
+    },
+    [dispatch],
+  );
+
   const goToLesson = useCallback(
     (productId: string) => {
       dispatch(resetQuiz());
@@ -50,21 +80,61 @@ export function useNavigation(): AppNavigation {
     [dispatch],
   );
 
+  // The paper itself is drawn by `useQuiz`; this only moves the screen, so a
+  // caller cannot accidentally start a quiz with an empty question list.
   const goToQuiz = useCallback(
     (productId: string) => {
-      dispatch(resetQuiz());
       dispatch(navigateToQuiz());
       track({ name: 'quiz_started', productId });
     },
     [dispatch],
   );
 
+  /**
+   * A review sitting spans several products, so it carries no product id — and
+   * reporting one would attribute the whole session to whichever product
+   * happened to be selected last.
+   */
+  const goToReviewQuiz = useCallback(() => {
+    dispatch(navigateToQuiz());
+  }, [dispatch]);
+
   const goToResults = useCallback(() => {
     dispatch(navigateToResults());
   }, [dispatch]);
 
+  const goToGlossary = useCallback(() => {
+    dispatch(navigateToGlossary());
+  }, [dispatch]);
+
+  const goToAchievements = useCallback(() => {
+    dispatch(navigateToAchievements());
+  }, [dispatch]);
+
   return useMemo(
-    () => ({ goHome, goToCategory, goToLesson, goToQuiz, goToResults }),
-    [goHome, goToCategory, goToLesson, goToQuiz, goToResults],
+    () => ({
+      goToTab,
+      goHome,
+      goToCategory,
+      goToProduct,
+      goToLesson,
+      goToQuiz,
+      goToReviewQuiz,
+      goToResults,
+      goToGlossary,
+      goToAchievements,
+    }),
+    [
+      goToTab,
+      goHome,
+      goToCategory,
+      goToProduct,
+      goToLesson,
+      goToQuiz,
+      goToReviewQuiz,
+      goToResults,
+      goToGlossary,
+      goToAchievements,
+    ],
   );
 }

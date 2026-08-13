@@ -1,18 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Card } from '../../../components/ui/Card';
-import { CategoryIcon } from '../../../components/ui/CategoryIcon';
+import { Ring } from '../../../components/ui/Ring';
 import { categories } from '../../../data/categories';
 import { getProductsByCategory } from '../../../data/products';
 import type { Category } from '../../../data/types';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
-import { colors, spacing, typography } from '../../../theme';
-import { formatProductCount } from '../../../utils/formatters';
+import { colors, getCategoryColors, spacing, typography } from '../../../theme';
 
 const GUTTER = spacing.md;
 
-/** Two-column grid of the five asset classes. */
+/** Two-column grid of the five asset classes, each with a mastery ring. */
 export function CategoryGrid() {
   return (
     <View style={styles.grid}>
@@ -27,21 +26,33 @@ export function CategoryGrid() {
 
 function CategoryCard({ category }: { category: Category }) {
   const { goToCategory } = useNavigation();
-  const { completedInCategory } = useProgress();
+  const { categoryPercent, masteredInCategory } = useProgress();
+  const { accent } = getCategoryColors(category.id);
 
   const total = getProductsByCategory(category.id).length;
-  const done = completedInCategory(category.id);
-  const subtext = formatProductCount(total, done);
+  const mastered = masteredInCategory(category.id);
+  const percent = categoryPercent(category.id);
+  const subtext = `${mastered} of ${total} mastered`;
 
   return (
     <Card
       testID={`category-card-${category.id}`}
       onPress={() => goToCategory(category.id)}
-      accessibilityLabel={`${category.name}. ${subtext}`}
+      accessibilityLabel={`${category.name}. ${percent} percent mastery. ${subtext}`}
       accessibilityHint="Opens the products in this asset class"
       style={styles.card}
     >
-      <CategoryIcon categoryId={category.id} label={category.icon} size={36} />
+      {/* The ring replaces the old icon badge: it carries the same identity
+          colour while also showing where the user is in that asset class. */}
+      <Ring
+        size={44}
+        innerSize={32}
+        percent={percent}
+        fillColor={accent}
+        animated={false}
+      >
+        <Text style={[styles.icon, { color: accent }]}>{category.icon}</Text>
+      </Ring>
       <Text style={styles.name}>{category.name}</Text>
       <Text style={styles.subtext}>{subtext}</Text>
     </Card>
@@ -64,6 +75,10 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     rowGap: 10,
+  },
+  icon: {
+    ...typography.micro,
+    fontSize: 11,
   },
   name: {
     ...typography.label,

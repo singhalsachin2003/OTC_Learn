@@ -10,10 +10,11 @@ import { useAppFonts } from './hooks/useAppFonts';
 import { useNavigation } from './hooks/useNavigation';
 import { RootNavigator } from './navigation/RootNavigator';
 import { store } from './store';
-import { loadProgress } from './store/thunks/progressThunks';
-import { loadStreak, recordActivity } from './store/thunks/streakThunks';
+import { hydrateApp } from './store/thunks/bootstrapThunks';
+import { recordActivity } from './store/thunks/streakThunks';
 import { colors } from './theme';
 import { initErrorReporting } from './utils/errorReporting';
+import { syncReminder } from './utils/notifications';
 
 // Hold the native splash until fonts and persisted state are ready.
 void SplashScreen.preventAutoHideAsync();
@@ -29,11 +30,14 @@ function AppContent() {
     // Hydrate first, then register today's activity so the streak rules see
     // the stored `lastActivityDate` rather than the initial null.
     async function bootstrap() {
-      await Promise.all([
-        store.dispatch(loadProgress()),
-        store.dispatch(loadStreak()),
-      ]);
+      await store.dispatch(hydrateApp());
       await store.dispatch(recordActivity(undefined));
+
+      // Reconcile the reminder with the OS once state is known: permission can
+      // be revoked in system settings, and a reinstall drops the schedule while
+      // keeping the preference. `syncReminder` repairs or reports either.
+      const { settings } = store.getState().settings;
+      void syncReminder(settings.dailyReminder);
     }
 
     void bootstrap();

@@ -6,7 +6,8 @@ title: OTC Learn
 
 An Android app for learning over-the-counter derivatives — twenty products
 across interest rate, FX, credit, equity and commodity, each with a five-step
-lesson and a five-question quiz.
+lesson, a worked example and a bank of twelve questions that every quiz draws a
+different paper from.
 
 No account, no ads, no tracking. Progress is stored on your device.
 

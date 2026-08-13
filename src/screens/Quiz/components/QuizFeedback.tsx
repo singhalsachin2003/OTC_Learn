@@ -1,46 +1,73 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, typography } from '../../../theme';
+import { colors, spacing, typography } from '../../../theme';
 
 export interface QuizFeedbackProps {
   correct: boolean;
   explanation: string;
+  /** The right answer, spelled out. Passed only when the user got it wrong. */
+  correctLabel?: string;
 }
 
 /**
  * Result of the last answer. The leading ✓/✗ and the "Correct"/"Not quite"
  * wording carry the meaning on their own, so colour is never the sole signal.
  */
-export function QuizFeedback({ correct, explanation }: QuizFeedbackProps) {
-  const text = `${correct ? '✓ Correct' : '✗ Not quite'} — ${explanation}`;
-
+export function QuizFeedback({
+  correct,
+  explanation,
+  correctLabel,
+}: QuizFeedbackProps) {
   return (
-    <Text
+    <View
       testID="quiz-feedback"
       accessibilityLiveRegion="polite"
       style={[styles.box, correct ? styles.correct : styles.incorrect]}
     >
-      {text}
-    </Text>
+      <Text
+        style={[styles.text, correct ? styles.textCorrect : styles.textIncorrect]}
+      >
+        {`${correct ? '✓ Correct' : '✗ Not quite'} — ${explanation}`}
+      </Text>
+      {correctLabel !== undefined && (
+        <Text
+          testID="quiz-feedback-answer"
+          style={[styles.answer, styles.textIncorrect]}
+        >
+          The answer was: {correctLabel}
+        </Text>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   box: {
-    ...typography.label,
-    fontSize: 13.5,
-    lineHeight: 20,
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 14,
-    overflow: 'hidden',
+    marginTop: spacing.lg,
   },
   correct: {
-    color: colors.success.text,
     backgroundColor: colors.success.bgFeedback,
   },
   incorrect: {
-    color: colors.error.text,
     backgroundColor: colors.error.bgFeedback,
+  },
+  text: {
+    ...typography.label,
+    fontSize: 13.5,
+    lineHeight: 20,
+  },
+  textCorrect: {
+    color: colors.success.text,
+  },
+  textIncorrect: {
+    color: colors.error.text,
+  },
+  answer: {
+    ...typography.bodyStrong,
+    fontSize: 13,
+    marginTop: spacing.sm,
   },
 });

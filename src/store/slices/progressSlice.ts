@@ -1,15 +1,40 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import { applySession, type ProductProgress } from '../../utils/mastery';
+import type { QuestionStat } from '../../utils/quizSession';
+
 export interface ProgressState {
-  completedProductIds: string[];
+  /** Product id → mastery record. Absent means never attempted. */
+  byProduct: Record<string, ProductProgress>;
+  /** Question id → lifetime right/wrong tally, used to weight future papers. */
+  questionHistory: Record<string, QuestionStat>;
+  bookmarkedProductIds: string[];
+  unlockedAchievementIds: string[];
+  /**
+   * Achievements earned by the sitting that just finished, so the results
+   * screen can announce those and only those. Not persisted: it describes one
+   * moment, and a badge already celebrated should not reappear on next launch.
+   */
+  recentlyUnlockedIds: string[];
   /** True while progress is being hydrated from AsyncStorage. */
   loading: boolean;
 }
 
 export const initialProgressState: ProgressState = {
-  completedProductIds: [],
+  byProduct: {},
+  questionHistory: {},
+  bookmarkedProductIds: [],
+  unlockedAchievementIds: [],
+  recentlyUnlockedIds: [],
   loading: false,
 };
+
+export interface RecordSessionPayload {
+  productId: string;
+  scorePct: number;
+  /** Local date key for today, resolved by the caller. */
+  today: string;
+}
 
 /**
  * Slices never import thunks: the store's module graph flows one way
@@ -22,22 +47,91 @@ const progressSlice = createSlice({
   name: 'progress',
   initialState: initialProgressState,
   reducers: {
-    /** Idempotent — completing an already-complete product changes nothing. */
-    markProductComplete(state, action: PayloadAction<string>) {
-      if (!state.completedProductIds.includes(action.payload)) {
-        state.completedProductIds.push(action.payload);
+    /** Folds one finished session into the product's running mastery. */
+    recordSession(state, action: PayloadAction<RecordSessionPayload>) {
+      const { productId, scorePct, today } = action.payload;
+      state.byProduct[productId] = applySession(
+        state.byProduct[productId],
+        scorePct,
+        today,
+      );
+    },
+
+    /** Accumulates one answer into the question's lifetime tally. */
+    recordQuestionResult(
+      state,
+      action: PayloadAction<{ questionId: string; correct: boolean }>,
+    ) {
+      const { questionId, correct } = action.payload;
+      const stat = state.questionHistory[questionId] ?? { right: 0, wrong: 0 };
+      state.questionHistory[questionId] = {
+        right: stat.right + (correct ? 1 : 0),
+        wrong: stat.wrong + (correct ? 0 : 1),
+      };
+    },
+
+    toggleBookmark(state, action: PayloadAction<string>) {
+      const id = action.payload;
+      const index = state.bookmarkedProductIds.indexOf(id);
+      if (index === -1) {
+        state.bookmarkedProductIds.push(id);
+      } else {
+        state.bookmarkedProductIds.splice(index, 1);
       }
     },
-    setProgress(state, action: PayloadAction<string[]>) {
-      state.completedProductIds = [...new Set(action.payload)];
+
+    /**
+     * Records the achievements a sitting earned. Always dispatched at the end
+     * of a session, including with an empty list — that is what clears the
+     * previous sitting's badges off the results screen.
+     */
+    unlockAchievements(state, action: PayloadAction<string[]>) {
+      for (const id of action.payload) {
+        if (!state.unlockedAchievementIds.includes(id)) {
+          state.unlockedAchievementIds.push(id);
+        }
+      }
+      state.recentlyUnlockedIds = action.payload;
     },
+
+    setProgress(state, action: PayloadAction<Record<string, ProductProgress>>) {
+      state.byProduct = action.payload;
+    },
+
+    setQuestionHistory(state, action: PayloadAction<Record<string, QuestionStat>>) {
+      state.questionHistory = action.payload;
+    },
+
+    setBookmarks(state, action: PayloadAction<string[]>) {
+      state.bookmarkedProductIds = [...new Set(action.payload)];
+    },
+
+    setAchievements(state, action: PayloadAction<string[]>) {
+      state.unlockedAchievementIds = [...new Set(action.payload)];
+    },
+
     setProgressLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
+    },
+
+    /** Wipes everything this slice owns — backs "reset progress". */
+    resetProgress() {
+      return { ...initialProgressState };
     },
   },
 });
 
-export const { markProductComplete, setProgress, setProgressLoading } =
-  progressSlice.actions;
+export const {
+  recordSession,
+  recordQuestionResult,
+  toggleBookmark,
+  unlockAchievements,
+  setProgress,
+  setQuestionHistory,
+  setBookmarks,
+  setAchievements,
+  setProgressLoading,
+  resetProgress,
+} = progressSlice.actions;
 
 export default progressSlice.reducer;

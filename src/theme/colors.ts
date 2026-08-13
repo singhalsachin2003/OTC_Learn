@@ -95,6 +95,30 @@ export const categoryColors = {
 
 export type CategoryColorKey = keyof typeof categoryColors;
 
+/**
+ * Mastery bands. The same three thresholds drive the ring fill, the percentage
+ * colour and the word shown beside it, so they live together rather than being
+ * re-derived at each call site.
+ */
+export const masteryColors = {
+  /** oklch(55% .12 160) — 70% and above */
+  strong: colors.success.base,
+  /** oklch(60% .12 250) — 35% to 70% */
+  building: colors.progressFill,
+  /** oklch(55% .10 60) — below 35% but started */
+  shaky: '#A06A2C',
+  /** Nothing attempted yet */
+  none: colors.text.tertiary,
+} as const;
+
+/** Bottom tab bar. */
+export const tabColors = {
+  background: colors.surface,
+  border: colors.border,
+  active: colors.text.primary,
+  inactive: colors.text.tertiary,
+} as const;
+
 const FALLBACK_ACCENT = { accent: colors.text.primary, soft: colors.track };
 
 /** Look up a category's accent pair, falling back to neutral for unknown ids. */

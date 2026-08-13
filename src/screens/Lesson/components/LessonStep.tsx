@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { Badge } from '../../../components/ui/Badge';
 import { Card } from '../../../components/ui/Card';
@@ -34,10 +35,31 @@ export function LessonStep({
         contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={false}
       >
-        <Text accessibilityRole="header" style={styles.title}>
-          {lesson.title}
-        </Text>
-        <Text style={styles.content}>{lesson.content}</Text>
+        {/* Keyed on the step so the content cross-fades when it changes: the
+            card itself stays put, which keeps the swipe feeling like one
+            surface rather than a stack being shuffled. */}
+        <Animated.View
+          key={lesson.step}
+          entering={FadeIn.duration(220)}
+          exiting={FadeOut.duration(120)}
+        >
+          <Text accessibilityRole="header" style={styles.title}>
+            {lesson.title}
+          </Text>
+          <Text style={styles.content}>{lesson.content}</Text>
+
+          {lesson.callout !== undefined && (
+            <View
+              testID="lesson-callout"
+              style={[styles.callout, { backgroundColor: accentSoft }]}
+            >
+              <Text style={[styles.calloutLabel, { color: accent }]}>
+                WORTH KNOWING
+              </Text>
+              <Text style={styles.calloutText}>{lesson.callout}</Text>
+            </View>
+          )}
+        </Animated.View>
       </ScrollView>
     </Card>
   );
@@ -52,6 +74,7 @@ const styles = StyleSheet.create({
   },
   body: {
     paddingTop: spacing.lg,
+    paddingBottom: spacing.sm,
   },
   title: {
     ...typography.h3,
@@ -61,6 +84,19 @@ const styles = StyleSheet.create({
   },
   content: {
     ...typography.body1,
+    color: colors.text.body,
+  },
+  callout: {
+    borderRadius: radius.medium,
+    padding: spacing.md,
+    marginTop: spacing.lg,
+  },
+  calloutLabel: {
+    ...typography.micro,
+    marginBottom: 5,
+  },
+  calloutText: {
+    ...typography.body2,
     color: colors.text.body,
   },
 });

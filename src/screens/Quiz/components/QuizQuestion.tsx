@@ -24,7 +24,9 @@ export function QuizQuestion({ question, children }: QuizQuestionProps) {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
+    // Sized to its content, not stretched: the scroll container centres it
+    // vertically. A true/false question is two lines, and a card stretched to
+    // the full height around it is mostly empty white.
     justifyContent: 'center',
     borderRadius: radius.xxl,
     paddingVertical: 28,

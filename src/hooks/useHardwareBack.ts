@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
 import { getProductById } from '../data/products';
+import { isTabScreen } from '../store/slices/appSlice';
 import {
   useCurrentScreen,
+  useCurrentTab,
   useSelectedCategoryId,
   useSelectedProductId,
 } from './useAppState';
@@ -23,18 +25,22 @@ import { useQuizExit } from './useQuizExit';
  */
 export function useHardwareBack() {
   const screen = useCurrentScreen();
+  const tab = useCurrentTab();
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
-  const { goHome, goToCategory } = useNavigation();
+  const { goHome, goToTab, goToCategory, goToProduct } = useNavigation();
   const exitQuiz = useQuizExit();
 
   useEffect(() => {
     function onBackPress() {
+      // Home is the root of the app: let the OS close it.
       if (screen === 'home') {
         return false;
       }
 
-      if (screen === 'category') {
+      // Any other tab root goes to Home first, so back always walks toward the
+      // root rather than closing the app from a side tab.
+      if (isTabScreen(screen)) {
         goHome();
         return true;
       }
@@ -46,10 +52,28 @@ export function useHardwareBack() {
         return true;
       }
 
-      // Lesson and results go up to the product's asset class, the same
-      // destination their on-screen back controls use — including the fallback
-      // to the product's own category when nothing is selected.
+      // Screens reached from Profile return to it.
+      if (screen === 'glossary' || screen === 'achievements') {
+        goToTab(tab === 'profile' ? 'profile' : tab);
+        return true;
+      }
+
+      if (screen === 'category') {
+        goHome();
+        return true;
+      }
+
       const product = getProductById(productId);
+
+      // The lesson and the results both sit under a product, so back goes to
+      // the product page rather than skipping past it to the category.
+      if (screen === 'lesson' || screen === 'results') {
+        if (product !== undefined) {
+          goToProduct(product.id);
+          return true;
+        }
+      }
+
       goToCategory(categoryId ?? product?.categoryId ?? '');
       return true;
     }
@@ -60,5 +84,15 @@ export function useHardwareBack() {
     );
 
     return () => subscription.remove();
-  }, [screen, categoryId, productId, goHome, goToCategory, exitQuiz]);
+  }, [
+    screen,
+    tab,
+    categoryId,
+    productId,
+    goHome,
+    goToTab,
+    goToCategory,
+    goToProduct,
+    exitQuiz,
+  ]);
 }

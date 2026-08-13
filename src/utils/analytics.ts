@@ -8,6 +8,7 @@
 
 export type AnalyticsEvent =
   | { name: 'category_opened'; categoryId: string }
+  | { name: 'product_opened'; productId: string }
   | { name: 'lesson_started'; productId: string }
   | { name: 'lesson_completed'; productId: string }
   | { name: 'quiz_started'; productId: string }
@@ -18,6 +19,11 @@ export type AnalyticsEvent =
       correct: boolean;
     }
   | { name: 'quiz_completed'; productId: string; score: number; total: number }
+  | { name: 'review_started'; dueCount: number }
+  | { name: 'achievement_unlocked'; achievementId: string }
+  | { name: 'bookmark_toggled'; productId: string; bookmarked: boolean }
+  | { name: 'reminder_toggled'; enabled: boolean }
+  | { name: 'progress_reset' }
   | {
       /** A render error caught by `ErrorBoundary`. */
       name: 'app_error';

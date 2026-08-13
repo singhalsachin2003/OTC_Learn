@@ -40,7 +40,7 @@ OTC Learn
 ### Short description (80 max)
 
 ```
-Learn OTC derivatives: 20 products, short lessons and quizzes, works offline.
+Learn OTC derivatives: 20 products, lessons and quizzes that adapt. Offline.
 ```
 
 [76] — this is the line under the icon in search results, so it leads with the
@@ -61,9 +61,15 @@ Twenty products across five asset classes:
 • Commodity — Commodity Swap, Commodity Option, Commodity Forward, Crack Spread Swap
 
 Every product follows the same five-step arc: what it is, how it works, why it is
-used, the key terms you will hear, and the risks to watch. Then a five-question
-true/false quiz checks what stuck, with an explanation after every answer —
-including the ones you get right.
+used, the key terms you will hear, and the risks to watch — plus a worked example
+with real numbers, and a note on who actually trades it.
+
+Then a quiz checks what stuck. Each product has a bank of twelve questions,
+mixing true/false with multiple choice, and every sitting draws a different
+paper — weighted toward the questions you have missed, with the options
+reshuffled, so a retake tests the content rather than your memory of where the
+answer sat. Every answer comes with an explanation, including the ones you get
+right.
 
 WHO IT IS FOR
 
@@ -80,13 +86,22 @@ identifiers, and no analytics following you around.
 
 WORKS OFFLINE
 
-All 100 lesson steps and 100 quiz questions ship inside the app. Use it on the
-underground, on a plane, or anywhere else with no signal.
+All 100 lesson steps, 120 key terms and 240 quiz questions ship inside the app.
+Use it on the underground, on a plane, or anywhere else with no signal.
 
-TRACK WHAT YOU HAVE COVERED
+TRACK WHAT YOU ACTUALLY KNOW
 
-Completed products are ticked off in their asset class and counted on the home
-screen, and a day streak keeps you honest about coming back.
+Progress is a mastery score per product, not a tick. It moves toward each quiz
+result rather than replacing it, so one lucky run does not mark a product learned
+and one bad morning does not undo weeks of work. Asset-class rings, a day streak
+and a week strip show where you stand at a glance.
+
+MISSED QUESTIONS COME BACK
+
+Anything you get wrong joins a review queue and returns on a widening schedule —
+tomorrow, then in four days, then in ten. Answer it correctly enough times and it
+retires. An optional daily reminder nudges you at 7:30pm; it is off until you
+turn it on.
 
 Educational content only. Nothing in this app is financial advice, an offer to
 trade, or a recommendation to buy or sell any instrument.
@@ -102,8 +117,8 @@ Play checks dimensions exactly and rejects anything off by a pixel.
 | --- | --- | --- |
 | App icon | `assets/icon-play-512.png` | 512×512 |
 | Feature graphic | `assets/feature-graphic.png` | 1024×500 |
-| Phone screenshots | `store-assets/screenshots/*.png` | 1080×2400 — five available, Play needs at least two |
-| Tablet screenshots | — | Optional; skip for v1.0 |
+| Phone screenshots | `store-assets/screenshots/*.png` | 1080×2400 — **must be re-shot**, the current set predates the tab bar, dashboard and product page |
+| Tablet screenshots | — | Optional; skip for v1.1 |
 | Promo video | — | Optional; skip |
 
 **Do not upload** `icon.png`, `adaptive-icon.png`, `splash.png` or
@@ -181,7 +196,7 @@ aimed at graduates and professionals.
 
 ### Data safety
 
-Read each question rather than copying blindly. Answers for v1.0:
+Read each question rather than copying blindly. Answers for v1.1:
 
 | Question | Answer |
 | --- | --- |
@@ -242,7 +257,7 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 First release.
 
 • 20 OTC derivative products across interest rate, FX, credit, equity and commodity
-• A five-step lesson and a five-question quiz for every product
+• A five-step lesson, a worked example and a 12-question bank for every product
 • Progress tracking and day streaks, stored on your device
 • Works fully offline — no account, no ads, no tracking
 ```

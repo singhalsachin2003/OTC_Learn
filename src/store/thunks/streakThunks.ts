@@ -2,25 +2,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { toDateKey } from '../../utils/formatters';
 import {
-  loadStreak as readStreak,
   saveStreak as writeStreak,
+  saveStudyDays as writeStudyDays,
   type StoredStreak,
 } from '../../utils/storage';
 import type { RootState } from '../index';
-import { setStreak, updateStreak } from '../slices/streakSlice';
+import { updateStreak } from '../slices/streakSlice';
 
-/** Hydrates the streak from AsyncStorage during app start-up. */
-export const loadStreak = createAsyncThunk<
-  StoredStreak | null,
-  void,
-  { state: RootState }
->('streak/loadStreak', async (_arg, { dispatch }) => {
-  const stored = await readStreak();
-  if (stored !== null) {
-    dispatch(setStreak(stored));
-  }
-  return stored;
-});
+/** Snapshot of what the streak slice currently holds, in storage shape. */
+function snapshot(state: RootState): StoredStreak {
+  const { currentStreak, longestStreak, lastActivityDate } = state.streak;
+  return { currentStreak, longestStreak, lastActivityDate };
+}
 
 /** Persists the streak currently held in the store. */
 export const saveStreak = createAsyncThunk<
@@ -28,15 +21,17 @@ export const saveStreak = createAsyncThunk<
   void,
   { state: RootState }
 >('streak/saveStreak', async (_arg, { getState }) => {
-  const { currentStreak, lastActivityDate } = getState().streak;
-  const snapshot: StoredStreak = { currentStreak, lastActivityDate };
-  await writeStreak(snapshot);
-  return snapshot;
+  const stored = snapshot(getState());
+  await writeStreak(stored);
+  return stored;
 });
 
 /**
  * Registers today's activity: applies the streak rules, then persists.
- * Safe to call on every app launch — same-day calls leave the count unchanged.
+ *
+ * Safe to call on every app launch — a same-day call leaves the count
+ * unchanged. The study-day list is still written on a repeat call the first
+ * time a given day is recorded, which is what the week strip reads.
  */
 export const recordActivity = createAsyncThunk<
   StoredStreak,
@@ -44,18 +39,19 @@ export const recordActivity = createAsyncThunk<
   { state: RootState }
 >('streak/recordActivity', async (dateKey, { dispatch, getState }) => {
   const today = dateKey ?? toDateKey();
-  const { lastActivityDate } = getState().streak;
+  const before = getState().streak;
+  const dayIsNew = !before.studyDays.includes(today);
+  const streakChanged = before.lastActivityDate !== today;
 
   dispatch(updateStreak(today));
 
-  // Only touch storage when the day actually changed.
-  if (lastActivityDate === today) {
-    const { currentStreak } = getState().streak;
-    return { currentStreak, lastActivityDate };
-  }
+  const after = getState();
+  const stored = snapshot(after);
 
-  const { currentStreak } = getState().streak;
-  const snapshot: StoredStreak = { currentStreak, lastActivityDate: today };
-  await writeStreak(snapshot);
-  return snapshot;
+  await Promise.all([
+    streakChanged ? writeStreak(stored) : Promise.resolve(true),
+    dayIsNew ? writeStudyDays(after.streak.studyDays) : Promise.resolve(true),
+  ]);
+
+  return stored;
 });

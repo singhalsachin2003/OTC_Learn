@@ -1,40 +1,100 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, PanResponder, StyleSheet, Text, View } from 'react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { Button } from '../../components/ui/Button';
 import { getCategoryById } from '../../data/categories';
 import { getProductById } from '../../data/products';
-import {
-  useSelectedCategoryId,
-  useSelectedProductId,
-} from '../../hooks/useAppState';
+import { useHapticsEnabled, useSelectedProductId } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { colors, getCategoryColors, spacing, typography } from '../../theme';
 import { track } from '../../utils/analytics';
+import { hapticSelection } from '../../utils/haptics';
+import {
+  shouldClaimSwipe,
+  stepAfterSwipe,
+  swipeIntent,
+  SWIPE_FOLLOW_RATIO,
+} from '../../utils/swipe';
 import { LessonStep } from './components/LessonStep';
 import { StepIndicator } from './components/StepIndicator';
 
 export function LessonScreen() {
   const productId = useSelectedProductId();
-  const categoryId = useSelectedCategoryId();
-  const { goToCategory, goToQuiz } = useNavigation();
+  const { goToProduct, goToQuiz } = useNavigation();
+  const haptics = useHapticsEnabled();
 
   // The step index is view-local: it never needs to survive leaving the screen,
   // and every entry point resets it to the first step.
   const [stepIndex, setStepIndex] = useState(0);
+  const drag = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
   useEffect(() => {
     setStepIndex(0);
   }, [productId]);
 
   const product = getProductById(productId);
-  const category = getCategoryById(categoryId ?? product?.categoryId ?? null);
+  const category = getCategoryById(product?.categoryId ?? null);
   const { accent, soft } = getCategoryColors(category?.id ?? '');
+  const totalSteps = product?.lessons.length ?? 0;
 
-  const backLabel = category?.name ?? 'Home';
-  const goBack = () => goToCategory(category?.id ?? '');
+  const settle = useCallback(() => {
+    Animated.spring(drag, {
+      toValue: { x: 0, y: 0 },
+      useNativeDriver: true,
+      bounciness: 6,
+    }).start();
+  }, [drag]);
+
+  const goToStep = useCallback(
+    (next: number) => {
+      if (next < 0 || next > totalSteps - 1) {
+        settle();
+        return;
+      }
+      hapticSelection(haptics);
+      setStepIndex(next);
+      settle();
+    },
+    [haptics, settle, totalSteps],
+  );
+
+  /**
+   * Swiping between steps.
+   *
+   * `PanResponder` rather than a gesture library: the app has no other gesture
+   * needs, and claiming the responder only after a clearly horizontal drag lets
+   * the card's own ScrollView keep vertical scrolling for long lesson text.
+   * The rules themselves live in `utils/swipe.ts`, where they can be tested
+   * without fabricating touch histories.
+   */
+  const responder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_event, gesture) => shouldClaimSwipe(gesture),
+        onPanResponderMove: (_event, gesture) => {
+          drag.setValue({ x: gesture.dx * SWIPE_FOLLOW_RATIO, y: 0 });
+        },
+        onPanResponderRelease: (_event, gesture) => {
+          const intent = swipeIntent(gesture);
+          if (intent === 'none') {
+            settle();
+            return;
+          }
+          goToStep(stepAfterSwipe(intent, stepIndex, totalSteps));
+        },
+        onPanResponderTerminate: settle,
+      }),
+    [drag, goToStep, settle, stepIndex, totalSteps],
+  );
+
+  const backLabel = product?.name ?? category?.name ?? 'Back';
+  const goBack = () => {
+    if (product !== undefined) {
+      goToProduct(product.id);
+    }
+  };
 
   if (product === undefined || product.lessons.length === 0) {
     return (
@@ -45,14 +105,9 @@ export function LessonScreen() {
     );
   }
 
-  const totalSteps = product.lessons.length;
   const isFirstStep = stepIndex === 0;
   const isLastStep = stepIndex === totalSteps - 1;
   const lesson = product.lessons[stepIndex];
-
-  const handleNext = () => {
-    setStepIndex((current) => Math.min(totalSteps - 1, current + 1));
-  };
 
   const handleStartQuiz = () => {
     track({ name: 'lesson_completed', productId: product.id });
@@ -74,13 +129,21 @@ export function LessonScreen() {
           color={accent}
         />
 
-        <LessonStep
-          lesson={lesson}
-          stepIndex={stepIndex}
-          totalSteps={totalSteps}
-          accent={accent}
-          accentSoft={soft}
-        />
+        <Animated.View
+          testID="lesson-swipe-area"
+          style={[styles.card, { transform: [{ translateX: drag.x }] }]}
+          {...responder.panHandlers}
+        >
+          <LessonStep
+            lesson={lesson}
+            stepIndex={stepIndex}
+            totalSteps={totalSteps}
+            accent={accent}
+            accentSoft={soft}
+          />
+        </Animated.View>
+
+        <Text style={styles.hint}>Swipe between steps</Text>
 
         <View style={styles.actions}>
           <Button
@@ -89,7 +152,7 @@ export function LessonScreen() {
             variant="secondary"
             flex={1}
             disabled={isFirstStep}
-            onPress={() => setStepIndex((current) => Math.max(0, current - 1))}
+            onPress={() => goToStep(stepIndex - 1)}
           />
           {isLastStep ? (
             <Button
@@ -103,7 +166,7 @@ export function LessonScreen() {
               testID="lesson-next-step"
               label="Next"
               flex={2}
-              onPress={handleNext}
+              onPress={() => goToStep(stepIndex + 1)}
             />
           )}
         </View>
@@ -124,9 +187,18 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
     marginBottom: 14,
   },
+  card: {
+    flex: 1,
+  },
+  hint: {
+    ...typography.micro,
+    color: colors.text.tertiary,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
   actions: {
     flexDirection: 'row',
     columnGap: 10,
-    marginTop: 18,
+    marginTop: 14,
   },
 });

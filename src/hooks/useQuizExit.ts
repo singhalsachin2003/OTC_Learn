@@ -10,8 +10,7 @@ import {
 import { useNavigation } from './useNavigation';
 
 /**
- * Leaves the quiz for the product's asset class, confirming first when there
- * are answers to lose.
+ * Leaves the quiz, confirming first when there are answers to lose.
  *
  * Leaving always resets the quiz, so a part-finished attempt is discarded
  * silently otherwise — easy to do by accident with the hardware back button.
@@ -23,14 +22,23 @@ import { useNavigation } from './useNavigation';
 export function useQuizExit(): () => void {
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
-  const { goToCategory } = useNavigation();
+  const { goToCategory, goToTab } = useNavigation();
+  const mode = useAppSelector((state) => state.quiz.mode);
   const hasAnswers = useAppSelector(
-    (state) => state.quiz.currentQuestionIndex > 0 || state.quiz.isAnswered,
+    (state) => state.quiz.answers.length > 0 || state.quiz.isAnswered,
   );
 
   return useCallback(() => {
-    const product = getProductById(productId);
-    const leave = () => goToCategory(categoryId ?? product?.categoryId ?? '');
+    // A review sitting spans several products, so there is no single category
+    // to fall back to — it returns to the tab it was started from.
+    const leave = () => {
+      if (mode === 'review') {
+        goToTab('review');
+        return;
+      }
+      const product = getProductById(productId);
+      goToCategory(categoryId ?? product?.categoryId ?? '');
+    };
 
     if (!hasAnswers) {
       leave();
@@ -46,5 +54,5 @@ export function useQuizExit(): () => void {
       ],
       { cancelable: true },
     );
-  }, [categoryId, productId, goToCategory, hasAnswers]);
+  }, [categoryId, productId, goToCategory, goToTab, hasAnswers, mode]);
 }

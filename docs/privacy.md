@@ -13,27 +13,40 @@ describes what the app does and does not do with your information.
 ## We do not collect personal information
 
 OTC Learn has no accounts, no sign-in, and no way to contact other users. We do
-not ask for your name, email address, phone number, location, contacts, photos,
-or any other personal detail, and the app requests no device permissions.
+not ask for your email address, phone number, location, contacts, photos, or any
+other personal detail.
+
+The app asks for one permission, and only when you turn the feature on:
+permission to show notifications, used for the optional daily study reminder.
+That reminder is scheduled by your phone and shown by your phone — nothing is
+sent to us, and there is no push service involved. Decline it, or turn it off in
+the app or in system settings, and the app carries on working.
 
 ## What is stored on your device
 
-The app saves two things locally, on your device only:
+The app saves the following locally, on your device only:
 
-- **Which products you have completed**, so your progress bar and the ticks
-  beside each product survive a restart.
-- **Your daily streak**, as a count and the date you were last active.
+- **Your mastery score for each product**, along with how many attempts you have
+  made and your best result, so your progress survives a restart.
+- **Which questions you have answered right and wrong**, so quizzes can bring
+  back what you have missed.
+- **Your review queue** — the questions due to be resurfaced, and when.
+- **Your daily streak**, as a count and the days you were active.
+- **Your saved products and unlocked achievements.**
+- **Your settings**, and **the name you type into your profile**, if you type one.
+  You are not asked for it, it is not verified, and it is only used to say hello
+  on the home screen.
 
 This data never leaves your device. It is not synced, backed up to our servers,
 or shared with anyone. Uninstalling the app deletes it.
 
 ## Crash reporting
 
-Version 1.0 has crash reporting switched off. The app does not send us error
+Version 1.1 has crash reporting switched off. The app does not send us error
 reports, and we have no visibility into problems you encounter.
 
 The app contains the Sentry crash-reporting library, but it is inert without a
-configuration key, which version 1.0 does not ship. If a future version turns it
+configuration key, which version 1.1 does not ship. If a future version turns it
 on, this policy and the app's Play Store Data safety section will be updated
 before that version is released. Such a report would contain technical
 information only — the error and where in the code it happened, the app version,

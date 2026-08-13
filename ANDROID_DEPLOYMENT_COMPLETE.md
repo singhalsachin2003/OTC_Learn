@@ -345,7 +345,7 @@ Log in with Google account
 
 **App content → Data safety.** Mandatory for every app, and the answers are
 enforceable — a declaration that does not match the shipped build is one of the
-most common causes of Play enforcement. For v1.0:
+most common causes of Play enforcement. For v1.1:
 
 | Question | Answer |
 | --- | --- |
@@ -365,9 +365,30 @@ ephemeral-processing exemption does not apply because Expo's servers receive and
 retain it. Declaring it costs almost nothing on the listing and removes the only
 real enforcement risk in this submission.
 
-What is **not** declared, because it never leaves the device: the completed
-product list and the day streak. Android auto-backup is disabled
-(`android.allowBackup: false`), so those do not reach Google Drive either.
+What is **not** declared, because it never leaves the device: mastery per
+product, question history, the review queue, the day streak, saved products,
+unlocked achievements, settings, and the name typed into the profile. Android
+auto-backup is disabled (`android.allowBackup: false`), so none of it reaches
+Google Drive either.
+
+**The daily reminder does not change these answers.** It is a local
+notification, scheduled on the device by `expo-notifications` and shown by the
+device; there is no push token, no registration call and no server. The app
+declares `POST_NOTIFICATIONS` (the runtime prompt), `RECEIVE_BOOT_COMPLETED` (so
+a scheduled reminder survives a restart) and `VIBRATE` (haptics). None of the
+three is a data-collection declaration.
+
+`expo-notifications` bundles Firebase Cloud Messaging for remote push even
+though this app never uses it, which pulls in around twenty permissions the app
+has no business holding. `app.json` blocks them via `android.blockedPermissions`
+— including the exact-alarm permissions, which Play requires a justification
+form for and which a study reminder would not qualify for. **`expo prebuild`
+cannot show you the result**: library manifests merge during the Gradle build,
+so verify the artifact before submitting:
+
+```bash
+aapt2 dump permissions app-release.apk | grep uses-permission
+```
 
 **These answers change the moment crash reporting is turned on.** A build with a
 Sentry DSN also collects **Crash logs** (App activity and performance),

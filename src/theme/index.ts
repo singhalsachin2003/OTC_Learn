@@ -1,4 +1,10 @@
-export { colors, categoryColors, getCategoryColors } from './colors';
+export {
+  colors,
+  categoryColors,
+  getCategoryColors,
+  masteryColors,
+  tabColors,
+} from './colors';
 export type { CategoryColorKey } from './colors';
 
 export { typography, fontFamily, fontWeight } from './typography';

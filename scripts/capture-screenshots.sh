@@ -66,19 +66,30 @@ sleep 25
 
 shot 01-home
 shot 02-category "otclearn://category/ir"
-shot 03-lesson "otclearn://product/irs"
+# `product` opens the product page — summary, key terms and the worked example.
+# `lesson` goes straight into the five-step lesson.
+shot 03-product "otclearn://product/irs"
+shot 04-lesson "otclearn://lesson/irs"
 
 # Walk to the last lesson step and start the quiz. The "Next" button sits in the
 # right two-thirds of the action row at the bottom of the lesson screen.
 for _ in 1 2 3 4; do tap 0.70 0.93; done
 tap 0.70 0.93
-shot 04-quiz
+shot 05-quiz
 
-# Answer the first question to show the feedback panel. The True/False row sits
-# just above the gesture bar.
+# Answer the first question to show the feedback panel. A quiz draws its paper at
+# random, so the first question may be true/false (buttons at the bottom) or
+# multiple choice (options in the card). Tapping the first option lands on an
+# answer either way: the True button and option A occupy different rows, so both
+# taps are attempted and only one does anything.
 tap 0.27 0.93
 sleep 1
-shot 05-quiz-feedback
+tap 0.50 0.55
+sleep 1
+shot 06-quiz-feedback
+
+shot 07-review "otclearn://review"
+shot 08-profile "otclearn://profile"
 
 echo
 echo "Done. Review these before uploading — Play rejects screenshots with"

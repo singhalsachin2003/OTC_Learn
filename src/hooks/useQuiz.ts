@@ -1,20 +1,39 @@
 import { useCallback } from 'react';
 
-import { getProductById } from '../data/products';
-import type { QuizQuestion } from '../data/types';
-import { nextQuestion, recordAnswer } from '../store/slices/quizSlice';
-import type { QuizFeedback } from '../store/slices/quizSlice';
-import { completeProduct } from '../store/thunks/progressThunks';
+import { getProductById, getQuestionById } from '../data/products';
+import type { Question } from '../data/types';
+import {
+  finishQuiz,
+  nextQuestion,
+  recordAnswer,
+  startQuiz,
+  type QuizAnswerRecord,
+  type QuizFeedback,
+  type QuizMode,
+} from '../store/slices/quizSlice';
+import {
+  completeReviewSession,
+  completeSession,
+} from '../store/thunks/progressThunks';
 import { track } from '../utils/analytics';
-import { useNavigation } from './useNavigation';
+import { hapticImpact, hapticSuccess, hapticWarning } from '../utils/haptics';
+import {
+  buildSession,
+  correctAnswerLabel,
+  isCorrectAnswer,
+} from '../utils/quizSession';
+import { dueItems } from '../utils/review';
+import { shuffled, shuffleOptions } from '../utils/shuffle';
 import {
   useAppDispatch,
   useAppSelector,
-  useSelectedProductId,
+  useHapticsEnabled,
+  useSettings,
 } from './useAppState';
+import { useNavigation } from './useNavigation';
 
 export interface QuizController {
-  question: QuizQuestion | null;
+  question: Question | null;
   questionIndex: number;
   totalQuestions: number;
   score: number;
@@ -23,54 +42,126 @@ export interface QuizController {
   isLastQuestion: boolean;
   /** 0–1 share of questions already completed. */
   progress: number;
-  answer: (value: boolean) => void;
+  answers: QuizAnswerRecord[];
+  mode: QuizMode;
+  startedAt: number | null;
+  /** Draws a fresh paper for a product and starts the clock. */
+  start: (productId: string) => void;
+  /** Draws a paper from whatever is due in the review queue. */
+  startReview: () => void;
+  /** `boolean` for true/false, an option index for multiple choice. */
+  answer: (value: boolean | number) => void;
   advance: () => void;
 }
 
 /**
- * Drives the active quiz: reads the current question from the selected product
- * and exposes the two actions the screen needs.
+ * Drives the active quiz.
+ *
+ * The paper is drawn once, into the store, rather than being derived on each
+ * render: selection and shuffling are random, so a derived paper would reorder
+ * itself on any re-render and move the question out from under the user.
  */
 export function useQuiz(): QuizController {
   const dispatch = useAppDispatch();
   const { goToResults } = useNavigation();
-  const productId = useSelectedProductId();
   const quiz = useAppSelector((state) => state.quiz);
+  const questionHistory = useAppSelector((state) => state.progress.questionHistory);
+  const reviewQueue = useAppSelector((state) => state.review.queue);
+  const settings = useSettings();
+  const haptics = useHapticsEnabled();
 
-  const product = getProductById(productId);
-  const questions = product?.quiz ?? [];
-  const totalQuestions = questions.length;
+  const totalQuestions = quiz.questions.length;
   const questionIndex = Math.min(
-    quiz.currentQuestionIndex,
+    quiz.currentIndex,
     Math.max(0, totalQuestions - 1),
   );
-  const question = questions[questionIndex] ?? null;
+  const question = quiz.questions[questionIndex] ?? null;
   const isLastQuestion = totalQuestions > 0 && questionIndex === totalQuestions - 1;
 
+  const start = useCallback(
+    (productId: string) => {
+      const product = getProductById(productId);
+      if (product === undefined) {
+        return;
+      }
+      const questions = buildSession(product.quiz, {
+        size: settings.sessionSize,
+        history: questionHistory,
+      });
+      dispatch(
+        startQuiz({
+          questions,
+          mode: 'product',
+          productId,
+          startedAt: Date.now(),
+        }),
+      );
+    },
+    [dispatch, questionHistory, settings.sessionSize],
+  );
+
+  const startReview = useCallback(() => {
+    const due = dueItems(reviewQueue);
+    // Resolve ids back to questions, dropping any whose question no longer
+    // exists — a release that removes a question must not strand the queue.
+    const questions = due
+      .map((item) => getQuestionById(item.id)?.question)
+      .filter((found): found is Question => found !== undefined);
+
+    if (questions.length === 0) {
+      return;
+    }
+
+    const paper = shuffled(questions.slice(0, settings.sessionSize)).map((q) =>
+      shuffleOptions(q),
+    );
+
+    track({ name: 'review_started', dueCount: due.length });
+    dispatch(
+      startQuiz({
+        questions: paper,
+        mode: 'review',
+        productId: null,
+        startedAt: Date.now(),
+      }),
+    );
+  }, [dispatch, reviewQueue, settings.sessionSize]);
+
   const answer = useCallback(
-    (value: boolean) => {
+    (value: boolean | number) => {
       if (question === null || quiz.isAnswered) {
         return;
       }
-      const correct = value === question.correctAnswer;
+      const correct = isCorrectAnswer(question, value);
+
+      if (correct) {
+        hapticSuccess(haptics);
+      } else {
+        hapticWarning(haptics);
+      }
+
       dispatch(
         recordAnswer({
           questionId: question.id,
           answer: value,
           correct,
+          step: question.step,
           explanation: question.explanation,
+          correctLabel: correctAnswerLabel(question),
         }),
       );
-      if (productId !== null) {
+
+      const owner = quiz.productId ?? getQuestionById(question.id)?.product.id;
+      if (owner !== undefined) {
         track({
           name: 'quiz_answered',
-          productId,
+          productId: owner,
           questionId: question.id,
           correct,
         });
       }
     },
-    [dispatch, question, quiz.isAnswered, productId],
+    [dispatch, question, quiz.isAnswered, quiz.productId, haptics],
   );
 
   const advance = useCallback(() => {
@@ -82,25 +173,43 @@ export function useQuiz(): QuizController {
       return;
     }
 
-    // Finishing the quiz marks the product complete. `completeProduct` is a
-    // no-op on retries, so the score shown is always the latest attempt while
-    // completion is recorded only once.
-    if (productId !== null) {
-      void dispatch(completeProduct(productId));
+    const now = Date.now();
+    dispatch(finishQuiz(now));
+    hapticImpact(haptics);
+
+    // `quiz.score` already counts the final answer: `recordAnswer` ran before
+    // this, and the last question cannot be advanced past until it is answered.
+    const scorePct =
+      totalQuestions === 0 ? 0 : Math.round((quiz.score / totalQuestions) * 100);
+    const answers = quiz.answers.map((record) => ({
+      questionId: record.questionId,
+      correct: record.correct,
+    }));
+
+    if (quiz.mode === 'review') {
+      void dispatch(completeReviewSession({ answers }));
+    } else if (quiz.productId !== null) {
+      void dispatch(
+        completeSession({ productId: quiz.productId, scorePct, answers }),
+      );
       track({
         name: 'quiz_completed',
-        productId,
+        productId: quiz.productId,
         score: quiz.score,
         total: totalQuestions,
       });
     }
+
     goToResults();
   }, [
     dispatch,
     goToResults,
+    haptics,
     isLastQuestion,
-    productId,
+    quiz.answers,
     quiz.isAnswered,
+    quiz.mode,
+    quiz.productId,
     quiz.score,
     totalQuestions,
   ]);
@@ -114,6 +223,11 @@ export function useQuiz(): QuizController {
     feedback: quiz.feedback,
     isLastQuestion,
     progress: totalQuestions === 0 ? 0 : questionIndex / totalQuestions,
+    answers: quiz.answers,
+    mode: quiz.mode,
+    startedAt: quiz.startedAt,
+    start,
+    startReview,
     answer,
     advance,
   };

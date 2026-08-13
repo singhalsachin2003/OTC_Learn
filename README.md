@@ -1,9 +1,11 @@
 # OTC Learn
 
 A mobile learning app for OTC derivatives. Five asset classes, twenty products,
-each with a five-step lesson and a five-question true/false quiz. Progress and
-day streaks persist locally; there is no sign-up, and all content is bundled, so
-the app works offline apart from a launch-time check for OTA updates.
+each with a product page, a five-step lesson and a twelve-question bank that
+every quiz draws a different paper from. Mastery, day streaks and a
+spaced-repetition review queue persist locally; there is no sign-up, and all
+content is bundled, so the app works offline apart from a launch-time check for
+OTA updates and an optional local daily reminder.
 
 React Native 0.86 · Expo SDK 57 · Redux Toolkit · TypeScript (strict)
 
@@ -19,9 +21,10 @@ npm run web        # browser preview
 ```
 
 **Expo Go will not run this app.** It carries native modules Expo Go does not
-bundle — `expo-updates` and `@sentry/react-native` — so `npm run android` builds
-and installs a real APK via `expo run:android`. First run takes a few minutes;
-later runs are incremental.
+bundle — `expo-updates`, `@sentry/react-native`, `react-native-svg`,
+`react-native-reanimated`, `expo-haptics` and `expo-notifications` — so
+`npm run android` builds and installs a real APK via `expo run:android`. First
+run takes a few minutes; later runs are incremental.
 
 Gradle needs the Android SDK location. If you see "SDK location not found",
 export it before building:
@@ -48,10 +51,13 @@ npm run test:coverage  # coverage report (threshold: 70% lines)
 `verify` is what CI runs on every push and pull request
 (`.github/workflows/ci.yml`).
 
-Current state: 137 tests across 20 suites, no TypeScript errors, no ESLint
-warnings. Verified running on an Android emulator (Pixel 7, API 35), and a
-signed production AAB builds on EAS. **iOS is unverified** — v1.0 targets
+Current state: 529 tests across 31 suites, no TypeScript errors, no ESLint
+warnings, 91% statement coverage. The dashboard, category, product page, lesson,
+quiz (both question kinds, with option shuffling), review, glossary and profile
+were verified on an Android emulator (Pixel 7, API 35), and a
+signed production AAB builds on EAS. **iOS is unverified** — v1.1 targets
 Android; the iOS scripts and config are present but no iOS build has been run.
+See `PRODUCTION_READINESS.md` for what has not been exercised on a device.
 
 ## Content
 
@@ -66,32 +72,46 @@ Twenty products, four per asset class:
 | Commodity | Commodity Swap · Commodity Option · Commodity Forward · Crack Spread Swap |
 
 Every product follows the same arc — what it is, how it works, why it's used,
-key terms, risks to watch — for 100 lesson steps and 100 quiz questions in
-total.
+key terms, risks to watch — and carries, beyond the five lesson steps:
+
+- a **summary** and a difficulty rating,
+- **callouts** on the steps with a concrete fact to add,
+- six **key terms**, which also feed a catalogue-wide glossary,
+- a **worked example** with real numbers that compute,
+- an **in practice** note naming who trades it and why,
+- **related products** to read next,
+- a bank of **twelve questions**, mixing true/false and four-option multiple
+  choice, each tagged with the lesson step it tests and a difficulty.
+
+That is 100 lesson steps, 120 key terms and 240 questions.
 
 Content lives in `src/data/catalogue/`, one file per asset class, with
-`src/data/products.ts` as the barrel that composes them. **Product ids are part
-of the persisted schema**: completed products are stored in AsyncStorage keyed
-by id, so renaming one silently discards a user's progress for it. Add freely;
-rename only with a migration.
+`src/data/products.ts` as the barrel that composes them. **Product and question
+ids are part of the persisted schema**: mastery is keyed by product id and the
+review queue by question id, so renaming either silently discards a user's
+progress for it. Add freely; rename only with a migration.
 
 `__tests__/data/catalogue.test.ts` guards the structural invariants — unique
-ids, resolvable category references, consecutive step numbering, uniform lesson
-and quiz lengths, non-empty text, and a mix of true and false answers in every
-quiz.
+ids, resolvable category and related-product references, consecutive step
+numbering, uniform lesson and bank sizes, non-empty text, four distinct options
+per choice question with `correctIndex` in range, coverage of all five lesson
+steps, and a spread of both answer kinds and difficulty in every bank.
 
 ## Architecture
 
 ```
 src/
-  store/       Redux Toolkit slices (app, progress, quiz, streak) + thunks
-  screens/     Home, Category, Lesson, Quiz — each with local components/
-  components/  ui/ (Button, Card, Badge, ProgressBar, …) and common/
+  store/       Redux Toolkit slices (app, progress, quiz, review, settings, streak) + thunks
+  screens/     Home, Products, Category, Product, Lesson, Quiz, Review, Profile,
+               Glossary, Achievements — each with local components/
+  components/  ui/ (Button, Card, Ring, Toggle, StatTile, WeekStrip, …) and common/
   theme/       colours, typography, spacing, radius, shadows
-  data/        categories.ts, products.ts, catalogue/ (lesson + quiz content)
-  hooks/       typed Redux hooks, navigation, hardware back, deep links, quiz, progress, fonts
+  data/        categories.ts, products.ts, achievements.ts, catalogue/
+  hooks/       typed Redux hooks, navigation, hardware back, deep links, quiz,
+               review, progress, fonts
   navigation/  RootNavigator, deep-link parsing
-  utils/       AsyncStorage wrappers, formatters, analytics facade, crash reporting
+  utils/       storage, mastery, review scheduling, quiz selection, shuffling,
+               formatters, haptics, notifications, analytics, crash reporting
 ```
 
 ### Navigation lives in Redux
@@ -100,13 +120,61 @@ src/
 switch over it. The spec defines navigation entirely through `appSlice`
 (`navigateToHome`, `navigateToCategory`, …) and has every screen read
 `currentScreen` / `selectedCategoryId` / `selectedProductId`, so layering React
-Navigation on top would duplicate that state in two places. The flow is five
-flat screens with no nested stacks, so nothing needs a stack navigator.
-`navigation/linking.ts` resolves `otclearn://category/<id>` and
-`otclearn://product/<id>` into the same actions, and `useDeepLinks` dispatches
-them — on a cold start via `getInitialURL`, and while running via the `url`
-event. Ids are validated against the catalogue, so an unrecognised link leaves
-the user where they were rather than on a broken screen.
+Navigation on top would duplicate that state in two places.
+
+Adding tabs did not change that. The bar is a control over the same state rather
+than a second navigator with its own history: `currentTab` records which tab a
+detail screen was reached from, so the bar keeps highlighting where you came
+from, and `showsTabBar()` hides it on the lesson, quiz and results screens —
+those are tasks with their own exit, and leaving the bar up invites a mis-tap
+that discards a part-finished quiz.
+
+`navigation/linking.ts` resolves `otclearn://` links — `category/<id>`,
+`product/<id>` (the product page), `lesson/<id>`, `review`, `profile` and
+`glossary` — into the same actions, and `useDeepLinks` dispatches them: on a
+cold start via `getInitialURL`, and while running via the `url` event. Ids are
+validated against the catalogue, so an unrecognised link leaves the user where
+they were rather than on a broken screen.
+
+### Progress is mastery, not a tick
+
+A quiz score is noisy: someone can guess their way to 5/6 once, or misread two
+questions on a product they know well. So mastery moves *toward* each new score
+at a 0.35 learning rate rather than being replaced by it (`utils/mastery.ts`),
+which means one good run cannot mark a product learned and one bad run cannot
+undo weeks of work. Every product starts at zero — nothing is seeded. 70% is the
+threshold at which a product counts as mastered.
+
+The category rings, the headline percentage, the achievements and the resume
+card all derive from that one number, so there is no second source of truth to
+drift out of step with it.
+
+### Every quiz is a different paper
+
+Each product has twelve questions and a sitting draws six (configurable, 4–12).
+Selection is weighted rather than sorted (`utils/quizSession.ts`): a question you
+have missed outranks one you have never seen, which outranks one you have already
+answered correctly — but every weight stays above zero, so nothing is permanently
+retired and two consecutive attempts with identical history still differ.
+
+Multiple-choice options are shuffled too, with `correctIndex` moved along with
+them, so a repeat visitor learns the content rather than the position of the
+answer. Option sets that read as a sequence — all numeric, all percentages, all
+money — are left in their authored order, because reordering those makes a
+question harder to read without making it harder to answer.
+
+### Missed questions come back
+
+`utils/review.ts` implements the schedule the app promises: tomorrow, then in
+four days, then in ten, and after that on an SM-2 style ease factor capped at 120
+days. A wrong answer sends an item back to the start and increments its lapse
+count; three clean passes retire it. The Review tab shows what is due, and the
+tab bar carries the count.
+
+A review sitting deliberately does **not** move product mastery. Mastery measures
+how a full paper on one product went, and four scattered questions across four
+products is not that measurement — getting them right still shows up, by
+emptying the queue and changing what future papers draw.
 
 ### Screens are data-driven
 
@@ -115,6 +183,33 @@ Nothing hardcodes how many lesson steps or quiz questions a product has —
 `questions.length`. Adding content is a data change alone, which is why the
 journey tests derive their expected counts from the catalogue rather than from
 literals.
+
+### Storage is versioned, and v1 progress survives
+
+`utils/storage.ts` owns every key, and `runMigrations()` runs before anything
+reads them. v1 stored a flat array of completed product ids; v2 stores a mastery
+record per product, plus question history, the review queue, settings, bookmarks,
+study days and unlocked achievements.
+
+Each v1 completed id becomes a record at the completion threshold. v1 marked a
+product complete for *finishing* a quiz regardless of score, so its true mastery
+is unknown, and the threshold is the only figure that both honours the badge the
+user earned and stays honest about what was actually measured. The version stamp
+is written last, so a crash mid-migration leaves the old data in place and the
+next launch tries again.
+
+Every read swallows failures and malformed payloads — a corrupt cache should cost
+a user their streak, not their ability to open the app.
+
+### The daily reminder answers to the OS, not to us
+
+`utils/notifications.ts` schedules one local notification, off by default so the
+permission prompt appears when the user asks for reminders rather than ambushing
+them on first launch. Permission can be revoked in system settings at any time,
+so `syncReminder` reconciles on every launch: a stored "on" with nothing actually
+scheduled — a reinstall, a restore to a new device, a revoked permission — is
+either repaired by rescheduling or reported back so the toggle switches itself
+off rather than lying.
 
 ### Colour
 
@@ -156,7 +251,7 @@ Errors are reported through the `track` facade in `utils/analytics.ts` rather
 than to a provider directly. `utils/errorReporting.ts` installs a Sentry sink
 when `EXPO_PUBLIC_SENTRY_DSN` holds a value, forwarding `app_error` as an
 exception and every other event as a breadcrumb for context. No DSN means no
-reporting, which is the default and what **v1.0 ships** — the Sentry native SDK
+reporting, which is the default and what **v1.1 ships** — the Sentry native SDK
 sets `io.sentry.auto-init` to `false`, so an unset DSN leaves it genuinely
 dormant rather than merely quiet. Turning it on for a release means updating
 `docs/privacy.md` and the Play Data safety form first.

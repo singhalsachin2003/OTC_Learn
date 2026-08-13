@@ -1,21 +1,27 @@
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '../../../components/ui/Button';
+import type { Question } from '../../../data/types';
 import { spacing } from '../../../theme';
 
 export interface QuizButtonsProps {
+  kind: Question['kind'];
   isAnswered: boolean;
   isLastQuestion: boolean;
-  onAnswer: (value: boolean) => void;
+  onAnswer: (value: boolean | number) => void;
   onAdvance: () => void;
 }
 
 /**
- * True/False pair before an answer is given; a single advance button after.
- * Swapping the controls is what "locks" the answer — there is nothing left to
- * tap once the question is answered.
+ * The answer controls.
+ *
+ * True/false questions answer from here; multiple-choice questions answer by
+ * tapping an option, so this renders nothing for them until there is something
+ * to advance to. Either way, swapping the controls out is what "locks" the
+ * answer — there is nothing left to tap once the question is answered.
  */
 export function QuizButtons({
+  kind,
   isAnswered,
   isLastQuestion,
   onAnswer,
@@ -30,6 +36,10 @@ export function QuizButtons({
         style={styles.advance}
       />
     );
+  }
+
+  if (kind === 'choice') {
+    return null;
   }
 
   return (

@@ -1,33 +1,43 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
-import { CategoryIcon } from '../../components/ui/CategoryIcon';
+import { ProductRow } from '../../components/ui/ProductRow';
+import { Ring } from '../../components/ui/Ring';
 import { getCategoryById } from '../../data/categories';
 import { getProductsByCategory } from '../../data/products';
-import { useSelectedCategoryId } from '../../hooks/useAppState';
+import { useBookmarks, useSelectedCategoryId } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
-import { colors, spacing, typography } from '../../theme';
-import { ProductRow } from './components/ProductRow';
+import {
+  colors,
+  getCategoryColors,
+  radius,
+  spacing,
+  typography,
+} from '../../theme';
 
 export function CategoryScreen() {
   const categoryId = useSelectedCategoryId();
-  const { goHome, goToLesson } = useNavigation();
-  const { isProductComplete } = useProgress();
+  const { goHome, goToProduct } = useNavigation();
+  const { masteryFor, categoryPercent, masteredInCategory } = useProgress();
+  const bookmarks = useBookmarks();
 
   const category = getCategoryById(categoryId);
-  const categoryProducts = getProductsByCategory(categoryId);
+  const products = getProductsByCategory(categoryId);
 
-  // Defensive: the navigator only mounts this screen with a category selected.
   if (category === undefined) {
     return (
       <SafeAreaWrapper testID="category-screen">
         <BackButton label="Home" onPress={goHome} testID="category-back" />
-        <Text style={styles.blurb}>That asset class is unavailable.</Text>
+        <Text style={styles.empty}>That asset class is unavailable.</Text>
       </SafeAreaWrapper>
     );
   }
+
+  const { accent, soft } = getCategoryColors(category.id);
+  const percent = categoryPercent(category.id);
+  const mastered = masteredInCategory(category.id);
 
   return (
     <SafeAreaWrapper testID="category-screen">
@@ -36,23 +46,32 @@ export function CategoryScreen() {
         showsVerticalScrollIndicator={false}
       >
         <BackButton label="Home" onPress={goHome} testID="category-back" />
-        <CategoryIcon
-          categoryId={category.id}
-          label={category.icon}
-          size={44}
-          style={styles.icon}
-        />
-        <Text accessibilityRole="header" style={styles.title}>
-          {category.name}
-        </Text>
+
+        <View style={[styles.header, { backgroundColor: soft }]}>
+          <Ring size={54} innerSize={40} percent={percent} fillColor={accent}>
+            <Text style={[styles.headerIcon, { color: accent }]}>
+              {category.icon}
+            </Text>
+          </Ring>
+          <View style={styles.headerText}>
+            <Text accessibilityRole="header" style={styles.title}>
+              {category.name}
+            </Text>
+            <Text style={styles.meta}>
+              {mastered} of {products.length} mastered · {percent}% overall
+            </Text>
+          </View>
+        </View>
+
         <Text style={styles.blurb}>{category.description}</Text>
 
-        {categoryProducts.map((product) => (
+        {products.map((product) => (
           <ProductRow
             key={product.id}
             product={product}
-            completed={isProductComplete(product.id)}
-            onPress={() => goToLesson(product.id)}
+            mastery={masteryFor(product.id)}
+            bookmarked={bookmarks.includes(product.id)}
+            onPress={() => goToProduct(product.id)}
           />
         ))}
       </ScrollView>
@@ -65,20 +84,39 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
     paddingBottom: spacing.xxl,
   },
-  icon: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: spacing.md,
+    borderRadius: radius.xl,
+    padding: spacing.lg,
     marginTop: spacing.md,
-    marginBottom: spacing.md,
+  },
+  headerIcon: {
+    ...typography.micro,
+    fontSize: 12,
+  },
+  headerText: {
+    flex: 1,
   },
   title: {
-    ...typography.h1,
+    ...typography.h2,
     color: colors.text.primary,
-    marginBottom: spacing.xs,
+  },
+  meta: {
+    ...typography.labelSmall,
+    color: colors.text.secondary,
+    marginTop: 3,
   },
   blurb: {
-    ...typography.label,
-    fontFamily: typography.body1.fontFamily,
-    lineHeight: 19.5,
+    ...typography.body2,
     color: colors.text.blurb,
-    marginBottom: spacing.xl,
+    marginTop: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  empty: {
+    ...typography.body1,
+    color: colors.text.body,
+    marginTop: spacing.lg,
   },
 });
