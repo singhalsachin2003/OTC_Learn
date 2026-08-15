@@ -1026,4 +1026,520 @@ export const commodityProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'weather',
+    categoryId: 'commodity',
+    name: 'Weather Swap',
+    hook: 'A payout driven by temperature, not price',
+    summary:
+      'A weather swap settles against the weather itself — a count of heating or cooling degree days accumulated at a named weather station over a season, compared with an agreed strike. There is nothing to buy, sell short, store or deliver, so no cost of carry links its price to anything and no portfolio replicates its payout. It exists because a great deal of commercial risk is about how much you sell rather than what you sell it for: a mild winter costs a gas utility volume, not price, and nothing else in this catalogue addresses that.',
+    difficulty: 'foundational',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A weather swap pays against a measured weather index rather than a price. For temperature the index is a count of degree days — a running total of how far the daily average temperature at one named station sits below a base temperature (heating degree days) or above it (cooling degree days), added up across a month or a season. Nothing underlies it in the usual sense: temperature cannot be bought, sold short, stored or delivered, so the contract is simply an agreement to exchange cash on a number the weather will produce.',
+        callout:
+          'In the United States the base is 65°F and the day’s average is the midpoint of its high and low, so a day averaging 40°F contributes 25 heating degree days and a day averaging 70°F contributes none. European contracts commonly use an 18°C base.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'The two sides agree a strike in degree days, a tick value in currency per degree day, and which way round they sit. At the end of the accumulation period the index is compared with the strike and the difference is multiplied by the tick, so a swap struck at 3,800 that settles at 3,460 pays 340 ticks to whichever side was protected against mild weather. Almost every contract carries a cap on the total payout, which means both sides know their worst case on the day they trade. The same index is also traded in option form, where only one side can ever be paid and a premium is paid up front.',
+        callout:
+          'Contracts name the station, the meteorological service that publishes the data and often a settlement agent that calculates the index. Because observations are sometimes corrected weeks after publication, the terms have to say whether the original or the restated figure governs, and which back-up station applies if the named one stops reporting.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'An energy utility’s problem in a mild winter is not that gas is cheap. It is that it sells less of it — the customers are still there, but the boilers run for fewer hours, and margin on volume never burned cannot be recovered. That is volumetric risk: quantity rather than price. A hedge on the gas price does nothing about it and can make the picture worse, because mild weather tends to depress the price as well, so a firm hedged only on price watches both halves of its margin fall together. The same shape appears outside energy, in a brewer’s cool summer or a ski operator’s warm January. A weather swap sits close to insurance, with one difference that matters: the payout is triggered by the index alone, with no claim to file and no damage to prove — which is also why the payout may not match the loss.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'Five things define the contract — the reference station, the accumulation period, the degree day index, the strike and the tick value that turns each degree day into money — with a payout cap to bound it. None of them follows from an arbitrage. There is no tradable portfolio that reproduces the payout, so the replication argument that prices a forward or a swap is simply unavailable here, and what sets the price instead is a distribution: the seller forms a view of the mean and spread of the index at that station and charges the expected payout plus a margin for risk it cannot hedge away.',
+        callout:
+          'Pricing usually starts with a burn analysis — replaying the proposed contract over twenty to forty years of cleaned station history and averaging what it would have paid. The series is detrended first for warming and urban growth, which for a winter contract normally pulls the expected index below the raw historical mean.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The cover is only ever a proxy. The station is not the service area and degree days are not demand: wind, humidity, the timing of a cold snap and the customers gained or lost since the tick value was estimated all drive a wedge between the payout and the actual loss. The cap means a genuinely extreme season is only partly covered. The contract also does nothing about price, so a firm that has hedged volume still needs a separate hedge for what it pays. Liquidity is thin outside the standard city indices and seasons, with few dealers quoting, so a position is usually carried to settlement rather than traded out.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Heating degree day',
+        definition:
+          'One unit for each degree the day’s average temperature falls below the base, and none at all for a day above it.',
+      },
+      {
+        term: 'Cooling degree day',
+        definition:
+          'The mirror image, counting degrees above the base, used for contracts written on summer cooling demand.',
+      },
+      {
+        term: 'Reference station',
+        definition:
+          'The named weather station whose published observations settle the contract, standing in for a whole region.',
+      },
+      {
+        term: 'Tick value',
+        definition:
+          'The cash amount attached to each degree day of difference between the settlement index and the strike.',
+      },
+      {
+        term: 'Payout cap',
+        definition:
+          'The agreed limit on the total either side can be asked to pay, fixed when the contract is written.',
+      },
+      {
+        term: 'Volumetric risk',
+        definition:
+          'Exposure to how much you sell rather than the price you sell it for, which a price hedge leaves untouched.',
+      },
+    ],
+    example: {
+      title: 'A gas utility hedges a mild winter',
+      lines: [
+        'A gas utility budgets on a normal winter of 3,800 heating degree days at the station named in its contract.',
+        'Its own records show it sells about 50,000 therms for each degree day at a delivery margin of $0.30 a therm — roughly $15,000 of margin per degree day.',
+        'It buys a winter swap struck at 3,800 with a tick of $15,000 a degree day, capped at $9,000,000.',
+        'The winter is mild and the station accumulates 3,460 degree days, 340 below the strike.',
+        'Volumes fall by 340 × 50,000 = 17,000,000 therms, costing 17,000,000 × $0.30 = $5,100,000 of margin.',
+        'The swap pays 340 × $15,000 = $5,100,000, comfortably inside the cap.',
+      ],
+      takeaway:
+        'Not one line of that arithmetic involved the price of gas. The utility’s loss was quantity, and the only contract that could refund it was one written on the temperature. Had the winter been cold the utility would have sold more gas and paid the swap instead, up to the $9,000,000 cap — 600 degree days at $15,000 — which is the most either side can lose.',
+    },
+    inPractice:
+      'Gas and power utilities and energy retailers are the natural buyers, hedging the volume they will sell rather than the price they will pay, while brewers, agricultural processors, ski operators and event promoters buy smaller and more bespoke structures. Reinsurers, specialist weather funds and a few energy trading houses take the other side, precisely because temperature risk has almost no correlation with equity or credit markets. The market began in the US power sector in the late 1990s, and although the CME lists standardised heating and cooling degree day futures on a set of cities, most weather risk still changes hands over-the-counter in bespoke periods and sizes.',
+    relatedProductIds: ['cmswap', 'swing', 'varswap'],
+    quiz: [
+      {
+        id: 'weather-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A weather swap settles against the price of energy over the contract period.',
+        correctAnswer: false,
+        explanation:
+          'It settles against a measured weather index — degree days at a named station. No price enters the calculation.',
+      },
+      {
+        id: 'weather-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'What does a winter weather swap settle against?',
+        options: [
+          'The price of natural gas averaged over the winter',
+          'The volume of gas the hedger actually sold',
+          'Heating degree days accumulated at a named weather station',
+          'The average of the forecasts published before the winter began',
+        ],
+        correctIndex: 2,
+        explanation:
+          'The index is measured temperature at one station. What the hedger sold, and at what price, has no bearing on the payout.',
+      },
+      {
+        id: 'weather-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A day whose average temperature is above the base contributes no heating degree days.',
+        correctAnswer: true,
+        explanation:
+          'Heating degree days count only the shortfall below the base. A warm day adds zero rather than a negative number.',
+      },
+      {
+        id: 'weather-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A swap struck at 3,800 degree days with a tick of $15,000 settles at 3,460. What does the side protected against mild weather receive?',
+        options: [
+          '$340,000',
+          '$5,100,000',
+          '$51,900,000',
+          'Nothing — the index finished below the strike',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The index is 340 degree days below the strike, and 340 × $15,000 = $5,100,000. Only the difference from the strike is ticked, not the whole index.',
+      },
+      {
+        id: 'weather-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A weather swap normally carries a cap on the total that can be paid out.',
+        correctAnswer: true,
+        explanation:
+          'Almost every contract is capped, so both sides know their worst case on the day they trade.',
+      },
+      {
+        id: 'weather-q6',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A mild winter hurts a gas utility mainly because it sells fewer units, not because gas is cheap.',
+        correctAnswer: true,
+        explanation:
+          'The customers are still there, but they burn less. That lost margin on volume is what the swap refunds.',
+      },
+      {
+        id: 'weather-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Which exposure does a weather swap address that a commodity price swap cannot?',
+        options: [
+          'The credit risk of the utility’s gas supplier',
+          'The cost of the gas the utility buys from producers',
+          'The basis between two delivery hubs',
+          'The quantity the utility sells when the weather is mild',
+        ],
+        correctIndex: 3,
+        explanation:
+          'A price swap fixes what a unit costs. It says nothing about how many units the weather lets you sell.',
+      },
+      {
+        id: 'weather-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Hedging the gas price protects a utility against the effect of a mild winter.',
+        correctAnswer: false,
+        explanation:
+          'It leaves volumetric risk untouched, and mild weather tends to depress the price too, so both halves of the margin can fall together.',
+      },
+      {
+        id: 'weather-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'What does the tick value do in a weather swap?',
+        options: [
+          'Converts each degree day of difference from the strike into cash',
+          'Sets the base temperature from which degree days are counted',
+          'Limits the total the seller can be asked to pay',
+          'Fixes the price of the energy the hedger buys',
+        ],
+        correctIndex: 0,
+        explanation:
+          'The base temperature defines the index and the cap bounds the payout; the tick is what turns degree days into money.',
+      },
+      {
+        id: 'weather-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'advanced',
+        prompt:
+          'Because temperature cannot be bought, stored or sold short, a weather swap cannot be priced by a replication or cost-of-carry argument.',
+        correctAnswer: true,
+        explanation:
+          'There is no hedging portfolio to cost, so the price is an actuarial view of the index distribution plus a margin for unhedgeable risk.',
+      },
+      {
+        id: 'weather-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A utility hedges with a swap on a single airport station. What exposure remains?',
+        options: [
+          'None, because the payout follows the index rather than a proven loss',
+          'Basis risk: the station may not represent the whole service area, and degree days are only a proxy for demand',
+          'The risk that the counterparty demands physical delivery of gas',
+          'Cost-of-carry risk, because the index has to be financed until settlement',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Paying on an index rather than a proven loss is what creates the gap: the weather at one station, and the demand it stands for, can diverge.',
+      },
+      {
+        id: 'weather-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A utility that has bought a weather swap no longer needs to hedge the price of the gas it buys.',
+        correctAnswer: false,
+        explanation:
+          'The swap covers volume only. Price risk is a separate exposure and needs a separate hedge.',
+      },
+    ],
+  },
+  {
+    id: 'swing',
+    categoryId: 'commodity',
+    name: 'Swing Option',
+    hook: 'The right to choose how much you take',
+    summary:
+      'Every option so far has been a right to transact a fixed amount: the buyer chooses whether to deal, and the strike fixes the price. A swing option turns that around. The price is agreed at the outset and the quantity is what gets chosen, day by day, between a daily minimum and maximum and within overall limits for the year. Those overall limits are the whole lesson — the daily rights share one budget, so flexibility spent today is gone tomorrow, and the annual minimum is not a right at all but an obligation to pay.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A swing option — the market usually says swing contract, or take-or-pay contract — gives its buyer the right to vary how much it takes each day at a price fixed in advance. Everywhere else in this catalogue an option is a right to transact a set amount, with the strike deciding the price. Here the price is settled first and the quantity is the thing being chosen, within a minimum and a maximum on each day and further totals across the contract year. It is the standard shape of long-term gas supply in Europe, and the same structure runs through power supply contracts.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'Each day the buyer nominates a volume, by a deadline set in the contract, between a daily minimum and a daily maximum. Two more limits apply across the year: a total it must take at least, and a total it may not exceed. The annual maximum is what makes this hard. Without it the contract would be a strip of independent daily options, each exercised on its own merits; with it, the daily rights compete for one allowance, and taking the maximum on a mild November day can mean giving up a far more valuable January one. The buyer’s real question is therefore not whether today’s payoff is positive but whether it beats the continuation value of the flexibility that using it would consume.',
+        callout:
+          'That structure has no closed-form price. A swing contract is worth at least its intrinsic value — the best schedule available on today’s forward curve — and at most the strip of independent daily options it would be if the annual limits never bound. Desks value the gap between the two by dynamic programming or least-squares Monte Carlo.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'The buyer’s demand is not a choice, it is the weather. A supplier serving households cannot know in August how much gas its customers will burn on 14 January, and a fixed strip of forwards would leave it short on the coldest days and long on the mildest. The cold miss is the expensive one: demand peaks exactly when the spot price does, so the volume it has to buy in the market is the volume it buys at the worst price. A swing contract hands that flexibility to the buyer. The seller — a producer that can turn a field up and down, a storage operator, or a portfolio trader who can net one buyer’s cold day against another’s mild one — is being paid to absorb it, and that payment is usually built into the contract price rather than charged as an up-front premium.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'The daily contract quantity is the reference volume the daily limits are expressed against, often as percentages of it. The annual contract quantity plays the same role for the year, with a minimum — the take-or-pay level — and a maximum set around it. Nomination is the act of telling the seller tomorrow’s volume. The swing factor summarises how much flexibility has been bought: the maximum daily nomination divided by the average daily volume the annual quantity implies. Many contracts add make-up rights, letting a buyer that has paid for volume it did not take draw that gas in a later period rather than lose it outright.',
+        callout:
+          'An annual quantity of 100,000 MWh over a 180-day winter averages about 556 MWh a day. A 1,000 MWh daily maximum is therefore a swing factor of roughly 1.8, and the annual limit is exhausted after 100 days at full rate.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'Take-or-pay is a liability, not an option: a buyer whose demand collapses still pays for the annual minimum, and if the market has fallen below the contract price it is paying over the odds for volume it does not want. Valuation is model-dependent in a way little else in this catalogue is — the number on the page assumes nominations are timed well, and a desk that exercises less than optimally realises less than the model promised. The seller carries the mirror image and must be able to deliver the maximum on any day it is asked, which is a physical commitment as much as a financial one. Terms run for years, so each side carries the other’s credit for a long time.',
+        callout:
+          'Take-or-pay was tested in Europe after 2009, when hub prices fell well below the oil-indexed prices in long-term supply contracts and buyers found themselves paying for gas they could have bought more cheaply on the market. A long run of renegotiations and arbitrations followed, and hub indexation displaced much of the oil linkage.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Nomination',
+        definition:
+          'The buyer’s notice, given by a deadline in the contract, of the volume it will take on the coming day.',
+      },
+      {
+        term: 'Daily contract quantity',
+        definition:
+          'The reference daily volume that the minimum and maximum daily nominations are expressed against.',
+      },
+      {
+        term: 'Annual contract quantity',
+        definition:
+          'The reference volume for the contract year, around which the overall minimum and maximum takes are set.',
+      },
+      {
+        term: 'Take-or-pay',
+        definition:
+          'The obligation to pay for the annual minimum volume whether or not the buyer actually takes it.',
+      },
+      {
+        term: 'Swing factor',
+        definition:
+          'The maximum daily nomination divided by the average daily volume, measuring how much flexibility the contract carries.',
+      },
+      {
+        term: 'Continuation value',
+        definition:
+          'What the remaining allowance is worth if today’s is left unused — the figure a nomination decision is really judged against.',
+      },
+    ],
+    example: {
+      title: 'A supplier weighs one day against the winter',
+      lines: [
+        'A supplier holds a 180-day winter swing contract at €30 a MWh, nominating between 0 and 1,000 MWh on any day.',
+        'Across the winter it must take at least 60,000 MWh and may take no more than 100,000 MWh.',
+        'Nominating the maximum every day would be 180 × 1,000 = 180,000 MWh, so the annual limit allows full nominations on only 100 of the 180 days.',
+        'On a day when the spot price is €34, nominating the maximum earns (€34 − €30) × 1,000 = €4,000.',
+        'A colder day later in the winter is expected to reach €45, where the same allowance would earn (€45 − €30) × 1,000 = €15,000.',
+        'The winter turns mild and the supplier takes only 52,000 MWh, so it still pays for the 8,000 MWh shortfall: 8,000 × €30 = €240,000.',
+      ],
+      takeaway:
+        'The €34 day is in the money and may still be the wrong day to use, because the allowance it consumes is worth €15,000 elsewhere — an option inside a swing contract is only worth exercising if it is the best use of a budget every other day is also bidding for. And the €240,000 is not an option expiring worthless; it is a bill for gas the supplier never received.',
+    },
+    inPractice:
+      'The buyers are utilities, energy retailers and industrial users whose load follows the weather or a production schedule they cannot fix a year ahead. The sellers are producers, storage operators and the large portfolio traders who can net one buyer’s cold day against another’s mild one. Long-term European gas supply has been written this way for decades, and the same flexibility trades in its own right whenever a desk leases storage capacity and runs it as a swing contract against the hub price.',
+    relatedProductIds: ['cmopt', 'weather', 'capfloor'],
+    quiz: [
+      {
+        id: 'swing-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'In a swing option the buyer chooses the quantity it takes, while the price is fixed in advance.',
+        correctAnswer: true,
+        explanation:
+          'That inversion is the whole point: elsewhere the strike fixes the price and the amount is set, here the price is set and the amount is chosen.',
+      },
+      {
+        id: 'swing-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'What most clearly separates a swing option from a standard commodity call?',
+        options: [
+          'The right is over how much to take, not over whether to buy a fixed amount',
+          'The right is over the price paid rather than the quantity taken',
+          'It settles in cash where a call settles by delivery',
+          'It can only be exercised on the final day of the contract',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A call is optionality on price for a set volume. A swing contract is optionality on volume at a set price.',
+      },
+      {
+        id: 'swing-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'A swing contract obliges the buyer to take the same volume every day.',
+        correctAnswer: false,
+        explanation:
+          'It may nominate anywhere between the daily minimum and maximum. A fixed daily volume would be a forward strip, not a swing contract.',
+      },
+      {
+        id: 'swing-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A 180-day contract allows up to 1,000 MWh a day and no more than 100,000 MWh over the winter. On how many days can the buyer take the daily maximum?',
+        options: ['All 180 days', '100 days', '80 days', '60 days'],
+        correctIndex: 1,
+        explanation:
+          '100,000 ÷ 1,000 = 100. The daily limit alone would allow 180,000 MWh, so it is the annual limit that binds.',
+      },
+      {
+        id: 'swing-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'A swing contract is worth at most the strip of independent daily options it contains.',
+        correctAnswer: true,
+        explanation:
+          'Constraints can only subtract value. Without the annual limits the contract would be exactly that strip, so the strip is its upper bound.',
+      },
+      {
+        id: 'swing-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'Spot is €34 against a €30 contract price, and a colder day later in the winter is expected near €45. Why might the buyer still nominate less than the maximum today?',
+        options: [
+          'Because the contract is out of the money at €34',
+          'Because the contract price rises once the annual minimum is met',
+          'Because the annual limit is fixed, so volume taken today is volume unavailable on the more valuable day',
+          'Because a nomination cannot be changed once the winter has started',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A full nomination today earns €4,000, while the same 1,000 MWh earns €15,000 on the cold day. Being in the money is not enough when the allowance is scarce.',
+      },
+      {
+        id: 'swing-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A supplier serving households knows in advance how much gas it will need on each day of the winter.',
+        correctAnswer: false,
+        explanation:
+          'Its demand is set by the weather. That uncertainty is exactly what the flexibility is bought to cover.',
+      },
+      {
+        id: 'swing-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Why does a fixed strip of forwards suit a household gas supplier badly?',
+        options: [
+          'Forwards cannot be traded for winter delivery',
+          'A forward strip costs more than a swing contract for the same total volume',
+          'A forward fixes the price but leaves the counterparty’s credit unhedged',
+          'Its volume is fixed, so cold days send the supplier into the spot market exactly when prices are highest',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Demand and price peak together, so the volume left unhedged is bought at the worst moment. The flexibility is what prevents that.',
+      },
+      {
+        id: 'swing-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'What does the swing factor measure?',
+        options: [
+          'The share of the annual contract quantity that must be taken',
+          'How far the maximum daily nomination exceeds the average daily volume',
+          'The rate charged on volume taken below the annual minimum',
+          'The number of days on which the buyer is allowed to nominate',
+        ],
+        correctIndex: 1,
+        explanation:
+          'It is the ratio of the daily maximum to the average day implied by the annual quantity — a measure of how much flexibility was bought.',
+      },
+      {
+        id: 'swing-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'A nomination is the buyer’s notice of the volume it will take, given by a deadline set in the contract.',
+        correctAnswer: true,
+        explanation:
+          'The seller has to schedule delivery, so the flexibility is exercised through a notice rather than after the fact.',
+      },
+      {
+        id: 'swing-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Under a take-or-pay clause a buyer that takes less than the annual minimum still pays for the shortfall.',
+        correctAnswer: true,
+        explanation:
+          'That part of the contract is an obligation, not an option — which is why an unused swing contract can still generate a bill.',
+      },
+      {
+        id: 'swing-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Why might a swing contract be worth less to its holder than the value a model puts on it?',
+        options: [
+          'Because take-or-pay volumes are refunded at the end of the year',
+          'Because the seller may revise the daily maximum during the winter',
+          'Because the model assumes nominations are timed well, and a real desk decides each day without knowing what the rest of the winter will do',
+          'Because the contract price is reset daily against the spot market',
+        ],
+        correctIndex: 2,
+        explanation:
+          'The model value is what optimal exercise would realise. Suboptimal nominations leave part of it on the table.',
+      },
+    ],
+  },
 ];

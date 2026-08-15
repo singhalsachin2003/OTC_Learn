@@ -1021,4 +1021,526 @@ export const interestRateProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'infswap',
+    categoryId: 'ir',
+    name: 'Inflation Swap',
+    hook: 'Swap a fixed rate for realised inflation',
+    summary:
+      'The one product here whose underlying is a government statistic rather than a market price. One party pays a fixed rate agreed today, the other pays whatever a published price index — UK RPI, euro HICP excluding tobacco, US CPI — actually turns out to have done. That fixed rate is therefore a price for inflation itself, and the standard version settles the whole thing in a single payment at maturity rather than netting period by period, which makes it behave quite unlike the swaps that come before it.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'One party pays a fixed rate and the other pays the realised change in a published price index, on a notional that is never exchanged. The index is the underlying: UK RPI, euro HICP excluding tobacco, or US CPI. Nothing in the contract references a borrowing rate at all, so an inflation swap prices something no other swap in this catalogue touches.',
+        callout:
+          'The index is a statistic, not a quote. The Office for National Statistics compiles UK RPI once a month and publishes it a few weeks after the month it measures, and it is that published figure — not a dealer price — that decides what the swap pays.',
+      },
+      {
+        step: 2,
+        title: 'How it settles',
+        content:
+          'The standard form is zero-coupon: nothing changes hands until maturity, when a single netted payment is made. The inflation leg owes the notional times the index ratio less one, or I(T) ÷ I(0) − 1; the fixed leg owes the notional times (1 + r)^T − 1, the fixed rate compounded over the same years. A year-on-year inflation swap does pay on a schedule, exchanging each year’s change in the index against a fixed rate, but the zero-coupon version is the one that trades in size.',
+        callout:
+          'The fixed leg compounds — it is not the rate multiplied by the years. Ten years at 3.20% is (1.032)^10 − 1 = 37.02% of notional, against 32.0% if the rate were simply added up.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'A defined benefit pension scheme owes payments that rise with an inflation index, so it receives inflation and pays fixed, turning an unknown liability into a known one. That trade is the core of liability-driven investment and the reason a large share of pension flow reaches a rates desk at all. Natural payers are scarcer: utilities and infrastructure operators whose regulated revenues are index-linked, and governments issuing index-linked bonds. The fixed rate is worth reading in its own right, because it is the breakeven — the average annual inflation that would make both legs settle at the same number. Anyone who thinks inflation will beat it can receive inflation as a view rather than as a hedge.',
+        callout:
+          'The same breakeven can be read off the bond market, as the gap between a nominal gilt yield and the real yield on an index-linked gilt of the same maturity. It is not a pure forecast: it also carries an inflation risk premium, and in the UK a persistent demand from pension schemes to receive inflation with few natural payers opposite them.',
+      },
+      {
+        step: 4,
+        title: 'Lag and seasonality',
+        content:
+          'A swap cannot reference the index for the month it matures in, because that figure does not exist yet. Convention applies a lag — two months on a standard UK RPI swap — so a trade maturing in November settles on the September index, which the ONS published in October. Part of the payoff is already a public number before the trade ends. Seasonality is the second wrinkle: prices follow a repeating pattern within the calendar year, so the level of the index depends on which month is being read. Where a swap starts and matures in the same calendar month the seasonal component largely cancels, because both ends of the index ratio sit at the same point of the cycle; on a short-dated or broken-dated trade it does not, and the curve has to be fitted with an explicit seasonal adjustment.',
+        callout:
+          'UK pension increases are usually capped and floored rather than uncapped — "LPI (0,5)" rises with RPI but by no more than 5% and no less than 0% in a year. A plain inflation swap does not reproduce that shape; matching it needs inflation caps and floors on top.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The swap hedges one named index, and a liability linked to a different one leaves basis risk: a scheme paying CPI-linked benefits while receiving RPI on its swaps is exposed to the wedge between the two, and that wedge is not fixed — from February 2030 UK RPI is to be calculated on the CPIH methodology, which is expected to close most of it. A zero-coupon swap also pays nothing for years while being marked to market throughout, so a hedge with no cash flow until 2040 still consumes collateral today. And the lag cuts both ways: in the closing months of a trade there is very little inflation risk left to hedge, because the figure that settles it has already been published.',
+        callout:
+          'In autumn 2022 UK schemes running leveraged liability hedges faced collateral calls large enough that the Bank of England intervened in the gilt market. Nothing about the hedges had failed; they simply needed cash long before they were due to pay anything.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Zero-coupon inflation swap',
+        definition:
+          'The standard form, which exchanges nothing until maturity and then settles the whole compounded difference in one payment.',
+      },
+      {
+        term: 'Index ratio',
+        definition:
+          'The final reference index divided by the initial one, which less one is what the inflation leg pays.',
+      },
+      {
+        term: 'Breakeven inflation',
+        definition:
+          'The fixed rate that makes both legs settle at the same amount, and so the market’s implied average inflation for that maturity.',
+      },
+      {
+        term: 'Publication lag',
+        definition:
+          'The fixed number of months between the index month a payment references and the payment date itself — two months on a standard UK RPI swap.',
+      },
+      {
+        term: 'Seasonality',
+        definition:
+          'The repeating within-year pattern in a price index, which largely cancels over whole years but must be modelled on short-dated and broken-dated trades.',
+      },
+      {
+        term: 'Year-on-year inflation swap',
+        definition:
+          'The periodic alternative, exchanging each year’s change in the index against a fixed rate on every payment date.',
+      },
+    ],
+    example: {
+      title: 'A pension scheme hedges ten years of RPI',
+      lines: [
+        'A scheme has £50m of liabilities that rise with RPI over the next ten years.',
+        'It enters a ten-year zero-coupon RPI swap on £50m, receiving inflation and paying 3.20% fixed.',
+        'Nothing changes hands for ten years. At maturity the reference index has gone from 400.0 to 570.0.',
+        'The inflation leg owes 570 ÷ 400 − 1 = 42.5% of £50m, or £21.25m.',
+        'The fixed leg owes (1.032)^10 − 1 = 37.02% of £50m, or £18.51m, so the scheme receives the £2.74m difference.',
+      ],
+      takeaway:
+        'Realised inflation ran at about 3.6% a year against the 3.20% breakeven the market priced at the outset, and the swap paid the scheme the gap. Had it run at exactly 3.20% the index would have finished at 548.1 and the two legs would have cancelled — one payment, at the very end, or none at all.',
+    },
+    inPractice:
+      'UK defined benefit schemes and the liability-driven investment managers who run their hedges are the dominant receivers of inflation, because the benefits they owe are indexed by statute or by scheme rules. Opposite them sit utilities, rail and social housing operators whose revenues are index-linked by regulation or contract, and dealers warehousing what is left of the imbalance. Macro funds trade breakevens outright when they think the market’s implied inflation is wrong.',
+    relatedProductIds: ['irs', 'capfloor', 'cmswap'],
+    quiz: [
+      {
+        id: 'infswap-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The notional of an inflation swap is exchanged at maturity alongside the inflation payment.',
+        correctAnswer: false,
+        explanation:
+          'As in any swap the notional is only a reference amount. What settles at maturity is the difference between the two legs.',
+      },
+      {
+        id: 'infswap-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'What does the floating leg of an inflation swap pay?',
+        options: [
+          'An overnight benchmark such as SONIA, compounded over the period',
+          'The realised change in a published price index',
+          'The central bank’s inflation target for the period',
+          'The real yield on an index-linked government bond',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The underlying is a published statistic — RPI, HICP or CPI — rather than a market rate, which is what sets this product apart from every other swap here.',
+      },
+      {
+        id: 'infswap-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'The index an inflation swap references is published monthly, a few weeks after the month it measures.',
+        correctAnswer: true,
+        explanation:
+          'The ONS compiles and releases UK RPI on that schedule, which is precisely why the swap market needs a lag convention at all.',
+      },
+      {
+        id: 'infswap-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'foundational',
+        prompt:
+          'A zero-coupon inflation swap makes a single netted payment, at maturity.',
+        correctAnswer: true,
+        explanation:
+          'Nothing is exchanged in the meantime. The year-on-year form is the version that pays on a schedule.',
+      },
+      {
+        id: 'infswap-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A ten-year zero-coupon inflation swap on £50m is struck at 3.20% fixed, and the reference index runs from 400.0 to 570.0. What settles at maturity?',
+        options: [
+          '£21.25m paid to the inflation receiver',
+          '£18.51m paid to the inflation payer',
+          '£2.74m paid to the inflation receiver',
+          '£2.74m paid to the inflation payer',
+        ],
+        correctIndex: 2,
+        explanation:
+          'The inflation leg owes 42.5% of £50m, or £21.25m; the fixed leg owes (1.032)^10 − 1 = 37.02%, or £18.51m. Only the £2.74m difference changes hands, and only at maturity.',
+      },
+      {
+        id: 'infswap-q6',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'The fixed leg of a ten-year zero-coupon swap struck at 3.20% owes 32.0% of notional.',
+        correctAnswer: false,
+        explanation:
+          'The rate compounds rather than adding up: (1.032)^10 − 1 is 37.02% of notional.',
+      },
+      {
+        id: 'infswap-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A pension scheme owes benefits that rise with RPI. What does it do on an inflation swap?',
+        options: [
+          'Pay inflation and receive fixed',
+          'Pay fixed on a nominal interest rate swap instead',
+          'Sell an inflation floor struck at its expected rate',
+          'Receive inflation and pay fixed',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Its liabilities grow with the index, so it needs a receipt that grows with the index too. Paying a known fixed rate in exchange turns an unknown liability into a known one.',
+      },
+      {
+        id: 'infswap-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'The fixed rate quoted on an inflation swap is the market’s breakeven inflation rate for that maturity.',
+        correctAnswer: true,
+        explanation:
+          'It is the average annual inflation that would make the two legs settle at the same number, which is why it can be traded as a view and not only used as a hedge.',
+      },
+      {
+        id: 'infswap-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'Why is part of a UK RPI swap’s final payment already known before it matures?',
+        options: [
+          'The swap references an index month a set number of months before the payment date',
+          'The ONS publishes a forecast of the index a year ahead',
+          'The fixed leg is reset against the realised index each year',
+          'RPI is revised only once a year, in April',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A two-month lag is the UK convention, and each month’s index is published a few weeks after that month ends, so the settling figure is public before the trade is over.',
+      },
+      {
+        id: 'infswap-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'advanced',
+        prompt:
+          'On a zero-coupon swap that starts and matures in the same calendar month, the seasonal component of the index largely cancels.',
+        correctAnswer: true,
+        explanation:
+          'Both ends of the index ratio sit at the same point of the seasonal cycle. It is short-dated and broken-dated trades, where they do not, that need an explicit seasonal adjustment.',
+      },
+      {
+        id: 'infswap-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A scheme’s benefits rise with CPI but it hedges with RPI swaps. What has it kept?',
+        options: [
+          'Publication lag risk, because CPI is released later than RPI',
+          'Basis risk between two indices that need not move together',
+          'Reinvestment risk on the fixed leg, which pays every year',
+          'Seasonality risk, because CPI has no seasonal pattern',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The hedge pays on RPI while the liability grows with CPI, and the wedge between them is not fixed — from February 2030 RPI is to be calculated on the CPIH methodology, which is expected to close most of it.',
+      },
+      {
+        id: 'infswap-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Because a zero-coupon swap pays nothing until maturity, it cannot generate collateral calls before then.',
+        correctAnswer: false,
+        explanation:
+          'It is marked to market throughout its life, so a hedge that pays nothing for a decade can still demand cash within months of being struck — as UK schemes found in autumn 2022.',
+      },
+    ],
+  },
+  {
+    id: 'basisswap',
+    categoryId: 'ir',
+    name: 'Basis Swap',
+    hook: 'Swap one floating index for another',
+    summary:
+      'The first swap here with no fixed leg at all. Both sides pay a floating index on the same notional in the same currency — SOFR against the effective federal funds rate, or compounded SOFR against three-month Term SOFR — and the price is not a rate but a spread in basis points added to one of the legs. The structure carries the lesson: "the floating rate" is plural, the curves for different indices do not move together, and the gap between them is itself something that trades.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A basis swap exchanges one floating index for another on the same notional, in the same currency, for an agreed term. Neither leg is fixed. Because both legs rise and fall with the level of rates, the trade expresses almost no view on where rates go; what it isolates is the difference between two indices that are often treated as interchangeable and are not.',
+        callout:
+          'Every other swap in this catalogue has a fixed side to quote. A basis swap is quoted as a spread in basis points, and that spread is the price — a position struck at three basis points can be closed out at seven.',
+      },
+      {
+        step: 2,
+        title: 'How it’s quoted',
+        content:
+          'The spread goes on whichever leg would otherwise be worth less, sized so that the two legs are worth the same on the trade date: a basis swap starts at zero value, like any other swap. A quote of the form "SOFR flat against fed funds plus four" means one party pays compounded SOFR and receives the effective federal funds rate plus four basis points on the same notional. The two legs need not share a schedule — a daily compounded leg against a quarterly term leg has to be aligned in the confirmation before anything can be netted. Duration is close to nil, so a 50 basis point shift in the whole curve barely moves the trade while a one basis point move in the spread moves it directly.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'Banks and lenders are the natural users, because their assets and their funding rarely reference the same index. A US bank whose loan book pays three-month Term SOFR but whose notes cost compounded SOFR earns a margin that widens and narrows with the gap between the two — a risk it never chose to run. A basis swap fixes that margin without taking any position on the level of rates. Dealers also use basis swaps to shift a legacy book from one benchmark onto another, which is how a great deal of the LIBOR transition was actually executed.',
+        callout:
+          'The ARRC’s best practice recommendation limits Term SOFR derivatives to end users hedging cash exposures that already reference Term SOFR, so this particular basis is not traded between dealers as freely as an ordinary SOFR swap.',
+      },
+      {
+        step: 4,
+        title: 'What moves the spread',
+        content:
+          'Two indices differ because they measure different things. SOFR is secured on US Treasuries, so it answers to the supply of collateral and cash; the effective federal funds rate is unsecured, so it carries a view on the institutions doing the borrowing. Tenor is the other axis: a forward-looking term rate prices what the market expects overnight rates to do, while a compounded overnight rate records what they actually did, so the two agree only if the path turns out as expected. The clearest historical case is the LIBOR–OIS spread, which measured the cost of unsecured bank funding and widened sharply in 2008 and again in March 2020 while the overnight rate itself barely moved.',
+        callout:
+          'A repo rate can spike over a quarter-end or a year-end when dealer balance sheets are constrained, with no change in the policy rate at all. That is a move in the basis rather than in rates, and it is exactly what this product is exposed to.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The spread is small but it is not stable, and it tends to move most under funding stress, which is when a bank can least afford the mark. A hedge also only works where the schedules match: a basis swap resetting quarterly against a loan book that resets monthly leaves a residual on every date the two disagree. The idea reaches further than the product does. Exchanging floating legs in two different currencies gives the cross-currency basis, priced in the FX swap market; and within a single currency, the recognition that the curve used to project a floating leg is not the curve used to discount its cash flows — projection follows the index, discounting follows the collateral agreement — is the same observation written into the valuation, a separation the market made after 2008 and has kept.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Basis spread',
+        definition:
+          'The basis points added to one floating leg so both legs are worth the same at inception, and the price at which the swap trades.',
+      },
+      {
+        term: 'SOFR',
+        definition:
+          'The Secured Overnight Financing Rate, an overnight rate derived from US Treasury repo transactions and published by the New York Fed.',
+      },
+      {
+        term: 'Effective federal funds rate',
+        definition:
+          'The volume-weighted median rate on overnight unsecured borrowing in the US federal funds market, also published by the New York Fed.',
+      },
+      {
+        term: 'Term SOFR',
+        definition:
+          'A forward-looking rate for a period such as three months, derived from SOFR derivatives and therefore known at the start of the period.',
+      },
+      {
+        term: 'Tenor basis',
+        definition:
+          'The spread between two floating legs referencing the same benchmark over different periods, such as one month against three months.',
+      },
+      {
+        term: 'Projection curve',
+        definition:
+          'The curve used to forecast a floating leg’s future settings, kept separate from the discount curve applied to the resulting cash flows.',
+      },
+    ],
+    example: {
+      title: 'A bank locks its lending margin',
+      lines: [
+        'A bank holds $500m of corporate loans paying three-month Term SOFR + 2.00%, reset quarterly.',
+        'It funds them with notes paying daily compounded SOFR + 0.60%, so the 1.40% gap between the two margins is not actually locked.',
+        'It enters a three-year basis swap on $500m: it pays three-month Term SOFR and receives compounded SOFR plus 2 basis points.',
+        'In one 92-day quarter Term SOFR sets at 4.10% while compounded SOFR realises 4.02%, so the swap costs 6 basis points — $76,667 on ACT/360.',
+        'The margin is 6.10% earned less 4.62% paid less that 6 basis points: 1.42%, and 1.42% again in a quarter where the two indices differ by 3 basis points instead of 8.',
+      ],
+      takeaway:
+        'Neither leg is fixed and nothing here turns on the level of rates — all the swap locks is the 2 basis point spread between two indices. Without it the bank’s margin would drift, in either direction, with a basis it never chose to take a view on.',
+    },
+    inPractice:
+      'US regional banks are the archetypal user: their loan documentation references Term SOFR while their bonds and hedges reference compounded SOFR, and a basis swap is what keeps the margin between them intact. Bank treasuries and short-end rates desks trade the SOFR against fed funds basis to line a portfolio up with the index their own liabilities actually pay, and dealers run a basis book because every index needs a curve of its own.',
+    relatedProductIds: ['irs', 'fra', 'fxswap'],
+    quiz: [
+      {
+        id: 'basisswap-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'A basis swap has no fixed leg — both sides pay a floating index.',
+        correctAnswer: true,
+        explanation:
+          'That is what makes it different: the price is a spread between two floating indices rather than a rate.',
+      },
+      {
+        id: 'basisswap-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'How is a basis swap quoted?',
+        options: [
+          'As a fixed rate, like any other swap',
+          'As a spread in basis points added to one of the two floating legs',
+          'As an upfront premium paid on the trade date',
+          'As the ratio between the two indices',
+        ],
+        correctIndex: 1,
+        explanation:
+          'There is no fixed side to quote. The spread is the price, and it moves — a trade struck at three basis points can be closed out at seven.',
+      },
+      {
+        id: 'basisswap-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'A basis swap expresses almost no view on the level of interest rates.',
+        correctAnswer: true,
+        explanation:
+          'Both legs float, so a parallel shift in the curve moves them together. What is left is the gap between the two indices.',
+      },
+      {
+        id: 'basisswap-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'What does a quote of "SOFR flat against fed funds plus four" mean?',
+        options: [
+          'Both legs pay four basis points over their own index',
+          'The fixed rate on the swap is four basis points',
+          'One party pays compounded SOFR and receives the fed funds rate plus four basis points',
+          'The swap pays out only once the two indices differ by more than four basis points',
+        ],
+        correctIndex: 2,
+        explanation:
+          'One leg is quoted flat and the spread sits on the other. Nothing about the trade is fixed, and nothing is conditional on a threshold.',
+      },
+      {
+        id: 'basisswap-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'The spread is added to whichever leg would otherwise be worth more, so the trade starts with a positive value.',
+        correctAnswer: false,
+        explanation:
+          'It goes on the leg worth less, and is sized so the two match. A basis swap starts at zero value, like any other swap.',
+      },
+      {
+        id: 'basisswap-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A bank’s loans pay Term SOFR while its funding costs compounded SOFR. What does a basis swap do for it?',
+        options: [
+          'It fixes the margin between the two without taking a view on rates',
+          'It converts the loan book to a fixed rate',
+          'It removes the credit risk on the loan book',
+          'It shortens the maturity of the funding',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Both legs still float with the level of rates. What the swap removes is the drift between the two indices, which is the part of the margin the bank never chose to run.',
+      },
+      {
+        id: 'basisswap-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Basis swaps were used to move legacy books from one benchmark onto another during the LIBOR transition.',
+        correctAnswer: true,
+        explanation:
+          'Exchanging one floating index for another is exactly the operation a transition requires, which is why so much of it ran through this product.',
+      },
+      {
+        id: 'basisswap-q8',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'Why can SOFR and the effective federal funds rate diverge?',
+        options: [
+          'One is a monthly average and the other is observed daily',
+          'They are published by different administrators on different days',
+          'SOFR is secured on Treasuries while fed funds is unsecured',
+          'SOFR is a forward-looking term rate and fed funds is not',
+        ],
+        correctIndex: 2,
+        explanation:
+          'One answers to the supply of collateral and cash, the other to the standing of the institutions borrowing. Both are overnight rates published by the New York Fed.',
+      },
+      {
+        id: 'basisswap-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'advanced',
+        prompt:
+          'A forward-looking term rate and an overnight rate compounded over the same period settle at the same number.',
+        correctAnswer: false,
+        explanation:
+          'The term rate prices what the market expected overnight rates to do; the compounded rate records what they did. They agree only if the path turns out as expected.',
+      },
+      {
+        id: 'basisswap-q10',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'advanced',
+        prompt:
+          'The LIBOR–OIS spread widened sharply in 2008 while the overnight rate barely moved. What was it measuring?',
+        options: [
+          'A change in the Federal Reserve’s policy target',
+          'The difference between a monthly and a quarterly reset',
+          'The scarcity of Treasury collateral in the repo market',
+          'The perceived credit and liquidity risk of unsecured lending to banks',
+        ],
+        correctIndex: 3,
+        explanation:
+          'LIBOR was an unsecured bank funding rate while OIS sat close to risk free, so the gap between them priced how safe lending to banks was thought to be.',
+      },
+      {
+        id: 'basisswap-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'A basis swap resetting quarterly fully hedges a loan book that resets monthly.',
+        correctAnswer: false,
+        explanation:
+          'A schedule mismatch leaves a residual on every date the two disagree. The hedge only neutralises the basis it actually matches.',
+      },
+      {
+        id: 'basisswap-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'What does the split between a projection curve and a discount curve recognise?',
+        options: [
+          'That one curve can no longer be assumed to both forecast a floating leg and discount its cash flows',
+          'That fixed legs are discounted but floating legs are not',
+          'That cleared swaps are discounted and bilateral swaps are not',
+          'That the notional has to be discounted as well as the interest',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Projection follows the index the leg references; discounting follows the collateral agreement. It is the same insight a basis swap trades, written into the valuation.',
+      },
+    ],
+  },
 ];

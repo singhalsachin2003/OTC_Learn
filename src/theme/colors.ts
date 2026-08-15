@@ -115,6 +115,17 @@ export const categoryColors = {
   equity: { accent: '#7E5DB1', soft: '#ECE2FF' },
   /** hue 80 — amber */
   commodity: { accent: '#996700', soft: '#F6E6CB' },
+  /**
+   * Slate — oklch(45% .03 250) on oklch(93% .012 250).
+   *
+   * Deliberately not a sixth hue on the wheel. The five above are asset
+   * classes, peers of one another; Market Foundations is the infrastructure all
+   * five run through, and giving it a rainbow accent would file it as a sixth
+   * market. A desaturated slate says "different in kind" — and, unlike the five,
+   * it clears WCAG AA as text on its own tint (6.04:1) and on a white card
+   * (7.40:1).
+   */
+  foundations: { accent: '#495766', soft: '#E2E9F0' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;

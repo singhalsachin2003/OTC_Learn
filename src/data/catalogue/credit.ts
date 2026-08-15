@@ -1013,4 +1013,518 @@ export const creditProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'assetswap',
+    categoryId: 'credit',
+    name: 'Asset Swap',
+    hook: 'Turn a fixed-rate bond into a floating one',
+    summary:
+      'A package rather than a single instrument: a fixed-rate bond bought together with an interest rate swap that pays its coupon away and returns a floating rate in its place. What the holder is left with is the issuer’s credit risk expressed as a spread over SOFR, with the interest rate risk stripped out. That number — the asset swap spread — is the cash market’s price for the same default risk a CDS covers, which is why the two can be set side by side, and why the gap between them says something neither figure says alone.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'An asset swap combines a fixed-rate bond with an interest rate swap so that the holder ends up receiving a floating rate instead of a fixed coupon. The investor buys the bond and, in the same trade with the same dealer, pays the bond’s coupon away on the swap and receives SOFR plus a spread in return. The swap is struck to the bond’s own maturity and coupon dates, so each fixed payment received on the bond goes straight out on the swap the day it arrives. What remains is a floating-rate exposure to one issuer’s credit.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'In the standard par-par structure the investor pays par for the bond whatever it is actually worth, and the swap notional is par too. The asset swap spread then does two jobs at once. It carries the difference between the bond’s coupon and the market swap rate for that maturity, and it amortises the gap between par and the bond’s real price. A bond trading below par therefore asset-swaps at a wider spread, because the investor has overpaid at the outset and has to be compensated over the life of the trade. The alternative market-value structure sets the swap notional at the price actually paid, which avoids the over- or underpayment but leaves an untidy notional.',
+        callout:
+          'Two points of overpayment is not two points of spread. Spread over a five-year annuity of about 4.5, it adds roughly 44 basis points a year to the asset swap spread.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'A bank or fund that wants credit exposure without a view on rates can hold the bond and be largely indifferent to where the curve goes, which is why bond portfolios are routinely asset-swapped on the way in. The second use is comparison. The asset swap spread and the CDS spread on the same issuer and maturity are two prices for the same default risk, and the difference between them — the CDS-bond basis, defined as the CDS spread minus the asset swap spread — is usually negative for investment-grade names. The bond has to be funded and consumes balance sheet while the swap does not, so the cash buyer demands more spread than the protection buyer pays. Pushing the other way, the protection buyer holds a cheapest-to-deliver option over the qualifying obligations, and a restructuring can trigger the CDS on a bond that keeps paying; a bond that is special in repo funds cheaply, which lifts its price and tightens its spread; and covenants the CDS does not respond to, such as a change-of-control put, do the same.',
+        callout:
+          'The negative basis trade — buy the bond on asset swap, buy protection on the same issuer — is not free money. It only pays if the bond can be funded near the benchmark the spread is quoted over, and a repo rate 30bp above it outweighs a 24bp basis outright.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'Asset swap spread, the par-par and market-value structures, the annuity factor that turns an upfront price difference into a running spread, and the Z-spread, which measures much the same credit compensation against a zero-coupon curve rather than through a swap. The two are close but not equal — the asset swap spread comes out of a par-notional swap and the Z-spread out of the bond’s own discounted cashflows, so they drift apart as the price moves away from par. The CDS-bond basis is positive when protection costs more than the bond pays and negative when it costs less.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The swap does not die with the bond. A plain asset swap has no credit termination, so an investor whose bond has defaulted is still paying fixed on a swap running to the original maturity and has to unwind it at whatever it is then worth — a loss if rates have fallen since the trade was struck. The dealer is a counterparty for that whole period, the swap leg generates margin calls while the bond does not, and the two legs are often documented separately, so selling the bond leaves a naked swap behind unless it is unwound at the same time.',
+        callout:
+          'A par-par package hedged with protection on the same notional comes back to par after a credit event: the bond recovers the auction price and the protection pays par minus it. The interest rate swap is the piece left over.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Asset swap spread',
+        definition:
+          'The running spread over the floating benchmark the package pays, and the cash market’s measure of the issuer’s credit risk.',
+      },
+      {
+        term: 'Par-par structure',
+        definition:
+          'The standard form, in which the investor pays par for the bond and the swap notional is par, whatever the bond is actually worth.',
+      },
+      {
+        term: 'Annuity factor',
+        definition:
+          'The sum of the discount factors over the bond’s remaining life, which converts an upfront price difference into a running spread.',
+      },
+      {
+        term: 'Z-spread',
+        definition:
+          'The constant spread over the zero-coupon curve that makes a bond’s discounted cashflows equal its market price.',
+      },
+      {
+        term: 'CDS-bond basis',
+        definition:
+          'The CDS spread minus the asset swap spread on the same issuer and maturity, negative when the bond pays more than protection costs.',
+      },
+      {
+        term: 'Repo specialness',
+        definition:
+          'The premium a particular bond commands in the repo market, which cheapens the cost of funding it and tightens its asset swap spread.',
+      },
+    ],
+    example: {
+      title: 'Asset-swapping a five-year bond, then comparing it with the CDS',
+      lines: [
+        'A fund buys $10m of a five-year corporate bond with a 5% annual coupon, trading in the market at 98.',
+        'In a par-par asset swap the dealer delivers it at 100, so the fund pays $10m rather than $9.8m.',
+        'On the swap the fund pays the 5% coupon away on $10m and receives SOFR plus a spread to the bond’s maturity.',
+        'The five-year swap rate is 3.60%, so the coupon on its own is worth 140bp over it.',
+        'The two points overpaid are recovered across five years: 2 points over an annuity of about 4.5 is 44bp a year.',
+        'The asset swap spread is therefore about 140 + 44 = 184bp over SOFR.',
+        'Five-year protection on the same issuer costs 160bp, so the basis is 160 − 184 = −24bp.',
+      ],
+      takeaway:
+        'The bond pays 24bp a year more than protection on the same issuer costs — the same credit, two different prices. Capturing that gap means funding $10m of bond, and a repo rate of SOFR + 30bp turns the trade into a 6bp loss.',
+    },
+    inPractice:
+      'Bank treasury and credit portfolios asset-swap most of the fixed-rate paper they buy, so the position earns a spread over SOFR and the book carries credit risk rather than duration — new corporate issues are often marketed in asset swap terms for exactly that audience. Relative-value desks at hedge funds trade the CDS-bond basis directly, buying the bond on asset swap and protection against it when the basis is negative enough to survive their funding cost. Dealers quote the bond and its swap as one package rather than two trades.',
+    relatedProductIds: ['cds', 'irs', 'trs'],
+    quiz: [
+      {
+        id: 'assetswap-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'An asset swap turns a bond’s fixed coupon into a floating receipt without the investor selling the bond.',
+        correctAnswer: true,
+        explanation:
+          'The bond stays in the portfolio; the swap pays its coupon away and returns SOFR plus a spread.',
+      },
+      {
+        id: 'assetswap-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'What does an asset swap package together?',
+        options: [
+          'Two bonds from the same issuer with different maturities',
+          'A fixed-rate bond and an interest rate swap that pays its coupon away',
+          'A bond and a credit default swap on the same issuer',
+          'A floating-rate note and a cross-currency swap',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The bond supplies the credit exposure and the swap removes the fixed-rate exposure that came with it.',
+      },
+      {
+        id: 'assetswap-q3',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'In a par-par asset swap the investor pays the bond’s market price rather than par.',
+        correctAnswer: false,
+        explanation:
+          'Par-par means par is paid and the swap notional is par; the price difference is carried in the spread.',
+      },
+      {
+        id: 'assetswap-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A bond trades at 98 but is delivered at par in an asset swap. What does that do to the asset swap spread?',
+        options: [
+          'Nothing — the price the bond trades at is irrelevant to the spread',
+          'It narrows the spread, because the bond was trading below par',
+          'It widens the spread, because the investor has overpaid and is compensated over the life of the trade',
+          'It is settled as a separate upfront payment from the dealer instead',
+        ],
+        correctIndex: 2,
+        explanation:
+          'The two points of overpayment are amortised into the running spread, which is why discount bonds asset-swap wider.',
+      },
+      {
+        id: 'assetswap-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'Two points of overpayment on a five-year bond, with an annuity factor of about 4.5, adds roughly how much to the asset swap spread?',
+        options: ['9bp', '90bp', '200bp', '44bp'],
+        correctIndex: 3,
+        explanation:
+          'Two points spread over an annuity of 4.5 is 0.44% a year, or 44bp. Skipping the amortisation and charging the full two points in year one gives 200bp instead.',
+      },
+      {
+        id: 'assetswap-q6',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'An asset swap leaves the investor holding the issuer’s credit risk while stripping out the interest rate risk.',
+        correctAnswer: true,
+        explanation:
+          'That separation is the point: the package pays a spread for credit and is largely indifferent to the level of rates.',
+      },
+      {
+        id: 'assetswap-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'A bond asset-swaps at 184bp and five-year protection on the issuer costs 160bp. What is the CDS-bond basis?',
+        options: ['+344bp', '−24bp', '+24bp', '−184bp'],
+        correctIndex: 1,
+        explanation:
+          'The basis is the CDS spread minus the asset swap spread: 160 − 184 = −24bp, a negative basis.',
+      },
+      {
+        id: 'assetswap-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'Funding cost tends to push the CDS-bond basis negative, because the bondholder must finance the position while the protection seller need not.',
+        correctAnswer: true,
+        explanation:
+          'The cash buyer demands extra spread for funding and balance sheet, so the bond spread sits above the CDS spread.',
+      },
+      {
+        id: 'assetswap-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'Which is the correct definition of the CDS-bond basis?',
+        options: [
+          'The CDS spread minus the asset swap spread on the same issuer and maturity',
+          'The bond’s yield minus the government bond yield of the same maturity',
+          'The asset swap spread minus the bond’s repo rate',
+          'The difference between the on-the-run and the off-the-run index series',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Both legs must be the same issuer and the same maturity, or the comparison is not measuring one credit.',
+      },
+      {
+        id: 'assetswap-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'advanced',
+        prompt:
+          'The asset swap spread and the Z-spread on the same bond are always identical.',
+        correctAnswer: false,
+        explanation:
+          'One comes out of a par-notional swap and the other from the bond’s own discounted cashflows, so they diverge as the price leaves par.',
+      },
+      {
+        id: 'assetswap-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'The bond inside an asset swap defaults. What happens to the interest rate swap?',
+        options: [
+          'It terminates automatically alongside the bond',
+          'Its notional falls to the bond’s recovery value',
+          'It continues, leaving the investor paying fixed on a bond that no longer exists',
+          'It converts into a credit default swap on the same issuer',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A plain asset swap has no credit termination, so the swap has to be unwound at market value — a loss if rates have fallen.',
+      },
+      {
+        id: 'assetswap-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Once a bond bought on asset swap is hedged with protection on the same issuer, the position is riskless.',
+        correctAnswer: false,
+        explanation:
+          'Funding cost, the swap that survives a default and the dealer’s own credit all remain, and any of them can outweigh the basis.',
+      },
+    ],
+  },
+  {
+    id: 'cdxopt',
+    categoryId: 'credit',
+    name: 'Credit Index Option',
+    hook: 'An option on a credit index spread',
+    summary:
+      'An option whose underlying is a credit index and whose strike is a spread rather than a price, a rate or an exchange rate. The buyer of a payer acquires the right to buy protection at an agreed spread on a fixed date; the buyer of a receiver acquires the right to sell it. The naming is borrowed from interest-rate swap options and runs against equity intuition — the payer is the bearish position — and the payoff carries a mechanism found nowhere else: if a name in the index defaults before expiry, the loss travels into the option rather than being lost with it. This is where credit volatility itself is bought and sold, and the standard way a large book buys a convex hedge against a credit selloff.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A credit index option is the right, but not the obligation, to enter a credit index swap at an agreed spread on a fixed future date. The strike is a spread level in basis points, and the option is European — the decision is made once, at expiry. A payer option is the right to buy protection at the strike, so it gains as spreads widen; a receiver option is the right to sell protection at the strike, so it gains as spreads tighten.',
+        callout:
+          'Payer and receiver are inherited from swaptions and describe the premium leg: the payer holder pays it, which makes the payer the bearish credit position. That is the opposite way round to a call in equity, and it is the most common mistake with these contracts.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'The buyer pays a premium upfront, quoted in basis points of the notional, and at expiry compares the index spread with the strike. Exercise delivers a position in the underlying index swap struck at that spread rather than a cash difference. The payoff is not simply the spread gap: a basis point of spread is worth a basis point a year for the remaining life of the index, so the gap is multiplied by the index’s risky annuity before it becomes cash. Front-end protection is the piece with no analogue elsewhere in the market. If a constituent suffers a credit event between trade date and expiry, that name’s loss is carried into the payer’s payoff, collected by exercising, so the option does not simply become worthless because a name in the index has defaulted — and a payer can be worth exercising even when the index has finished inside the strike.',
+        callout:
+          'Forty basis points in the money on a five-year index is worth about 40 × 4.5 = 180 basis points of notional, not 40. The annuity is what converts a spread into cash, and it is the step most often skipped.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'Options are how credit volatility is traded as a quantity in its own right, apart from the direction of spreads. The most common use is a macro tail hedge: buying payers on an investment-grade index is a cheap, convex way to be protected against a credit selloff, because the loss is capped at the premium while the payoff keeps growing as spreads gap — a payer gains more from a 60bp widening than twice what it gains from a 30bp one. Desks sell receivers to monetise a view that spreads will not tighten further, and buy payer spreads rather than outright payers to cheapen a hedge by giving up the far tail. Payers routinely trade at a higher implied volatility than receivers the same distance from the money, because spreads grind tighter and gap wider, and the skew prices that asymmetry.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'Strike spread, payer and receiver, expiry, premium, front-end protection, and implied spread volatility. An option references one specific index series rather than whichever series happens to be on the run, so after a roll it still exercises into the series it was struck on, which by then can be materially less liquid. Delta is expressed as an equivalent index notional, and most trades are struck with a delta exchange so the buyer starts flat on direction and long volatility alone.',
+        callout:
+          'Expiries are monthly and almost all of the liquidity sits in the first three. Quoting is concentrated on the main indices — CDX.NA.IG, CDX.NA.HY, iTraxx Europe Main and Crossover — with single-name credit options traded far more thinly.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The premium on a payer is lost in full if spreads do not widen past the strike, and a hedge rolled every quarter bleeds a great deal across a calm year. Selling options hands that convexity away: the seller collects a capped premium and takes an open-ended loss in precisely the scenario the rest of the book is also suffering. Liquidity sits in a handful of strikes and expiries on a few indices, so an unusual strike or an off-the-run series can be expensive to unwind. And it remains an index hedge — it responds to the index, not to the particular bonds held, so the payoff can fall well short of the portfolio’s loss.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Payer option',
+        definition:
+          'The right to buy protection on the index at the strike spread, which gains value as spreads widen.',
+      },
+      {
+        term: 'Receiver option',
+        definition:
+          'The right to sell protection on the index at the strike spread, which gains value as spreads tighten.',
+      },
+      {
+        term: 'Strike spread',
+        definition:
+          'The spread level, in basis points, at which the holder may enter the underlying index swap on exercise.',
+      },
+      {
+        term: 'Front-end protection',
+        definition:
+          'Compensation carried into a payer’s payoff for credit events occurring between trade date and expiry.',
+      },
+      {
+        term: 'Risky annuity',
+        definition:
+          'The duration-like factor that converts one basis point of index spread into an amount of cash.',
+      },
+      {
+        term: 'Delta exchange',
+        definition:
+          'The offsetting index position traded alongside the option so the buyer starts without a directional view.',
+      },
+    ],
+    example: {
+      title: 'A payer that pays twice — once on spread, once on a default',
+      lines: [
+        'A fund buys $100m of a three-month payer on a 125-name investment-grade index, struck at 70bp.',
+        'The premium is 20bp of notional, or $200,000, paid upfront.',
+        'In the first scenario the index is at 110bp at expiry, 40bp through the strike.',
+        'With a risky annuity of about 4.5, that is worth 40 × 4.5 = 180bp of notional, or $1.8m — a net $1.6m.',
+        'In the second scenario the index finishes at 68bp, inside the strike, but one name has defaulted at an auction price of 20.',
+        'That name is $800,000 of the notional, so front-end protection is 80% × $800,000 = $640,000.',
+        'Exercising also enters the index at 70bp against a market of 68bp, costing about 9bp on the surviving $99.2m, or $89,000.',
+      ],
+      takeaway:
+        'The second scenario still returns $640,000 − $89,000 = $551,000 against a $200,000 premium, even though the index finished inside the strike. Without front-end protection the option would have expired worthless, which is why a credit payer is not simply a put on the index level.',
+    },
+    inPractice:
+      'Macro funds and multi-asset managers buy payers on CDX.NA.IG or iTraxx Europe Main as a tail hedge, because a few basis points of premium buys a payoff that grows as spreads gap — cheaper to carry through a long calm stretch than holding index protection outright. Pension funds and insurers with large corporate bond books do the same ahead of events they cannot trade around. On the other side, dealers and volatility funds sell options to earn the premium and hedge the delta with the underlying index, and relative-value desks trade the payer skew against realised spread volatility.',
+    relatedProductIds: ['cdx', 'swaption', 'varswap'],
+    quiz: [
+      {
+        id: 'cdxopt-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A payer option gives its holder the right to buy protection on the index at the strike spread.',
+        correctAnswer: true,
+        explanation:
+          'The payer pays the premium leg of the index, which is what a protection buyer does.',
+      },
+      {
+        id: 'cdxopt-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'Which position gains value when credit spreads widen?',
+        options: [
+          'A receiver option on the index',
+          'Selling protection on the index',
+          'A payer option on the index',
+          'A sold payer option',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Widening spreads make protection more valuable, and the payer is the right to buy it at a fixed level.',
+      },
+      {
+        id: 'cdxopt-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'Buying a payer is the bullish credit position, in the same way buying a call is bullish in equity.',
+        correctAnswer: false,
+        explanation:
+          'A payer buys protection, so it is the bearish position — the terminology cuts the opposite way to equity calls and puts.',
+      },
+      {
+        id: 'cdxopt-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Credit index options are American-style and can be exercised at any point before expiry.',
+        correctAnswer: false,
+        explanation:
+          'They are European: the exercise decision is made once, on the expiry date.',
+      },
+      {
+        id: 'cdxopt-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A payer finishes 40bp through the strike on an index with a risky annuity of about 4.5. What is that worth as a percentage of notional?',
+        options: ['0.40%', '1.80%', '0.09%', '4.50%'],
+        correctIndex: 1,
+        explanation:
+          '40bp × 4.5 = 180bp of notional. Quoting 0.40% ignores the annuity; 0.09% divides by it instead of multiplying.',
+      },
+      {
+        id: 'cdxopt-q6',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'A payer option becomes worthless if one of the index constituents defaults before expiry.',
+        correctAnswer: false,
+        explanation:
+          'Front-end protection carries that name’s loss into the payoff, so exercising can pay even when the index finishes inside the strike.',
+      },
+      {
+        id: 'cdxopt-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'The buyer of a payer option can lose no more than the premium paid.',
+        correctAnswer: true,
+        explanation:
+          'A capped loss against an uncapped payoff is the convexity a tail hedge is bought for.',
+      },
+      {
+        id: 'cdxopt-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Why buy index payers as a tail hedge rather than simply buying index protection outright?',
+        options: [
+          'Payer options cannot expire worthless',
+          'Index protection cannot be traded in size',
+          'The premium is capped while the payoff grows as spreads gap, which is cheaper to carry through a calm stretch',
+          'Options settle without any reference to the index level',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Running index protection costs the full coupon every quarter; the option costs a premium and keeps the convex payoff.',
+      },
+      {
+        id: 'cdxopt-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'An option was struck on a series that has since gone off the run. What does it exercise into at expiry?',
+        options: [
+          'Whichever series is on the run at expiry',
+          'A basket of the surviving single-name contracts',
+          'Cash only, valued at the on-the-run level',
+          'The series it was struck on, which by then may be far less liquid',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The option references one series for its whole life, and the roll moves liquidity away from it.',
+      },
+      {
+        id: 'cdxopt-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'Most index option trades are struck with a delta exchange, so the buyer starts without a directional position.',
+        correctAnswer: true,
+        explanation:
+          'The offsetting index trade leaves the buyer long volatility rather than long or short credit.',
+      },
+      {
+        id: 'cdxopt-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'What is the particular danger in selling payer options on a credit index?',
+        options: [
+          'The premium received is capped while the loss grows as spreads gap, in exactly the scenario the rest of the book is suffering',
+          'The seller becomes the legal owner of the constituents’ bonds',
+          'The seller must post the full index notional at inception',
+          'The position cannot be hedged with the underlying index',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Selling convexity pays a little most of the time and loses a great deal in the one state that matters.',
+      },
+      {
+        id: 'cdxopt-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A manager hedges a specific corporate bond portfolio with index payers. What risk remains?',
+        options: [
+          'Interest rate risk on the premium paid',
+          'The option responds to the index rather than the bonds held, so the payoff can fall short of the loss',
+          'The option can be exercised against the manager before expiry',
+          'Front-end protection can be reclaimed by the seller after expiry',
+        ],
+        correctIndex: 1,
+        explanation:
+          'It is the same basis risk that comes with any index hedge, carried through into the option.',
+      },
+    ],
+  },
 ];

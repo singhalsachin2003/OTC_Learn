@@ -1005,4 +1005,532 @@ export const equityProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'divswap',
+    categoryId: 'equity',
+    name: 'Dividend Swap',
+    hook: 'Trade dividends without owning the shares',
+    summary:
+      'A dividend swap takes one component of an equity’s return — the cash it hands to shareholders — and makes it tradable on its own. One side pays a fixed amount agreed at the outset; the other pays whatever dividends the underlying index or share actually declares over an agreed period, usually a calendar year. The price of the underlying never enters the settlement. Because each year trades as its own contract, the strip of them forms a curve with a term structure of its own, and that curve has a persistent tilt: the far end trades below what anyone forecasts, because the people who most need to trade it are all on the same side.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A dividend swap exchanges the dividends an index or a share actually pays over an agreed period for a fixed amount agreed at the start. Nothing else about the equity comes with it: the underlying can double or halve and the payoff is unchanged. Index dividend swaps are quoted in dividend points — the contribution dividends make to the index level — and settle in cash once the period has finished.',
+        callout:
+          'Standard contracts run to the end of a calendar year, so a strip of them — this year, next year, the year after — is quoted as a curve. Eurex listed dividend futures on the Euro Stoxx 50 in 2008, and the listed and OTC markets now trade side by side.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'The buyer pays the fixed strike and receives the dividends that go ex-dividend inside the accrual period; the seller does the reverse. Settlement is a single cash payment shortly after the period ends, equal to realised dividends less the strike, multiplied by an agreed amount per point. Only ordinary cash dividends with an ex-date in the window count, and for an index they are converted into points using the same divisor the index itself uses. Each annual maturity trades separately, so the front contract barely moves once most of the year has been declared, while contracts several years out move on very little.',
+        callout:
+          'Euro Stoxx 50 dividends are heavily concentrated in the second quarter, when most continental European companies pay a single annual dividend, so a large part of a calendar year’s total is already fixed by the summer.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'The market exists because someone has a position they did not ask for. A desk that sells autocallable notes hedges them with the underlying shares and ends up holding the dividends on those shares — a long dividend exposure that arrives as a by-product of hedging something else, and that the desk sells forward to be rid of. On the other side are funds prepared to be paid for taking it, and investors who want a view on what a company pays out without a view on what its shares do. That one-way hedging flow is why implied dividends at the long end sit persistently below bottom-up forecasts of the same years’ payouts: the seller has to trade, and the buyer has to be compensated for warehousing a risk few others want.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'The strike is the implied dividend — what that year can be traded at today. Realised dividends are what actually turns up, and the gap between the two is the whole trade. Around them sit the accrual period, the notional per point, and the curve of annual maturities. A single-name swap works identically, sized in shares and struck on dividends per share rather than index points.',
+        callout:
+          'Nothing is paid until the period ends, so the strike is not a pure forecast: it also carries the discounting and the risk premium demanded for waiting several years to find out whether the forecast was right.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'A dividend is discretionary. A board can cut it to nothing in an afternoon, and it usually does so in exactly the conditions that are already hurting an equity book, so a long dividend position is not the diversifier its steady carry makes it look. In 2020 the ECB asked euro-area banks to suspend dividends and buybacks, the Bank of England’s PRA asked UK banks to do the same, and expectations for that year’s index dividends roughly halved within weeks. The long end is thin, so an unwanted position can be expensive to exit, and the OTC form leaves each side exposed to the other’s credit.',
+        callout:
+          'A buyback is not a dividend. A company that switches from paying cash to repurchasing shares returns the same money to its shareholders and delivers nothing at all to a dividend swap.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Implied dividend',
+        definition:
+          'The fixed strike at which a given year’s dividends can be traded today, before any of them are known.',
+      },
+      {
+        term: 'Realised dividends',
+        definition:
+          'The dividends that actually went ex-dividend during the accrual period, which the settlement is measured against.',
+      },
+      {
+        term: 'Dividend points',
+        definition:
+          'The contribution dividends make to an index level, the unit an index dividend swap is quoted and settled in.',
+      },
+      {
+        term: 'Accrual period',
+        definition:
+          'The window whose ex-dividend dates count — conventionally a single calendar year.',
+      },
+      {
+        term: 'Dividend notional',
+        definition:
+          'The cash amount paid per point of difference between realised dividends and the strike.',
+      },
+      {
+        term: 'Dividend curve',
+        definition:
+          'The strip of successive annual maturities, whose shape shows what the market will pay for each future year.',
+      },
+    ],
+    example: {
+      title: 'A suspension, seen from both sides',
+      lines: [
+        'A fund buys one calendar year of index dividends at a strike of 120 points, on €50,000 per point.',
+        'It pays 120 points at settlement and receives whatever the index delivers, so it profits above 120 and loses below it.',
+        'Payouts are suspended part way through the year and the index delivers 70 points.',
+        'Settlement is (70 − 120) × €50,000 = −€2.5m, paid by the fund to the seller.',
+        'Had dividends instead come in at 132 points, the fund would have received (132 − 120) × €50,000 = €600,000.',
+      ],
+      takeaway:
+        'Where the index itself finished never entered the calculation — only what it paid out. That is the appeal and the trap: the position is pure dividend risk, and dividends are cut in precisely the shock that is already costing the fund money elsewhere.',
+    },
+    inPractice:
+      'The natural sellers are bank equity derivatives desks, left long dividend risk by hedging the autocallable notes they sell to private-bank and retail investors, and keen to pass it on. The buyers are hedge funds and multi-asset managers paid to hold a risk nobody else wants, alongside investors expressing a view on a payout rather than a share price. Euro Stoxx 50 dividends are the deepest part of the market, with listed futures trading alongside the OTC swap; single-name dividend swaps exist but trade thinly.',
+    relatedProductIds: ['eqswap', 'autocall', 'cmswap'],
+    quiz: [
+      {
+        id: 'divswap-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A dividend swap settles on the dividends actually paid, regardless of where the underlying ends up.',
+        correctAnswer: true,
+        explanation:
+          'The price of the underlying is not an input. Only the payouts inside the period are.',
+      },
+      {
+        id: 'divswap-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'What is exchanged at settlement of an index dividend swap?',
+        options: [
+          'The shares in the index, delivered against the strike',
+          'The difference between realised dividends and the fixed strike, in cash',
+          'The index return over the period, measured net of dividends',
+          'A fixed coupon on the index level observed at the start',
+        ],
+        correctIndex: 1,
+        explanation:
+          'One number is agreed at the outset, the other is observed over the period, and only the difference moves.',
+      },
+      {
+        id: 'divswap-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'A one-year dividend swap pays out each time a company in the index goes ex-dividend.',
+        correctAnswer: false,
+        explanation:
+          'Dividends accumulate in points through the period and settle once, in cash, after it ends.',
+      },
+      {
+        id: 'divswap-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A fund buys one year of index dividends at a strike of 120 points on €50,000 a point. Realised dividends come in at 70 points. What happens at settlement?',
+        options: [
+          'The fund receives €2.5m',
+          'The fund pays €3.5m',
+          'The fund pays €2.5m',
+          'Nothing is owed, because realised dividends were still positive',
+        ],
+        correctIndex: 2,
+        explanation:
+          '(70 − 120) × €50,000 = −€2.5m. The buyer of dividends pays when realised comes in under the strike.',
+      },
+      {
+        id: 'divswap-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'foundational',
+        prompt:
+          'A dividend declared after the accrual period has closed still counts, provided it relates to that year’s earnings.',
+        correctAnswer: false,
+        explanation:
+          'The ex-dividend date is what matters — only payouts going ex inside the window feed the calculation.',
+      },
+      {
+        id: 'divswap-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'Why does the front-year contract move so much less than one five years out?',
+        options: [
+          'The front year carries a smaller notional per point by convention',
+          'The front year is capped at its strike, while later maturities are not',
+          'Later maturities settle on the index level as well as its dividends',
+          'Most of the front year is already declared or paid, so little is left to be uncertain about',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Uncertainty is what moves a price, and the near contract has had most of its uncertainty resolved.',
+      },
+      {
+        id: 'divswap-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'Where does the natural selling in the dividend market come from?',
+        options: [
+          'Companies hedging the cost of the dividends they are about to pay',
+          'Index providers rebalancing the divisor at each review',
+          'Dealers left long dividend risk by hedging the structured products they have sold',
+          'Pension funds matching a fixed stream of liabilities',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Hedging autocallable issuance leaves the desk holding dividends it never wanted, so it sells them forward.',
+      },
+      {
+        id: 'divswap-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'Long-dated implied dividends typically trade below bottom-up forecasts of the same years’ payouts.',
+        correctAnswer: true,
+        explanation:
+          'The hedger has to sell and the buyer has to be paid to warehouse the risk, which leaves the long end at a discount.',
+      },
+      {
+        id: 'divswap-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'foundational',
+        prompt: 'What is the implied dividend for a given year?',
+        options: [
+          'The fixed level at which that year’s dividends can be traded today',
+          'The dividend actually paid, once the year has finished',
+          'The average dividend paid over the previous five years',
+          'The dividend yield implied by the current index level',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Implied is the tradable number now; realised is what turns up later. The trade lives in the gap.',
+      },
+      {
+        id: 'divswap-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'A dividend point measures the contribution dividends make to the level of the index.',
+        correctAnswer: true,
+        explanation:
+          'Quoting in points lets a strike sit alongside the index it comes from and be compared year to year.',
+      },
+      {
+        id: 'divswap-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A company that replaces its dividend with a share buyback delivers the same cash to a dividend swap.',
+        correctAnswer: false,
+        explanation:
+          'Buybacks sit outside the contract: shareholders get the money and the dividend swap gets nothing.',
+      },
+      {
+        id: 'divswap-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt: 'What did the 2020 suspensions show about being long dividends?',
+        options: [
+          'Dividends are contractual, so they held up while equity markets fell',
+          'Boards cut payouts in the same shock that hits share prices, so the position is not the diversifier it looks like',
+          'Dividend swaps terminate early once an issuer suspends its payout',
+          'Supervisors guaranteed the dividends banks had already declared',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Supervisors asked banks to suspend payouts and expectations for the year roughly halved within weeks, while equities were falling.',
+      },
+    ],
+  },
+  {
+    id: 'autocall',
+    categoryId: 'equity',
+    name: 'Autocallable Note',
+    hook: 'A coupon note that can retire itself early',
+    summary:
+      'An autocallable note is the format that dominates retail and private-bank structured product issuance in Europe and much of Asia, and the clearest example of a payoff that depends on the path an underlying takes rather than on where it finishes. It looks at the underlying on a schedule of observation dates: above a trigger it pays a coupon and redeems itself early, and below a barrier at maturity it hands the investor the fall in the underlying. In between it simply gives the money back. The coupon looks generous next to a plain bond because it is not really interest — it is the premium on an option the investor has sold, paid in instalments.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'An autocallable note is debt issued by a bank whose repayment depends on the path of an equity underlying. On each scheduled observation date the underlying is compared with its level at the start: at or above the autocall trigger, the note redeems there and then, repaying principal with the coupon due. If that never happens, it runs to maturity, where principal comes back in full so long as the underlying has stayed above a downside barrier — and if it has not, the investor takes the fall in the underlying instead. The underlying is an index, a single share, or, most commonly, the worst performer of three or four of them.',
+        callout:
+          'Autocallables are exotic by reputation rather than by volume: issuing and hedging them is the routine daily business of an equity derivatives desk in Europe and Asia, not a corner of it.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'Observations are usually quarterly, semi-annual or annual, often after a non-call period of six or twelve months during which no early redemption can happen. The autocall trigger is typically the initial level, sometimes stepping down a little each year so that a call gets easier the longer the note runs. Many notes also carry a separate, lower coupon barrier: hold above that on an observation date and a coupon is paid even though the note does not call. At maturity, if the note never called, the barrier test decides everything — intact, and principal is repaid in full; breached, and on the usual design redemption is principal multiplied by the underlying’s final level over its initial level, so the loss is measured from the start, not from the barrier.',
+        callout:
+          'A European barrier is tested only on the final valuation date; an American one is breached if the underlying trades through the level at any time in the note’s life. The same closing price at maturity can repay in full under one and take 40% under the other.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'Investors buy them for a coupon far above what the same bank pays on its senior debt, in exchange for accepting an equity loss they judge unlikely. That coupon is not yield: it is the premium on a put the investor has sold, delivered in instalments. Distributors like the format because every term is a dial — a higher coupon means a higher barrier, wider observation gaps, or a fourth underlying, and each turn of the dial hands more risk to the buyer. Dealers issue them because the risk that comes back is risk they can manage, but the volume of it shapes the market they hedge in: the desk is left long dividends, which it sells forward into the dividend swap market, and carrying long-dated volatility risk on the referenced index in sizes no other flow produces.',
+        callout:
+          'A worst-of note pays more than one on a single index because every test runs on the weakest underlying, so the investor needs them all to hold up. The buyer is long correlation whether or not they would put it that way.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'The initial level is the reference everything else is measured against. Around it sit the observation schedule, the autocall trigger, the coupon barrier, the knock-in barrier and, on many notes, a memory feature that pays previously missed coupons once the coupon barrier is met again. The coupon barrier and the knock-in barrier are separate tests: an underlying can be too low to pay a coupon while the note is still on course to repay principal in full.',
+        callout:
+          'A common European retail shape is a trigger at 100% of the initial level, a coupon barrier near 70%, a knock-in barrier near 60% observed only at maturity, quarterly observations, and a stated life of five or six years that rarely runs its course.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The upside is capped at the coupon while the downside below the barrier is the underlying’s own loss in full, and the two are not symmetric in size or in when they arrive. Calls happen in strong markets, so the money comes back precisely when it is hardest to replace the terms, and the note survives in weak ones, leaving the investor holding equity risk exactly when they would rather not. The note is senior unsecured debt of the issuer, so the bank’s credit stands in front of every payoff. And barriers create gap risk on both sides: a small move through a level changes the redemption by a lot, which is what makes these hard to hedge near the barrier.',
+        callout:
+          'Notes sold in Korea in 2021 on the Hang Seng China Enterprises Index matured through 2024 with the index down by more than half from its sale-year levels. They had never called and the barriers had gone, and regulators found realised losses averaging around half of principal — the note’s own mechanic, working exactly as designed.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Observation date',
+        definition:
+          'A scheduled date on which the underlying is compared with its initial level to decide whether the note calls or pays.',
+      },
+      {
+        term: 'Autocall trigger',
+        definition:
+          'The level at or above which the note redeems early on an observation date, usually the initial level.',
+      },
+      {
+        term: 'Coupon barrier',
+        definition:
+          'The lower level the underlying must hold on an observation date for a coupon to be paid without the note calling.',
+      },
+      {
+        term: 'Knock-in barrier',
+        definition:
+          'The downside level that, once breached, removes the protection on principal and exposes the investor to the fall.',
+      },
+      {
+        term: 'Memory feature',
+        definition:
+          'A term that pays previously missed coupons once the coupon barrier is met again on a later date.',
+      },
+      {
+        term: 'Worst-of',
+        definition:
+          'A basket convention under which every trigger and barrier test is run on the weakest of the underlyings.',
+      },
+    ],
+    example: {
+      title: 'Three years, and three ways it can end',
+      lines: [
+        'An investor buys £100,000 of a three-year note on an index at 5,000, observed once a year.',
+        'It pays 8% a year on call, calls at or above 5,000, and repays principal at maturity unless the index closes below 3,250 — 65% of the start.',
+        'At the first observation the index is 4,600, so nothing is paid and the note runs on.',
+        'At the second it is 5,100, above the trigger: the note redeems and pays £100,000 plus two years of coupon, £116,000 in all.',
+        'Had it instead never called and finished at 3,000 — 60% of the start, through the barrier — it would have repaid 60% of principal, £60,000, with no coupon at all.',
+      ],
+      takeaway:
+        'The best case is fixed at 8% a year and tends to arrive early; the worst is the index’s own 40% loss, taken in full. The £16,000 was the premium on a put the investor sold without calling it that. A middling path — the index at 4,000 at maturity, down 20% but above the barrier — simply returns the £100,000, three years later and no richer.',
+    },
+    inPractice:
+      'These are sold to private-bank and retail clients across France, Italy, Switzerland, Korea, Japan and Taiwan as an income substitute for someone who believes a major index will not fall by 40%. On the other side, issuing and hedging them is the core business of a bank’s equity derivatives desk, and the aggregate of that hedging is what keeps the far end of the dividend curve permanently on offer in the indices the notes reference.',
+    relatedProductIds: ['divswap', 'eqopt', 'cln'],
+    quiz: [
+      {
+        id: 'autocall-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'An autocallable note can redeem before its scheduled maturity if the underlying is above the trigger on an observation date.',
+        correctAnswer: true,
+        explanation:
+          'That early redemption is the autocall, and it is what the name of the structure refers to.',
+      },
+      {
+        id: 'autocall-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The note never calls, and at maturity the barrier has not been breached. What does the investor get?',
+        options: [
+          'The underlying’s performance, whether up or down',
+          'The note extends for a further year on the same terms',
+          'Principal repaid in full',
+          'Delivery of the underlying shares',
+        ],
+        correctIndex: 2,
+        explanation:
+          'An intact barrier means principal comes back whole, however far below its start the underlying sits.',
+      },
+      {
+        id: 'autocall-q3',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'An investor in an autocallable note participates in a rally in the underlying.',
+        correctAnswer: false,
+        explanation:
+          'The upside is the coupon and no more — a doubling of the index pays exactly what a 1% rise pays.',
+      },
+      {
+        id: 'autocall-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A three-year note on an index at 5,000 pays 8% a year on call, observed annually at a 100% trigger. The index is 4,600 after one year and 5,100 after two. What does £100,000 return?',
+        options: [
+          '£108,000 after one year',
+          '£116,000 after two years',
+          '£124,000 after three years',
+          '£100,000 after two years, the year-one coupon having been lost',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The second observation is above 5,000, so the note calls and pays principal plus two years of coupon.',
+      },
+      {
+        id: 'autocall-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'With an American barrier, an underlying that dips through the level mid-life and then recovers has still knocked in.',
+        correctAnswer: true,
+        explanation:
+          'It is tested continuously, so the breach is permanent — the recovery does not undo it.',
+      },
+      {
+        id: 'autocall-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'A note with a 65% barrier reaches maturity uncalled, with the underlying at 60% of its initial level. On the usual design, what is repaid?',
+        options: [
+          '65% of principal, since repayment is floored at the barrier',
+          '95% of principal, the loss running from the barrier downwards',
+          '100% of principal, because the breach was only five points deep',
+          '60% of principal, the loss being measured from the initial level',
+        ],
+        correctIndex: 3,
+        explanation:
+          'The barrier decides whether the loss applies at all, not where it starts. Below it, the fall counts from the beginning.',
+      },
+      {
+        id: 'autocall-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'What is the coupon on an autocallable note actually paying for?',
+        options: [
+          'The premium on a put the investor has effectively sold',
+          'The fee the distributor charges for placing the note',
+          'A share of the issuer’s trading profits on the underlying',
+          'The cost of monitoring the barrier through the note’s life',
+        ],
+        correctIndex: 0,
+        explanation:
+          'It is option premium in instalments, not interest, which is why it dwarfs the issuer’s bond yield.',
+      },
+      {
+        id: 'autocall-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'A worst-of note on four underlyings pays a lower coupon than one on a single index, because the risk is spread across four names.',
+        correctAnswer: false,
+        explanation:
+          'It pays more, not less: every test runs on the weakest name, so the investor needs all four to hold up.',
+      },
+      {
+        id: 'autocall-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'What does a memory feature do?',
+        options: [
+          'It raises the coupon for each year the note survives',
+          'It lowers the autocall trigger at every observation date',
+          'It pays previously missed coupons once the coupon barrier is met again',
+          'It locks in the highest level the underlying reached during the note’s life',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Skipped coupons are remembered rather than forfeited, and catch up on a later qualifying date.',
+      },
+      {
+        id: 'autocall-q10',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'foundational',
+        prompt:
+          'The autocall trigger and the knock-in barrier are two names for the same level.',
+        correctAnswer: false,
+        explanation:
+          'The trigger sits at or near the initial level and ends the note early; the barrier sits well below it and decides whether principal is at risk.',
+      },
+      {
+        id: 'autocall-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'An autocallable note carries the credit risk of the bank that issued it.',
+        correctAnswer: true,
+        explanation:
+          'It is senior unsecured debt, so every payoff in the structure depends on the issuer still being there to pay it.',
+      },
+      {
+        id: 'autocall-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Why is reinvestment a genuine problem for a holder of these notes?',
+        options: [
+          'Coupons are paid in shares of the underlying rather than in cash',
+          'The note calls in strong markets and survives in weak ones, so cash returns when terms are worst',
+          'The issuer may extend the maturity at its own discretion',
+          'Coupons stop accruing once the knock-in barrier is breached, even if the underlying recovers',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The structure gives the money back exactly when replacing it is expensive, and keeps it when it is not.',
+      },
+    ],
+  },
 ];

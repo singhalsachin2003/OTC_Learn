@@ -6,7 +6,7 @@ import { interestRateProducts } from './catalogue/interestRate';
 import type { Product, Question } from './types';
 
 /**
- * The full OTC product catalogue, four products per asset class.
+ * The full OTC product catalogue.
  *
  * Content lives in `./catalogue`, one file per category, so a single asset
  * class can be edited without scrolling past the others. Order here sets the
