@@ -20,6 +20,11 @@ export interface ReviewSummary {
   queuedCount: number;
   /** Date key of the next item to come due, or null if none are pending. */
   nextDueOn: string | null;
+  /**
+   * Queued items not yet due, resolved and sorted soonest-first — the
+   * "coming up" preview for a screen with nothing due today.
+   */
+  upcoming: ResolvedReviewItem[];
   loading: boolean;
 }
 
@@ -34,14 +39,24 @@ export function useReview(): ReviewSummary {
   const queue = useAppSelector((state) => state.review.queue);
   const loading = useAppSelector((state) => state.review.loading);
 
+  const resolve = (item: ReviewItem): ResolvedReviewItem | null => {
+    const found = getQuestionById(item.id);
+    return found === undefined
+      ? null
+      : { item, question: found.question, product: found.product };
+  };
+
   const due = useMemo(() => {
-    return dueItems(queue).flatMap((item) => {
-      const found = getQuestionById(item.id);
-      return found === undefined
-        ? []
-        : [{ item, question: found.question, product: found.product }];
-    });
+    return dueItems(queue).flatMap((item) => resolve(item) ?? []);
   }, [queue]);
+
+  const upcoming = useMemo(() => {
+    const dueIds = new Set(due.map((entry) => entry.item.id));
+    return queue
+      .filter((item) => !dueIds.has(item.id))
+      .sort((a, b) => a.dueOn.localeCompare(b.dueOn))
+      .flatMap((item) => resolve(item) ?? []);
+  }, [queue, due]);
 
   return {
     queue,
@@ -49,6 +64,7 @@ export function useReview(): ReviewSummary {
     dueCount: due.length,
     queuedCount: queue.length,
     nextDueOn: nextDueDate(queue),
+    upcoming,
     loading,
   };
 }

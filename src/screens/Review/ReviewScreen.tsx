@@ -18,7 +18,7 @@ import { daysBetween, toDateKey } from '../../utils/formatters';
 import { BASE_INTERVALS } from '../../utils/review';
 
 export function ReviewScreen() {
-  const { due, dueCount, queuedCount, nextDueOn } = useReview();
+  const { due, dueCount, queuedCount, nextDueOn, upcoming } = useReview();
   const { startReview } = useQuiz();
   const { goToReviewQuiz, goToTab } = useNavigation();
   const settings = useSettings();
@@ -116,6 +116,36 @@ export function ReviewScreen() {
                       {question.prompt}
                     </Text>
                     <Text style={styles.rowMeta}>{product.name}</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Nothing due today still leaves the "In queue" tile pointing at
+            something real — this is what it was pointing at. Without it, a
+            queue of six items was reported but never actually shown anywhere
+            on the screen. */}
+        {dueCount === 0 && upcoming.length > 0 && (
+          <View testID="review-upcoming" style={styles.list}>
+            <Text style={styles.sectionTitle}>COMING UP</Text>
+            {upcoming.map(({ item, question, product }) => {
+              const { accent, soft } = getCategoryColors(product.categoryId);
+              return (
+                <View key={item.id} style={styles.row}>
+                  <View style={[styles.lapses, { backgroundColor: soft }]}>
+                    <Text style={[styles.lapsesText, { color: accent }]}>
+                      {item.lapses}×
+                    </Text>
+                  </View>
+                  <View style={styles.rowText}>
+                    <Text numberOfLines={2} style={styles.prompt}>
+                      {question.prompt}
+                    </Text>
+                    <Text style={styles.rowMeta}>
+                      {product.name} · {whenLabel(item.dueOn)}
+                    </Text>
                   </View>
                 </View>
               );

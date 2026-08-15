@@ -78,7 +78,10 @@ const styles = StyleSheet.create({
   },
   option: {
     flex: 1,
-    paddingVertical: 10,
+    // 16 + 16 + the 17px label line-height clears the app's 48dp touch
+    // target — every other row on this screen (SettingsRows, DisclosureRow,
+    // Toggle's hitSlop) already reaches it; this was the one exception.
+    paddingVertical: 16,
     borderRadius: radius.large,
     borderWidth: 1,
     borderColor: colors.border,

@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { Pencil, User } from 'lucide-react-native';
 
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { StatTile } from '../../components/ui/StatTile';
@@ -94,7 +95,15 @@ export function ProfileScreen() {
 
         <View style={styles.identity}>
           <View style={styles.avatar}>
-            <Text style={styles.initials}>{initialsFor(name)}</Text>
+            {/* A drawn icon rather than the "·" initialsFor(null) falls back
+                to — at 17px inside a 54px solid circle that dot was nearly
+                invisible, reading as a rendering glitch rather than a
+                placeholder. */}
+            {name === null ? (
+              <User size={24} strokeWidth={2} color={colors.text.onDark} />
+            ) : (
+              <Text style={styles.initials}>{initialsFor(name)}</Text>
+            )}
           </View>
           <View style={styles.identityText}>
             {editing ? (
@@ -126,12 +135,17 @@ export function ProfileScreen() {
                     ? 'Add your name'
                     : `Your name is ${name}. Tap to edit.`
                 }
+                hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+                style={styles.nameRow}
               >
                 <Text
                   style={[styles.name, name === null && styles.namePlaceholder]}
                 >
                   {name ?? 'Add your name'}
                 </Text>
+                {/* The only visual cue elsewhere on this control that it's
+                    tappable — nothing about plain text otherwise says so. */}
+                <Pencil size={15} strokeWidth={2} color={colors.text.tertiary} />
               </Pressable>
             )}
             <Text style={styles.identityMeta}>
@@ -279,6 +293,12 @@ const styles = StyleSheet.create({
   },
   identityText: {
     flex: 1,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    columnGap: 6,
   },
   name: {
     ...typography.h2,
