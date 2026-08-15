@@ -6,7 +6,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, radius, spacing, typography } from '../../theme';
+import { colors, radius, spacing, tabularNumbers, typography } from '../../theme';
 
 export interface StatTileProps {
   value: string;
@@ -32,7 +32,14 @@ export function StatTile({
       accessibilityLabel={`${value} ${label}`}
       style={[styles.tile, style]}
     >
-      <Text style={[styles.value, { color: tint }]}>{value}</Text>
+      <Text
+        style={[styles.value, { color: tint }]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.7}
+      >
+        {value}
+      </Text>
       <Text style={styles.label}>{label.toUpperCase()}</Text>
     </View>
   );
@@ -50,6 +57,7 @@ const styles = StyleSheet.create({
   },
   value: {
     ...typography.h2,
+    ...tabularNumbers,
     fontSize: 20,
   },
   label: {

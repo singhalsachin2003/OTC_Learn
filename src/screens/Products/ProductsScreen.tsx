@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { X } from 'lucide-react-native';
 
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { ProductRow } from '../../components/ui/ProductRow';
@@ -39,6 +40,18 @@ function matches(product: Product, query: string): boolean {
   return haystack.includes(needle);
 }
 
+/**
+ * A row entry in the flattened list — a header or a product, one after
+ * another as direct `ScrollView` children. Flattened rather than nested
+ * (a `View` per category wrapping its own rows) so each header's index can
+ * be handed to `stickyHeaderIndices`: that prop pins whichever indexed
+ * child is currently at the top, so a header can only stick on its own if
+ * it is a sibling of its rows rather than their parent.
+ */
+type Row =
+  | { kind: 'header'; key: string; label: string }
+  | { kind: 'product'; key: string; product: Product; subtitle?: string };
+
 export function ProductsScreen() {
   const dispatch = useAppDispatch();
   const query = useProductQuery();
@@ -61,6 +74,49 @@ export function ProductsScreen() {
     [bookmarks],
   );
   const showSaved = query.trim() === '' && saved.length > 0;
+  const isSearching = query.trim() !== '';
+
+  const rows = useMemo(() => {
+    const list: Row[] = [];
+    if (showSaved) {
+      list.push({ kind: 'header', key: 'header-saved', label: 'SAVED' });
+      saved.forEach((product) =>
+        list.push({ kind: 'product', key: `saved-${product.id}`, product }),
+      );
+    }
+    grouped.forEach(({ category, items }) => {
+      list.push({
+        kind: 'header',
+        key: `header-${category.id}`,
+        label: category.name.toUpperCase(),
+      });
+      items.forEach((product) =>
+        list.push({
+          kind: 'product',
+          key: product.id,
+          product,
+          subtitle: isSearching
+            ? `${getCategoryById(product.categoryId)?.name ?? ''} · ${product.hook}`
+            : undefined,
+        }),
+      );
+    });
+    return list;
+  }, [showSaved, saved, grouped, isSearching]);
+
+  // Offset by the two fixed children (title, search bar) that always precede
+  // the flattened rows, so a header's position in `rows` maps to its actual
+  // index among the ScrollView's direct children.
+  const stickyHeaderIndices = useMemo(
+    () =>
+      rows.reduce<number[]>((indices, row, index) => {
+        if (row.kind === 'header') {
+          indices.push(index + 2);
+        }
+        return indices;
+      }, []),
+    [rows],
+  );
 
   return (
     <SafeAreaWrapper testID="products-screen">
@@ -68,64 +124,60 @@ export function ProductsScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        stickyHeaderIndices={rows.length > 0 ? stickyHeaderIndices : undefined}
       >
         <Text accessibilityRole="header" style={styles.title}>
           Products
         </Text>
 
-        <TextInput
-          testID="product-search"
-          value={query}
-          onChangeText={(text) => dispatch(setProductQuery(text))}
-          placeholder="Search products and key terms"
-          placeholderTextColor={colors.text.tertiary}
-          accessibilityLabel="Search products"
-          autoCorrect={false}
-          returnKeyType="search"
-          clearButtonMode="while-editing"
-          style={styles.search}
-        />
+        <View style={styles.searchRow}>
+          <TextInput
+            testID="product-search"
+            value={query}
+            onChangeText={(text) => dispatch(setProductQuery(text))}
+            placeholder="Search products and key terms"
+            placeholderTextColor={colors.text.tertiary}
+            accessibilityLabel="Search products"
+            autoCorrect={false}
+            returnKeyType="search"
+            style={[styles.search, isSearching && styles.searchWithClear]}
+          />
+          {isSearching && (
+            <Pressable
+              testID="product-search-clear"
+              onPress={() => dispatch(setProductQuery(''))}
+              accessibilityRole="button"
+              accessibilityLabel="Clear search"
+              hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
+              style={styles.searchClear}
+            >
+              <X size={16} strokeWidth={2.5} color={colors.text.tertiary} />
+            </Pressable>
+          )}
+        </View>
 
-        {showSaved && (
-          <View testID="saved-section">
-            <Text style={styles.sectionTitle}>SAVED</Text>
-            {saved.map((product) => (
-              <ProductRow
-                key={`saved-${product.id}`}
-                product={product}
-                mastery={masteryFor(product.id)}
-                bookmarked
-                onPress={() => goToProduct(product.id)}
-              />
-            ))}
-          </View>
-        )}
-
-        {grouped.length === 0 ? (
+        {rows.length === 0 ? (
           <Text testID="products-empty" style={styles.empty}>
             Nothing matches “{query.trim()}”. Try a product name, or a term like
             “notional” or “strike”.
           </Text>
         ) : (
-          grouped.map(({ category, items }) => (
-            <View key={category.id}>
-              <Text style={styles.sectionTitle}>{category.name.toUpperCase()}</Text>
-              {items.map((product) => (
-                <ProductRow
-                  key={product.id}
-                  product={product}
-                  mastery={masteryFor(product.id)}
-                  bookmarked={bookmarks.includes(product.id)}
-                  subtitle={
-                    query.trim() === ''
-                      ? undefined
-                      : `${getCategoryById(product.categoryId)?.name ?? ''} · ${product.hook}`
-                  }
-                  onPress={() => goToProduct(product.id)}
-                />
-              ))}
-            </View>
-          ))
+          rows.map((row) =>
+            row.kind === 'header' ? (
+              <View key={row.key} style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>{row.label}</Text>
+              </View>
+            ) : (
+              <ProductRow
+                key={row.key}
+                product={row.product}
+                mastery={masteryFor(row.product.id)}
+                bookmarked={bookmarks.includes(row.product.id)}
+                subtitle={row.subtitle}
+                onPress={() => goToProduct(row.product.id)}
+              />
+            ),
+          )
         )}
       </ScrollView>
     </SafeAreaWrapper>
@@ -142,6 +194,10 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     marginBottom: spacing.md,
   },
+  searchRow: {
+    marginBottom: spacing.lg,
+    justifyContent: 'center',
+  },
   search: {
     ...typography.body2,
     color: colors.text.primary,
@@ -151,13 +207,24 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    marginBottom: spacing.lg,
+  },
+  searchWithClear: {
+    paddingRight: spacing.xl + spacing.md,
+  },
+  searchClear: {
+    position: 'absolute',
+    right: spacing.md,
+  },
+  // Sticky headers need an opaque background — once pinned, the rows behind
+  // them scroll up underneath and would otherwise show through.
+  sectionHeader: {
+    backgroundColor: colors.background,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
   },
   sectionTitle: {
     ...typography.micro,
     color: colors.text.tertiary,
-    marginBottom: spacing.sm,
-    marginTop: spacing.sm,
   },
   empty: {
     ...typography.body2,

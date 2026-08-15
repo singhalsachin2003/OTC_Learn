@@ -32,7 +32,9 @@ function CategoryCard({ category }: { category: Category }) {
   const total = getProductsByCategory(category.id).length;
   const mastered = masteredInCategory(category.id);
   const percent = categoryPercent(category.id);
-  const subtext = `${mastered} of ${total} mastered`;
+  // Matches DashboardCard's leadLine: a fresh install reads "N to learn"
+  // rather than a hollow "0 of N mastered".
+  const subtext = mastered === 0 ? `${total} to learn` : `${mastered} of ${total} mastered`;
 
   return (
     <Card

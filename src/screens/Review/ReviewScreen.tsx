@@ -57,7 +57,7 @@ export function ReviewScreen() {
             testID="review-due-tile"
             value={String(dueCount)}
             label="Due now"
-            tint={dueCount > 0 ? colors.progressFill : colors.text.primary}
+            tint={dueCount > 0 ? colors.progressFillText : colors.text.primary}
           />
           <StatTile value={String(queuedCount)} label="In queue" />
           <StatTile

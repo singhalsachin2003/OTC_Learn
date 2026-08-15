@@ -145,7 +145,7 @@ export function ProfileScreen() {
             testID="profile-streak"
             value={String(streak)}
             label="Day streak"
-            tint={colors.progressFill}
+            tint={colors.progressFillText}
           />
           <StatTile
             testID="profile-answered"

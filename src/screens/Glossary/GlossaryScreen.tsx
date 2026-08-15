@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { X } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
@@ -13,13 +14,25 @@ import {
   typography,
 } from '../../theme';
 
+type Entry = ReturnType<typeof allKeyTerms>[number];
+type Row =
+  | { kind: 'letter'; key: string; letter: string }
+  | { kind: 'term'; key: string; entry: Entry };
+
+/** The section a term is grouped under — its first letter, or "#" for the
+ * handful of terms (e.g. "25-delta") that start with a digit. */
+function letterFor(term: string): string {
+  const first = term.trim().charAt(0).toUpperCase();
+  return /[A-Z]/.test(first) ? first : '#';
+}
+
 /**
  * Every key term in the catalogue, alphabetically.
  *
- * The terms already exist per product; collecting them here turns twenty short
- * vocabularies into one reference, which is how someone actually uses them —
- * you meet "basis risk" in a lesson and want the definition later, without
- * remembering which product it belonged to.
+ * The terms already exist per product; collecting them here turns thirty-six
+ * short vocabularies into one reference, which is how someone actually uses
+ * them — you meet "basis risk" in a lesson and want the definition later,
+ * without remembering which product it belonged to.
  */
 export function GlossaryScreen() {
   const { goToTab, goToProduct } = useNavigation();
@@ -37,6 +50,41 @@ export function GlossaryScreen() {
         entry.definition.toLowerCase().includes(needle),
     );
   }, [terms, query]);
+  const isSearching = query.trim() !== '';
+
+  // Flattened, not grouped-then-nested, for the same reason as the Products
+  // screen: `stickyHeaderIndices` pins a header only if it is a sibling of
+  // its rows rather than their parent.
+  const rows = useMemo(() => {
+    const list: Row[] = [];
+    let currentLetter: string | null = null;
+    filtered.forEach((entry) => {
+      const letter = letterFor(entry.term);
+      if (letter !== currentLetter) {
+        currentLetter = letter;
+        list.push({ kind: 'letter', key: `letter-${letter}`, letter });
+      }
+      list.push({
+        kind: 'term',
+        key: `${entry.productId}-${entry.term}`,
+        entry,
+      });
+    });
+    return list;
+  }, [filtered]);
+
+  // Offset by the four fixed children (back button, title, subtitle, search
+  // row) that always precede the flattened rows.
+  const stickyHeaderIndices = useMemo(
+    () =>
+      rows.reduce<number[]>((indices, row, index) => {
+        if (row.kind === 'letter') {
+          indices.push(index + 4);
+        }
+        return indices;
+      }, []),
+    [rows],
+  );
 
   return (
     <SafeAreaWrapper testID="glossary-screen">
@@ -44,6 +92,7 @@ export function GlossaryScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        stickyHeaderIndices={rows.length > 0 ? stickyHeaderIndices : undefined}
       >
         <BackButton
           label="Profile"
@@ -55,42 +104,68 @@ export function GlossaryScreen() {
           Glossary
         </Text>
         <Text style={styles.subtitle}>
-          {terms.length} terms from across the catalogue
+          {isSearching
+            ? `${filtered.length} of ${terms.length} terms match “${query.trim()}”`
+            : `${terms.length} terms from across the catalogue`}
         </Text>
 
-        <TextInput
-          testID="glossary-search"
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Search terms"
-          placeholderTextColor={colors.text.tertiary}
-          accessibilityLabel="Search glossary"
-          autoCorrect={false}
-          clearButtonMode="while-editing"
-          style={styles.search}
-        />
+        <View style={styles.searchRow}>
+          <TextInput
+            testID="glossary-search"
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search terms"
+            placeholderTextColor={colors.text.tertiary}
+            accessibilityLabel="Search glossary"
+            autoCorrect={false}
+            style={[styles.search, isSearching && styles.searchWithClear]}
+          />
+          {isSearching && (
+            <Pressable
+              testID="glossary-search-clear"
+              onPress={() => setQuery('')}
+              accessibilityRole="button"
+              accessibilityLabel="Clear search"
+              hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
+              style={styles.searchClear}
+            >
+              <X size={16} strokeWidth={2.5} color={colors.text.tertiary} />
+            </Pressable>
+          )}
+        </View>
 
-        {filtered.length === 0 ? (
+        {rows.length === 0 ? (
           <Text testID="glossary-empty" style={styles.empty}>
             No term matches “{query.trim()}”.
           </Text>
         ) : (
-          filtered.map((entry) => {
-            const { accent } = getCategoryColors(entry.categoryId);
+          rows.map((row) => {
+            if (row.kind === 'letter') {
+              return (
+                <View key={row.key} style={styles.letterHeader}>
+                  <Text style={styles.letterText}>{row.letter}</Text>
+                </View>
+              );
+            }
+            const { entry } = row;
+            const { text: accent } = getCategoryColors(entry.categoryId);
             return (
               <Pressable
-                key={`${entry.productId}-${entry.term}`}
+                key={row.key}
                 testID={`glossary-${entry.productId}-${entry.term}`}
                 onPress={() => goToProduct(entry.productId)}
                 accessibilityRole="button"
                 accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
                 style={({ pressed }) => [styles.row, pressed && styles.pressed]}
               >
-                <Text style={styles.term}>{entry.term}</Text>
-                <Text style={styles.definition}>{entry.definition}</Text>
-                <Text style={[styles.source, { color: accent }]}>
-                  {entry.productName}
-                </Text>
+                <View style={styles.rowMain}>
+                  <Text style={styles.term}>{entry.term}</Text>
+                  <Text style={styles.definition}>{entry.definition}</Text>
+                  <Text style={[styles.source, { color: accent }]}>
+                    {entry.productName}
+                  </Text>
+                </View>
+                <Text style={styles.chevron}>›</Text>
               </Pressable>
             );
           })
@@ -115,6 +190,11 @@ const styles = StyleSheet.create({
     color: colors.text.muted,
     marginTop: 3,
   },
+  searchRow: {
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
+    justifyContent: 'center',
+  },
   search: {
     ...typography.body2,
     color: colors.text.primary,
@@ -124,13 +204,35 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
+  },
+  searchWithClear: {
+    paddingRight: spacing.xl + spacing.md,
+  },
+  searchClear: {
+    position: 'absolute',
+    right: spacing.md,
+  },
+  // Sticky headers need an opaque background — once pinned, rows behind them
+  // scroll up underneath and would otherwise show through.
+  letterHeader: {
+    backgroundColor: colors.background,
+    paddingTop: spacing.sm,
+    paddingBottom: 4,
+  },
+  letterText: {
+    ...typography.label,
+    color: colors.text.tertiary,
   },
   row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: spacing.sm,
     paddingVertical: spacing.md,
     borderBottomWidth: StyleSheet.hairlineWidth * 2,
     borderBottomColor: colors.border,
+  },
+  rowMain: {
+    flex: 1,
   },
   pressed: {
     opacity: 0.6,
@@ -148,6 +250,10 @@ const styles = StyleSheet.create({
   source: {
     ...typography.micro,
     marginTop: 5,
+  },
+  chevron: {
+    ...typography.h3,
+    color: colors.chevron,
   },
   empty: {
     ...typography.body2,

@@ -72,6 +72,14 @@ export const colors = {
   dark: '#181611',
   /** oklch(60% .12 250) — home progress bar fill */
   progressFill: '#4284C5',
+  /**
+   * Darkened variant of progressFill for text use — 5.31:1 on white,
+   * against progressFill's own 3.93:1. progressFill was chosen as a fill
+   * colour (rings, bars) and never contrast-checked for the small stat
+   * figures it also got reused as a tint for; this token is what those
+   * call sites should use instead.
+   */
+  progressFillText: '#2E6FA8',
 
   success: {
     /** oklch(55% .12 160) */
@@ -103,18 +111,27 @@ export const colors = {
 /**
  * Per-category accent pairs. `accent` is oklch(55% .13 hue) and `soft` is
  * oklch(93% .04 hue) for the matching hue of each asset class.
+ *
+ * `text` is a separate, darkened variant for the same hue, only for where
+ * the accent is rendered as small text (the glossary's source label,
+ * currently) rather than a ring, icon or badge fill. `accent` itself was
+ * chosen for those fills and was never contrast-checked as text — at
+ * `typography.micro` on `colors.background` every one of the five hue
+ * accents falls short of WCAG AA's 4.5:1 (3.7–4.2:1); `text` clears it with
+ * margin (4.8:1+) on both the page background and a white card. Foundations
+ * needs no separate variant — its slate accent already clears both as text.
  */
 export const categoryColors = {
   /** hue 250 — blue */
-  ir: { accent: '#2A75BA', soft: '#D4EBFF' },
+  ir: { accent: '#2A75BA', soft: '#D4EBFF', text: '#2465A1' },
   /** hue 160 — teal */
-  fx: { accent: '#008856', soft: '#D2F1DF' },
+  fx: { accent: '#008856', soft: '#D2F1DF', text: '#006E46' },
   /** hue 20 — red */
-  credit: { accent: '#B14D51', soft: '#FFDEDD' },
+  credit: { accent: '#B14D51', soft: '#FFDEDD', text: '#A3474A' },
   /** hue 300 — purple */
-  equity: { accent: '#7E5DB1', soft: '#ECE2FF' },
+  equity: { accent: '#7E5DB1', soft: '#ECE2FF', text: '#7351A8' },
   /** hue 80 — amber */
-  commodity: { accent: '#996700', soft: '#F6E6CB' },
+  commodity: { accent: '#996700', soft: '#F6E6CB', text: '#855900' },
   /**
    * Slate — oklch(45% .03 250) on oklch(93% .012 250).
    *
@@ -125,7 +142,7 @@ export const categoryColors = {
    * it clears WCAG AA as text on its own tint (6.04:1) and on a white card
    * (7.40:1).
    */
-  foundations: { accent: '#495766', soft: '#E2E9F0' },
+  foundations: { accent: '#495766', soft: '#E2E9F0', text: '#495766' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;
@@ -154,12 +171,17 @@ export const tabColors = {
   inactive: colors.text.tertiary,
 } as const;
 
-const FALLBACK_ACCENT = { accent: colors.text.primary, soft: colors.track };
+const FALLBACK_ACCENT = {
+  accent: colors.text.primary,
+  soft: colors.track,
+  text: colors.text.primary,
+};
 
 /** Look up a category's accent pair, falling back to neutral for unknown ids. */
 export function getCategoryColors(categoryId: string): {
   accent: string;
   soft: string;
+  text: string;
 } {
   return categoryColors[categoryId as CategoryColorKey] ?? FALLBACK_ACCENT;
 }

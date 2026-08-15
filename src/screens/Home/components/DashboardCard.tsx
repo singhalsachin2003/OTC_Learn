@@ -1,11 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Ring } from '../../../components/ui/Ring';
 import { TOTAL_QUESTIONS } from '../../../data/products';
 import { useLongestStreak, useStreak } from '../../../hooks/useAppState';
+import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
 import { useReview } from '../../../hooks/useReview';
-import { colors, masteryColors, radius, spacing, typography } from '../../../theme';
+import {
+  colors,
+  masteryColors,
+  radius,
+  spacing,
+  tabularNumbers,
+  typography,
+} from '../../../theme';
 import { masteryBand } from '../../../utils/mastery';
 
 /**
@@ -19,6 +27,7 @@ export function DashboardCard() {
   const streak = useStreak();
   const longest = useLongestStreak();
   const { dueCount } = useReview();
+  const { goToTab } = useNavigation();
 
   const band = masteryBand(overallPercent);
   const fill =
@@ -31,7 +40,14 @@ export function DashboardCard() {
           : masteryColors.none;
 
   return (
-    <View testID="dashboard-card" style={styles.card}>
+    <Pressable
+      testID="dashboard-card"
+      onPress={() => goToTab('profile')}
+      accessibilityRole="button"
+      accessibilityLabel={`Overall mastery ${overallPercent} percent. ${leadLine(masteredCount, totalCount)}`}
+      accessibilityHint="Opens your full profile and stats"
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+    >
       <Ring
         testID="overall-ring"
         size={86}
@@ -56,13 +72,18 @@ export function DashboardCard() {
             // "Best streak" is only worth saying once there is a run worth
             // beating; on day one it is true but reads as faint praise.
             label={streak > 1 && streak === longest ? 'BEST STREAK' : 'DAY STREAK'}
-            tint={colors.progressFill}
+            tint={colors.progressFillText}
           />
           <View style={styles.divider} />
           <Stat value={String(dueCount)} label="DUE NOW" />
         </View>
       </View>
-    </View>
+
+      {/* The whole card is now a real button — QuickActions and CategoryGrid
+          already taught that pattern below it, so this needs the same
+          affordance mark rather than looking identical while doing nothing. */}
+      <Text style={styles.chevron}>›</Text>
+    </Pressable>
   );
 }
 
@@ -121,8 +142,16 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: spacing.lg,
   },
+  pressed: {
+    opacity: 0.85,
+  },
+  chevron: {
+    ...typography.h3,
+    color: colors.chevron,
+  },
   ringValue: {
     ...typography.h3,
+    ...tabularNumbers,
     fontSize: 18,
     color: colors.text.primary,
   },
@@ -157,6 +186,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     ...typography.h3,
+    ...tabularNumbers,
     fontSize: 17,
   },
   statLabel: {

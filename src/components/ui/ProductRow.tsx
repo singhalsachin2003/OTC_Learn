@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   bookmark: {
     ...typography.micro,
     fontSize: 11,
-    color: colors.progressFill,
+    color: colors.progressFillText,
   },
   hook: {
     ...typography.labelSmall,
