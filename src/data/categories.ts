@@ -1,9 +1,10 @@
 import type { Category } from './types';
 
 /**
- * The five asset classes. `accentColor` records the original OKLCH value from
- * the design handoff; the rendered hex equivalents live in `theme/colors.ts`
- * keyed by the same category id.
+ * The five asset classes, plus Market Foundations — the infrastructure they
+ * run through. `accentColor` records the original OKLCH value from the design
+ * handoff; the rendered hex equivalents live in `theme/colors.ts` keyed by
+ * the same category id.
  */
 export const categories: Category[] = [
   {

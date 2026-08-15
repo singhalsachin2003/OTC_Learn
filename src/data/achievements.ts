@@ -64,13 +64,13 @@ export const achievements: Achievement[] = [
   {
     id: 'explorer',
     name: 'Explorer',
-    description: 'Attempt at least one quiz in all five asset classes.',
+    description: 'Attempt at least one quiz in every category.',
     glyph: '◇',
   },
   {
     id: 'full-book',
     name: 'Full book',
-    description: 'Reach strong mastery on all twenty products.',
+    description: 'Reach strong mastery on every product.',
     glyph: '∞',
   },
 ];

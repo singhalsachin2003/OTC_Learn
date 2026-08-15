@@ -11,7 +11,7 @@ import { colors, getCategoryColors, spacing, typography } from '../../../theme';
 
 const GUTTER = spacing.md;
 
-/** Two-column grid of the five asset classes, each with a mastery ring. */
+/** Two-column grid of every category, each with a mastery ring. */
 export function CategoryGrid() {
   return (
     <View style={styles.grid}>
@@ -39,7 +39,7 @@ function CategoryCard({ category }: { category: Category }) {
       testID={`category-card-${category.id}`}
       onPress={() => goToCategory(category.id)}
       accessibilityLabel={`${category.name}. ${percent} percent mastery. ${subtext}`}
-      accessibilityHint="Opens the products in this asset class"
+      accessibilityHint="Opens the products in this category"
       style={styles.card}
     >
       {/* The ring replaces the old icon badge: it carries the same identity
