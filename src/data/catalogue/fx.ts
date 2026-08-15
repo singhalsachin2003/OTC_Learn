@@ -1024,4 +1024,532 @@ export const fxProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'xccy',
+    categoryId: 'fx',
+    name: 'Cross-Currency Swap',
+    hook: 'Exchange principal and interest across two currencies',
+    summary:
+      'The longer-dated relative an FX swap’s own glossary already points to. An FX swap exchanges principal now and reverses it later and nothing else; a cross-currency swap does the same two exchanges of principal but adds interest, paid on each side’s notional in its own currency, for every period in between. It is the standard way a genuine multi-year currency funding need is hedged, and the market for it prices something covered interest rate parity says should not exist at all: the cross-currency basis.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A cross-currency swap exchanges principal in two currencies at inception and exchanges it back at maturity, and pays interest on each side’s notional in its own currency for every period in between. An FX swap does the first and last part — two exchanges of principal — but never touches the interest in the middle; a cross-currency swap adds that interest, which is what makes it the natural instrument for a funding need lasting years rather than months.',
+        callout:
+          'In the plain structure, notional is exchanged at the rate agreed at inception, not at spot on the day it is exchanged back — a five-year swap struck at 1.2500 returns exactly $1.2500 per euro at maturity, however far spot has actually moved by then.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'Each side pays interest on its own notional in its own currency — fixed or floating on either leg, so a swap can be fixed-for-fixed, fixed-for-floating or floating-for-floating. The floating-for-floating version is what the market usually calls a cross-currency basis swap, and its price is not a rate but a spread added to one of the two floating legs — the cross-currency basis. Because the principal exchanged at inception is fixed at that day’s rate, a long-dated trade can see the two sides’ dollar value drift a long way apart as spot moves, building up exposure on the eventual re-exchange that a same-currency interest rate swap never carries at all.',
+        callout:
+          'The market’s most heavily traded interdealer structure, common on USD/JPY, controls that drift with mark-to-market resets: part of the notional is refreshed to the current spot rate at each period end, so the outstanding exchange never gets too far from today’s rate.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'A cross-currency swap turns a bond raised in the “wrong” currency into cash flows in the currency actually needed. A US company that can borrow more cheaply in euros — because euro credit spreads are simply tighter that week, or its name is better known there — issues a euro bond and swaps the proceeds and the coupons back into dollars: a reverse Yankee, the mirror of a foreign issuer borrowing dollars directly in the US market. Whether that route beats borrowing dollars outright depends entirely on the basis: a favourable one makes the swap-adjusted euro cost cheaper than a straight dollar bond, and when it does not, the arbitrage closes and reverse Yankee issuance dries up. Insurers and pension funds run a parallel trade for portfolio reasons rather than funding cost: a Japanese life insurer buying US Treasuries for yield swaps the dollar coupons and principal back into yen, leaving a hedged, yen-funded asset that still earns the higher dollar yield — one of the largest and steadiest sources of demand behind the USD/JPY basis.',
+        callout:
+          'Research by Wenxin Du, Alexander Tepper and Adrien Verdelhan, published in the Journal of Finance in 2018, found the post-2008 dollar basis could not be explained by credit risk or transaction costs, and that it was strongest exactly around quarter-ends — when the trades sit heaviest on banks’ balance sheets for regulatory reporting — pointing to the cost of the leverage ratio itself as the reason the arbitrage stays open.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'Notional exchange, the cross-currency basis, and covered interest rate parity — the no-arbitrage relationship the basis persistently violates — sit at the centre of it. Around them are the mark-to-market reset that manages long-dated credit exposure, and the reverse Yankee trade that is one of the clearest reasons the basis exists at all. Fixed-for-fixed, fixed-for-floating and floating-for-floating variants all trade under the same broad name; only the floating-for-floating version is, strictly, the basis swap.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The principal re-exchange at maturity carries real credit exposure precisely because the rate was fixed years earlier: if spot has moved a long way and a counterparty defaults, replacing its side of that exchange can cost a great deal. The basis itself is not fixed either — it can move against an open position long before either principal exchange is due — and both legs still carry the interest rate risk of their own currency throughout the trade’s life.',
+        callout:
+          'The EUR/USD three-month basis fell to roughly −130 to −150bp at the worst of the 2008 crisis, from levels close to zero before it — dollar funding through the swap market became extremely expensive exactly when banks needed dollars most. The Federal Reserve’s dollar swap lines with other major central banks, first opened that year, exist to relieve exactly that stress by supplying dollars outside the market that was failing.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Notional exchange',
+        definition:
+          'The exchange of principal in both currencies at inception, and back again at maturity — the feature that separates a cross-currency swap from a same-currency interest rate swap.',
+      },
+      {
+        term: 'Cross-currency basis',
+        definition:
+          'The spread added to one floating leg of a floating-for-floating cross-currency swap, which covered interest rate parity implies should be zero and, for the dollar since 2008, persistently is not.',
+      },
+      {
+        term: 'Covered interest rate parity',
+        definition:
+          'The no-arbitrage relationship implying that the interest rate differential between two currencies should already be fully reflected in forward points, leaving no room for an extra spread.',
+      },
+      {
+        term: 'Mark-to-market reset',
+        definition:
+          'A periodic true-up of part of the notional to the current spot rate, used on longer-dated swaps to stop the eventual re-exchange from building up outsized credit exposure.',
+      },
+      {
+        term: 'Reverse Yankee',
+        definition:
+          'A bond issued by a US company in a foreign currency, most often euros, and swapped back into dollars — the mirror of a Yankee bond, in which a foreign issuer borrows dollars in the US market.',
+      },
+      {
+        term: 'Cross-currency basis swap',
+        definition:
+          'The floating-for-floating structure specifically, as distinct from the fixed-for-fixed and fixed-for-floating variants that also trade under the broader cross-currency swap name.',
+      },
+    ],
+    example: {
+      title: 'A German company reaches for dollars through euros',
+      lines: [
+        'A German company needs $500,000,000 to fund a US acquisition. EUR/USD spot is 1.2500.',
+        'Rather than borrow dollars directly, it issues a five-year €400,000,000 bond at its own euro credit spread of 3.00%.',
+        'It enters a five-year cross-currency swap, paying away the €400,000,000 bond proceeds at inception and receiving the $500,000,000 it actually needs — €400,000,000 × 1.2500 = $500,000,000.',
+        'Each year it receives €12,000,000 fixed from the swap, exactly the coupon it owes its euro bondholders, and pays $24,000,000 fixed in return — a 4.80% all-in dollar rate.',
+        'A straight five-year dollar bond, at the company’s wider dollar credit spread, would have cost 5.00%, or $25,000,000 a year.',
+        'At maturity the swap reverses: the company pays back $500,000,000 and receives back €400,000,000, which it uses to redeem the euro bond.',
+      ],
+      takeaway:
+        'The swap turns a 3.00% euro coupon into a 4.80% all-in dollar cost, still 20 basis points cheaper than borrowing dollars outright — $1,000,000 a year, or $5,000,000 across the life of the bond before discounting. Nothing about the acquisition, the euro bond or the dollars raised needed the company to have any natural dollar income at all.',
+    },
+    inPractice:
+      'Corporates issuing bonds in whichever currency offers the tightest spread, then swapping the proceeds home, are the routine end-user flow — reverse Yankees from US issuers alongside the equivalent trade run by European and Asian companies borrowing dollars. Life insurers and pension funds, particularly in Japan and Taiwan, run some of the largest positions, hedging foreign-currency bond portfolios back into their own currency for years at a time. Dealers run a basis book because supply and demand for each pair’s long-dated funding rarely balance, and that imbalance is what the basis is actually pricing.',
+    relatedProductIds: ['fxswap', 'irs', 'basisswap'],
+    quiz: [
+      {
+        id: 'xccy-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A cross-currency swap exchanges principal in both currencies, at inception and again at maturity.',
+        correctAnswer: true,
+        explanation:
+          'That two-way exchange of principal is what separates it from a same-currency interest rate swap, where notional is only a reference amount.',
+      },
+      {
+        id: 'xccy-q2',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'An FX swap and a cross-currency swap are the same instrument under two names.',
+        correctAnswer: false,
+        explanation:
+          'An FX swap exchanges principal twice and nothing in between; a cross-currency swap adds interest payments on each side’s notional for the whole life of the trade.',
+      },
+      {
+        id: 'xccy-q3',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'Which two dates see principal actually exchanged in a plain cross-currency swap?',
+        options: [
+          'Only at maturity',
+          'Only at inception',
+          'At inception and at maturity',
+          'On every interest payment date',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Principal moves twice — out and back — with only interest changing hands on the dates in between.',
+      },
+      {
+        id: 'xccy-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'The exchange rate used to reverse the principal at maturity is the spot rate prevailing on that day.',
+        correctAnswer: false,
+        explanation:
+          'It is the same rate agreed at inception on both occasions, which is exactly why a large FX move before maturity can build up significant credit exposure on the final exchange.',
+      },
+      {
+        id: 'xccy-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt: 'What is priced by a floating-for-floating cross-currency swap?',
+        options: [
+          'An outright view on which currency will appreciate',
+          'A spread added to one floating leg — the cross-currency basis',
+          'The forward points, exactly as in an FX swap',
+          'A fixed coupon on the smaller of the two notionals',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Both legs still float with their own currency’s rates; what is quoted, and what moves, is the spread on top.',
+      },
+      {
+        id: 'xccy-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'What does a mark-to-market reset do on a long-dated cross-currency swap?',
+        options: [
+          'It cancels the swap if the exchange rate moves beyond an agreed barrier',
+          'It resets the fixed rate on the swap to the prevailing market rate each quarter',
+          'It periodically refreshes part of the notional to the current spot rate, limiting the credit exposure that would otherwise build up',
+          'It converts a floating-floating swap into a fixed-fixed one at each reset date',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Without it, a notional fixed at the inception rate can drift a long way from its current FX value over a multi-year trade.',
+      },
+      {
+        id: 'xccy-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A reverse Yankee is a bond issued by a US company in a foreign currency, swapped back into dollars.',
+        correctAnswer: true,
+        explanation:
+          'It is the mirror of an ordinary Yankee bond, in which a foreign issuer borrows dollars directly in the US market.',
+      },
+      {
+        id: 'xccy-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Why do Japanese life insurers run large cross-currency swap positions against US Treasury holdings?',
+        options: [
+          'To speculate on a stronger yen',
+          'To avoid Japanese withholding tax on the coupons',
+          'Because Japanese regulation prohibits holding unhedged foreign bonds outright',
+          'To hedge the dollar coupons and principal back into yen, leaving a yen-funded, hedged dollar-yield asset',
+        ],
+        correctIndex: 3,
+        explanation:
+          'It is a portfolio hedge, not a currency view — one of the largest and steadiest sources of demand behind the USD/JPY basis.',
+      },
+      {
+        id: 'xccy-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'Covered interest rate parity says the cross-currency basis should be zero.',
+        correctAnswer: true,
+        explanation:
+          'In frictionless markets the interest differential and the forward points would already account for everything, leaving no room for an extra spread. Since 2008 they persistently have not.',
+      },
+      {
+        id: 'xccy-q10',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'advanced',
+        prompt: 'What did research into the post-2008 dollar basis find?',
+        options: [
+          'That it is strongest around quarter-ends, pointing to the cost of bank balance sheet regulation as the reason it persists',
+          'That it disappears once credit risk and transaction costs are properly accounted for',
+          'That it only affects emerging-market currency pairs',
+          'That it was fully closed by the introduction of central clearing',
+        ],
+        correctIndex: 0,
+        explanation:
+          'The deviation showed up hardest exactly when the trades sat heaviest on banks’ balance sheets for regulatory reporting.',
+      },
+      {
+        id: 'xccy-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'The principal re-exchange at maturity carries no credit exposure, because both sides agreed the rate at inception.',
+        correctAnswer: false,
+        explanation:
+          'Agreeing the rate in advance is exactly what creates the exposure — if spot has moved a long way, replacing a defaulted counterparty’s side of that exchange can cost a great deal.',
+      },
+      {
+        id: 'xccy-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'What happened to the EUR/USD basis at the worst of the 2008 crisis?',
+        options: [
+          'It stayed close to zero throughout',
+          'It turned positive, making dollars cheap to borrow via the swap market',
+          'It fell to roughly −130 to −150bp, before central bank dollar swap lines helped compress it back',
+          'It was suspended by regulators until 2009',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Dollar funding through the swap market became extremely expensive exactly when banks needed dollars most, which is why the Federal Reserve opened swap lines with other central banks to supply dollars outside that market.',
+      },
+    ],
+  },
+  {
+    id: 'fxrr',
+    categoryId: 'fx',
+    name: 'Risk Reversal',
+    hook: 'Sell an option to fund the one you actually want',
+    summary:
+      'Every option in this catalogue has so far been priced as if volatility were one flat number. A risk reversal is where that stops being true. It is both a trading structure — buy one option and sell another, opposite type, same expiry, most often sized so the premiums roughly cancel — and the market’s standard way of quoting how lopsided volatility actually is: the implied vol of a call minus the implied vol of a put at the same delta. One instrument, two jobs, and both come from the same asymmetry.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'A risk reversal combines buying one option and selling another of the opposite type — a call against a put — on the same underlying and the same expiry, usually at strikes equidistant from the money in delta terms. As a hedge it is most often built so the premium received on the sold leg roughly offsets the premium paid on the bought one: a zero-cost collar. As a market quote, the same two-legged structure is how dealers state the shape of the volatility smile in a single number.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'A risk reversal trades in two forms that share one mechanism. As a hedge, a corporate buys an option in the direction it needs protecting and sells one in the direction it is prepared to give up. As a quote, the risk reversal for a given delta and tenor is stated as the vol of the call minus the vol of the put at that delta: a positive 25-delta EUR/USD risk reversal means 25-delta EUR calls trade at a higher implied volatility than 25-delta EUR puts, and that single number is the market’s shorthand for which side of the distribution carries the fatter tail.',
+        callout:
+          'Buying a risk reversal conventionally means buying the call and selling the put on the base currency — a bullish structure, financed in whole or in part by the premium received on the put.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'Corporate treasurers use a zero-cost collar to remove the premium cost of a vanilla option hedge, at the price of capping the upside a plain forward would already have given up in full. A risk reversal skewed the other way is a cheap way to buy convexity, giving up little premium for exposure to a large move. Desks and macro funds trade risk reversals as a pure view on skew, buying the side of the smile they think is underpriced without taking on a large outright directional position, and the quote itself is read as a barometer of hedging flow and positioning — a market persistently paying up for downside protection is signalling where the crowd’s fear actually sits.',
+        callout:
+          'The same idea is familiar from equity markets, which trade with a persistent put skew reflecting demand for crash protection. FX skew is not fixed in one direction the way equity skew usually is — it can sit on either side, and which side depends on the pair and what is being hedged.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'The risk reversal quote, the zero-cost collar it funds, and the volatility skew it measures are the core of it. The 25-delta convention names a strike by its delta rather than its rate, so quotes stay comparable as spot moves, and premium financing is simply the mechanism — the premium collected on one leg pays for the other.',
+        callout:
+          'The vol surface’s third standard point, alongside at-the-money vol and the risk reversal, is the butterfly — the average of the call and put vol at a given delta relative to the at-the-money level, which prices convexity rather than skew. Together the three let a whole smile be reconstructed from a handful of quoted points.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'The premium collected on the sold leg is not free money: it is compensation for an obligation that can turn deeply against the seller, and a corporate that sold a call to fund its put gives up every dollar of upside beyond the cap, not just the premium a vanilla option would have cost. “Zero-cost” describes the premium, not the risk — the position still carries the full open-ended exposure of the leg that was sold. And the skew itself moves: an event that suddenly raises demand for downside protection can shift the risk reversal sharply, marking an existing position long before either strike is ever tested.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Risk reversal (quote)',
+        definition:
+          'The implied volatility of a call minus the implied volatility of a put at the same delta and tenor — the market’s standard shorthand for which side of the distribution carries the fatter tail.',
+      },
+      {
+        term: 'Zero-cost collar',
+        definition:
+          'A risk reversal sized so the premium received on the sold option roughly offsets the premium paid on the bought one, for no net premium.',
+      },
+      {
+        term: 'Volatility skew',
+        definition:
+          'The pattern of implied volatility across different strikes, which a flat single-number vol does not capture and a risk reversal is the standard way to measure.',
+      },
+      {
+        term: '25-delta',
+        definition:
+          'The market’s usual reference point away from at-the-money, naming a strike by its delta rather than its rate so quotes stay comparable as spot moves.',
+      },
+      {
+        term: 'Premium financing',
+        definition:
+          'Using the premium collected on the leg sold to fund some or all of the premium owed on the leg bought.',
+      },
+      {
+        term: 'Delta',
+        definition:
+          'How much an option’s value changes for a small move in the spot rate, and the number the market uses to pick which strike a quoted risk reversal refers to.',
+      },
+    ],
+    example: {
+      title: 'An exporter collars a euro receivable at no premium',
+      lines: [
+        'A US exporter expects €20,000,000 in three months and wants downside protection without paying premium.',
+        'It buys a three-month EUR put / USD call struck at 1.0600 and sells a three-month EUR call / USD put struck at 1.1200, each priced at 130 pips on €20,000,000 — $260,000 either way, so the net premium is zero.',
+        'If spot fixes at 1.0300, it exercises its put and sells €20m at 1.0600 for $21,200,000, against $20,600,000 at market — the floor is worth $600,000.',
+        'If spot fixes at 1.0900, neither option is in the money and it simply sells €20m at market for $21,800,000.',
+        'If spot fixes at 1.1500, the call it sold is exercised against it: it must sell €20m at 1.1200 for $21,840,000, against the $23,000,000 it would have received unhedged — the cap costs $1,160,000.',
+      ],
+      takeaway:
+        'The collar cost nothing upfront, but “zero-cost” describes the premium, not the risk: above 1.1200 the exporter hands back every dollar of upside beyond the cap. The floor and the cap were bought and sold in the same trade, and the price of one was exactly the price of the other.',
+    },
+    inPractice:
+      'Corporate treasuries are the largest natural users, collaring receivables and payables to strip the premium cost out of a hedging programme without a cash outlay. Hedge funds and real-money managers trade risk reversals outright to express a skew view or as a capital-efficient way to buy convexity around an event, and every FX options desk quotes and risk-manages the 25-delta risk reversal as one of the three standard points — alongside at-the-money vol and the butterfly — that define its volatility surface for a given tenor.',
+    relatedProductIds: ['fxopt', 'fxfwd', 'eqopt'],
+    quiz: [
+      {
+        id: 'fxrr-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'A risk reversal combines buying one option and selling another of the opposite type, on the same underlying and expiry.',
+        correctAnswer: true,
+        explanation:
+          'One leg is a call and the other a put — that pairing across the two option types is what the name refers to.',
+      },
+      {
+        id: 'fxrr-q2',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'A risk reversal always costs zero premium.',
+        correctAnswer: false,
+        explanation:
+          'It can be structured at zero net premium — a zero-cost collar — but that is a choice of strikes, not a rule; a risk reversal can just as easily carry a net premium either way.',
+      },
+      {
+        id: 'fxrr-q3',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'In its most common corporate use, what does a risk reversal give a hedger?',
+        options: [
+          'Protection beyond one level, funded by giving up the benefit of a favourable move beyond another',
+          'A right to exchange currency with no obligation on either side',
+          'A fixed exchange rate, like a forward, with no premium either way',
+          'A cash payment equal to the realised volatility over the period',
+        ],
+        correctIndex: 0,
+        explanation:
+          'One strike sets the floor, or cap, it is protected against; the other sets the level beyond which it has sold away the benefit.',
+      },
+      {
+        id: 'fxrr-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'As a market quote, the risk reversal is the implied volatility of a call minus the implied volatility of a put at the same delta.',
+        correctAnswer: true,
+        explanation:
+          'That single number is the standard way the market states which side of the smile — calls or puts — is bid up relative to the other.',
+      },
+      {
+        id: 'fxrr-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'A EUR/USD 25-delta risk reversal is quoted at a positive number. What does that mean?',
+        options: [
+          '25-delta EUR calls trade at a lower implied vol than 25-delta EUR puts',
+          '25-delta EUR calls trade at a higher implied vol than 25-delta EUR puts',
+          'The forward points are positive at the 25-delta tenor',
+          'EUR/USD spot is above its 25-delta strike',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The quote is call vol minus put vol at that delta; a positive number means the market pays up more for the calls.',
+      },
+      {
+        id: 'fxrr-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Why does the FX market quote strikes by delta — a 25-delta put, say — rather than by the exchange rate itself?',
+        options: [
+          'Because delta is easier to convert to pips than a strike',
+          'Because regulators require FX options to be quoted in delta',
+          'Because a delta-referenced strike stays a comparable distance from at-the-money as spot moves, unlike a fixed rate',
+          'Because delta is the only Greek that applies to a risk reversal',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A strike quoted in rate terms goes stale as spot moves; a delta-referenced strike automatically stays a consistent distance from the money.',
+      },
+      {
+        id: 'fxrr-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'A zero-cost collar removes the premium cost of hedging by giving up part of the potential upside.',
+        correctAnswer: true,
+        explanation:
+          'The premium on the sold leg pays for the premium on the bought leg — what is given up instead is the benefit beyond the sold strike.',
+      },
+      {
+        id: 'fxrr-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'What does a persistently negative EUR/USD risk reversal — puts bid over calls — usually signal?',
+        options: [
+          'That EUR/USD spot is trending upward',
+          'That euro interest rates exceed dollar interest rates',
+          'That the pair has stopped trading options altogether',
+          'That the market is paying up more for downside protection on the euro than for upside participation',
+        ],
+        correctIndex: 3,
+        explanation:
+          'It reads the same way whatever is driving it — more demand, or more nervousness, is sitting on the put side of the smile.',
+      },
+      {
+        id: 'fxrr-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'foundational',
+        prompt:
+          'The 25-delta convention lets a strike stay a consistent distance from at-the-money as spot moves.',
+        correctAnswer: true,
+        explanation:
+          'A fixed exchange-rate strike goes stale as spot drifts; a delta-referenced one does not.',
+      },
+      {
+        id: 'fxrr-q10',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'What does “premium financing” mean in the context of a risk reversal?',
+        options: [
+          'Borrowing the premium from the option seller and repaying it at expiry',
+          'Using the premium collected on the sold leg to fund some or all of the premium owed on the bought leg',
+          'Paying the premium in instalments across the life of the option',
+          'Discounting the premium back to its present value using the funding curve',
+        ],
+        correctIndex: 1,
+        explanation:
+          'It is the mechanism that makes a zero-cost collar possible — one leg pays for the other.',
+      },
+      {
+        id: 'fxrr-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Because a zero-cost collar has no net premium, the corporate that bought one carries no risk from the trade.',
+        correctAnswer: false,
+        explanation:
+          'It carries the full open-ended exposure of the leg it sold — “zero-cost” describes the premium, not the risk.',
+      },
+      {
+        id: 'fxrr-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'A corporate sold a EUR call at 1.1200 to fund a EUR put it bought at 1.0600. Spot finishes at 1.1500. What has it given up?',
+        options: [
+          'Nothing — the collar guarantees the better of the two strikes',
+          'The premium it originally paid for the put',
+          'Every dollar of upside on its euro receivable beyond 1.1200',
+          'The right to exercise the put it bought',
+        ],
+        correctIndex: 2,
+        explanation:
+          'The sold call is exercised against it at 1.1200, so it never participates in the move from there up to 1.1500.',
+      },
+    ],
+  },
 ];
