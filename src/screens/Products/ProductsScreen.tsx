@@ -1,5 +1,12 @@
 import { useMemo } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { X } from 'lucide-react-native';
 
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';

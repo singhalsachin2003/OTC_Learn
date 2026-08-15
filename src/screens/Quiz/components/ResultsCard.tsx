@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Check, Star } from 'lucide-react-native';
 
 import { colors, radius, spacing, typography } from '../../../theme';
 
@@ -27,9 +28,14 @@ export function ResultsCard({
         importantForAccessibility="no-hide-descendants"
         style={[styles.badge, { backgroundColor: accentSoft }]}
       >
-        <Text style={[styles.badgeMark, { color: accent }]}>
-          {perfect ? '★' : '✓'}
-        </Text>
+        {/* A drawn icon rather than "★"/"✓" characters — Plus Jakarta Sans
+            lacks both glyphs, the same font-substitution risk already fixed
+            for the tab bar, back chevron and quiz-answer marks. */}
+        {perfect ? (
+          <Star size={30} strokeWidth={2} color={accent} fill={accent} />
+        ) : (
+          <Check size={32} strokeWidth={2.5} color={accent} />
+        )}
       </View>
       <Text accessibilityRole="header" style={styles.title}>
         {title}
@@ -50,11 +56,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 18,
-  },
-  badgeMark: {
-    fontFamily: typography.h1.fontFamily,
-    fontSize: 26,
-    lineHeight: 34,
   },
   title: {
     ...typography.h1,

@@ -5,6 +5,7 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
+import { Check } from 'lucide-react-native';
 
 import { colors, radius, spacing, typography } from '../../theme';
 
@@ -41,7 +42,9 @@ export function CompletedBadge({ testID }: { testID?: string }) {
       accessibilityLabel="Completed"
       style={styles.completed}
     >
-      <Text style={styles.completedMark}>✓</Text>
+      {/* A drawn checkmark rather than "✓" — Plus Jakarta Sans lacks the
+          glyph, the same font-substitution risk fixed elsewhere already. */}
+      <Check size={12} strokeWidth={3} color={colors.text.onDark} />
     </View>
   );
 }
@@ -65,11 +68,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.success.strong,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  completedMark: {
-    ...typography.label,
-    fontSize: 11,
-    lineHeight: 14,
-    color: colors.text.onDark,
   },
 });

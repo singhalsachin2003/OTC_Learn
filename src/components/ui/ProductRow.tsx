@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Star } from 'lucide-react-native';
 
 import type { Product } from '../../data/types';
 import {
@@ -67,14 +68,21 @@ export function ProductRow({
         <View style={styles.nameRow}>
           <Text style={styles.name}>{product.name}</Text>
           {bookmarked && (
-            <Text
+            // lucide's icon doesn't forward testID to a queryable node itself
+            // (it renders straight to react-native-svg primitives), so the
+            // test hook sits on a wrapping View instead.
+            <View
               testID={`product-saved-${product.id}`}
               accessibilityElementsHidden
               importantForAccessibility="no"
-              style={styles.bookmark}
             >
-              ★
-            </Text>
+              <Star
+                size={11}
+                strokeWidth={2}
+                color={colors.progressFillText}
+                fill={colors.progressFillText}
+              />
+            </View>
           )}
         </View>
         <Text style={styles.hook}>{subtitle ?? product.hook}</Text>
@@ -124,11 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 14.5,
     color: colors.text.primary,
     flexShrink: 1,
-  },
-  bookmark: {
-    ...typography.micro,
-    fontSize: 11,
-    color: colors.progressFillText,
   },
   hook: {
     ...typography.labelSmall,

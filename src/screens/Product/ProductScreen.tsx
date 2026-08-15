@@ -1,4 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Star } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
@@ -91,16 +92,24 @@ export function ProductScreen() {
           <Pressable
             testID="product-bookmark"
             onPress={onToggleBookmark}
-            hitSlop={12}
+            hitSlop={16}
             accessibilityRole="button"
             accessibilityState={{ selected: bookmarked }}
             accessibilityLabel={
               bookmarked ? 'Remove from saved' : 'Save this product'
             }
+            style={styles.bookmark}
           >
-            <Text style={[styles.bookmark, bookmarked && { color: accent }]}>
-              {bookmarked ? '★' : '☆'}
-            </Text>
+            {/* A drawn star rather than "★"/"☆" characters — Plus Jakarta Sans
+                lacks both glyphs, so Android substituted them from another
+                family at a different weight, the same risk already fixed for
+                the chevron beside this control. */}
+            <Star
+              size={22}
+              strokeWidth={2}
+              color={bookmarked ? accent : colors.chevron}
+              fill={bookmarked ? accent : 'none'}
+            />
           </Pressable>
         </View>
 
@@ -199,9 +208,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   bookmark: {
-    fontSize: 22,
-    lineHeight: 26,
-    color: colors.chevron,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',

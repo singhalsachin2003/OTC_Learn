@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Check } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
@@ -62,9 +63,14 @@ export function AchievementsScreen() {
                   <Text style={styles.description}>{achievement.description}</Text>
                 </View>
                 {earned && (
-                  <Text style={styles.tick} accessibilityElementsHidden>
-                    ✓
-                  </Text>
+                  // A drawn checkmark rather than "✓" — the same
+                  // font-substitution risk already fixed elsewhere.
+                  <Check
+                    size={16}
+                    strokeWidth={3}
+                    color={colors.success.base}
+                    accessibilityElementsHidden
+                  />
                 )}
               </View>
             );
@@ -141,10 +147,5 @@ const styles = StyleSheet.create({
     ...typography.labelSmall,
     color: colors.text.muted,
     marginTop: 3,
-  },
-  tick: {
-    ...typography.label,
-    fontSize: 15,
-    color: colors.success.base,
   },
 });
