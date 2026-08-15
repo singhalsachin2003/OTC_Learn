@@ -1296,4 +1296,262 @@ export const foundationsProducts: Product[] = [
       },
     ],
   },
+  {
+    id: 'execution',
+    categoryId: 'foundations',
+    name: 'Execution and Reporting',
+    hook: 'How a trade gets done, and who has to know about it',
+    summary:
+      'The clearing module in this category already quoted the G20’s full 2009 commitment — traded on exchanges or electronic platforms, cleared through central counterparties, reported to trade repositories. This module is the other two legs of that sentence. Standardised derivatives are meant to trade on regulated electronic venues rather than over the phone, and every derivative — cleared or not, venue-traded or not — has to be reported to a trade repository within a tight window of being done. Both mandates bind instrument by instrument, decided by a specific, named determination, not a blanket rule for a whole asset class.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What it is',
+        content:
+          'Before the reforms that followed 2008, a standardised interest rate swap and a bespoke exotic option were negotiated the same way: bilaterally, usually by phone or instant message through a broker, with no public record of the price agreed or the volume done. Two separate mandates changed that for anything liquid and standardised enough to bear it. Trading standardised derivatives moved onto regulated electronic venues — Swap Execution Facilities (SEFs) in the US, Multilateral and Organised Trading Facilities (MTFs and OTFs) in the EU — and every OTC derivative, whatever venue it traded on or whether it stayed bilateral, became reportable to a trade repository.',
+      },
+      {
+        step: 2,
+        title: 'How it works',
+        content:
+          'A swap only has to move onto a venue once a specific, named determination has been made for it. In the US a SEF or a designated contract market files a “made available to trade” (MAT) determination with the CFTC for a defined swap; once approved, that swap can no longer be executed bilaterally, and must trade on a SEF or DCM instead. The EU’s parallel trading obligation under MiFIR applies once a class of derivative is judged sufficiently liquid and already trades on at least one venue. On the venue itself, execution is usually by request-for-quote — a client asks a chosen number of dealers to compete for one specific trade — rather than the continuous order book familiar from equities, because liquidity in most swaps is too thin to support one. Large trades above a published size threshold qualify as block trades, reported with a short delay so that publishing the trade does not itself move the market against whoever just dealt it.',
+        callout:
+          'MAT determinations first took effect in the US in 2013, for the most standardised interest rate swaps and CDS indices; MiFID II’s Organised Trading Facility, the EU’s answer for non-equity venues including derivatives, only went live at the start of 2018. The reforms did not arrive everywhere at once, and for years a good deal of the market executed the same instrument two different ways depending on which side of the Atlantic the counterparty sat.',
+      },
+      {
+        step: 3,
+        title: 'Why it’s used',
+        content:
+          'Two different goods come out of this. Trading on a venue creates pre-trade price transparency that a bilateral phone call never could — a client requesting a quote sees competing prices from more than one dealer before dealing, rather than trusting whichever single dealer picked up the call. Reporting to a trade repository creates something regulators, not the counterparties, actually use: a systemic map of who holds what, updated continuously, that simply did not exist before 2008. AIG’s downfall was one firm’s derivatives book concentrating a risk almost nobody outside the firm could see coming; trade repository data is the tool built specifically so that kind of concentration would be visible before, not after.',
+      },
+      {
+        step: 4,
+        title: 'Key terms',
+        content:
+          'SEF, MTF and OTF are the regulated venues themselves, and RFQ is how most execution on them actually happens. A made-available-to-trade determination is what forces a specific swap onto one, and a block trade is the large-size exception to reporting it instantly. A trade repository is where every OTC derivative ends up reported, tagged with a UTI unique to that one transaction and a UPI shared by every trade in the same product.',
+      },
+      {
+        step: 5,
+        title: 'Risks to watch',
+        content:
+          'Two overlapping venue regimes, built independently and years apart, created cross-border friction a single global market did not ask for: a swap involving both a US and a non-US counterparty can trigger US SEF rules even where the EU side would rather trade bilaterally, and firms on both sides spent years navigating equivalence determinations and venue-specific rulebooks for what is, economically, the same trade. Reporting has its own version of the problem. Both counterparties to an OTC trade have historically had to report it, generating two separate records of the same transaction in different repositories that then have to be reconciled, and mismatches between the two remain common enough that regulators are still tightening the rules around them.',
+        callout:
+          'CPMI-IOSCO’s global Unique Product Identifier only began rolling out in 2023–24 — the US from January 2024, the EU from April, the UK from September — replacing a patchwork of jurisdiction-specific product codes with one identifier a derivative carries wherever it is reported, over a decade after the reporting mandate itself began.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'SEF / MTF / OTF',
+        definition:
+          'The regulated electronic venues — Swap Execution Facilities in the US, Multilateral and Organised Trading Facilities in the EU — that a sufficiently standardised derivative is required to trade on rather than being negotiated bilaterally.',
+      },
+      {
+        term: 'RFQ (request-for-quote)',
+        definition:
+          'An execution method where a client asks a chosen number of dealers to compete for one specific trade, rather than trading against a continuous public order book.',
+      },
+      {
+        term: 'Made-available-to-trade (MAT) determination',
+        definition:
+          'The named, instrument-specific finding that triggers the US trading mandate — once approved, that swap can no longer be executed bilaterally.',
+      },
+      {
+        term: 'Block trade',
+        definition:
+          'A trade above a published size threshold, permitted a short reporting delay so that publishing it does not itself move the market against whoever just dealt.',
+      },
+      {
+        term: 'Trade repository',
+        definition:
+          'The regulated entity every OTC derivative, cleared or not, has to be reported to — the systemic map of exposures that did not exist before 2008.',
+      },
+      {
+        term: 'UTI / UPI',
+        definition:
+          'The Unique Transaction Identifier, generated once per trade so both counterparties’ reports can be matched, and the Unique Product Identifier, reused across every trade in the same instrument.',
+      },
+    ],
+    example: {
+      title: 'Five quotes beat one phone call',
+      lines: [
+        'A pension fund needs to execute a $200,000,000, five-year swap that is subject to the US trade execution mandate, paying fixed against SOFR.',
+        'On the SEF it requests quotes from five dealers at once: 3.42%, 3.41%, 3.44%, 3.40% and 3.43%. It deals at the best price, 3.40%, with the fourth dealer.',
+        'A single relationship dealer, approached bilaterally instead, had quoted 3.45% earlier that morning — five basis points worse.',
+        'On $200,000,000, five basis points is $200,000,000 × 0.0005 = $100,000 a year in fixed-leg cost, for as long as the five-year swap runs — $500,000 over its life before discounting.',
+      ],
+      takeaway:
+        'None of that saving came from being right about rates — the fund took no view on where SOFR goes. It came entirely from being able to see five competing prices at once instead of trusting whichever single dealer picked up the phone, which is exactly the pre-trade transparency the venue mandate was built to create.',
+    },
+    inPractice:
+      'Standardised interest rate swaps and index CDS trade almost exclusively on SEFs and MTFs/OTFs today, with RFQ the dominant execution method and a shrinking share still done by voice for the largest or most bespoke sizes. Every derivatives desk of any size runs a dedicated regulatory reporting function feeding trade repositories in every jurisdiction it operates in, because the reporting obligation runs trade by trade and mistakes are a compliance matter, not just an administrative one.',
+    relatedProductIds: ['clearing', 'isda', 'irs'],
+    quiz: [
+      {
+        id: 'execution-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'Before the post-2008 reforms, standardised and bespoke OTC derivatives were typically negotiated the same way, with no public record of price or volume.',
+        correctAnswer: true,
+        explanation:
+          'Bilateral, voice-brokered negotiation was the norm for both, which is exactly what the venue mandate changed for anything liquid enough to bear it.',
+      },
+      {
+        id: 'execution-q2',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The trading-venue mandate applies to every OTC derivative, however bespoke.',
+        correctAnswer: false,
+        explanation:
+          'It applies only to instruments specific enough and liquid enough to have been formally designated — a MAT determination in the US, a trading-obligation finding in the EU.',
+      },
+      {
+        id: 'execution-q3',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'What is the EU’s equivalent of a US Swap Execution Facility?',
+        options: [
+          'A designated contract market',
+          'A trade repository',
+          'A Multilateral or Organised Trading Facility',
+          'A central counterparty',
+        ],
+        correctIndex: 2,
+        explanation:
+          'MTFs pre-date MiFID II; the OTF was introduced specifically for non-equity instruments including derivatives, going live in 2018.',
+      },
+      {
+        id: 'execution-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Once a swap has an approved MAT determination in the US, it can still be executed bilaterally if both counterparties agree.',
+        correctAnswer: false,
+        explanation:
+          'Approval removes that option — the swap must trade on a SEF or a designated contract market from that point on.',
+      },
+      {
+        id: 'execution-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Why is RFQ the dominant execution method for most swaps, rather than a continuous order book?',
+        options: [
+          'Regulators require RFQ for all standardised swaps',
+          'Liquidity in most swaps is too thin to support a continuous order book the way equities can',
+          'RFQ is cheaper for the venue to operate',
+          'Order books are only permitted for cleared trades',
+        ],
+        correctIndex: 1,
+        explanation:
+          'A handful of competing quotes on demand suits a market where continuous two-sided liquidity at every price simply isn’t there.',
+      },
+      {
+        id: 'execution-q6',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt: 'What does a block trade’s reporting delay exist to do?',
+        options: [
+          'Give the regulator time to approve the trade before it is binding',
+          'Let the two counterparties renegotiate the price if the market moves',
+          'Stop publishing a large trade from itself moving the market against whoever just dealt',
+          'Allow the trade to be reported to a different jurisdiction’s repository',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A large trade published instantly could tip off the rest of the market to a position before the dealer who took the other side has managed the risk.',
+      },
+      {
+        id: 'execution-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'Trade repository data gives regulators a systemic view of exposures across the market that simply didn’t exist before 2008.',
+        correctAnswer: true,
+        explanation:
+          'That visibility, not record-keeping for the two counterparties, is the actual point of the reporting mandate.',
+      },
+      {
+        id: 'execution-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'What pre-trade benefit does RFQ execution on a venue create that a single bilateral phone call does not?',
+        options: [
+          'A guaranteed better price than any bilateral quote',
+          'Automatic central clearing of the trade',
+          'Removal of counterparty credit risk entirely',
+          'Visibility of more than one dealer’s price before dealing',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Seeing competing quotes at once is the transparency benefit — it doesn’t guarantee the best possible price, only a genuine comparison.',
+      },
+      {
+        id: 'execution-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'foundational',
+        prompt:
+          'A Unique Product Identifier is reused across every trade done in the same instrument.',
+        correctAnswer: true,
+        explanation:
+          'Unlike a UTI, which is generated once per trade and never reused, a UPI identifies the product and repeats across every transaction in it.',
+      },
+      {
+        id: 'execution-q10',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'What does a made-available-to-trade determination do?',
+        options: [
+          'Names a specific swap that must move from bilateral execution onto a SEF or DCM',
+          'Sets the price at which a swap must be dealt',
+          'Determines which trade repository a swap must be reported to',
+          'Confirms that a swap is eligible for central clearing',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Clearing eligibility is a separate, earlier determination — MAT is specifically about where the trade has to be executed.',
+      },
+      {
+        id: 'execution-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Swap Execution Facilities began operating in the US years before the EU’s Organised Trading Facility venue category existed.',
+        correctAnswer: true,
+        explanation:
+          'SEFs date to 2013; MiFID II’s OTF category only went live at the start of 2018 — the two regimes never arrived on the same timeline.',
+      },
+      {
+        id: 'execution-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt:
+          'Why does a Unique Transaction Identifier matter for reporting quality?',
+        options: [
+          'It replaces the need for either counterparty to report at all',
+          'It is only used for trades that are centrally cleared',
+          'It sets the deadline by which a trade must be reported',
+          'It lets two separately filed reports of the same trade be matched to each other',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Both sides have historically had to report the same trade separately, and mismatches between the two reports are exactly what the UTI is designed to catch.',
+      },
+    ],
+  },
 ];
