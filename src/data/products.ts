@@ -1,6 +1,7 @@
 import { commodityProducts } from './catalogue/commodity';
 import { creditProducts } from './catalogue/credit';
 import { equityProducts } from './catalogue/equity';
+import { foundationsProducts } from './catalogue/foundations';
 import { fxProducts } from './catalogue/fx';
 import { interestRateProducts } from './catalogue/interestRate';
 import type { Product, Question } from './types';
@@ -22,6 +23,7 @@ export const products: Product[] = [
   ...creditProducts,
   ...equityProducts,
   ...commodityProducts,
+  ...foundationsProducts,
 ];
 
 /** Total number of products in the catalogue — drives the progress bar. */

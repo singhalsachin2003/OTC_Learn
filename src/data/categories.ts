@@ -46,6 +46,14 @@ export const categories: Category[] = [
     accentColor: 'oklch(55% .13 80)',
     icon: 'CM',
   },
+  {
+    id: 'foundations',
+    name: 'Market Foundations',
+    description:
+      'The infrastructure every other product runs through — collateral, clearing, valuation and the legal architecture that ties an OTC relationship together.',
+    accentColor: 'oklch(45% .03 250)',
+    icon: 'MF',
+  },
 ];
 
 const categoriesById = new Map(categories.map((c) => [c.id, c]));
