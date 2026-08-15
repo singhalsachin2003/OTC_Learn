@@ -93,22 +93,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  /**
+   * A filled track, not an outlined box.
+   *
+   * Seven tall empty rectangles with 1px borders read as skeleton loaders —
+   * content that has not arrived rather than days that were not studied. A
+   * shorter filled bar states the same absence without looking unfinished.
+   */
   bar: {
     alignSelf: 'stretch',
-    height: 32,
-    borderRadius: radius.small,
-    borderWidth: 1,
-    borderColor: colors.trackDot,
-    backgroundColor: 'transparent',
+    height: 24,
+    borderRadius: radius.xs,
+    backgroundColor: colors.line.base,
   },
   barStudied: {
     backgroundColor: colors.progressFill,
-    borderColor: colors.progressFill,
   },
-  /** Today, not yet studied: a hint of the fill so it reads as "in play". */
+  /** Today, not yet studied: a step darker so it reads as "in play". */
   barToday: {
-    backgroundColor: colors.track,
-    borderColor: colors.chevron,
+    backgroundColor: colors.line.strong,
   },
   label: {
     ...typography.micro,

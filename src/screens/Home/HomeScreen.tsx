@@ -2,26 +2,15 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { WeekStrip } from '../../components/ui/WeekStrip';
-import { useStudyDays, useUserName } from '../../hooks/useAppState';
+import { useStudyDays } from '../../hooks/useAppState';
 import { colors, spacing, typography } from '../../theme';
 import { CategoryGrid } from './components/CategoryGrid';
 import { DashboardCard } from './components/DashboardCard';
 import { QuickActions } from './components/QuickActions';
 import { ResumeCard } from './components/ResumeCard';
 
-/** Greeting keyed to the hour — the only time-of-day copy in the app. */
-function greeting(hour: number): string {
-  if (hour < 12) {
-    return 'Good morning';
-  }
-  return hour < 17 ? 'Good afternoon' : 'Good evening';
-}
-
 export function HomeScreen() {
-  const name = useUserName();
   const studyDays = useStudyDays();
-  const hello = greeting(new Date().getHours());
-  const firstName = name?.split(/\s+/)[0];
 
   return (
     <SafeAreaWrapper testID="home-screen">
@@ -29,12 +18,15 @@ export function HomeScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
+        {/* A masthead rather than a greeting. "Good evening, Sachin" is the
+            voice of a consumer app checking in on you; this is a reference tool
+            someone opens between meetings, and it should say what it is. */}
         <View style={styles.header}>
-          <Text style={styles.greeting}>
-            {firstName === undefined ? hello : `${hello}, ${firstName}`}
-          </Text>
           <Text accessibilityRole="header" style={styles.title}>
             OTC Learn
+          </Text>
+          <Text style={styles.standfirst}>
+            Over-the-counter derivatives, one product at a time
           </Text>
         </View>
 
@@ -65,14 +57,14 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: spacing.lg,
   },
-  greeting: {
-    ...typography.body2,
-    color: colors.text.muted,
-  },
   title: {
     ...typography.h1,
     color: colors.text.primary,
-    marginTop: 2,
+  },
+  standfirst: {
+    ...typography.body2,
+    color: colors.text.muted,
+    marginTop: 3,
   },
   week: {
     marginTop: spacing.md,

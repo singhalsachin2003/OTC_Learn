@@ -191,8 +191,18 @@ const styles = StyleSheet.create({
   progress: {
     marginBottom: spacing.lg,
   },
+  /**
+   * Top-aligned, not centred.
+   *
+   * Centring looked balanced on a two-line true/false question and wrong
+   * everywhere else: revealing the feedback grows the card, and a centred card
+   * grows in both directions, so the question the user is still reading slides
+   * up the screen at the moment they most need it to hold still. Anchoring to
+   * the top means the question never moves and the feedback arrives beneath it.
+   */
   scroll: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingBottom: spacing.lg,
   },
 });

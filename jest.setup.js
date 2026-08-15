@@ -63,3 +63,8 @@ jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 3 },
   SchedulableTriggerInputTypes: { DAILY: 'daily' },
 }));
+
+// Lucide renders through react-native-svg, which jest-expo can handle, but the
+// icon components carry no text — so tests identify them by testID rather than
+// by rendering the SVG. Nothing to mock; this note is here so the next person
+// does not go looking for one.

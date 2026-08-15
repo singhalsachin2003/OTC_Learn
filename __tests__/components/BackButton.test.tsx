@@ -26,13 +26,16 @@ describe('BackButton', () => {
     expect(screen.queryByLabelText('Back to Exit quiz')).toBeNull();
   });
 
-  it('still renders the arrow and visible label', async () => {
+  // The arrow is a drawn chevron now, not a "←" character — Plus Jakarta Sans
+  // has no arrow glyph, so Android was substituting one from another family.
+  // The label is therefore plain text, and the icon is not in the text tree.
+  it('renders the destination label and responds to a press', async () => {
     const onPress = jest.fn();
     await renderWithStore(
       <BackButton label="Home" onPress={onPress} testID="back" />,
     );
 
-    expect(screen.getByText('←  Home')).toBeTruthy();
+    expect(screen.getByText('Home')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('back'));
     expect(onPress).toHaveBeenCalledTimes(1);
   });

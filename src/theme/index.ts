@@ -7,7 +7,7 @@ export {
 } from './colors';
 export type { CategoryColorKey } from './colors';
 
-export { typography, fontFamily, fontWeight } from './typography';
+export { typography, fontFamily, fontWeight, tabularNumbers } from './typography';
 export type { TypographyKey } from './typography';
 
 export { spacing, layout } from './spacing';

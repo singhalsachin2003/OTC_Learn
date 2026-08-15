@@ -26,8 +26,16 @@ export const colors = {
     blurb: '#605D57',
     /** oklch(50% .01 90) — list subtext */
     muted: '#65635D',
-    /** oklch(60% .01 90) */
-    tertiary: '#82807A',
+    /**
+     * oklch(51% .01 90) — captions, eyebrows and every `typography.micro` label.
+     *
+     * Darkened from the handoff's oklch(60% .01 90) / #82807A, which measured
+     * 3.22:1 on the app background and so failed WCAG AA's 4.5:1 for small
+     * text — and it was carrying the *smallest* type in the app, which needs
+     * more contrast than body copy, not less. This value clears AA on all
+     * three surfaces: 4.61 on background, 5.66 on card, 5.33 on surface.
+     */
+    tertiary: '#696761',
     /** oklch(80% .01 90) — muted text on the dark streak pill */
     onDarkMuted: '#C0BDB7',
     /** Text on dark fills */
@@ -38,6 +46,22 @@ export const colors = {
   chevron: '#A19E98',
   /** oklch(85% .01 90) — outline buttons */
   border: '#D0CEC7',
+
+  /**
+   * Hairlines and unfilled tracks, separated from `track` because they have to
+   * work on two grounds. `track` is oklch(92%) and was chosen against a white
+   * card; on the oklch(93%) page background it lands at 1.03:1 and vanishes,
+   * which is why the rings on the product and home screens read as a number
+   * floating in space. Use `soft` on white, `base` anywhere on the background.
+   */
+  line: {
+    /** oklch(91% .01 90) — on a white card */
+    soft: '#E4E1DA',
+    /** oklch(88% .012 90) — on the page background */
+    base: '#DAD7CF',
+    /** oklch(84% .014 90) — when the ring is the point of the component */
+    strong: '#CECAC0',
+  },
   /** oklch(90% .01 90) — unfilled lesson step dots */
   trackDot: '#E0DED7',
   /** oklch(92% .01 90) — progress bar track / secondary button fill */

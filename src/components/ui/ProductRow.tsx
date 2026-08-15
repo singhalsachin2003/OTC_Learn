@@ -1,7 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { Product } from '../../data/types';
-import { colors, masteryColors, radius, spacing, typography } from '../../theme';
+import {
+  colors,
+  masteryColors,
+  radius,
+  spacing,
+  tabularNumbers,
+  typography,
+} from '../../theme';
 import { masteryBand, MASTERY_COMPLETE } from '../../utils/mastery';
 import { CompletedBadge } from './Badge';
 import { Card } from './Card';
@@ -84,7 +91,11 @@ export function ProductRow({
           fillColor={masteryFill(mastery)}
           animated={false}
         >
-          <Text style={styles.ringLabel}>{mastery > 0 ? mastery : '·'}</Text>
+          {/* Nothing inside an untouched ring. The "·" that used to sit here
+              read as a stray glyph or a value that failed to bind — and on a
+              fresh install it was every row on the screen. An empty ring at a
+              visible track colour says "not started" without saying anything. */}
+          {mastery > 0 && <Text style={styles.ringLabel}>{mastery}</Text>}
         </Ring>
       )}
     </Card>
@@ -125,7 +136,9 @@ const styles = StyleSheet.create({
   },
   ringLabel: {
     ...typography.micro,
-    fontSize: 9,
+    ...tabularNumbers,
+    fontSize: 10,
+    letterSpacing: 0,
     color: colors.text.secondary,
   },
 });

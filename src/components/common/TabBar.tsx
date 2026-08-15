@@ -1,5 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  House,
+  LayoutGrid,
+  RotateCcw,
+  UserRound,
+  type LucideIcon,
+} from 'lucide-react-native';
 
 import {
   colors,
@@ -14,15 +21,14 @@ import type { TabName } from '../../store/slices/appSlice';
 interface TabDefinition {
   key: TabName;
   label: string;
-  /** Drawn from primitives rather than an icon font — see the note below. */
-  shape: 'square' | 'circle' | 'ring' | 'bars';
+  Icon: LucideIcon;
 }
 
 const TABS: TabDefinition[] = [
-  { key: 'home', label: 'Home', shape: 'square' },
-  { key: 'products', label: 'Products', shape: 'bars' },
-  { key: 'review', label: 'Review', shape: 'ring' },
-  { key: 'profile', label: 'Profile', shape: 'circle' },
+  { key: 'home', label: 'Home', Icon: House },
+  { key: 'products', label: 'Products', Icon: LayoutGrid },
+  { key: 'review', label: 'Review', Icon: RotateCcw },
+  { key: 'profile', label: 'Profile', Icon: UserRound },
 ];
 
 export interface TabBarProps {
@@ -36,10 +42,10 @@ export interface TabBarProps {
 /**
  * The bottom tab bar.
  *
- * Glyphs are drawn from views rather than an icon set: the app has no icon
- * dependency, and adding one for four shapes would pull a font or an SVG
- * library's worth of paths into the bundle for very little. Swapping in a real
- * set later means changing `Glyph` and nothing else.
+ * Icons come from lucide, drawn as SVG through react-native-svg. They replaced
+ * bordered squares and circles built from Views — which were legible enough,
+ * but two of the four were indistinguishable circles, and a bar of hand-drawn
+ * primitives is the clearest signal a product has not been finished.
  */
 export function TabBar({
   current,
@@ -72,7 +78,12 @@ export function TabBar({
             style={({ pressed }) => [styles.item, pressed && styles.pressed]}
           >
             <View>
-              <Glyph shape={tab.shape} focused={focused} />
+              <tab.Icon
+                size={21}
+                strokeWidth={focused ? 2.4 : 1.8}
+                color={focused ? tabColors.active : tabColors.inactive}
+                accessibilityElementsHidden
+              />
               {badge > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
@@ -86,40 +97,6 @@ export function TabBar({
         );
       })}
     </View>
-  );
-}
-
-function Glyph({
-  shape,
-  focused,
-}: {
-  shape: TabDefinition['shape'];
-  focused: boolean;
-}) {
-  const tint = focused ? tabColors.active : tabColors.inactive;
-
-  if (shape === 'bars') {
-    return (
-      <View style={styles.glyph}>
-        {[0, 1, 2].map((row) => (
-          <View key={row} style={[styles.glyphBar, { backgroundColor: tint }]} />
-        ))}
-      </View>
-    );
-  }
-
-  return (
-    <View
-      style={[
-        styles.glyph,
-        {
-          borderColor: tint,
-          borderWidth: 1.75,
-          borderRadius: shape === 'square' ? 4 : 9,
-          backgroundColor: focused && shape !== 'ring' ? tint : 'transparent',
-        },
-      ]}
-    />
   );
 }
 
@@ -140,18 +117,6 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.6,
-  },
-  glyph: {
-    width: 18,
-    height: 18,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 2,
-  },
-  glyphBar: {
-    height: 2,
-    width: 16,
-    borderRadius: 1,
   },
   label: {
     ...typography.micro,

@@ -43,7 +43,10 @@ export function Ring({
   innerSize,
   percent,
   fillColor = colors.progressFill,
-  trackColor = colors.track,
+  // `colors.track` is oklch(92%) and was picked against a white card; on the
+  // oklch(93%) page background it lands at 1.03:1 and the ring disappears,
+  // leaving a percentage floating in space. This reads on both grounds.
+  trackColor = colors.line.base,
   children,
   animated = true,
   style,

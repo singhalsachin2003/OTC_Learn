@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { useAppSelector } from './hooks/useAppState';
 import { useAppFonts } from './hooks/useAppFonts';
 import { useNavigation } from './hooks/useNavigation';
 import { RootNavigator } from './navigation/RootNavigator';
@@ -24,6 +25,7 @@ initErrorReporting();
 
 function AppContent() {
   const [fontsLoaded, fontError] = useAppFonts();
+  const hydrated = useAppSelector((state) => state.settings.hydrated);
   const { goHome } = useNavigation();
 
   useEffect(() => {
@@ -43,19 +45,32 @@ function AppContent() {
     void bootstrap();
   }, []);
 
-  const onLayout = useCallback(() => {
-    if (fontsLoaded || fontError !== null) {
+  // A font failure should not block the app — RN falls back to the system face.
+  const fontsSettled = fontsLoaded || fontError !== null;
+
+  /**
+   * The splash comes down only once the store holds real data.
+   *
+   * Waiting on fonts alone meant a returning user saw a frame of the initial
+   * state — 0% mastery, no streak, an empty review queue — before hydration
+   * resolved and everything jumped. `hydrated` is set in `hydrateApp`'s
+   * `finally`, so a failed read still releases the splash rather than hanging
+   * behind it.
+   */
+  const ready = fontsSettled && hydrated;
+
+  useEffect(() => {
+    if (ready) {
       void SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError]);
+  }, [ready]);
 
-  // A font failure should not block the app — RN falls back to the system face.
-  if (!fontsLoaded && fontError === null) {
+  if (!ready) {
     return null;
   }
 
   return (
-    <View style={styles.root} onLayout={onLayout}>
+    <View style={styles.root}>
       <StatusBar style="dark" />
       {/* Sends the user home on recovery: the screen that threw is still the
           selected one, so remounting it alone would loop straight back. */}

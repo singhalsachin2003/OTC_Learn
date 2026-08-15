@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Check, X } from 'lucide-react-native';
 
 import { colors, layout, radius, spacing, typography } from '../../../theme';
 
@@ -53,15 +54,23 @@ export function ChoiceOptions({
               pressed && !isAnswered && styles.pressed,
             ]}
           >
-            <Text
-              style={[
-                styles.letter,
-                tone === 'correct' && styles.letterCorrect,
-                tone === 'incorrect' && styles.letterIncorrect,
-              ]}
-            >
-              {reveal ? (isCorrect ? '✓' : '✗') : (LETTERS[index] ?? '?')}
-            </Text>
+            {reveal ? (
+              <View
+                style={[
+                  styles.letter,
+                  styles.letterMark,
+                  isCorrect ? styles.letterCorrect : styles.letterIncorrect,
+                ]}
+              >
+                {isCorrect ? (
+                  <Check size={13} strokeWidth={3} color={colors.text.onDark} />
+                ) : (
+                  <X size={13} strokeWidth={3} color={colors.text.onDark} />
+                )}
+              </View>
+            ) : (
+              <Text style={styles.letter}>{LETTERS[index] ?? '?'}</Text>
+            )}
             <Text
               style={[
                 styles.label,
@@ -116,6 +125,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     color: colors.text.secondary,
     backgroundColor: colors.track,
+  },
+  /** The same disc, laid out to centre an icon rather than a letter. */
+  letterMark: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   letterCorrect: {
     color: colors.text.onDark,

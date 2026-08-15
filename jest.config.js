@@ -8,6 +8,18 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-redux|@reduxjs/toolkit|redux|redux-thunk|reselect|immer))',
   ],
+
+  /**
+   * Jest resolves lucide's `react-native` export condition, which points at an
+   * `.mjs` bundle — and jest-expo's transform only matches `.[jt]sx?`, so the
+   * file arrives untransformed and fails on its first `export`. Pointing Jest
+   * at the CommonJS build is cheaper than widening the transform, and affects
+   * Jest only: Metro resolves the same condition and handles the ESM fine.
+   */
+  moduleNameMapper: {
+    '^lucide-react-native$':
+      '<rootDir>/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js',
+  },
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/App.tsx',

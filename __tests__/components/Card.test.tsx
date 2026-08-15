@@ -23,11 +23,11 @@ describe('Card', () => {
 
     expect(screen.getByTestId('card')).toHaveStyle({
       backgroundColor: '#FFFFFF',
-      borderRadius: 18,
+      borderRadius: 14,
       padding: 16,
       shadowOpacity: 0.05,
       shadowRadius: 3,
-      elevation: 2,
+      elevation: 1,
     });
   });
 

@@ -57,13 +57,17 @@ describe('ProductRow', () => {
   });
 
   // Zero is "not started", which reads as nothing rather than as a score.
-  it('marks an untouched product with a dot rather than a zero', async () => {
+  // An untouched product shows an empty ring and no figure at all. A "0" reads
+  // as a score rather than as an absence, and the "·" that stood here before
+  // read as a stray glyph — on a fresh install that was every row on screen.
+  it('leaves the ring of an untouched product empty', async () => {
     await renderWithStore(
       <ProductRow product={product} mastery={0} onPress={jest.fn()} />,
     );
 
-    expect(screen.getByText('·')).toBeTruthy();
+    expect(screen.queryByText('·')).toBeNull();
     expect(screen.queryByText('0')).toBeNull();
+    expect(screen.getByTestId('product-ring-irs')).toBeTruthy();
   });
 
   it('announces the mastery percentage rather than relying on the ring', async () => {
