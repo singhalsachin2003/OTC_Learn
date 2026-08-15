@@ -62,85 +62,92 @@ export function QuizResults() {
 
   return (
     <SafeAreaWrapper testID="results-screen">
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <ResultsCard
-          perfect={perfect}
-          accent={accent}
-          accentSoft={soft}
-          title={perfect ? 'Perfect score' : 'Quiz complete'}
-          subtitle={
-            isReview
-              ? `You scored ${formatScore(score, total)} on your review`
-              : `You scored ${formatScore(score, total)} on ${product?.name ?? 'this product'}`
-          }
-        />
+      {/* The two action buttons live outside the ScrollView, mirroring
+          QuizScreen's own QuizButtons — otherwise a sitting with a fresh
+          achievement or several missed questions pushes the primary "back"
+          button below the fold, reachable only after scrolling past every
+          informational card first. */}
+      <View style={styles.body}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          <ResultsCard
+            perfect={perfect}
+            accent={accent}
+            accentSoft={soft}
+            title={perfect ? 'Perfect score' : 'Quiz complete'}
+            subtitle={
+              isReview
+                ? `You scored ${formatScore(score, total)} on your review`
+                : `You scored ${formatScore(score, total)} on ${product?.name ?? 'this product'}`
+            }
+          />
 
-        {!isReview && product !== undefined && (
-          <View testID="results-mastery" style={styles.masteryRow}>
-            <Ring
-              size={72}
-              innerSize={54}
-              percent={mastery}
-              fillColor={masteryFill(mastery)}
-              accessibilityLabel={`Mastery now ${mastery} percent`}
-            >
-              <Text style={styles.ringValue}>{mastery}%</Text>
-            </Ring>
-            <View style={styles.masteryText}>
-              <Text style={styles.masteryTitle}>Mastery in {product.name}</Text>
-              <Text style={styles.masteryNote}>
-                Mastery moves toward each score rather than replacing it, so a
-                second run on this product counts for more than a lucky first.
+          {!isReview && product !== undefined && (
+            <View testID="results-mastery" style={styles.masteryRow}>
+              <Ring
+                size={72}
+                innerSize={54}
+                percent={mastery}
+                fillColor={masteryFill(mastery)}
+                accessibilityLabel={`Mastery now ${mastery} percent`}
+              >
+                <Text style={styles.ringValue}>{mastery}%</Text>
+              </Ring>
+              <View style={styles.masteryText}>
+                <Text style={styles.masteryTitle}>Mastery in {product.name}</Text>
+                <Text style={styles.masteryNote}>
+                  Mastery moves toward each score rather than replacing it, so a
+                  second run on this product counts for more than a lucky first.
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {quiz.finishedInMs !== null && (
+            <Text testID="results-time" style={styles.time}>
+              Finished in {formatElapsed(quiz.finishedInMs)}
+            </Text>
+          )}
+
+          <StepBreakdown answers={quiz.answers} accent={accent} />
+
+          {missed.length > 0 && (
+            <View testID="results-review-note" style={styles.reviewNote}>
+              <Text style={styles.reviewTitle}>
+                {missed.length} {missed.length === 1 ? 'question' : 'questions'}{' '}
+                added to review
+              </Text>
+              <Text style={styles.reviewBody}>
+                {missed
+                  .map((record) => getQuestionById(record.questionId)?.product.name)
+                  .filter(
+                    (name, index, all) =>
+                      name !== undefined && all.indexOf(name) === index,
+                  )
+                  .join(', ')}{' '}
+                — back tomorrow, then in four days, then in ten.
               </Text>
             </View>
-          </View>
-        )}
+          )}
 
-        {quiz.finishedInMs !== null && (
-          <Text testID="results-time" style={styles.time}>
-            Finished in {formatElapsed(quiz.finishedInMs)}
-          </Text>
-        )}
-
-        <StepBreakdown answers={quiz.answers} accent={accent} />
-
-        {missed.length > 0 && (
-          <View testID="results-review-note" style={styles.reviewNote}>
-            <Text style={styles.reviewTitle}>
-              {missed.length} {missed.length === 1 ? 'question' : 'questions'} added
-              to review
-            </Text>
-            <Text style={styles.reviewBody}>
-              {missed
-                .map((record) => getQuestionById(record.questionId)?.product.name)
-                .filter(
-                  (name, index, all) =>
-                    name !== undefined && all.indexOf(name) === index,
-                )
-                .join(', ')}{' '}
-              — back tomorrow, then in four days, then in ten.
-            </Text>
-          </View>
-        )}
-
-        {newBadges.length > 0 && (
-          <View testID="results-badges" style={styles.badges}>
-            {newBadges.map((badge) => (
-              <View
-                key={badge.id}
-                style={[styles.badge, { backgroundColor: soft }]}
-              >
-                <Text style={[styles.badgeGlyph, { color: accent }]}>
-                  {badge.glyph}
-                </Text>
-                <Text style={styles.badgeName}>{badge.name}</Text>
-              </View>
-            ))}
-          </View>
-        )}
+          {newBadges.length > 0 && (
+            <View testID="results-badges" style={styles.badges}>
+              {newBadges.map((badge) => (
+                <View
+                  key={badge.id}
+                  style={[styles.badge, { backgroundColor: soft }]}
+                >
+                  <Text style={[styles.badgeGlyph, { color: accent }]}>
+                    {badge.glyph}
+                  </Text>
+                  <Text style={styles.badgeName}>{badge.name}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </ScrollView>
 
         <View style={styles.actions}>
           {!isReview && (
@@ -165,15 +172,18 @@ export function QuizResults() {
             style={styles.button}
           />
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaWrapper>
   );
 }
 
 const styles = StyleSheet.create({
+  body: {
+    flex: 1,
+  },
   content: {
     paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl,
+    paddingBottom: spacing.lg,
   },
   masteryRow: {
     flexDirection: 'row',

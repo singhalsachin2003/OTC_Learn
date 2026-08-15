@@ -32,6 +32,11 @@ export function LessonStep({
         backgroundColor={accentSoft}
       />
       <ScrollView
+        // `flexGrow: 1` + centring lets a short step (no callout, one
+        // paragraph) sit in the middle of the card rather than pinned to
+        // the top with a void below it; a step long enough to fill the
+        // card scrolls exactly as before; `justifyContent` has no effect
+        // once content exceeds the available height.
         contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={false}
       >
@@ -73,6 +78,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xxl - 2,
   },
   body: {
+    flexGrow: 1,
+    justifyContent: 'center',
     paddingTop: spacing.lg,
     paddingBottom: spacing.sm,
   },

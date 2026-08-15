@@ -89,7 +89,11 @@ export function LessonScreen() {
     [drag, goToStep, settle, stepIndex, totalSteps],
   );
 
-  const backLabel = product?.name ?? category?.name ?? 'Back';
+  // A plain "Back" rather than the product's own name — the h2 heading right
+  // below it already states that, and stacking the same name twice at the
+  // top of the screen was pure repetition.
+  const backLabel = 'Back';
+  const backAccessibilityLabel = `Back to ${product?.name ?? category?.name ?? 'product'}`;
   const goBack = () => {
     if (product !== undefined) {
       goToProduct(product.id);
@@ -99,7 +103,12 @@ export function LessonScreen() {
   if (product === undefined || product.lessons.length === 0) {
     return (
       <SafeAreaWrapper testID="lesson-screen">
-        <BackButton label={backLabel} onPress={goBack} testID="lesson-back" />
+        <BackButton
+          label={backLabel}
+          accessibilityLabel={backAccessibilityLabel}
+          onPress={goBack}
+          testID="lesson-back"
+        />
         <Text style={styles.productName}>This lesson is unavailable.</Text>
       </SafeAreaWrapper>
     );
@@ -117,7 +126,12 @@ export function LessonScreen() {
   return (
     <SafeAreaWrapper testID="lesson-screen">
       <View style={styles.body}>
-        <BackButton label={backLabel} onPress={goBack} testID="lesson-back" />
+        <BackButton
+          label={backLabel}
+          accessibilityLabel={backAccessibilityLabel}
+          onPress={goBack}
+          testID="lesson-back"
+        />
         <Text accessibilityRole="header" style={styles.productName}>
           {product.name}
         </Text>
