@@ -1,7 +1,8 @@
 # Production readiness
 
 Written 2026-07-28 from a full pre-production review, worked through on 2026-07-29,
-and revised on 2026-08-13 for the v1.1 release. **v1.1 targets
+revised on 2026-08-13 for the v1.1 release, and updated 2026-08-16 when v1.1 was
+merged to `main` and its first production build cut. **v1.1 targets
 Android only** — iOS config and scripts stay in the repo but nothing iOS-specific is
 verified or blocking.
 
@@ -60,29 +61,39 @@ call is a version check against `u.expo.dev` at launch. Both choices are reflect
   dependencies mean this release could never have shipped over the air anyway. It
   needs a store build.
 
+### v1.1 production build (2026-08-16)
+
+- 14-day/12-tester closed testing completed and Google granted production access —
+  on the **1.0.0** build (versionCode 3), predating v1.1. This unlocks the Production
+  track for the account; it is not device verification of v1.1 itself, so items 2–4
+  below are still open against this specific build.
+- `v1.1-mastery-and-review` merged into `main` (`dac9488`) and built: **versionCode 4**,
+  `1.1.0`, signed with the existing EAS-managed keystore (`Rk8YiwiZ1s`).
+- Blocker 1 verified and closed: `bundletool dump manifest` against the built `.aab`
+  (an AAB has no APK for `aapt2` to inspect directly) shows exactly `INTERNET`,
+  `POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`, `VIBRATE`, plus the self-scoped
+  `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` Android generates for a receiver
+  registered with `RECEIVER_NOT_EXPORTED` — no FCM permissions leaked in.
+
 ---
 
 ## Outstanding
 
-### Blockers for submission
+No submission blockers remain — see "v1.1 production build" above.
 
-1. **Verify the shipped permission list.** The app now declares
-   `POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED` and `VIBRATE`, and `app.json` blocks
-   the 20-odd Firebase Cloud Messaging and launcher-badge permissions that
-   `expo-notifications` drags in. **`expo prebuild` cannot show you what actually
-   ships** — library manifests merge during the Gradle build. Check the artifact
-   before submitting: `aapt2 dump permissions build.apk | grep uses-permission`.
 ### Verification gaps
 
-2. **Only the happy path has been seen on a device.** Verified on a Pixel 7 emulator on
+1. **Only the happy path has been seen on a device.** Verified on a Pixel 7 emulator on
    2026-08-13: the home dashboard, category, product page, lesson, quiz (both question
    kinds, with option shuffling and feedback), review, glossary and profile. Still
    unexercised on real hardware: the daily reminder actually firing, permission being
    revoked in system settings mid-life, the review queue coming due across a real date
-   change, haptics, the lesson swipe gesture, and an `eas update` push.
-3. **Font scaling.** Several styles pin `lineHeight` next to `fontSize`; text may clip
+   change, haptics, the lesson swipe gesture, and an `eas update` push. The closed test
+   that unlocked production access ran the pre-v1.1 build, so none of this is covered
+   by real-user testing either.
+2. **Font scaling.** Several styles pin `lineHeight` next to `fontSize`; text may clip
    at the largest accessibility sizes. One pass on a device.
-4. **Migration on a real v1 install.** The v1→v2 migration is unit-tested — including
+3. **Migration on a real v1 install.** The v1→v2 migration is unit-tested — including
    the case where the write fails part-way, which is where it previously lost data —
    but has not been run against an actual app upgrade on a device holding v1 data.
 
