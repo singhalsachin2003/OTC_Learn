@@ -9,11 +9,17 @@ const NOTES = {
   irs: {
     body: 'Fixed leg pays annually, floating quarterly.',
     updatedOn: '2026-08-20',
+    updatedAt: 0,
   },
-  cds: { body: 'Protection buyer is short credit risk.', updatedOn: '2026-08-28' },
+  cds: {
+    body: 'Protection buyer is short credit risk.',
+    updatedOn: '2026-08-28',
+    updatedAt: 0,
+  },
   fxfwd: {
     body: 'Points come from the interest rate differential.',
     updatedOn: '2026-08-24',
+    updatedAt: 0,
   },
 };
 
@@ -84,7 +90,7 @@ describe('NotesScreen', () => {
     store.dispatch(
       setNotes({
         ...NOTES,
-        retired: { body: 'Old product.', updatedOn: '2026-08-29' },
+        retired: { body: 'Old product.', updatedOn: '2026-08-29', updatedAt: 0 },
       }),
     );
     await renderWithStore(<NotesScreen />, { store });

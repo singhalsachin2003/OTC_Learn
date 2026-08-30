@@ -22,6 +22,15 @@ export interface ProductProgress {
   bestScorePct: number;
   /** Local date key of the last completed session, or null. */
   lastStudiedOn: string | null;
+  /**
+   * Epoch milliseconds of the last change, for sync to merge by.
+   *
+   * `lastStudiedOn` cannot do this job: it is a date key, so it cannot order
+   * two sessions on the same day — which is exactly when two devices are most
+   * likely to disagree. Zero means "never stamped", which is what a record
+   * written before schema v3 carries.
+   */
+  updatedAt: number;
 }
 
 export const emptyProgress: ProductProgress = {
@@ -29,6 +38,7 @@ export const emptyProgress: ProductProgress = {
   attempts: 0,
   bestScorePct: 0,
   lastStudiedOn: null,
+  updatedAt: 0,
 };
 
 /** Applies one session's score to a product's running mastery. */
@@ -42,6 +52,7 @@ export function applySession(
   previous: ProductProgress = emptyProgress,
   scorePct: number,
   today: string,
+  now: Date = new Date(),
 ): ProductProgress {
   // Clamped on the same terms as mastery. Best score is never revised down, so
   // an out-of-range value written once would be permanent.
@@ -51,6 +62,7 @@ export function applySession(
     attempts: previous.attempts + 1,
     bestScorePct: Math.max(previous.bestScorePct, clamped),
     lastStudiedOn: today,
+    updatedAt: now.getTime(),
   };
 }
 

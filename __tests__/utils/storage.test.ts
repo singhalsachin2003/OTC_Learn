@@ -37,6 +37,7 @@ const record = {
   attempts: 3,
   bestScorePct: 80,
   lastStudiedOn: '2026-07-25',
+  updatedAt: Date.parse('2026-07-25T09:30:00'),
 };
 
 async function writeRaw(key: string, raw: string): Promise<void> {
@@ -100,7 +101,53 @@ describe('storage', () => {
       );
 
       await expect(loadProgressMap()).resolves.toEqual({
-        irs: { mastery: 42, attempts: 0, bestScorePct: 0, lastStudiedOn: null },
+        irs: {
+          mastery: 42,
+          attempts: 0,
+          bestScorePct: 0,
+          lastStudiedOn: null,
+          // Nothing to date it by, so it starts at zero and loses any merge.
+          updatedAt: 0,
+        },
+      });
+    });
+
+    /**
+     * Sync merges by `updatedAt`, so what a pre-v3 record gets is not academic:
+     * it decides which device wins the first time two of them disagree.
+     */
+    it('dates an unstamped record by the day it was last studied', async () => {
+      await writeRaw(
+        STORAGE_KEYS.progress,
+        JSON.stringify({ irs: { mastery: 40, lastStudiedOn: '2026-07-25' } }),
+      );
+
+      const loaded = await loadProgressMap();
+
+      expect(loaded.irs.updatedAt).toBe(Date.parse('2026-07-25T00:00:00'));
+    });
+
+    it('keeps a stamp it already has in preference to the date key', async () => {
+      await writeRaw(
+        STORAGE_KEYS.progress,
+        JSON.stringify({
+          irs: { mastery: 40, lastStudiedOn: '2026-07-25', updatedAt: 1_234_567 },
+        }),
+      );
+
+      await expect(loadProgressMap()).resolves.toMatchObject({
+        irs: { updatedAt: 1_234_567 },
+      });
+    });
+
+    it('ignores a stamp that is not a usable number', async () => {
+      await writeRaw(
+        STORAGE_KEYS.progress,
+        JSON.stringify({ irs: { mastery: 40, updatedAt: 'yesterday' } }),
+      );
+
+      await expect(loadProgressMap()).resolves.toMatchObject({
+        irs: { updatedAt: 0 },
       });
     });
 
@@ -179,6 +226,7 @@ describe('storage', () => {
       step: 0,
       dueOn: '2026-07-26',
       lapses: 1,
+      updatedAt: Date.parse('2026-07-25T09:30:00'),
     };
 
     it('round-trips a queue', async () => {
@@ -210,6 +258,20 @@ describe('storage', () => {
       );
 
       await expect(loadReviewQueue()).resolves.toEqual([item]);
+    });
+
+    /**
+     * A queue item has no date that approximates when it was last touched —
+     * `dueOn` is in the future by construction — so a pre-v3 item starts at
+     * zero and loses any merge against a stamped one.
+     */
+    it('starts an unstamped queue item at zero rather than guessing', async () => {
+      const { updatedAt: _unused, ...legacy } = item;
+      await writeRaw(STORAGE_KEYS.reviewQueue, JSON.stringify([legacy]));
+
+      await expect(loadReviewQueue()).resolves.toEqual([
+        { ...legacy, updatedAt: 0 },
+      ]);
     });
 
     it('reports a failed write instead of throwing', async () => {
@@ -578,12 +640,14 @@ describe('storage', () => {
           attempts: 1,
           bestScorePct: MASTERY_COMPLETE,
           lastStudiedOn: null,
+          updatedAt: 0,
         },
         cds: {
           mastery: MASTERY_COMPLETE,
           attempts: 1,
           bestScorePct: MASTERY_COMPLETE,
           lastStudiedOn: null,
+          updatedAt: 0,
         },
       });
     });

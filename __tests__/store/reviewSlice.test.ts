@@ -25,6 +25,7 @@ function item(overrides: Partial<ReviewItem> = {}): ReviewItem {
     step: 0,
     dueOn: '2026-08-12',
     lapses: 1,
+    updatedAt: 0,
     ...overrides,
   };
 }
@@ -48,7 +49,14 @@ describe('reviewSlice wrong answers', () => {
     );
 
     expect(state.queue).toEqual([
-      { id: 'irs-q1', productId: 'irs', step: 0, dueOn: '2026-08-13', lapses: 1 },
+      {
+        id: 'irs-q1',
+        productId: 'irs',
+        step: 0,
+        dueOn: '2026-08-13',
+        lapses: 1,
+        updatedAt: NOW,
+      },
     ]);
   });
 

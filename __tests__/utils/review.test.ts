@@ -25,6 +25,7 @@ function item(overrides: Partial<ReviewItem> = {}): ReviewItem {
     step: 0,
     dueOn: '2026-08-14',
     lapses: 1,
+    updatedAt: NOW.getTime(),
     ...overrides,
   };
 }
@@ -149,6 +150,7 @@ describe('scheduleLapse', () => {
       id: 'fx-fwd-2',
       productId: 'fx-forward',
       step: 0,
+      updatedAt: NOW.getTime(),
       dueOn: '2026-08-14',
       lapses: 1,
     });
@@ -204,6 +206,7 @@ describe('schedulePromotion', () => {
       id: 'ir-swap-3',
       productId: 'interest-rate-swap',
       step: 1,
+      updatedAt: NOW.getTime(),
       dueOn: '2026-08-17',
       lapses: 1,
     });

@@ -189,6 +189,7 @@ describe('Home → category → product → lesson → quiz → results', () => 
         attempts: 1,
         bestScorePct: 100,
         lastStudiedOn: expect.any(String),
+        updatedAt: expect.any(Number),
       });
     });
     expect(screen.getByTestId('results-mastery')).toBeTruthy();

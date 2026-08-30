@@ -12,9 +12,11 @@ const TODAY = '2026-08-30';
 
 describe('editNote', () => {
   it('stores a trimmed note', () => {
-    expect(editNote('  a swap is a swap  ', TODAY)).toEqual({
+    const now = new Date(2026, 7, 30, 9, 0);
+    expect(editNote('  a swap is a swap  ', TODAY, now)).toEqual({
       body: 'a swap is a swap',
       updatedOn: TODAY,
+      updatedAt: now.getTime(),
     });
   });
 
@@ -61,9 +63,9 @@ describe('remainingLength', () => {
 
 describe('sortedNotes', () => {
   const notes: NoteMap = {
-    irs: { body: 'first', updatedOn: '2026-08-01' },
-    fxfwd: { body: 'latest', updatedOn: '2026-08-30' },
-    cds: { body: 'middle', updatedOn: '2026-08-15' },
+    irs: { body: 'first', updatedOn: '2026-08-01', updatedAt: 0 },
+    fxfwd: { body: 'latest', updatedOn: '2026-08-30', updatedAt: 0 },
+    cds: { body: 'middle', updatedOn: '2026-08-15', updatedAt: 0 },
   };
 
   it('lists the most recently edited first', () => {
@@ -76,8 +78,8 @@ describe('sortedNotes', () => {
 
   it('breaks ties on product id so the order is stable', () => {
     const sameDay: NoteMap = {
-      zeta: { body: 'z', updatedOn: TODAY },
-      alpha: { body: 'a', updatedOn: TODAY },
+      zeta: { body: 'z', updatedOn: TODAY, updatedAt: 0 },
+      alpha: { body: 'a', updatedOn: TODAY, updatedAt: 0 },
     };
 
     expect(sortedNotes(sameDay).map((n) => n.productId)).toEqual(['alpha', 'zeta']);

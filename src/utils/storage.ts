@@ -108,6 +108,30 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/**
+ * The `updatedAt` a record carries, or the best approximation available.
+ *
+ * Records written before schema v3 have no timestamp. Rather than stamping them
+ * all with the migration's own clock — which would make every legacy record on
+ * a device look equally recent, and would order two devices by which happened to
+ * open the app first — this falls back to the record's own date key. That is a
+ * day's resolution, which is coarse, but it is at least *about* when the record
+ * was last touched. Zero is the last resort, and a zero always loses a merge to
+ * anything stamped.
+ */
+function parseUpdatedAt(value: unknown, fallbackDateKey: unknown): number {
+  if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+    return value;
+  }
+  if (typeof fallbackDateKey === 'string') {
+    const parsed = Date.parse(`${fallbackDateKey}T00:00:00`);
+    if (!Number.isNaN(parsed)) {
+      return parsed;
+    }
+  }
+  return 0;
+}
+
 // ---------------------------------------------------------------------------
 // Progress
 
@@ -126,6 +150,7 @@ function parseProgress(value: unknown): ProductProgress | null {
     bestScorePct: typeof value.bestScorePct === 'number' ? value.bestScorePct : 0,
     lastStudiedOn:
       typeof value.lastStudiedOn === 'string' ? value.lastStudiedOn : null,
+    updatedAt: parseUpdatedAt(value.updatedAt, value.lastStudiedOn),
   };
 }
 
@@ -185,15 +210,34 @@ export async function loadReviewQueue(): Promise<ReviewItem[]> {
   if (!Array.isArray(stored)) {
     return [];
   }
-  return stored.filter((item): item is ReviewItem => {
-    return (
-      isRecord(item) &&
-      typeof item.id === 'string' &&
-      typeof item.productId === 'string' &&
-      typeof item.step === 'number' &&
-      typeof item.dueOn === 'string' &&
-      typeof item.lapses === 'number'
-    );
+  // Mapped rather than filtered with a type predicate. A predicate would let a
+  // record written before schema v3 through while asserting it is a full
+  // `ReviewItem`, so every reader would believe it had an `updatedAt` it does
+  // not have — the one kind of mistake the type system cannot catch for us.
+  return stored.flatMap((item) => {
+    if (
+      !isRecord(item) ||
+      typeof item.id !== 'string' ||
+      typeof item.productId !== 'string' ||
+      typeof item.step !== 'number' ||
+      typeof item.dueOn !== 'string' ||
+      typeof item.lapses !== 'number'
+    ) {
+      return [];
+    }
+    return [
+      {
+        id: item.id,
+        productId: item.productId,
+        step: item.step,
+        dueOn: item.dueOn,
+        lapses: item.lapses,
+        // No date on a queue item approximates when it was last touched —
+        // `dueOn` is in the future by construction — so a legacy item starts
+        // at zero and loses any merge against a stamped one.
+        updatedAt: parseUpdatedAt(item.updatedAt, null),
+      },
+    ];
   });
 }
 
@@ -381,7 +425,11 @@ export async function loadNotes(): Promise<Record<string, Note>> {
       value.body.trim().length > 0 &&
       typeof value.updatedOn === 'string'
     ) {
-      out[productId] = { body: value.body, updatedOn: value.updatedOn };
+      out[productId] = {
+        body: value.body,
+        updatedOn: value.updatedOn,
+        updatedAt: parseUpdatedAt(value.updatedAt, value.updatedOn),
+      };
     }
   }
   return out;

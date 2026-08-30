@@ -80,13 +80,15 @@ describe('nextMastery', () => {
 
 describe('applySession', () => {
   it('starts from nothing when a product has no record yet', () => {
-    const result = applySession(undefined, 100, '2026-08-13');
+    const now = new Date(2026, 7, 13, 9, 0);
+    const result = applySession(undefined, 100, '2026-08-13', now);
 
     expect(result).toEqual({
       mastery: 35,
       attempts: 1,
       bestScorePct: 100,
       lastStudiedOn: '2026-08-13',
+      updatedAt: now.getTime(),
     });
   });
 
@@ -111,6 +113,7 @@ describe('applySession', () => {
       attempts: 4,
       bestScorePct: 100,
       lastStudiedOn: '2026-08-01',
+      updatedAt: Date.parse('2026-08-01T20:00:00'),
     };
     const result = applySession(previous, 20, '2026-08-14');
 

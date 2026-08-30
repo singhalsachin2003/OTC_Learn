@@ -25,6 +25,7 @@ function queue(store: AppStore, entries: { offset: number; lapses?: number }[]) 
     step: 0,
     dueOn: dayKey(entry.offset),
     lapses: entry.lapses ?? 1,
+    updatedAt: 0,
   }));
   store.dispatch(setReviewQueue(items));
 }
@@ -97,6 +98,7 @@ describe('ReviewScreen', () => {
           step: 0,
           dueOn: 'whenever',
           lapses: 1,
+          updatedAt: 0,
         },
       ]),
     );

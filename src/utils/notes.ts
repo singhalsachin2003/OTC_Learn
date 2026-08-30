@@ -15,6 +15,11 @@ export interface Note {
   body: string;
   /** Local date key of the last edit, for the notes list. */
   updatedOn: string;
+  /**
+   * Epoch milliseconds of the last edit, for sync to merge by. `updatedOn` is
+   * what the notes list shows; this is what decides which of two edits wins.
+   */
+  updatedAt: number;
 }
 
 export type NoteMap = Readonly<Record<string, Note | undefined>>;
@@ -26,12 +31,20 @@ export type NoteMap = Readonly<Record<string, Note | undefined>>;
  * mid-way through typing is not stolen from under the cursor — the decision
  * only lands when the edit is committed.
  */
-export function editNote(body: string, today: string): Note | null {
+export function editNote(
+  body: string,
+  today: string,
+  now: Date = new Date(),
+): Note | null {
   const trimmed = body.trim();
   if (trimmed.length === 0) {
     return null;
   }
-  return { body: trimmed.slice(0, NOTE_MAX_LENGTH), updatedOn: today };
+  return {
+    body: trimmed.slice(0, NOTE_MAX_LENGTH),
+    updatedOn: today,
+    updatedAt: now.getTime(),
+  };
 }
 
 /** Whether a body would be stored, without building the note. */

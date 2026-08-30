@@ -36,6 +36,7 @@ function progress(overrides: Partial<ProductProgress> = {}): ProductProgress {
     attempts: 0,
     bestScorePct: 0,
     lastStudiedOn: null,
+    updatedAt: 0,
     ...overrides,
   };
 }

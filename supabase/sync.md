@@ -114,14 +114,26 @@ settled before accounts are offered to anyone:
   an id for a record that lacks one, so without persisting it every launch would
   invent a different one and an upload keyed by it would record the same sitting
   again each time.
-- **`updated_at` is not tracked locally.** The tables above resolve conflicts by
-  it, but the device records only date keys such as `lastStudiedOn`, which are a
-  day's resolution and cannot order two sessions on the same day. This is
-  deliberately **not** done yet: it touches mastery, the review queue, notes,
-  bookmarks, settings and the profile, and exactly which records need a
-  timestamp is decided by the sync client that reads them. A wide change to the
-  persistence layer of an app with live installs should land next to the code
-  that proves it, not months ahead of it.
+- ~~**`updated_at` is not tracked locally.**~~ Done for the three record types
+  that merge by it: `ProductProgress`, `ReviewItem` and `Note` each carry an
+  `updatedAt` in epoch milliseconds, set by `applySession`, `scheduleLapse` /
+  `schedulePromotion` and `editNote` — all of which already took a clock, so
+  none of them needed a new one invented.
+
+  What a record written before v3 gets matters, because it decides which device
+  wins the first disagreement. Rather than stamping every legacy record with the
+  migration's own clock — which would make them all look equally recent, and
+  would order two devices by which happened to open the app first — the stamp
+  falls back to the record's own date key: `lastStudiedOn` for progress,
+  `updatedOn` for a note. A queue item has no such date (`dueOn` is in the
+  future by construction), so it starts at zero and loses any merge against a
+  stamped item.
+
+  Still to do: settings, the profile name, the streak and bookmarks merge as
+  whole rows rather than per-field, so they need one timestamp each rather than
+  one per record. Bookmarks additionally need a tombstone locally — the slice
+  holds a plain `string[]`, which cannot express "removed at". Neither is
+  needed until the client pushes those tables.
 - ~~**The project itself.**~~ Created on 2026-08-30: `OTCLearn`, free tier,
   `ap-northeast-1` (Tokyo), project ref `sdomtcctsxtynglmxriu`. The URL and
   **publishable** key go in `EXPO_PUBLIC_SUPABASE_URL` and

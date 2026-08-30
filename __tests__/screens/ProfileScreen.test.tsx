@@ -74,8 +74,16 @@ describe('ProfileScreen', () => {
     const store = createStore();
     store.dispatch(
       setNotes({
-        irs: { body: 'Fixed against floating.', updatedOn: '2026-08-28' },
-        cds: { body: 'Protection buyer is short credit.', updatedOn: '2026-08-29' },
+        irs: {
+          body: 'Fixed against floating.',
+          updatedOn: '2026-08-28',
+          updatedAt: 0,
+        },
+        cds: {
+          body: 'Protection buyer is short credit.',
+          updatedOn: '2026-08-29',
+          updatedAt: 0,
+        },
       }),
     );
     await renderWithStore(<ProfileScreen />, { store });

@@ -88,6 +88,7 @@ describe('InsightsScreen', () => {
           attempts: 2,
           bestScorePct: 70,
           lastStudiedOn: '2026-08-29',
+          updatedAt: 0,
         },
       }),
     );
@@ -111,6 +112,7 @@ describe('InsightsScreen', () => {
           attempts: 3,
           bestScorePct: 90,
           lastStudiedOn: '2026-08-29',
+          updatedAt: 0,
         },
       }),
     );

@@ -51,6 +51,7 @@ describe('progress thunks', () => {
         attempts: 1,
         bestScorePct: 100,
         lastStudiedOn: toDateKey(),
+        updatedAt: expect.any(Number),
       });
     });
 

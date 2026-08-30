@@ -32,6 +32,7 @@ describe('notes thunks', () => {
     expect(notesOf(store).irs).toEqual({
       body: 'fixed leg',
       updatedOn: toDateKey(),
+      updatedAt: expect.any(Number),
     });
     await expect(stored()).resolves.toMatchObject({ irs: { body: 'fixed leg' } });
   });
@@ -116,7 +117,13 @@ describe('notes storage', () => {
     );
 
     await expect(loadNotes()).resolves.toEqual({
-      irs: { body: 'good', updatedOn: '2026-08-30' },
+      irs: {
+        body: 'good',
+        updatedOn: '2026-08-30',
+        // No stamp on a note written before v3, so it falls back to its own
+        // date key rather than to zero.
+        updatedAt: Date.parse('2026-08-30T00:00:00'),
+      },
     });
   });
 
@@ -131,7 +138,11 @@ describe('notes storage', () => {
 
   it('round-trips through the store', async () => {
     const store = createStore();
-    store.dispatch(setNotes({ irs: { body: 'kept', updatedOn: '2026-08-30' } }));
+    store.dispatch(
+      setNotes({
+        irs: { body: 'kept', updatedOn: '2026-08-30', updatedAt: 0 },
+      }),
+    );
 
     await store.dispatch(saveProductNote({ productId: 'cds', body: 'added' }));
 

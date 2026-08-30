@@ -31,6 +31,7 @@ describe('progressSlice mastery', () => {
       attempts: 1,
       bestScorePct: 80,
       lastStudiedOn: TODAY,
+      updatedAt: expect.any(Number),
     });
   });
 
@@ -203,7 +204,13 @@ describe('progressSlice achievements', () => {
 
 describe('progressSlice hydration', () => {
   const stored: Record<string, ProductProgress> = {
-    irs: { mastery: 62, attempts: 4, bestScorePct: 83, lastStudiedOn: TODAY },
+    irs: {
+      mastery: 62,
+      attempts: 4,
+      bestScorePct: 83,
+      lastStudiedOn: TODAY,
+      updatedAt: 0,
+    },
   };
 
   it('replaces mastery and question history wholesale', () => {

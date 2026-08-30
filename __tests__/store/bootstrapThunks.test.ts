@@ -29,6 +29,7 @@ const record = {
   attempts: 2,
   bestScorePct: 80,
   lastStudiedOn: '2026-08-01',
+  updatedAt: Date.parse('2026-08-01T20:00:00'),
 };
 
 const queued = {
@@ -37,6 +38,7 @@ const queued = {
   step: 0,
   dueOn: '2026-08-14',
   lapses: 1,
+  updatedAt: Date.parse('2026-08-13T20:00:00'),
 };
 
 describe('hydrateApp', () => {

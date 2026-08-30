@@ -19,7 +19,9 @@ describe('NoteEditor', () => {
   it('seeds the box with an existing note', async () => {
     const store = createStore();
     store.dispatch(
-      setNotes({ [PRODUCT]: { body: 'fixed leg', updatedOn: '2026-08-20' } }),
+      setNotes({
+        [PRODUCT]: { body: 'fixed leg', updatedOn: '2026-08-20', updatedAt: 0 },
+      }),
     );
 
     await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
@@ -50,13 +52,16 @@ describe('NoteEditor', () => {
     expect(store.getState().notes.byProduct[PRODUCT]).toEqual({
       body: 'pay fixed',
       updatedOn: toDateKey(),
+      updatedAt: expect.any(Number),
     });
   });
 
   it('offers nothing to save until the draft differs from what is stored', async () => {
     const store = createStore();
     store.dispatch(
-      setNotes({ [PRODUCT]: { body: 'same', updatedOn: '2026-08-20' } }),
+      setNotes({
+        [PRODUCT]: { body: 'same', updatedOn: '2026-08-20', updatedAt: 0 },
+      }),
     );
     await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
 
@@ -73,7 +78,9 @@ describe('NoteEditor', () => {
   it('relabels itself when clearing an existing note', async () => {
     const store = createStore();
     store.dispatch(
-      setNotes({ [PRODUCT]: { body: 'doomed', updatedOn: '2026-08-20' } }),
+      setNotes({
+        [PRODUCT]: { body: 'doomed', updatedOn: '2026-08-20', updatedAt: 0 },
+      }),
     );
     await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
 
@@ -88,7 +95,9 @@ describe('NoteEditor', () => {
   it('ignores whitespace-only changes to an existing note', async () => {
     const store = createStore();
     store.dispatch(
-      setNotes({ [PRODUCT]: { body: 'stable', updatedOn: '2026-08-20' } }),
+      setNotes({
+        [PRODUCT]: { body: 'stable', updatedOn: '2026-08-20', updatedAt: 0 },
+      }),
     );
     await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
 

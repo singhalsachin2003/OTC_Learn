@@ -26,6 +26,8 @@ export interface ReviewItem {
   dueOn: string;
   /** How many times this question has been missed. */
   lapses: number;
+  /** Epoch milliseconds of the last change, for sync to merge by. */
+  updatedAt: number;
 }
 
 /**
@@ -66,6 +68,7 @@ export function scheduleLapse(
     step: 0,
     dueOn: addDays(intervalForStep(0), now),
     lapses: (existing?.lapses ?? 0) + 1,
+    updatedAt: now.getTime(),
   };
 }
 
@@ -86,6 +89,7 @@ export function schedulePromotion(
     ...item,
     step: nextStep,
     dueOn: addDays(intervalForStep(nextStep), now),
+    updatedAt: now.getTime(),
   };
 }
 
