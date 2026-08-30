@@ -86,8 +86,20 @@ later without touching any of the above, because the schema keys off
   timestamp is decided by the sync client that reads them. A wide change to the
   persistence layer of an app with live installs should land next to the code
   that proves it, not months ahead of it.
-- **The project itself.** The URL and anon key go in `EXPO_PUBLIC_SUPABASE_URL`
-  and `EXPO_PUBLIC_SUPABASE_ANON_KEY`. Both are inlined by Babel at build time
-  rather than read at runtime, so — exactly as `initErrorReporting` already does
-  — the client must take its configuration as an argument with the env values
-  only as defaults, or it cannot be tested.
+- ~~**The project itself.**~~ Created on 2026-08-30: `OTCLearn`, free tier,
+  `ap-northeast-1` (Tokyo), project ref `sdomtcctsxtynglmxriu`. The URL and
+  **publishable** key go in `EXPO_PUBLIC_SUPABASE_URL` and
+  `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — see `.env.example`. Supabase has
+  moved on from the `anon` key; the publishable key is its replacement and is
+  equally safe to ship, because it grants only what row level security allows.
+  The `sb_secret_` key is a server credential and must never reach a build.
+
+  Both are inlined by Babel at build time rather than read at runtime, so —
+  exactly as `initErrorReporting` already does — the client must take its
+  configuration as an argument with the env values only as defaults, or it
+  cannot be tested.
+
+  Region is Tokyo, which is further from a UK or Indian user than it needs to
+  be. It is not worth recreating the project over: sync is a background backup,
+  not something a screen waits on, so a hundred milliseconds either way is
+  invisible.
