@@ -104,11 +104,6 @@ No submission blockers remain — see "v1.1 production build" above.
   `LessonScreen` 71%. Deliberately left after the pure logic, the store and the
   start-up path were taken to 100%: these fail visibly on screen, whereas a wrong
   review interval or a lost answer index fails silently. Worth closing, not urgent.
-- **Three formatter helpers are now dead product code** — `formatProductCount`,
-  `formatProgressLabel` and `progressPercent` in `utils/formatters.ts` are unused by
-  the app since the mastery rewrite, though still covered by their own tests. Delete
-  them with their tests, or find them a caller.
-
 ### Deferred by choice
 
 - **Crash reporting.** v1.1 ships dark: the Sentry code is merged and tested but no DSN

@@ -5,37 +5,9 @@ export function formatStepLabel(index: number, total: number): string {
   return `${index + 1} of ${total}`;
 }
 
-/** "4 products · 2 done" */
-export function formatProductCount(total: number, done: number): string {
-  const noun = total === 1 ? 'product' : 'products';
-  return `${total} ${noun} · ${done} done`;
-}
-
-/** "3/10 products" */
-export function formatProgressLabel(completed: number, total: number): string {
-  const noun = total === 1 ? 'product' : 'products';
-  return `${completed} / ${total} ${noun}`;
-}
-
 /** "2/3" */
 export function formatScore(score: number, total: number): string {
   return `${score}/${total}`;
-}
-
-/**
- * Completion ratio clamped to 0–1. A `total` of 0 yields 0 rather than NaN so
- * progress bars never receive an invalid width.
- */
-export function progressRatio(completed: number, total: number): number {
-  if (total <= 0) {
-    return 0;
-  }
-  return Math.min(1, Math.max(0, completed / total));
-}
-
-/** Whole-number percentage, e.g. 0.333 -> 33. */
-export function progressPercent(completed: number, total: number): number {
-  return Math.round(progressRatio(completed, total) * 100);
 }
 
 /** Local calendar date as `YYYY-MM-DD`. Local, not UTC, so streaks roll at midnight for the user. */

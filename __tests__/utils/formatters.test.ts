@@ -1,11 +1,7 @@
 import {
   daysBetween,
-  formatProductCount,
-  formatProgressLabel,
   formatScore,
   formatStepLabel,
-  progressPercent,
-  progressRatio,
   toDateKey,
 } from '../../src/utils/formatters';
 
@@ -15,37 +11,8 @@ describe('formatters', () => {
     expect(formatStepLabel(2, 3)).toBe('3 of 3');
   });
 
-  it('pluralises the product count', () => {
-    expect(formatProductCount(2, 1)).toBe('2 products · 1 done');
-    expect(formatProductCount(1, 0)).toBe('1 product · 0 done');
-  });
-
-  it('formats the overall progress label', () => {
-    expect(formatProgressLabel(3, 10)).toBe('3 / 10 products');
-  });
-
   it('formats a score', () => {
     expect(formatScore(2, 3)).toBe('2/3');
-  });
-
-  describe('progressRatio', () => {
-    it('computes the completion share', () => {
-      expect(progressRatio(3, 10)).toBeCloseTo(0.3);
-    });
-
-    it('returns 0 rather than NaN for an empty total', () => {
-      expect(progressRatio(0, 0)).toBe(0);
-    });
-
-    it('clamps out-of-range input', () => {
-      expect(progressRatio(15, 10)).toBe(1);
-      expect(progressRatio(-2, 10)).toBe(0);
-    });
-  });
-
-  it('rounds percentages', () => {
-    expect(progressPercent(1, 3)).toBe(33);
-    expect(progressPercent(10, 10)).toBe(100);
   });
 
   describe('toDateKey', () => {
