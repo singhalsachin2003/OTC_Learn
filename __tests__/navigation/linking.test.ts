@@ -60,6 +60,10 @@ describe('parseDeepLink', () => {
     expect(parseDeepLink('otclearn://exam')).toEqual({ screen: 'exam' });
   });
 
+  it('resolves the notes list', () => {
+    expect(parseDeepLink('otclearn://notes')).toEqual({ screen: 'notes' });
+  });
+
   it('resolves the glossary', () => {
     expect(parseDeepLink('otclearn://glossary')).toEqual({ screen: 'glossary' });
   });
@@ -160,6 +164,13 @@ describe('actionsForLink', () => {
   it('opens the exam setup screen under the profile tab', () => {
     expect(landOn('otclearn://exam')).toMatchObject({
       currentScreen: 'exam',
+      currentTab: 'profile',
+    });
+  });
+
+  it('opens the notes list under the profile tab', () => {
+    expect(landOn('otclearn://notes')).toMatchObject({
+      currentScreen: 'notes',
       currentTab: 'profile',
     });
   });

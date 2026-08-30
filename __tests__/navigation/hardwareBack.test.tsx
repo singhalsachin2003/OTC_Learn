@@ -11,6 +11,7 @@ import {
   navigateToQuiz,
   type TabName,
 } from '../../src/store/slices/appSlice';
+import { EXAM_SCOPE_ALL } from '../../src/utils/exam';
 import { startQuiz } from '../../src/store/slices/quizSlice';
 import { renderWithStore } from '../helpers/renderWithStore';
 
@@ -187,49 +188,56 @@ describe('Android hardware back button', () => {
   });
 
   /**
-   * BUG — asserts the behaviour the screen map calls for, which the source does
-   * not yet have: `useHardwareBack` sends the glossary and achievements back to
-   * `tab`, not to profile (`goToTab(tab === 'profile' ? 'profile' : tab)` is an
-   * identity). Reached by `otclearn://glossary` — the one entry point that does
-   * not go through the profile tab — back therefore lands on home.
-   *
-   * `it.failing` here and below: the expectation is the intended behaviour, so
-   * these turn red the moment the hook is fixed and the `.failing` comes off.
+   * The three screens v1.2 added are reached from Profile too. They were not
+   * listed in the hook, so back fell through to the category branch and left
+   * the user on an asset class they never opened.
    */
-  it.failing(
-    'goes from a deep-linked glossary back to profile, not to the tab behind it',
-    async () => {
-      const { store } = await renderWithStore(<RootNavigator />);
-      await act(async () => {
-        store.dispatch(navigateToGlossary());
-      });
+  it.each([
+    ['profile-insights', 'insights-screen'],
+    ['profile-exam', 'exam-screen'],
+    ['profile-notes', 'notes-screen'],
+  ])('goes from %s back to profile', async (row, reached) => {
+    await renderWithStore(<RootNavigator />);
+    await fireEvent.press(screen.getByTestId('tab-profile'));
+    await fireEvent.press(screen.getByTestId(row));
+    expect(screen.getByTestId(reached)).toBeTruthy();
 
-      expect(await pressBack()).toBe(true);
-      expect(screen.getByTestId('profile-screen')).toBeTruthy();
-    },
-  );
-
-  it.failing(
-    'goes from deep-linked achievements back to profile, not to the tab behind it',
-    async () => {
-      const { store } = await renderWithStore(<RootNavigator />);
-      await act(async () => {
-        store.dispatch(navigateToAchievements());
-      });
-
-      expect(await pressBack()).toBe(true);
-      expect(screen.getByTestId('profile-screen')).toBeTruthy();
-    },
-  );
+    expect(await pressBack()).toBe(true);
+    expect(screen.getByTestId('profile-screen')).toBeTruthy();
+  });
 
   /**
-   * BUG — a review sitting carries no product, so the results screen falls
-   * through to `goToCategory(categoryId ?? '')`. Started from a cold app there
-   * is no category either, and back lands on a category screen reading "That
-   * asset class is unavailable". The on-screen `results-back` control and
-   * `useQuizExit` both return a review to its tab; this should match them.
+   * Reached by `otclearn://glossary` — the one entry point that does not go
+   * through the profile tab. Back used to land on home, because the hook sent
+   * these screens to `tab` rather than to profile.
    */
-  it.failing('goes from review results back to the review tab', async () => {
+  it('goes from a deep-linked glossary back to profile, not to the tab behind it', async () => {
+    const { store } = await renderWithStore(<RootNavigator />);
+    await act(async () => {
+      store.dispatch(navigateToGlossary());
+    });
+
+    expect(await pressBack()).toBe(true);
+    expect(screen.getByTestId('profile-screen')).toBeTruthy();
+  });
+
+  it('goes from deep-linked achievements back to profile, not to the tab behind it', async () => {
+    const { store } = await renderWithStore(<RootNavigator />);
+    await act(async () => {
+      store.dispatch(navigateToAchievements());
+    });
+
+    expect(await pressBack()).toBe(true);
+    expect(screen.getByTestId('profile-screen')).toBeTruthy();
+  });
+
+  /**
+   * A review sitting carries no product, so back used to fall through to
+   * `goToCategory(categoryId ?? '')` — a category screen reading "That asset
+   * class is unavailable" from a cold app. It now matches the on-screen
+   * `results-back` control and `useQuizExit`.
+   */
+  it('goes from review results back to the review tab', async () => {
     const store = createStore();
     store.dispatch(
       startQuiz({
@@ -246,6 +254,27 @@ describe('Android hardware back button', () => {
 
     expect(await pressBack()).toBe(true);
     expect(screen.getByTestId('review-screen')).toBeTruthy();
+  });
+
+  /** An exam spans products too, and its results return to the exam screen. */
+  it('goes from exam results back to the exam screen', async () => {
+    const store = createStore();
+    store.dispatch(
+      startQuiz({
+        questions: getProductById('fxfwd')!.quiz.slice(0, 1),
+        mode: 'exam',
+        productId: null,
+        scopeId: EXAM_SCOPE_ALL,
+        startedAt: Date.now(),
+      }),
+    );
+    store.dispatch(navigateToQuiz());
+    await renderWithStore(<RootNavigator />, { store });
+    await finishQuiz(store);
+    expect(screen.getByTestId('results-screen')).toBeTruthy();
+
+    expect(await pressBack()).toBe(true);
+    expect(screen.getByTestId('exam-screen')).toBeTruthy();
   });
 
   it('removes its listener on unmount', async () => {

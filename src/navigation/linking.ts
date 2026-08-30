@@ -7,6 +7,7 @@ import {
   navigateToHome,
   navigateToInsights,
   navigateToLesson,
+  navigateToNotes,
   navigateToProduct,
   navigateToTab,
   type ScreenName,
@@ -29,7 +30,7 @@ export interface ParsedLink {
  * - `otclearn://product/<id>` — the product page
  * - `otclearn://lesson/<id>` — straight into the lesson
  * - `otclearn://review`, `otclearn://profile`, `otclearn://glossary`,
- *   `otclearn://insights`, `otclearn://exam`
+ *   `otclearn://insights`, `otclearn://exam`, `otclearn://notes`
  *
  * Returns `null` for anything that does not resolve to real content, so an
  * unrecognised link leaves the user where they were rather than on a blank
@@ -57,6 +58,10 @@ export function parseDeepLink(url: string): ParsedLink | null {
 
   if (kind === 'exam') {
     return { screen: 'exam' };
+  }
+
+  if (kind === 'notes') {
+    return { screen: 'notes' };
   }
 
   if (kind === 'category' && categories.some((c) => c.id === id)) {
@@ -111,6 +116,8 @@ export function actionsForLink(link: ParsedLink) {
       return [navigateToTab('profile'), navigateToInsights()];
     case 'exam':
       return [navigateToTab('profile'), navigateToExam()];
+    case 'notes':
+      return [navigateToTab('profile'), navigateToNotes()];
     default:
       return [navigateToHome()];
   }

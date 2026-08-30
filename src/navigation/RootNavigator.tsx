@@ -13,6 +13,7 @@ import { GlossaryScreen } from '../screens/Glossary/GlossaryScreen';
 import { InsightsScreen } from '../screens/Insights/InsightsScreen';
 import { HomeScreen } from '../screens/Home/HomeScreen';
 import { LessonScreen } from '../screens/Lesson/LessonScreen';
+import { NotesScreen } from '../screens/Notes/NotesScreen';
 import { ProductScreen } from '../screens/Product/ProductScreen';
 import { ProductsScreen } from '../screens/Products/ProductsScreen';
 import { ProfileScreen } from '../screens/Profile/ProfileScreen';
@@ -90,6 +91,8 @@ function Screen() {
       return <InsightsScreen />;
     case 'exam':
       return <ExamScreen />;
+    case 'notes':
+      return <NotesScreen />;
     case 'home':
     default:
       return <HomeScreen />;

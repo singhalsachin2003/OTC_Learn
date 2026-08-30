@@ -8,6 +8,7 @@ import {
   navigateToHome,
   navigateToInsights,
   navigateToLesson,
+  navigateToNotes,
   navigateToProduct,
   navigateToQuiz,
   navigateToResults,
@@ -32,6 +33,7 @@ export interface AppNavigation {
   goToAchievements: () => void;
   goToInsights: () => void;
   goToExam: () => void;
+  goToNotes: () => void;
   /** Enters a drawn exam paper. The draw itself happens in `useQuiz`. */
   goToExamQuiz: () => void;
 }
@@ -125,6 +127,10 @@ export function useNavigation(): AppNavigation {
     dispatch(navigateToExam());
   }, [dispatch]);
 
+  const goToNotes = useCallback(() => {
+    dispatch(navigateToNotes());
+  }, [dispatch]);
+
   // Takes no product, for the same reason `goToReviewQuiz` does not: an exam
   // spans many products, so selecting one would misattribute the sitting.
   const goToExamQuiz = useCallback(() => {
@@ -146,6 +152,7 @@ export function useNavigation(): AppNavigation {
       goToInsights,
       goToExam,
       goToExamQuiz,
+      goToNotes,
     }),
     [
       goToTab,
@@ -161,6 +168,7 @@ export function useNavigation(): AppNavigation {
       goToInsights,
       goToExam,
       goToExamQuiz,
+      goToNotes,
     ],
   );
 }

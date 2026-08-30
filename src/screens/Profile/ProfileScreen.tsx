@@ -42,8 +42,17 @@ export function ProfileScreen() {
   const longest = useLongestStreak();
   const bookmarks = useBookmarks();
   const unlocked = useAppSelector((state) => state.progress.unlockedAchievementIds);
-  const { goToGlossary, goToAchievements, goToInsights, goToExam, goToTab } =
-    useNavigation();
+  const noteCount = useAppSelector(
+    (state) => Object.keys(state.notes.byProduct).length,
+  );
+  const {
+    goToGlossary,
+    goToAchievements,
+    goToInsights,
+    goToExam,
+    goToNotes,
+    goToTab,
+  } = useNavigation();
   const { queuedCount } = useReview();
   const {
     overallPercent,
@@ -208,6 +217,12 @@ export function ProfileScreen() {
             label="Glossary"
             value="All key terms"
             onPress={goToGlossary}
+          />
+          <DisclosureRow
+            testID="profile-notes"
+            label="Notes"
+            value={String(noteCount)}
+            onPress={goToNotes}
           />
           <DisclosureRow
             testID="profile-saved"

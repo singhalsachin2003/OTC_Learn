@@ -2,15 +2,24 @@ import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
 import { getProductById } from '../data/products';
-import { isTabScreen } from '../store/slices/appSlice';
+import { isTabScreen, type ScreenName } from '../store/slices/appSlice';
 import {
+  useAppSelector,
   useCurrentScreen,
-  useCurrentTab,
   useSelectedCategoryId,
   useSelectedProductId,
 } from './useAppState';
 import { useNavigation } from './useNavigation';
 import { useQuizExit } from './useQuizExit';
+
+/** Detail screens whose in-app back control returns to the Profile tab. */
+const PROFILE_DETAIL_SCREENS: readonly ScreenName[] = [
+  'glossary',
+  'achievements',
+  'insights',
+  'exam',
+  'notes',
+];
 
 /**
  * Mirrors each screen's in-app back control on the Android hardware button.
@@ -25,10 +34,10 @@ import { useQuizExit } from './useQuizExit';
  */
 export function useHardwareBack() {
   const screen = useCurrentScreen();
-  const tab = useCurrentTab();
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
-  const { goHome, goToTab, goToCategory, goToProduct } = useNavigation();
+  const { goHome, goToTab, goToCategory, goToProduct, goToExam } = useNavigation();
+  const mode = useAppSelector((state) => state.quiz.mode);
   const exitQuiz = useQuizExit();
 
   useEffect(() => {
@@ -52,9 +61,11 @@ export function useHardwareBack() {
         return true;
       }
 
-      // Screens reached from Profile return to it.
-      if (screen === 'glossary' || screen === 'achievements') {
-        goToTab(tab === 'profile' ? 'profile' : tab);
+      // Screens reached from Profile return to it. Every one of them has to
+      // be listed: anything not named here falls through to the category
+      // branch below and backs out to a category the user never opened.
+      if (PROFILE_DETAIL_SCREENS.includes(screen)) {
+        goToTab('profile');
         return true;
       }
 
@@ -65,13 +76,26 @@ export function useHardwareBack() {
 
       const product = getProductById(productId);
 
-      // The lesson and the results both sit under a product, so back goes to
-      // the product page rather than skipping past it to the category.
-      if (screen === 'lesson' || screen === 'results') {
-        if (product !== undefined) {
+      // Mirrors the results screen's own `results-back` control: an exam and a
+      // review sitting each span many products, so neither has one to return
+      // to, and falling through to the category branch below lands on "That
+      // asset class is unavailable".
+      if (screen === 'results') {
+        if (mode === 'exam') {
+          goToExam();
+        } else if (mode === 'review' || product === undefined) {
+          goToTab('review');
+        } else {
           goToProduct(product.id);
-          return true;
         }
+        return true;
+      }
+
+      // A lesson sits under a product, so back goes to the product page rather
+      // than skipping past it to the category.
+      if (screen === 'lesson' && product !== undefined) {
+        goToProduct(product.id);
+        return true;
       }
 
       goToCategory(categoryId ?? product?.categoryId ?? '');
@@ -86,13 +110,14 @@ export function useHardwareBack() {
     return () => subscription.remove();
   }, [
     screen,
-    tab,
     categoryId,
     productId,
+    mode,
     goHome,
     goToTab,
     goToCategory,
     goToProduct,
+    goToExam,
     exitQuiz,
   ]);
 }

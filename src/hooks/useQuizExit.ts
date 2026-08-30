@@ -22,16 +22,21 @@ import { useNavigation } from './useNavigation';
 export function useQuizExit(): () => void {
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
-  const { goToCategory, goToTab } = useNavigation();
+  const { goToCategory, goToTab, goToExam } = useNavigation();
   const mode = useAppSelector((state) => state.quiz.mode);
   const hasAnswers = useAppSelector(
     (state) => state.quiz.answers.length > 0 || state.quiz.isAnswered,
   );
 
   return useCallback(() => {
-    // A review sitting spans several products, so there is no single category
-    // to fall back to — it returns to the tab it was started from.
+    // A review sitting and an exam each span several products, so neither has
+    // a single category to fall back to — they return where they were started
+    // from, matching what the results screen's own back control does.
     const leave = () => {
+      if (mode === 'exam') {
+        goToExam();
+        return;
+      }
       if (mode === 'review') {
         goToTab('review');
         return;
@@ -54,5 +59,5 @@ export function useQuizExit(): () => void {
       ],
       { cancelable: true },
     );
-  }, [categoryId, productId, goToCategory, goToTab, hasAnswers, mode]);
+  }, [categoryId, productId, goToCategory, goToTab, goToExam, hasAnswers, mode]);
 }
