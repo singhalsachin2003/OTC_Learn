@@ -81,6 +81,40 @@ call is a version check against `u.expo.dev` at launch. Both choices are reflect
 
 No submission blockers remain — see "v1.1 production build" above.
 
+### Live in production (read from the Play Console, 2026-08-30)
+
+`4 (1.1.0)` has been **available on Google Play, full roll-out, in 177 of 177
+countries since 16 August 2026** — the console lists no staged percentage and no
+policy holds. Installed audience is 21, split 85.71% on versionCode 4 and 14.29%
+still on `3 (1.0.0)`, which remains on the Alpha closed-testing track. So roughly
+eighteen real installs have now been running v1.1 for two weeks, which is the
+first real-user exposure the storage migration and the four native modules have
+had — it is not device verification (nobody has reported back), but item 1 below
+is no longer entirely unexercised.
+
+### Before anything can be sold
+
+The console will not let a subscription or a one-time product be created at all:
+both pages answer with **"To add one-time products, you need to add the BILLING
+permission to your APK"**. `com.android.vending.BILLING` is not in the shipped
+bundle — v1.1's verified permission list is `INTERNET`, `POST_NOTIFICATIONS`,
+`RECEIVE_BOOT_COMPLETED`, `VIBRATE` and the generated receiver permission, and
+nothing has added billing since.
+
+That fixes the order of the monetisation work, which was previously assumed to
+start with the RevenueCat account:
+
+1. Add the billing dependency so the merged manifest declares `BILLING`, and
+   ship it to a test track. This is native code, so it needs a real build — an
+   `eas update` cannot carry it.
+2. Only then can the subscription be created in the Play Console.
+3. The RevenueCat account and API key are needed to *wire* entitlements, but
+   not to clear step 1.
+
+Also read while confirming this: subscription settings are enabled, real-time
+developer notifications are **not** configured (no Pub/Sub topic set), and the
+base64 licensing public key is available in Monetisation setup when it is needed.
+
 ### Verification gaps
 
 1. **Only the happy path has been seen on a device.** Verified on a Pixel 7 emulator on
