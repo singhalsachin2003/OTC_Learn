@@ -104,37 +104,83 @@ export const restoreSession = createAsyncThunk<void, void, { state: RootState }>
   },
 );
 
+/**
+ * How long to wait before retrying the sync that follows a sign-in.
+ *
+ * A token is rejected with "JWT issued at future" when its `iat` is ahead of
+ * the validating server's clock, and the sync immediately after sign-in is the
+ * one moment that is genuinely exposed to it: the token is milliseconds old, so
+ * even sub-second skew between the auth server and Postgres is enough. Seconds
+ * later the same token is accepted — which is why a manual "Sync now" always
+ * appeared to work and made this look like a bug in the sync path.
+ */
+export const SIGN_IN_SYNC_RETRY_MS = 2500;
+
 export const signIn = createAsyncThunk<
   boolean,
-  { email: string; password: string; signingUp?: boolean },
+  {
+    email: string;
+    password: string;
+    signingUp?: boolean;
+    /** Injectable so a test does not sit through the delay. */
+    retryDelayMs?: number;
+  },
   { state: RootState }
->('sync/signIn', async ({ email, password, signingUp = false }, { dispatch }) => {
-  const client = getSupabaseClient();
-  if (client === null) {
-    dispatch(syncFailed('This build has no sync configured.'));
-    return false;
-  }
+>(
+  'sync/signIn',
+  async (
+    { email, password, signingUp = false, retryDelayMs = SIGN_IN_SYNC_RETRY_MS },
+    { dispatch },
+  ) => {
+    const client = getSupabaseClient();
+    if (client === null) {
+      dispatch(syncFailed('This build has no sync configured.'));
+      return false;
+    }
 
-  dispatch(setSyncStatus('busy'));
+    dispatch(setSyncStatus('busy'));
 
-  const credentials = { email: email.trim(), password };
-  const { data, error } = signingUp
-    ? await client.auth.signUp(credentials)
-    : await client.auth.signInWithPassword(credentials);
+    const credentials = { email: email.trim(), password };
 
-  if (error !== null || data.user === null) {
-    dispatch(syncFailed(error?.message ?? 'Could not sign in.'));
-    return false;
-  }
+    // `signInWithPassword` returns its errors, but it can also throw — a dropped
+    // connection does. Without this the thunk rejects, the slice never hears
+    // about it, and the button sits on "Working…" for the rest of the session.
+    let userId: string;
+    let userEmail: string | null;
+    try {
+      const { data, error } = signingUp
+        ? await client.auth.signUp(credentials)
+        : await client.auth.signInWithPassword(credentials);
 
-  dispatch(setSession({ userId: data.user.id, email: data.user.email ?? null }));
-  dispatch(setSyncStatus('idle'));
-  track({ name: signingUp ? 'account_created' : 'signed_in' });
+      if (error !== null || data.user === null) {
+        dispatch(syncFailed(error?.message ?? 'Could not sign in.'));
+        return false;
+      }
+      userId = data.user.id;
+      userEmail = data.user.email ?? null;
+    } catch (error) {
+      dispatch(syncFailed(messageFrom(error)));
+      return false;
+    }
 
-  // A first sync straight after signing in is the whole point of signing in.
-  await dispatch(syncNow());
-  return true;
-});
+    dispatch(setSession({ userId, email: userEmail }));
+    dispatch(setSyncStatus('idle'));
+    track({ name: signingUp ? 'account_created' : 'signed_in' });
+
+    // A first sync straight after signing in is the whole point of signing in.
+    // The id is passed rather than left to be read back out of the store.
+    const synced = await dispatch(syncNow({ userId }));
+
+    // Retried once, and only here — see SIGN_IN_SYNC_RETRY_MS. Everywhere else a
+    // failed sync is left failed, because the user can see it and ask again.
+    if (synced.payload === false) {
+      await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+      await dispatch(syncNow({ userId }));
+    }
+
+    return true;
+  },
+);
 
 /**
  * Signs out without touching a single study record.
@@ -147,17 +193,25 @@ export const signIn = createAsyncThunk<
 export const signOutAccount = createAsyncThunk<void, void, { state: RootState }>(
   'sync/signOut',
   async (_arg, { dispatch }) => {
+    // Cleared first, and the revoke is deliberately not awaited before it.
+    //
+    // Awaiting the network call and clearing afterwards opened a race: sign out,
+    // sign straight back in while the revoke is still in flight, and the late
+    // `clearSession` lands on top of the session the new sign-in had already
+    // established — leaving the app signed in with no user id, so the sync that
+    // follows returns early and silently does nothing. Locally the session is
+    // gone the moment the user asks; the revoke is the server's business.
+    dispatch(clearSession());
+    track({ name: 'signed_out' });
+
     const client = getSupabaseClient();
     if (client !== null) {
       try {
         await client.auth.signOut();
       } catch {
-        // The local session is gone either way; a failed revoke is the
-        // server's problem, not something to trap the user in.
+        // A failed revoke is not something to trap the user in.
       }
     }
-    dispatch(clearSession());
-    track({ name: 'signed_out' });
   },
 );
 
@@ -171,12 +225,16 @@ export const signOutAccount = createAsyncThunk<void, void, { state: RootState }>
  */
 export const syncNow = createAsyncThunk<
   boolean,
-  { transport?: SyncTransport } | undefined,
+  { transport?: SyncTransport; userId?: string } | undefined,
   { state: RootState }
 >('sync/now', async (arg, { dispatch, getState }) => {
   const state = getState();
-  const userId = state.sync.userId;
-  if (userId === null) {
+  // The caller may already hold the id — `signIn` does, having just been handed
+  // it by Supabase. Taking it directly removes any dependence on the session
+  // having propagated through the store first, which is one fewer ordering
+  // assumption in a path that has already proved it can get them wrong.
+  const userId = arg?.userId ?? state.sync.userId;
+  if (userId === null || userId === undefined) {
     return false;
   }
 

@@ -1,8 +1,9 @@
-import { fireEvent, screen } from '@testing-library/react-native';
+import { act, fireEvent, screen } from '@testing-library/react-native';
 
 import { AccountScreen } from '../../src/screens/Account/AccountScreen';
 import { createStore, type AppStore } from '../../src/store';
 import {
+  clearSession,
   setSession,
   syncFailed,
   syncSucceeded,
@@ -179,6 +180,35 @@ describe('AccountScreen signed in', () => {
     expect(
       screen.getByText('Signing out leaves everything on this device untouched.'),
     ).toBeTruthy();
+  });
+
+  /**
+   * The screen never unmounts — signing out flips a branch — so without an
+   * explicit clear the form comes back holding the last email *and the last
+   * password*, and typing into it appends to them rather than replacing.
+   */
+  it('does not keep the credentials once a session exists', async () => {
+    const store = createStore();
+    await renderWithStore(<AccountScreen />, { store });
+
+    await fireEvent.changeText(
+      screen.getByTestId('account-email-input'),
+      'student@example.com',
+    );
+    await fireEvent.changeText(
+      screen.getByTestId('account-password-input'),
+      'hunter2',
+    );
+
+    await act(async () => {
+      store.dispatch(setSession({ userId: 'u1', email: 'student@example.com' }));
+    });
+    await act(async () => {
+      store.dispatch(clearSession());
+    });
+
+    expect(screen.getByTestId('account-email-input')).toHaveDisplayValue('');
+    expect(screen.getByTestId('account-password-input')).toHaveDisplayValue('');
   });
 
   it('signs out without touching study data', async () => {

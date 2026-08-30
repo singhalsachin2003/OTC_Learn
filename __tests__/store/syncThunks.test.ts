@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { createStore, type AppStore } from '../../src/store';
+import { clearSession } from '../../src/store/slices/syncSlice';
 import { setNotes } from '../../src/store/slices/notesSlice';
 import { setProgress } from '../../src/store/slices/progressSlice';
 import { setSession } from '../../src/store/slices/syncSlice';
@@ -37,6 +38,44 @@ function signedIn(): AppStore {
 
 beforeEach(async () => {
   await AsyncStorage.clear();
+});
+
+describe('syncNow with an explicit user id', () => {
+  /**
+   * Regression. `signIn` passes the id Supabase just handed it rather than
+   * reading it back out of the store, so a sync cannot be defeated by the
+   * session not having propagated — which is how a sign-out race left the app
+   * signed in, unsynced, and silent about it.
+   */
+  it('syncs on an id from the caller even when the store has none', async () => {
+    const store = createStore();
+    const { transport, pushed } = fakeTransport();
+
+    const result = await store.dispatch(syncNow({ transport, userId: 'user-1' }));
+
+    expect(result.payload).toBe(true);
+    expect(pushed).toHaveLength(1);
+  });
+
+  it('still falls back to the store when given no id', async () => {
+    const store = signedIn();
+    const { transport, pushed } = fakeTransport();
+
+    await store.dispatch(syncNow({ transport }));
+
+    expect(pushed).toHaveLength(1);
+  });
+
+  /** A late `clearSession` must not be able to cancel a sync already asked for. */
+  it('is unaffected by the session being cleared underneath it', async () => {
+    const store = signedIn();
+    const { transport, pushed } = fakeTransport();
+    store.dispatch(clearSession());
+
+    await store.dispatch(syncNow({ transport, userId: 'user-1' }));
+
+    expect(pushed).toHaveLength(1);
+  });
 });
 
 describe('syncNow', () => {

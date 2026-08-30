@@ -89,7 +89,36 @@ cmd_link() {
   _wait_for_ui && echo "opened otclearn://$1"
 }
 cmd_shot()   { "$ADB" exec-out screencap -p > "$SHOTS/$1.png" && echo "$SHOTS/$1.png"; }
-cmd_type()   { "$ADB" shell input text "${1// /%s}"; }
+# Types, then checks what actually landed.
+#
+# `adb shell input text` drops characters. Not often, and not reproducibly —
+# an email arrived as "otc-sync-test@" once, with everything after the @ simply
+# missing, which then failed sign-in with "Invalid login credentials" and looked
+# for all the world like an app bug. Verifying costs one dump and removes an
+# entire category of false diagnosis.
+cmd_type() {
+  _has_focus || _wait_for_ui || return 1
+  local text="$1" i
+  for i in 1 2 3; do
+    "$ADB" shell input text "${text// /%s}"
+    sleep 1
+    if cmd_screen 2>/dev/null | grep -qF -- "$text"; then
+      return 0
+    fi
+    # Secure fields render as bullets, so there is nothing to compare against —
+    # accept the first attempt rather than retyping a password three times.
+    if cmd_screen 2>/dev/null | grep -q "•"; then
+      return 0
+    fi
+    print -u2 -- "  retyping (attempt $i landed short)"
+    # Clear whatever partial text arrived before trying again.
+    "$ADB" shell input keyevent KEYCODE_MOVE_END >/dev/null 2>&1
+    local n
+    for n in $(seq 1 60); do "$ADB" shell input keyevent KEYCODE_DEL >/dev/null 2>&1; done
+  done
+  print -u2 -- "✗ could not type \"$text\" reliably"
+  return 1
+}
 # Only E/F level, and only from this app. Matching "AndroidRuntime" loosely
 # picks up benign debug chatter from uiautomator on every call.
 cmd_errors() {
@@ -105,19 +134,34 @@ cmd_errors() {
 # 15 seconds was enough once and not the next time. `App.tsx` renders null until
 # fonts and hydration settle, and a screenshot taken during that is a black
 # frame indistinguishable from a crash. So poll for real content instead.
+# Focus first, then content.
+#
+# Sending a tap while the app has no focused window does not fail — it queues,
+# and Android eventually kills the app with "Input dispatching timed out
+# (Application does not have a focused window)". An ANR raised by the harness
+# looks exactly like an ANR in the app, and costs the same amount of time to
+# disbelieve.
+_has_focus() {
+  "$ADB" shell dumpsys window 2>/dev/null | grep -q "mCurrentFocus=.*$PKG"
+}
+
 _wait_for_ui() {
   local i
   for i in $(seq 1 40); do
-    [ -n "$(cmd_screen 2>/dev/null | head -1)" ] && return 0
+    if _has_focus && [ -n "$(cmd_screen 2>/dev/null | head -1)" ]; then
+      return 0
+    fi
     sleep 2
   done
-  print -u2 -- "✗ no UI after 80s — check ./driver.sh errors"
+  print -u2 -- "✗ app not focused or not drawing after 80s — ./driver.sh errors"
   return 1
 }
 
 cmd_restart() {
   "$ADB" shell am force-stop "$PKG"; sleep 2
-  "$ADB" shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
+  # Explicit component, not `monkey` — monkey exits 0 without launching often
+  # enough to waste a diagnosis.
+  "$ADB" shell am start -n "$PKG/.MainActivity" >/dev/null 2>&1
   echo "waiting for the app to draw…"
   _wait_for_ui && echo "up"
 }
@@ -138,6 +182,7 @@ print("\n".join(seen))'
 
 cmd_tap() {
   local needle="$1"
+  _has_focus || _wait_for_ui || return 1
   _dump | python3 -c '
 import os, re, subprocess, sys
 needle = sys.argv[1]

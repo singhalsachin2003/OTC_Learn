@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { BackButton } from '../../components/common/BackButton';
@@ -23,13 +23,24 @@ export function AccountScreen() {
   const { goToTab } = useNavigation();
   const sync = useAppSelector((state) => state.sync);
   const configured = isSyncConfigured();
+  const signedIn = sync.userId !== null;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [creating, setCreating] = useState(false);
 
+  // Emptied once a session exists, which is the only moment they are certainly
+  // no longer needed. The screen never unmounts — signing out just flips a
+  // branch — so without this the form comes back carrying the last email *and
+  // the last password*, and typing into it appends rather than replaces.
+  useEffect(() => {
+    if (signedIn) {
+      setEmail('');
+      setPassword('');
+    }
+  }, [signedIn]);
+
   const busy = sync.status === 'busy';
-  const signedIn = sync.userId !== null;
   const canSubmit = email.trim() !== '' && password !== '' && !busy;
 
   return (

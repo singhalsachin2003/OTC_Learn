@@ -190,13 +190,31 @@ npm run verify        # type-check + lint + format:check + test — the CI gate
 - **`$UID` is read-only in zsh.** Assigning a Supabase user id to it fails with
   `bad math expression`. Name it something else.
 
-- **Sign in twice in one app session and the automatic post-sign-in sync does
-  not land.** Signing out then straight back in leaves "Not synced yet"; a
-  manual "Sync now" then works immediately. Not yet root-caused — suspected
-  race between `signOut` clearing the stored session and `signInWithPassword`
-  writing the new one. Tapping "Sync now" is the workaround, and any sync error
-  is now displayed on the signed-in screen (it previously was not, which is how
-  this went unnoticed).
+- **"JWT issued at future" on the sync straight after signing in.** Postgres
+  refuses a token whose `iat` is ahead of its own clock, and that sync uses a
+  token milliseconds old, so sub-second skew between the auth server and the
+  database is enough to fail it. Seconds later the same token is accepted —
+  which is why a manual "Sync now" always worked and made this look like a bug
+  in the sync path for far longer than it should have. `signIn` now retries once
+  after `SIGN_IN_SYNC_RETRY_MS`. If you see it anywhere else, wait and retry.
+
+- **Sending input while the app has no focused window kills it.** Not with an
+  error — the events queue and Android raises
+  `Input dispatching timed out (Application does not have a focused window)`,
+  which presents as "OTC Learn isn't responding". An ANR the harness caused
+  looks exactly like an ANR in the app. `tap` and `type` wait for focus first;
+  if you drive adb by hand, check
+  `dumpsys window | grep mCurrentFocus` before sending anything.
+
+- **`adb shell input text` drops characters.** Rarely, and not reproducibly. An
+  email once arrived as `otc-sync-test@` with everything after the `@` missing,
+  which failed sign-in with "Invalid login credentials" and cost a diagnosis.
+  `type` now reads the field back and retypes if it landed short — but a
+  password field renders as bullets and cannot be verified, so a mistyped
+  password still presents as bad credentials.
+
+- **`monkey -c LAUNCHER` sometimes exits 0 without launching anything.** Use
+  `am start -n com.otclearn.app/.MainActivity`, which is what `restart` does.
 
 - **`errors` must filter to E/F level.** Matching `AndroidRuntime` loosely picks
   up benign debug chatter that uiautomator emits on every `screen` and `tap`.
