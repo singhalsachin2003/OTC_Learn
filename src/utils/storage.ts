@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import type { ExamResult } from './exam';
+import type { Note } from './notes';
 import { emptyProgress, MASTERY_COMPLETE, type ProductProgress } from './mastery';
 import type { QuestionStat } from './quizSession';
 import type { ReviewItem } from './review';
@@ -29,6 +30,7 @@ export const STORAGE_KEYS = {
   bookmarks: '@otc-learn/bookmarks',
   achievements: '@otc-learn/achievements',
   examResults: '@otc-learn/exam-results',
+  notes: '@otc-learn/notes',
 } as const;
 
 export const SCHEMA_VERSION = 2;
@@ -353,6 +355,39 @@ export async function saveExamResults(
   const trimmed =
     results.length > MAX_EXAM_RESULTS ? results.slice(-MAX_EXAM_RESULTS) : results;
   return writeJson(STORAGE_KEYS.examResults, trimmed);
+}
+
+/**
+ * Notes are the only content the user authors, so a malformed entry is dropped
+ * individually rather than failing the whole map — losing one note to a corrupt
+ * write is bad, losing every note to it is worse.
+ *
+ * Additive like the exam history, so no schema bump: an absent key already
+ * loads as an empty map.
+ */
+export async function loadNotes(): Promise<Record<string, Note>> {
+  const stored = await readJson<unknown>(STORAGE_KEYS.notes);
+  if (!isRecord(stored)) {
+    return {};
+  }
+  const out: Record<string, Note> = {};
+  for (const [productId, value] of Object.entries(stored)) {
+    if (
+      isRecord(value) &&
+      typeof value.body === 'string' &&
+      value.body.trim().length > 0 &&
+      typeof value.updatedOn === 'string'
+    ) {
+      out[productId] = { body: value.body, updatedOn: value.updatedOn };
+    }
+  }
+  return out;
+}
+
+export async function saveNotes(
+  notes: Readonly<Record<string, Note>>,
+): Promise<boolean> {
+  return writeJson(STORAGE_KEYS.notes, notes);
 }
 
 export async function loadAchievements(): Promise<string[]> {

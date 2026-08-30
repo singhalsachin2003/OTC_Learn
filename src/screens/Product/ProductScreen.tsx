@@ -26,6 +26,7 @@ import {
 import { track } from '../../utils/analytics';
 import { masteryBand } from '../../utils/mastery';
 import { KeyTermList } from './components/KeyTermList';
+import { NoteEditor } from './components/NoteEditor';
 import { RelatedProducts } from './components/RelatedProducts';
 import { WorkedExample } from './components/WorkedExample';
 
@@ -170,6 +171,10 @@ export function ProductScreen() {
 
         <Section title="IN PRACTICE">
           <Text style={styles.body}>{product.inPractice}</Text>
+        </Section>
+
+        <Section title="YOUR NOTE">
+          <NoteEditor productId={product.id} />
         </Section>
 
         <Section title="READ NEXT">

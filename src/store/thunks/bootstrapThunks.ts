@@ -5,6 +5,7 @@ import {
   loadAchievements,
   loadBookmarks,
   loadExamResults,
+  loadNotes,
   loadProfile,
   loadProgressMap,
   loadQuestionHistory,
@@ -14,6 +15,7 @@ import {
   loadStudyDays,
   runMigrations,
 } from '../../utils/storage';
+import { clearNotes, setNotes } from '../slices/notesSlice';
 import type { RootState } from '../index';
 import {
   setAchievements,
@@ -64,6 +66,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         bookmarks,
         unlocked,
         examResults,
+        notes,
       ] = await Promise.all([
         loadProgressMap(),
         loadQuestionHistory(),
@@ -75,6 +78,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         loadBookmarks(),
         loadAchievements(),
         loadExamResults(),
+        loadNotes(),
       ]);
 
       dispatch(setProgress(progress));
@@ -84,6 +88,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
       dispatch(setBookmarks(bookmarks));
       dispatch(setAchievements(unlocked));
       dispatch(setExamResults(examResults));
+      dispatch(setNotes(notes));
       dispatch(setSettings(settings));
       dispatch(setName(profile.name));
 
@@ -119,5 +124,6 @@ export const resetEverything = createAsyncThunk<void, void, { state: RootState }
     dispatch(resetReview());
     dispatch(resetStreak());
     dispatch(resetSettings());
+    dispatch(clearNotes());
   },
 );

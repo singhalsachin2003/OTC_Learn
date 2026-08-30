@@ -1,0 +1,111 @@
+import {
+  editNote,
+  isNoteEmpty,
+  notePreview,
+  NOTE_MAX_LENGTH,
+  remainingLength,
+  sortedNotes,
+  type NoteMap,
+} from '../../src/utils/notes';
+
+const TODAY = '2026-08-30';
+
+describe('editNote', () => {
+  it('stores a trimmed note', () => {
+    expect(editNote('  a swap is a swap  ', TODAY)).toEqual({
+      body: 'a swap is a swap',
+      updatedOn: TODAY,
+    });
+  });
+
+  /**
+   * An empty note is a deletion. Storing a blank would bring the note back on
+   * the next launch as an empty card the user has to clear again.
+   */
+  it('treats an empty body as a deletion', () => {
+    expect(editNote('', TODAY)).toBeNull();
+    expect(editNote('   \n  ', TODAY)).toBeNull();
+  });
+
+  it('caps a very long note rather than rejecting it', () => {
+    const note = editNote('x'.repeat(NOTE_MAX_LENGTH + 500), TODAY);
+
+    expect(note?.body).toHaveLength(NOTE_MAX_LENGTH);
+  });
+
+  it('keeps internal whitespace, trimming only the ends', () => {
+    expect(editNote('  two\n\nparagraphs  ', TODAY)?.body).toBe(
+      'two\n\nparagraphs',
+    );
+  });
+});
+
+describe('isNoteEmpty', () => {
+  it('is true only for whitespace', () => {
+    expect(isNoteEmpty('')).toBe(true);
+    expect(isNoteEmpty('  \t ')).toBe(true);
+    expect(isNoteEmpty(' a ')).toBe(false);
+  });
+});
+
+describe('remainingLength', () => {
+  it('counts down from the cap', () => {
+    expect(remainingLength('')).toBe(NOTE_MAX_LENGTH);
+    expect(remainingLength('abc')).toBe(NOTE_MAX_LENGTH - 3);
+  });
+
+  it('goes negative once the cap is passed', () => {
+    expect(remainingLength('x'.repeat(NOTE_MAX_LENGTH + 5))).toBe(-5);
+  });
+});
+
+describe('sortedNotes', () => {
+  const notes: NoteMap = {
+    irs: { body: 'first', updatedOn: '2026-08-01' },
+    fxfwd: { body: 'latest', updatedOn: '2026-08-30' },
+    cds: { body: 'middle', updatedOn: '2026-08-15' },
+  };
+
+  it('lists the most recently edited first', () => {
+    expect(sortedNotes(notes).map((n) => n.productId)).toEqual([
+      'fxfwd',
+      'cds',
+      'irs',
+    ]);
+  });
+
+  it('breaks ties on product id so the order is stable', () => {
+    const sameDay: NoteMap = {
+      zeta: { body: 'z', updatedOn: TODAY },
+      alpha: { body: 'a', updatedOn: TODAY },
+    };
+
+    expect(sortedNotes(sameDay).map((n) => n.productId)).toEqual(['alpha', 'zeta']);
+    expect(sortedNotes(sameDay)).toEqual(sortedNotes(sameDay));
+  });
+
+  it('skips absent entries rather than listing them blank', () => {
+    expect(sortedNotes({ irs: undefined })).toEqual([]);
+  });
+
+  it('handles an empty map', () => {
+    expect(sortedNotes({})).toEqual([]);
+  });
+});
+
+describe('notePreview', () => {
+  it('collapses newlines into a single line', () => {
+    expect(notePreview('two\n\n  lines')).toBe('two lines');
+  });
+
+  it('leaves a short note whole', () => {
+    expect(notePreview('short')).toBe('short');
+  });
+
+  it('ellipsises a long note without a dangling space', () => {
+    const preview = notePreview(`${'a'.repeat(78)} bcd`, 80);
+
+    expect(preview.endsWith('…')).toBe(true);
+    expect(preview).not.toContain(' …');
+  });
+});
