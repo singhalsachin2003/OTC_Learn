@@ -61,6 +61,20 @@ mid-task. Not on every write: quiz answers land in bursts, and a request per
 answer would be a great deal of traffic to protect a few bytes that the next
 session's sync would carry anyway.
 
+## The project as it stands
+
+Applied on 2026-08-30 and verified from outside the dashboard, because a schema
+that is believed to be applied is not the same as one that is:
+
+- All eleven tables answer on the Data API.
+- Every one of them refuses an unauthenticated insert with `42501`, "new row
+  violates row-level security policy". That is the check that matters — the
+  publishable key ships inside the app bundle, so anyone who installs the app
+  has it. A `select` returning `[]` proves nothing on an empty database; a
+  refused write proves the policy is live.
+- The Security Advisor reports no errors, so splinter found no public table
+  without RLS.
+
 ## Auth
 
 **Email and password only, to begin with.** Google sign-in on Android needs the
@@ -69,6 +83,28 @@ owns the keystore rather than this repo — so it is extra setup that cannot be
 done from here, for a convenience rather than a capability. It can be added
 later without touching any of the above, because the schema keys off
 `auth.users.id` regardless of how the user got there.
+
+### Email delivery is the blocker, not the auth code
+
+The project's current settings are the Supabase defaults, and two of them
+combine badly:
+
+- **Confirm email is on.** Nobody can sign in until they click a link.
+- **`RATE_LIMIT_EMAIL_SENT` is 2.** Two emails per hour, for the whole project,
+  from Supabase's built-in sender — which is documented as being for testing
+  rather than production.
+
+So the third person to sign up in any given hour never receives a confirmation
+and cannot get in, with nothing on either side reporting why. This has to be
+settled before accounts are offered to anyone:
+
+- **Custom SMTP** — Resend, SES, Postmark or similar — is needed before launch
+  in any case, because password reset is an email flow and hits the same limit
+  whatever confirmation is set to.
+- **Turning confirmation off** unblocks development and early users immediately,
+  at the cost of accepting addresses nobody has proved they own. For an app with
+  no social surface and nothing sensitive stored, that is a defensible trade —
+  but it is the owner's to make, so nothing has been changed.
 
 ## Before any of this can be written
 
