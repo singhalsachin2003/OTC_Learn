@@ -34,3 +34,7 @@ yarn-error.*
 # Editors
 .idea/
 *.iml
+
+# Local agent tooling — session state, not project source.
+.claude/
+.claude-flow/
