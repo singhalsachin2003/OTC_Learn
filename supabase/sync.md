@@ -55,11 +55,19 @@ Two rules carry the weight and are worth stating plainly:
 
 ## When sync runs
 
-On launch after `hydrateApp` resolves, and after a session completes — the two
-moments where the local state has just changed meaningfully and the user is not
-mid-task. Not on every write: quiz answers land in bursts, and a request per
-answer would be a great deal of traffic to protect a few bytes that the next
-session's sync would carry anyway.
+On launch after `hydrateApp` resolves, and on demand from the Account screen.
+Not on every write: quiz answers land in bursts, and a request per answer would
+be a great deal of traffic to protect a few bytes the next sync carries anyway.
+
+The launch call is fired and not awaited, and nothing that renders waits on it.
+A device with no signal, an expired token or a paused free-tier project has to
+behave exactly like the app did before any of this existed.
+
+Order within one sync is pull, merge, **save**, push. Saving before the upload
+is deliberate: if the push fails the device still holds everything the server
+had, where losing the pull because the push failed would make a flaky network
+cost the user data. What gets pushed is the merged snapshot rather than what the
+device started with, so a single round trip converges both sides.
 
 ## The project as it stands
 

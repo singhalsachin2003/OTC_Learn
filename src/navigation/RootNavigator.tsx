@@ -6,6 +6,7 @@ import { useDeepLinks } from '../hooks/useDeepLinks';
 import { useHardwareBack } from '../hooks/useHardwareBack';
 import { useNavigation } from '../hooks/useNavigation';
 import { useReview } from '../hooks/useReview';
+import { AccountScreen } from '../screens/Account/AccountScreen';
 import { AchievementsScreen } from '../screens/Achievements/AchievementsScreen';
 import { CategoryScreen } from '../screens/Category/CategoryScreen';
 import { ExamScreen } from '../screens/Exam/ExamScreen';
@@ -93,6 +94,8 @@ function Screen() {
       return <ExamScreen />;
     case 'notes':
       return <NotesScreen />;
+    case 'account':
+      return <AccountScreen />;
     case 'home':
     default:
       return <HomeScreen />;

@@ -45,12 +45,15 @@ export function ProfileScreen() {
   const noteCount = useAppSelector(
     (state) => Object.keys(state.notes.byProduct).length,
   );
+  const syncEmail = useAppSelector((state) => state.sync.email);
+  const signedIn = useAppSelector((state) => state.sync.userId !== null);
   const {
     goToGlossary,
     goToAchievements,
     goToInsights,
     goToExam,
     goToNotes,
+    goToAccount,
     goToTab,
   } = useNavigation();
   const { queuedCount } = useReview();
@@ -235,9 +238,16 @@ export function ProfileScreen() {
 
         <Text style={styles.sectionTitle}>DATA</Text>
         <View style={styles.rows}>
+          <DisclosureRow
+            testID="profile-account"
+            label="Account"
+            value={signedIn ? (syncEmail ?? 'Signed in') : 'Off'}
+            onPress={goToAccount}
+          />
           <Text style={styles.dataNote}>
-            Everything is stored on this device only. There is no account, and
-            nothing is uploaded.
+            {signedIn
+              ? 'Your progress is backed up to your account. Nothing else leaves this device.'
+              : 'Everything is stored on this device only. Sign in if you want your progress to survive a reinstall.'}
             {settings.dailyReminder
               ? ' The daily reminder is scheduled locally.'
               : ''}

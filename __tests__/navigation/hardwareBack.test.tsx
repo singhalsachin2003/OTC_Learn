@@ -196,6 +196,7 @@ describe('Android hardware back button', () => {
     ['profile-insights', 'insights-screen'],
     ['profile-exam', 'exam-screen'],
     ['profile-notes', 'notes-screen'],
+    ['profile-account', 'account-screen'],
   ])('goes from %s back to profile', async (row, reached) => {
     await renderWithStore(<RootNavigator />);
     await fireEvent.press(screen.getByTestId('tab-profile'));

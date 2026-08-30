@@ -64,6 +64,10 @@ describe('parseDeepLink', () => {
     expect(parseDeepLink('otclearn://notes')).toEqual({ screen: 'notes' });
   });
 
+  it('resolves the account screen', () => {
+    expect(parseDeepLink('otclearn://account')).toEqual({ screen: 'account' });
+  });
+
   it('resolves the glossary', () => {
     expect(parseDeepLink('otclearn://glossary')).toEqual({ screen: 'glossary' });
   });
@@ -171,6 +175,13 @@ describe('actionsForLink', () => {
   it('opens the notes list under the profile tab', () => {
     expect(landOn('otclearn://notes')).toMatchObject({
       currentScreen: 'notes',
+      currentTab: 'profile',
+    });
+  });
+
+  it('opens the account screen under the profile tab', () => {
+    expect(landOn('otclearn://account')).toMatchObject({
+      currentScreen: 'account',
       currentTab: 'profile',
     });
   });

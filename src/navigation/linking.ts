@@ -1,6 +1,7 @@
 import { categories } from '../data/categories';
 import { products } from '../data/products';
 import {
+  navigateToAccount,
   navigateToCategory,
   navigateToExam,
   navigateToGlossary,
@@ -30,7 +31,8 @@ export interface ParsedLink {
  * - `otclearn://product/<id>` — the product page
  * - `otclearn://lesson/<id>` — straight into the lesson
  * - `otclearn://review`, `otclearn://profile`, `otclearn://glossary`,
- *   `otclearn://insights`, `otclearn://exam`, `otclearn://notes`
+ *   `otclearn://insights`, `otclearn://exam`, `otclearn://notes`,
+ *   `otclearn://account`
  *
  * Returns `null` for anything that does not resolve to real content, so an
  * unrecognised link leaves the user where they were rather than on a blank
@@ -62,6 +64,10 @@ export function parseDeepLink(url: string): ParsedLink | null {
 
   if (kind === 'notes') {
     return { screen: 'notes' };
+  }
+
+  if (kind === 'account') {
+    return { screen: 'account' };
   }
 
   if (kind === 'category' && categories.some((c) => c.id === id)) {
@@ -118,6 +124,8 @@ export function actionsForLink(link: ParsedLink) {
       return [navigateToTab('profile'), navigateToExam()];
     case 'notes':
       return [navigateToTab('profile'), navigateToNotes()];
+    case 'account':
+      return [navigateToTab('profile'), navigateToAccount()];
     default:
       return [navigateToHome()];
   }

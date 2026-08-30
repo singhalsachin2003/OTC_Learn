@@ -10,6 +10,7 @@ import {
   toggleBookmark,
 } from '../../src/store/slices/progressSlice';
 import { setName } from '../../src/store/slices/settingsSlice';
+import { setSession } from '../../src/store/slices/syncSlice';
 import { renderWithStore } from '../helpers/renderWithStore';
 
 type AlertButton = { text?: string; onPress?: () => void };
@@ -97,6 +98,7 @@ describe('ProfileScreen', () => {
     ['profile-achievements', 'achievements'],
     ['profile-glossary', 'glossary'],
     ['profile-notes', 'notes'],
+    ['profile-account', 'account'],
     ['profile-saved', 'products'],
   ])('opens %s', async (testID, expected) => {
     const store = createStore();
@@ -105,6 +107,29 @@ describe('ProfileScreen', () => {
     await fireEvent.press(screen.getByTestId(testID));
 
     expect(store.getState().app.currentScreen).toBe(expected);
+  });
+
+  /** Sync is off until someone signs in, and the row must not imply otherwise. */
+  it('reports the account as off until signed in', async () => {
+    await renderWithStore(<ProfileScreen />);
+
+    expect(screen.getByTestId('profile-account')).toHaveTextContent(
+      'AccountOff  ›',
+    );
+    expect(
+      screen.getByText(/Sign in if you want your progress to survive a reinstall/),
+    ).toBeTruthy();
+  });
+
+  it('names the account once signed in', async () => {
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'student@example.com' }));
+    await renderWithStore(<ProfileScreen />, { store });
+
+    expect(screen.getByTestId('profile-account')).toHaveTextContent(
+      'Accountstudent@example.com  ›',
+    );
+    expect(screen.getByText(/backed up to your account/)).toBeTruthy();
   });
 
   /** The queue count is a read-out, not a way in — there is a tab for that. */

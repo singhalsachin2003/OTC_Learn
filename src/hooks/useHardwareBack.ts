@@ -19,6 +19,7 @@ const PROFILE_DETAIL_SCREENS: readonly ScreenName[] = [
   'insights',
   'exam',
   'notes',
+  'account',
 ];
 
 /**

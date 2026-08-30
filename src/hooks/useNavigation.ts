@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import {
+  navigateToAccount,
   navigateToAchievements,
   navigateToCategory,
   navigateToGlossary,
@@ -34,6 +35,7 @@ export interface AppNavigation {
   goToInsights: () => void;
   goToExam: () => void;
   goToNotes: () => void;
+  goToAccount: () => void;
   /** Enters a drawn exam paper. The draw itself happens in `useQuiz`. */
   goToExamQuiz: () => void;
 }
@@ -131,6 +133,10 @@ export function useNavigation(): AppNavigation {
     dispatch(navigateToNotes());
   }, [dispatch]);
 
+  const goToAccount = useCallback(() => {
+    dispatch(navigateToAccount());
+  }, [dispatch]);
+
   // Takes no product, for the same reason `goToReviewQuiz` does not: an exam
   // spans many products, so selecting one would misattribute the sitting.
   const goToExamQuiz = useCallback(() => {
@@ -153,6 +159,7 @@ export function useNavigation(): AppNavigation {
       goToExam,
       goToExamQuiz,
       goToNotes,
+      goToAccount,
     }),
     [
       goToTab,
@@ -169,6 +176,7 @@ export function useNavigation(): AppNavigation {
       goToExam,
       goToExamQuiz,
       goToNotes,
+      goToAccount,
     ],
   );
 }

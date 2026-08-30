@@ -13,6 +13,7 @@ import { RootNavigator } from './navigation/RootNavigator';
 import { store } from './store';
 import { hydrateApp } from './store/thunks/bootstrapThunks';
 import { recordActivity } from './store/thunks/streakThunks';
+import { restoreSession, syncNow } from './store/thunks/syncThunks';
 import { colors } from './theme';
 import { initErrorReporting } from './utils/errorReporting';
 import { syncReminder } from './utils/notifications';
@@ -40,6 +41,18 @@ function AppContent() {
       // keeping the preference. `syncReminder` repairs or reports either.
       const { settings } = store.getState().settings;
       void syncReminder(settings.dailyReminder);
+
+      // Sync last, and never awaited by anything that renders. It runs after
+      // hydration so the merge sees the device's real state rather than the
+      // initial one, and a device with no signal, an expired token or a paused
+      // free-tier project has to behave exactly like the app did before sync
+      // existed — which means nothing here may block the screen.
+      void (async () => {
+        await store.dispatch(restoreSession());
+        if (store.getState().sync.userId !== null) {
+          await store.dispatch(syncNow());
+        }
+      })();
     }
 
     void bootstrap();

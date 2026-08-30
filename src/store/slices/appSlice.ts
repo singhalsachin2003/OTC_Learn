@@ -14,7 +14,8 @@ export type ScreenName =
   | 'achievements'
   | 'insights'
   | 'exam'
-  | 'notes';
+  | 'notes'
+  | 'account';
 
 /**
  * Screens that are a tab root. Everything else is a detail screen pushed on
@@ -128,6 +129,11 @@ const appSlice = createSlice({
       state.currentScreen = 'notes';
     },
 
+    /** Sign in, or the state of the account already signed in. */
+    navigateToAccount(state) {
+      state.currentScreen = 'account';
+    },
+
     setProductQuery(state, action: PayloadAction<string>) {
       state.productQuery = action.payload;
     },
@@ -147,6 +153,7 @@ export const {
   navigateToInsights,
   navigateToExam,
   navigateToNotes,
+  navigateToAccount,
   setProductQuery,
 } = appSlice.actions;
 
