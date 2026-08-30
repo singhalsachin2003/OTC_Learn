@@ -7,6 +7,7 @@ import quizReducer, { type QuizState } from './slices/quizSlice';
 import reviewReducer, { type ReviewState } from './slices/reviewSlice';
 import settingsReducer, { type SettingsState } from './slices/settingsSlice';
 import streakReducer, { type StreakState } from './slices/streakSlice';
+import syncReducer, { type SyncState } from './slices/syncSlice';
 
 /**
  * Declared explicitly rather than inferred from `store.getState()`. The thunk
@@ -21,6 +22,7 @@ export interface RootState {
   review: ReviewState;
   settings: SettingsState;
   streak: StreakState;
+  sync: SyncState;
 }
 
 export const rootReducer = {
@@ -31,6 +33,7 @@ export const rootReducer = {
   review: reviewReducer,
   settings: settingsReducer,
   streak: streakReducer,
+  sync: syncReducer,
 };
 
 /** Builds an isolated store — used by the app root and by tests. */

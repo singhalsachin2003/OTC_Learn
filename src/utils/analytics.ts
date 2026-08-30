@@ -29,6 +29,12 @@ export type AnalyticsEvent =
   | { name: 'bookmark_toggled'; productId: string; bookmarked: boolean }
   | { name: 'reminder_toggled'; enabled: boolean }
   | { name: 'progress_reset' }
+  // Sync events carry no identifier of any kind. Whose account it is has no
+  // bearing on whether sync works, and the sink is a crash reporter.
+  | { name: 'account_created' }
+  | { name: 'signed_in' }
+  | { name: 'signed_out' }
+  | { name: 'sync_completed' }
   | {
       /** A render error caught by `ErrorBoundary`. */
       name: 'app_error';

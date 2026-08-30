@@ -407,3 +407,100 @@ export function mergeStreak(
     longestStreak: Math.max(local.longestStreak, remote.longest_streak),
   };
 }
+
+// ---------------------------------------------------------------------------
+// The whole picture
+
+/** Everything sync moves, in the app's own shapes. */
+export interface LocalSnapshot {
+  progress: Record<string, ProductProgress>;
+  questionHistory: Record<string, QuestionStat | undefined>;
+  reviewQueue: ReviewItem[];
+  notes: Record<string, Note | undefined>;
+  studyDays: string[];
+  achievements: string[];
+  examResults: ExamResult[];
+  streak: StoredStreak;
+  /** When the streak figures last changed, since `StoredStreak` carries no time. */
+  streakUpdatedAt: number;
+}
+
+/**
+ * The result of a merge: the same picture with the holes closed.
+ *
+ * `LocalSnapshot` tolerates `undefined` values because that is what a
+ * `Record` in Redux genuinely holds — a deleted note leaves a hole. A merged
+ * snapshot has resolved every one of those, and saying so in the type stops
+ * each caller from re-proving it.
+ */
+export interface SyncedSnapshot extends LocalSnapshot {
+  questionHistory: Record<string, QuestionStat>;
+  notes: Record<string, Note>;
+}
+
+/** The same, in the shapes Postgres returns. */
+export interface RemoteSnapshot {
+  progress: ProgressRow[];
+  questionHistory: QuestionHistoryRow[];
+  reviewQueue: ReviewRow[];
+  notes: NoteRow[];
+  studyDays: string[];
+  achievements: string[];
+  examResults: ExamResultRow[];
+  streak: StreakRow | null;
+}
+
+export const emptyRemoteSnapshot: RemoteSnapshot = {
+  progress: [],
+  questionHistory: [],
+  reviewQueue: [],
+  notes: [],
+  studyDays: [],
+  achievements: [],
+  examResults: [],
+  streak: null,
+};
+
+/**
+ * Applies every rule above in one pass.
+ *
+ * The result is what both sides should hold, which is why the caller pushes
+ * *this* rather than what it started with: one round trip converges the device
+ * and the server together, instead of leaving the server a version behind until
+ * the next sync.
+ */
+export function mergeSnapshot(
+  local: LocalSnapshot,
+  remote: RemoteSnapshot,
+): SyncedSnapshot {
+  return {
+    progress: mergeProgress(local.progress, remote.progress),
+    questionHistory: mergeQuestionHistory(
+      local.questionHistory,
+      remote.questionHistory,
+    ),
+    reviewQueue: mergeReviewQueue(local.reviewQueue, remote.reviewQueue),
+    notes: mergeNotes(local.notes, remote.notes),
+    studyDays: mergeStringSet(local.studyDays, remote.studyDays),
+    achievements: mergeStringSet(local.achievements, remote.achievements),
+    examResults: mergeExamResults(local.examResults, remote.examResults),
+    streak: mergeStreak(local.streak, local.streakUpdatedAt, remote.streak),
+    streakUpdatedAt: Math.max(
+      local.streakUpdatedAt,
+      msFrom(remote.streak?.updated_at ?? null),
+    ),
+  };
+}
+
+/**
+ * Moves a snapshot between the device and wherever it is stored.
+ *
+ * An interface rather than a concrete client, so the orchestration above can be
+ * tested against a fake that returns exactly the rows a case needs — including
+ * the ones a real server would be awkward to coax into producing, like a
+ * retirement older than the local edit.
+ */
+export interface SyncTransport {
+  pull(): Promise<RemoteSnapshot>;
+  push(snapshot: SyncedSnapshot): Promise<void>;
+}
