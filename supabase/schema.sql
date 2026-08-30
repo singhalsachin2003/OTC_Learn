@@ -208,22 +208,54 @@ create index if not exists exam_results_taken_idx
 -- Row level security
 --
 -- Nothing in this app is shared between users, so every table gets the same
--- policy: you may do anything to your own rows and nothing to anyone else's.
--- `with check` as well as `using` on the write policies, or a client could
--- update a row of its own into someone else's user_id.
+-- treatment: you may do anything to your own rows and nothing to anyone else's.
+--
+-- The `enable` statements are written out one per table rather than looped,
+-- even though the policies below are generated. Static analysis — including the
+-- Supabase SQL editor's own pre-flight check — cannot see inside `execute
+-- format(...)`, so a looped version reads to every tool, and to a reviewer
+-- skimming the file, as eleven tables created with no RLS at all. Being
+-- greppable matters more here than being short: this is the block that stands
+-- between a publishable key and everyone's data.
+
+alter table public.profiles enable row level security;
+alter table public.settings enable row level security;
+alter table public.product_progress enable row level security;
+alter table public.question_history enable row level security;
+alter table public.review_queue enable row level security;
+alter table public.study_days enable row level security;
+alter table public.streaks enable row level security;
+alter table public.bookmarks enable row level security;
+alter table public.achievements enable row level security;
+alter table public.notes enable row level security;
+alter table public.exam_results enable row level security;
+
+-- The policies themselves are generated, because eleven tables x four verbs is
+-- forty-four near-identical statements and a hand-written set is where one
+-- eventually goes missing. `with check` as well as `using` on the write
+-- policies, or a client could update a row of its own into someone else's
+-- user_id.
 
 do $$
 declare
   t text;
 begin
   foreach t in array array[
-    'profiles', 'settings', 'product_progress', 'question_history',
-    'review_queue', 'study_days', 'streaks', 'bookmarks', 'achievements',
-    'notes', 'exam_results'
+    'profiles',
+    'settings',
+    'product_progress',
+    'question_history',
+    'review_queue',
+    'study_days',
+    'streaks',
+    'bookmarks',
+    'achievements',
+    'notes',
+    'exam_results'
   ]
   loop
-    execute format('alter table public.%I enable row level security', t);
-
+    -- Idempotent by dropping first: Postgres has no `create policy if not
+    -- exists`, and this file has to survive being run twice.
     execute format('drop policy if exists own_rows_select on public.%I', t);
     execute format(
       'create policy own_rows_select on public.%I for select using (auth.uid() = user_id)', t);
