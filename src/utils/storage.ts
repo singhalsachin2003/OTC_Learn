@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import type { ExamResult } from './exam';
+import { examResultId, type ExamResult } from './exam';
 import type { Note } from './notes';
 import { emptyProgress, MASTERY_COMPLETE, type ProductProgress } from './mastery';
 import type { QuestionStat } from './quizSession';
@@ -33,7 +33,7 @@ export const STORAGE_KEYS = {
   notes: '@otc-learn/notes',
 } as const;
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export interface StoredStreak {
   currentStreak: number;
@@ -320,6 +320,10 @@ function parseExamResult(value: unknown): ExamResult | null {
     return null;
   }
   return {
+    // A sitting stored before v3 has no id. One is minted here so a caller
+    // never sees a result without one; the migration writes them back, which is
+    // what makes them stable rather than new on every load.
+    id: typeof value.id === 'string' ? value.id : examResultId(value.takenOn),
     takenOn: value.takenOn,
     scopeId: value.scopeId,
     correct: value.correct,
@@ -333,10 +337,9 @@ function parseExamResult(value: unknown): ExamResult | null {
 }
 
 /**
- * Added after schema v2 without a version bump: an absent key already loads as
- * an empty history, so there is nothing to migrate. Bumping the version would
- * only re-run the v1 progress migration against installs that have no v1 data
- * left to migrate.
+ * Exam results arrived after schema v2 without a version bump, because an
+ * absent key already loads as an empty history. v3 bumps it for a different
+ * reason — see `migrateExamResultIds`.
  */
 export async function loadExamResults(): Promise<ExamResult[]> {
   const stored = await readJson<unknown>(STORAGE_KEYS.examResults);
@@ -438,6 +441,37 @@ export async function migrateV1Progress(): Promise<Record<
 }
 
 /**
+ * v2 -> v3: gives every stored sitting a stable id.
+ *
+ * `parseExamResult` already mints one for a record that lacks it, but a minted
+ * id is only stable once it has been written back — otherwise every launch
+ * invents a different one, and an upload keyed by it would record the same
+ * sitting again each time. This is that write-back.
+ *
+ * Returns false only when there was something to write and the write failed,
+ * so the caller can leave the version unstamped and try again next launch.
+ */
+export async function migrateExamResultIds(): Promise<boolean> {
+  const stored = await readJson<unknown>(STORAGE_KEYS.examResults);
+  if (!Array.isArray(stored)) {
+    return true;
+  }
+
+  const needsId = stored.some(
+    (value) => isRecord(value) && typeof value.id !== 'string',
+  );
+  if (!needsId) {
+    return true;
+  }
+
+  // Parsing mints the ids; saving is what makes them stick.
+  const parsed = stored
+    .map(parseExamResult)
+    .filter((result): result is ExamResult => result !== null);
+  return saveExamResults(parsed);
+}
+
+/**
  * Runs any pending migration and stamps the schema version.
  *
  * Idempotent: the version stamp is written last, so a crash mid-migration
@@ -467,6 +501,12 @@ export async function runMigrations(): Promise<void> {
     } catch {
       // A stale v1 key is harmless — the version stamp stops it being re-read.
     }
+  }
+
+  // Same rule as the progress migration above: a failed write must not be
+  // stamped as done, or the ids stay unstable and nothing retries.
+  if (!(await migrateExamResultIds())) {
+    return;
   }
 
   await writeJson(STORAGE_KEYS.schemaVersion, SCHEMA_VERSION);

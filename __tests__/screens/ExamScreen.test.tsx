@@ -73,6 +73,7 @@ describe('ExamScreen', () => {
     store.dispatch(
       setExamResults([
         {
+          id: 'exam-1',
           takenOn: '2026-08-20',
           scopeId: 'ir',
           correct: 18,
@@ -98,6 +99,7 @@ describe('ExamScreen', () => {
     store.dispatch(
       setExamResults([
         {
+          id: 'exam-2',
           takenOn: '2026-08-01',
           scopeId: 'ir',
           correct: 10,
@@ -107,6 +109,7 @@ describe('ExamScreen', () => {
           durationMs: null,
         },
         {
+          id: 'exam-3',
           takenOn: '2026-08-28',
           scopeId: EXAM_SCOPE_ALL,
           correct: 16,

@@ -72,16 +72,20 @@ later without touching any of the above, because the schema keys off
 
 ## Before any of this can be written
 
-- **`ExamResult` has no id.** `utils/exam.ts` stores sittings as a plain list,
-  so there is nothing to make an upload idempotent — a retry after a failed
-  request would record the same sitting twice. Adding a client-generated id is a
-  storage migration, v2 to v3, and it has to land before `exam_results` is
-  written to.
+- ~~**`ExamResult` has no id.**~~ Done. `ExamResult.id` is minted by
+  `examResultId` when a sitting is recorded, and schema v3 backfills every
+  sitting stored before it. The write-back is the point: `parseExamResult` mints
+  an id for a record that lacks one, so without persisting it every launch would
+  invent a different one and an upload keyed by it would record the same sitting
+  again each time.
 - **`updated_at` is not tracked locally.** The tables above resolve conflicts by
-  it, but the device currently records only date keys such as `lastStudiedOn`,
-  which are a day's resolution and cannot order two sessions on the same day.
-  The same v3 migration should carry a timestamp on the records that merge by
-  one.
+  it, but the device records only date keys such as `lastStudiedOn`, which are a
+  day's resolution and cannot order two sessions on the same day. This is
+  deliberately **not** done yet: it touches mastery, the review queue, notes,
+  bookmarks, settings and the profile, and exactly which records need a
+  timestamp is decided by the sync client that reads them. A wide change to the
+  persistence layer of an app with live installs should land next to the code
+  that proves it, not months ahead of it.
 - **The project itself.** The URL and anon key go in `EXPO_PUBLIC_SUPABASE_URL`
   and `EXPO_PUBLIC_SUPABASE_ANON_KEY`. Both are inlined by Babel at build time
   rather than read at runtime, so — exactly as `initErrorReporting` already does

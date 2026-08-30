@@ -495,6 +495,7 @@ describe('storage', () => {
 
   describe('exam results', () => {
     const sitting = {
+      id: 'exam-1',
       takenOn: '2026-08-30',
       scopeId: 'ir',
       correct: 14,
@@ -697,6 +698,83 @@ describe('storage', () => {
     // The v1 key is the only copy of that progress until the v2 write lands, so
     // a failed write must leave both it and the missing version stamp behind —
     // otherwise one bad write destroys everything the user had done.
+    describe('v2 -> v3 exam result ids', () => {
+      /** A sitting as v2 stored it: everything except an id. */
+      const legacySitting = {
+        takenOn: '2026-08-20',
+        scopeId: 'ir',
+        correct: 8,
+        total: 10,
+        scorePct: 80,
+        passed: true,
+        durationMs: 120_000,
+      };
+
+      it('gives a stored sitting an id and writes it back', async () => {
+        await writeRaw(STORAGE_KEYS.examResults, JSON.stringify([legacySitting]));
+
+        await runMigrations();
+
+        const raw = await AsyncStorage.getItem(STORAGE_KEYS.examResults);
+        const stored = JSON.parse(raw ?? '[]') as { id?: string }[];
+        expect(typeof stored[0].id).toBe('string');
+        expect(stored[0]).toMatchObject(legacySitting);
+      });
+
+      /**
+       * The whole point of the write-back. `parseExamResult` mints an id for a
+       * record that lacks one, so without persisting it every launch would
+       * invent a different id and an upload keyed by it would record the same
+       * sitting again each time.
+       */
+      it('keeps the same id across reloads', async () => {
+        await writeRaw(STORAGE_KEYS.examResults, JSON.stringify([legacySitting]));
+        await runMigrations();
+
+        const first = await loadExamResults();
+        const second = await loadExamResults();
+
+        expect(first[0].id).toBe(second[0].id);
+      });
+
+      it('leaves a sitting that already has an id alone', async () => {
+        await writeRaw(
+          STORAGE_KEYS.examResults,
+          JSON.stringify([{ ...legacySitting, id: 'already-mine' }]),
+        );
+
+        await runMigrations();
+
+        await expect(loadExamResults()).resolves.toMatchObject([
+          { id: 'already-mine' },
+        ]);
+      });
+
+      it('has nothing to do on an install that has never sat an exam', async () => {
+        await runMigrations();
+
+        await expect(
+          AsyncStorage.getItem(STORAGE_KEYS.schemaVersion),
+        ).resolves.toBe(JSON.stringify(SCHEMA_VERSION));
+        await expect(loadExamResults()).resolves.toEqual([]);
+      });
+
+      // Same rule as the progress migration: an unstamped version is what makes
+      // the next launch try again, so a failed write must not be stamped.
+      it('does not stamp the version when the write fails', async () => {
+        await writeRaw(STORAGE_KEYS.examResults, JSON.stringify([legacySitting]));
+        jest
+          .spyOn(AsyncStorage, 'setItem')
+          .mockRejectedValueOnce(new Error('disk full'));
+
+        await runMigrations();
+
+        await expect(
+          AsyncStorage.getItem(STORAGE_KEYS.schemaVersion),
+        ).resolves.toBeNull();
+      });
+    });
+
     it('leaves the v1 data alone when the migrated write fails', async () => {
       await writeRaw(STORAGE_KEYS.completedProducts, JSON.stringify(['irs']));
       // One-shot, not `mockImplementation`: `jest.spyOn` on a property that is
@@ -761,6 +839,7 @@ describe('storage', () => {
       await saveSettings({ ...defaultSettings, haptics: false });
       await saveExamResults([
         {
+          id: 'exam-2',
           takenOn: '2026-08-30',
           scopeId: 'ir',
           correct: 14,

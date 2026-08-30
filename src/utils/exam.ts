@@ -208,6 +208,15 @@ export function gradeExam(
 
 /** A finished exam, as persisted. */
 export interface ExamResult {
+  /**
+   * Stable identity for one sitting, minted when it is recorded.
+   *
+   * Two identical sittings on the same day are indistinguishable by their
+   * contents, so without this there is no way to tell a re-upload from a second
+   * exam — and an upload that is not idempotent records the same sitting twice
+   * every time a request is retried.
+   */
+  id: string;
   /** Local date key of the sitting. */
   takenOn: string;
   scopeId: string;
@@ -220,6 +229,24 @@ export interface ExamResult {
 }
 
 /** Newest first, so a history list reads without reversing it at the call site. */
+/**
+ * Mints an id for a sitting.
+ *
+ * Takes its randomness as an argument for the same reason `buildSession` does:
+ * a test that cannot fix the id cannot assert on one. The date prefix is there
+ * to make a stored history readable by eye, not to carry meaning — nothing
+ * parses it back out.
+ */
+export function examResultId(
+  takenOn: string,
+  rng: () => number = Math.random,
+): string {
+  const suffix = Math.floor(rng() * 0xffffffff)
+    .toString(36)
+    .padStart(7, '0');
+  return `${takenOn}-${suffix}`;
+}
+
 export function sortResults(results: readonly ExamResult[]): ExamResult[] {
   return [...results].sort((a, b) => b.takenOn.localeCompare(a.takenOn));
 }

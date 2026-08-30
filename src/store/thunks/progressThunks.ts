@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { earnedAchievements } from '../../data/achievements';
 import { getQuestionById } from '../../data/products';
-import { gradeExam, type ExamResult } from '../../utils/exam';
+import { examResultId, gradeExam, type ExamResult } from '../../utils/exam';
 import { toDateKey } from '../../utils/formatters';
 import {
   saveAchievements,
@@ -221,8 +221,10 @@ export const completeExamSession = createAsyncThunk<
       unansweredCount,
     );
 
+    const takenOn = toDateKey();
     const result: ExamResult = {
-      takenOn: toDateKey(),
+      id: examResultId(takenOn),
+      takenOn,
       scopeId,
       correct: grade.correct,
       total: grade.total,

@@ -3,6 +3,7 @@ import {
   bestResultFor,
   buildExamPaper,
   EXAM_PASS_MARK,
+  examResultId,
   gradeExam,
   SECONDS_PER_QUESTION,
   sortResults,
@@ -276,9 +277,28 @@ describe('gradeExam', () => {
   });
 });
 
+describe('examResultId', () => {
+  it('is stable for a fixed source of randomness', () => {
+    expect(examResultId('2026-08-30', () => 0.5)).toBe(
+      examResultId('2026-08-30', () => 0.5),
+    );
+  });
+
+  it('differs for the same day when the randomness does', () => {
+    expect(examResultId('2026-08-30', () => 0.25)).not.toBe(
+      examResultId('2026-08-30', () => 0.75),
+    );
+  });
+
+  it('leads with the date so a stored history reads by eye', () => {
+    expect(examResultId('2026-08-30', () => 0.5)).toMatch(/^2026-08-30-/);
+  });
+});
+
 describe('exam history', () => {
   function result(overrides: Partial<ExamResult> = {}): ExamResult {
     return {
+      id: 'exam-1',
       takenOn: '2026-08-30',
       scopeId: 'ir',
       correct: 7,
