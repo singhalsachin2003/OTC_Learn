@@ -133,11 +133,16 @@ base64 licensing public key is available in Monetisation setup when it is needed
 
 ### Housekeeping
 
-- **Screen-level test coverage is thin** where the logic is thickest in components:
-  `SettingsRows` 35%, `QuizTimer` 29%, `ReviewScreen` 39%, `ProfileScreen` 69%,
-  `LessonScreen` 71%. Deliberately left after the pure logic, the store and the
-  start-up path were taken to 100%: these fail visibly on screen, whereas a wrong
-  review interval or a lost answer index fails silently. Worth closing, not urgent.
+- **Screen-level test coverage was thin** where the logic is thickest in components.
+  Closed on 2026-08-30: `SettingsRows` 35% → 100%, `ProfileScreen` 69% → 100%,
+  `ReviewScreen` 39% → 93%, `QuizTimer` → 100%, `LessonScreen` 71% → 80%. The
+  project is at 95% statements overall.
+
+  What is left in `LessonScreen` is the `PanResponder` body: driving it needs a
+  fabricated touch history, and the rules it applies are pure and already covered
+  in `__tests__/utils/swipe.test.ts`. `ReviewScreen`'s `whenLabel` still has an
+  unreachable `'Today'` branch — both callers exclude items that are already due —
+  left in place as a guard rather than deleted.
 ### Deferred by choice
 
 - **Crash reporting.** v1.1 ships dark: the Sentry code is merged and tested but no DSN
