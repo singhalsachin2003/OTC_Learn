@@ -35,6 +35,8 @@ yarn-error.*
 .idea/
 *.iml
 
-# Local agent tooling — session state, not project source.
-.claude/
+# Local agent tooling — session state, not project source. `skills/` is the
+# exception: a run skill is checked-in tooling, not session scratch.
+.claude/*
+!.claude/skills/
 .claude-flow/

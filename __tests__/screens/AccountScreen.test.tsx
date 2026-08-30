@@ -150,6 +150,26 @@ describe('AccountScreen signed in', () => {
   });
 
   /**
+   * Regression: the error was only rendered on the signed-out branch, so a
+   * signed-in user whose sync failed saw "Not synced yet" and no reason at all.
+   * Caught by driving the real app, not by these tests — which is why it is
+   * here now.
+   */
+  it('says why a sync failed rather than just showing no timestamp', async () => {
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'student@example.com' }));
+    store.dispatch(syncFailed('JWT expired'));
+    await renderWithStore(<AccountScreen />, { store });
+
+    expect(screen.getByTestId('account-last-sync')).toHaveTextContent(
+      'Not synced yet',
+    );
+    expect(screen.getByTestId('account-sync-error')).toHaveTextContent(
+      'JWT expired',
+    );
+  });
+
+  /**
    * Signing out is not a reset. A screen that did not say so would make signing
    * in feel like a risk rather than a safety net.
    */

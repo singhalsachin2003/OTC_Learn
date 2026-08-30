@@ -1,0 +1,189 @@
+#!/bin/zsh
+# OTC Learn — Android emulator driver.
+#
+# The app has no programmatic surface of its own: navigation is Redux state and
+# every screen is a React Native view, so the only handle on a running build is
+# adb. This wraps the parts that are fiddly or easy to get wrong.
+#
+#   ./driver.sh doctor              what is and is not ready
+#   ./driver.sh boot [avd]          start the emulator, wait for boot
+#   ./driver.sh install             kill stale Metro, build, install, launch
+#   ./driver.sh link <path>         deep link, e.g. link account
+#   ./driver.sh screen              current screen as text (cheap assertions)
+#   ./driver.sh shot <name>         screenshot -> $OTC_SHOT_DIR
+#   ./driver.sh tap <text>          tap the node whose text/desc matches
+#   ./driver.sh type <text>         type into the focused field
+#   ./driver.sh errors              recent crashes and red-box errors
+#   ./driver.sh restart             cold restart (proves session persistence)
+#
+# Screenshots land outside the repo by default so a driving session never
+# shows up in `git status`.
+
+set -u
+SDK="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+export ADB="$SDK/platform-tools/adb"
+EMU="$SDK/emulator/emulator"
+PKG=com.otclearn.app
+SHOTS="${OTC_SHOT_DIR:-/tmp/otc-learn-shots}"
+mkdir -p "$SHOTS"
+
+die() { print -u2 -- "✗ $*"; exit 1; }
+
+cmd_doctor() {
+  [ -x "$ADB" ] && echo "✓ adb            $ADB" || echo "✗ adb not found — export ANDROID_HOME"
+  [ -x "$EMU" ] && echo "✓ emulator       $("$EMU" -list-avds | tr '\n' ' ')" || echo "✗ emulator not found"
+  local dev; dev=$("$ADB" devices | awk 'NR>1 && $2=="device" {print $1}')
+  [ -n "$dev" ] && echo "✓ device         $dev" || echo "✗ no device — ./driver.sh boot"
+  # A Metro older than the newest source file cannot resolve directories added
+  # since it started, and fails in ways that look like broken code.
+  local pid; pid=$(lsof -ti:8081 2>/dev/null | head -1)
+  if [ -n "$pid" ]; then
+    local started; started=$(ps -o lstart= -p "$pid" 2>/dev/null | sed 's/^ *//')
+    local age; age=$(ps -o etime= -p "$pid" 2>/dev/null | tr -d ' ')
+    case "$age" in
+      *-*) echo "✗ metro          pid $pid, up $age since $started — STALE, ./driver.sh install kills it" ;;
+      *)   echo "✓ metro          pid $pid, up $age" ;;
+    esac
+  else
+    echo "· metro          not running (install will start it)"
+  fi
+  if [ -f .env ] && grep -q '^EXPO_PUBLIC_SUPABASE_URL=.' .env 2>/dev/null; then
+    echo "✓ .env           Supabase configured — sync will be live"
+  else
+    echo "· .env           no Supabase — Account screen will say sync is unavailable"
+  fi
+}
+
+cmd_boot() {
+  local avd="${1:-$("$EMU" -list-avds | head -1)}"
+  [ -n "$avd" ] || die "no AVD available"
+  if "$ADB" devices | awk 'NR>1 && $2=="device"' | grep -q .; then
+    echo "already booted"; return
+  fi
+  echo "booting $avd…"
+  nohup "$EMU" -avd "$avd" -no-snapshot-load >/tmp/otc-emulator.log 2>&1 &
+  local i
+  for i in $(seq 1 60); do
+    [ "$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && { echo "booted"; return; }
+    sleep 5
+  done
+  die "emulator did not boot within 5 minutes — see /tmp/otc-emulator.log"
+}
+
+cmd_install() {
+  # Kill Metro unconditionally. Restarting costs seconds; a stale one costs an
+  # afternoon of debugging code that is fine.
+  local pid; pid=$(lsof -ti:8081 2>/dev/null | head -1)
+  [ -n "$pid" ] && { echo "killing Metro pid $pid"; kill "$pid" 2>/dev/null; sleep 2; }
+  "$ADB" reverse tcp:8081 tcp:8081 >/dev/null || die "adb reverse failed — is a device attached?"
+  echo "building (first run pulls a Gradle daemon; later runs are ~30s)…"
+  # No --device flag. It wants an AVD name, not an adb serial, and given a
+  # serial it exits 0 without building anything.
+  npx expo run:android
+}
+
+# `am start` briefly tears down the view hierarchy, so a dump taken straight
+# after it comes back empty. Wait for content rather than guessing at a sleep.
+cmd_link() {
+  "$ADB" shell am start -a android.intent.action.VIEW -d "otclearn://$1" "$PKG" >/dev/null 2>&1
+  _wait_for_ui && echo "opened otclearn://$1"
+}
+cmd_shot()   { "$ADB" exec-out screencap -p > "$SHOTS/$1.png" && echo "$SHOTS/$1.png"; }
+cmd_type()   { "$ADB" shell input text "${1// /%s}"; }
+# Only E/F level, and only from this app. Matching "AndroidRuntime" loosely
+# picks up benign debug chatter from uiautomator on every call.
+cmd_errors() {
+  "$ADB" logcat -d -t 600 2>/dev/null \
+    | grep -E "^[0-9-]+ [0-9:.]+ +[0-9]+ +[0-9]+ [EF] " \
+    | grep -iE "otclearn|ReactNative|FATAL EXCEPTION" | tail -20
+}
+
+# Waits until the app is actually drawing something.
+#
+# A fixed sleep is not good enough: a debug build refetches the JS bundle from
+# Metro on every cold start, so the splash hold is however long that takes —
+# 15 seconds was enough once and not the next time. `App.tsx` renders null until
+# fonts and hydration settle, and a screenshot taken during that is a black
+# frame indistinguishable from a crash. So poll for real content instead.
+_wait_for_ui() {
+  local i
+  for i in $(seq 1 40); do
+    [ -n "$(cmd_screen 2>/dev/null | head -1)" ] && return 0
+    sleep 2
+  done
+  print -u2 -- "✗ no UI after 80s — check ./driver.sh errors"
+  return 1
+}
+
+cmd_restart() {
+  "$ADB" shell am force-stop "$PKG"; sleep 2
+  "$ADB" shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1
+  echo "waiting for the app to draw…"
+  _wait_for_ui && echo "up"
+}
+
+_dump() { "$ADB" shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; "$ADB" shell cat /sdcard/ui.xml 2>/dev/null; }
+
+cmd_screen() {
+  _dump | python3 -c '
+import re, sys
+xml = sys.stdin.read()
+seen = []
+for tag in re.findall(r"<node[^>]*>", xml):
+    t = re.search(r"text=\"([^\"]*)\"", tag)
+    if t and t.group(1).strip() and t.group(1) not in seen:
+        seen.append(t.group(1))
+print("\n".join(seen))'
+}
+
+cmd_tap() {
+  local needle="$1"
+  _dump | python3 -c '
+import os, re, subprocess, sys
+needle = sys.argv[1]
+xml = sys.stdin.read()
+offscreen = []
+for tag in re.findall(r"<node[^>]*>", xml):
+    t = re.search(r"text=\"([^\"]*)\"", tag)
+    c = re.search(r"content-desc=\"([^\"]*)\"", tag)
+    hay = (t.group(1) if t else "") + " " + (c.group(1) if c else "")
+    if needle.lower() not in hay.lower().strip():
+        continue
+    b = re.search(r"bounds=\"\[(-?\d+),(-?\d+)\]\[(-?\d+),(-?\d+)\]\"", tag)
+    if not b:
+        continue
+    x1, y1, x2, y2 = map(int, b.groups())
+    # A node scrolled out of the viewport is reported with an inverted or
+    # zero-area rectangle (y2 < y1). Averaging that yields a coordinate that
+    # looks reasonable and lands on whatever is actually drawn there — which
+    # is how a tap silently hits the tab bar instead of the row you asked for.
+    if x2 <= x1 or y2 <= y1:
+        offscreen.append((hay.strip()[:40], x1, y1, x2, y2))
+        continue
+    x, y = (x1 + x2) // 2, (y1 + y2) // 2
+    subprocess.run([os.environ["ADB"], "shell", "input", "tap", str(x), str(y)], check=True)
+    print(f"tapped \"{needle}\" at {x},{y}")
+    sys.exit(0)
+if offscreen:
+    label, x1, y1, x2, y2 = offscreen[0]
+    print(f"\"{label}\" is scrolled out of view (bounds [{x1},{y1}][{x2},{y2}] are "
+          f"inverted). Use a deep link, or scroll it into view first.", file=sys.stderr)
+else:
+    print(f"no node matching \"{needle}\" — try ./driver.sh screen", file=sys.stderr)
+sys.exit(1)' "$needle" || return 1
+  _wait_for_ui
+}
+
+case "${1:-doctor}" in
+  doctor)  cmd_doctor ;;
+  boot)    cmd_boot "${2:-}" ;;
+  install) cmd_install ;;
+  link)    cmd_link "${2:?usage: link <path>}" ;;
+  screen)  cmd_screen ;;
+  shot)    cmd_shot "${2:?usage: shot <name>}" ;;
+  tap)     cmd_tap "${2:?usage: tap <text>}" ;;
+  type)    cmd_type "${2:?usage: type <text>}" ;;
+  errors)  cmd_errors ;;
+  restart) cmd_restart ;;
+  *)       die "unknown command: $1" ;;
+esac

@@ -71,6 +71,17 @@ export function AccountScreen() {
                 : `Last synced ${new Date(sync.lastSyncedAt).toLocaleString()}`}
             </Text>
 
+            {/* Signed in, a failure used to be invisible: the screen said
+                "Not synced yet" and gave no reason, because the error was only
+                rendered on the signed-out branch. Found by driving the app —
+                a second sign-in in one session leaves sync failing, and
+                nothing on screen said so. */}
+            {sync.error !== null && (
+              <Text testID="account-sync-error" style={styles.error}>
+                {sync.error}
+              </Text>
+            )}
+
             <Button
               testID="account-sync-now"
               label={busy ? 'Syncing…' : 'Sync now'}
