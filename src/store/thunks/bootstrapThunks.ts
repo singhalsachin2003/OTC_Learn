@@ -4,6 +4,7 @@ import {
   clearAll,
   loadAchievements,
   loadBookmarks,
+  loadExamResults,
   loadProfile,
   loadProgressMap,
   loadQuestionHistory,
@@ -16,6 +17,7 @@ import {
 import type { RootState } from '../index';
 import {
   setAchievements,
+  setExamResults,
   setBookmarks,
   setProgress,
   setProgressLoading,
@@ -61,6 +63,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         settings,
         bookmarks,
         unlocked,
+        examResults,
       ] = await Promise.all([
         loadProgressMap(),
         loadQuestionHistory(),
@@ -71,6 +74,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         loadSettings(),
         loadBookmarks(),
         loadAchievements(),
+        loadExamResults(),
       ]);
 
       dispatch(setProgress(progress));
@@ -79,6 +83,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
       dispatch(setStudyDays(studyDays));
       dispatch(setBookmarks(bookmarks));
       dispatch(setAchievements(unlocked));
+      dispatch(setExamResults(examResults));
       dispatch(setSettings(settings));
       dispatch(setName(profile.name));
 

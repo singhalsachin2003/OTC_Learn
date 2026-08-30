@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import type { ExamResult } from './exam';
 import { emptyProgress, MASTERY_COMPLETE, type ProductProgress } from './mastery';
 import type { QuestionStat } from './quizSession';
 import type { ReviewItem } from './review';
@@ -27,6 +28,7 @@ export const STORAGE_KEYS = {
   settings: '@otc-learn/settings',
   bookmarks: '@otc-learn/bookmarks',
   achievements: '@otc-learn/achievements',
+  examResults: '@otc-learn/exam-results',
 } as const;
 
 export const SCHEMA_VERSION = 2;
@@ -294,6 +296,63 @@ export async function loadBookmarks(): Promise<string[]> {
 
 export async function saveBookmarks(ids: readonly string[]): Promise<boolean> {
   return writeJson(STORAGE_KEYS.bookmarks, ids);
+}
+
+/**
+ * Sittings kept per install. An exam history is a trend, not a ledger, and the
+ * screen that reads it shows a handful — so old sittings are dropped on write
+ * rather than accumulating without bound for the life of the install.
+ */
+export const MAX_EXAM_RESULTS = 50;
+
+function parseExamResult(value: unknown): ExamResult | null {
+  if (
+    !isRecord(value) ||
+    typeof value.takenOn !== 'string' ||
+    typeof value.scopeId !== 'string' ||
+    typeof value.correct !== 'number' ||
+    typeof value.total !== 'number' ||
+    typeof value.scorePct !== 'number' ||
+    typeof value.passed !== 'boolean'
+  ) {
+    return null;
+  }
+  return {
+    takenOn: value.takenOn,
+    scopeId: value.scopeId,
+    correct: value.correct,
+    total: value.total,
+    scorePct: value.scorePct,
+    passed: value.passed,
+    // Null is a real value here — it records a sitting that ran out of time —
+    // so anything non-numeric reads as that rather than as a default.
+    durationMs: typeof value.durationMs === 'number' ? value.durationMs : null,
+  };
+}
+
+/**
+ * Added after schema v2 without a version bump: an absent key already loads as
+ * an empty history, so there is nothing to migrate. Bumping the version would
+ * only re-run the v1 progress migration against installs that have no v1 data
+ * left to migrate.
+ */
+export async function loadExamResults(): Promise<ExamResult[]> {
+  const stored = await readJson<unknown>(STORAGE_KEYS.examResults);
+  if (!Array.isArray(stored)) {
+    return [];
+  }
+  return stored
+    .map(parseExamResult)
+    .filter((result): result is ExamResult => result !== null);
+}
+
+export async function saveExamResults(
+  results: readonly ExamResult[],
+): Promise<boolean> {
+  // Trimmed from the front: the newest sittings are the ones worth keeping.
+  const trimmed =
+    results.length > MAX_EXAM_RESULTS ? results.slice(-MAX_EXAM_RESULTS) : results;
+  return writeJson(STORAGE_KEYS.examResults, trimmed);
 }
 
 export async function loadAchievements(): Promise<string[]> {

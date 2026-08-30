@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { colors, typography } from '../../../theme';
@@ -6,6 +6,13 @@ import { colors, typography } from '../../../theme';
 export interface QuizTimerProps {
   /** Epoch ms the sitting began, or null when there is nothing to time. */
   startedAt: number | null;
+  /**
+   * Milliseconds allowed. When set the clock counts down and calls `onExpire`
+   * as it reaches zero; when null it counts up and never fires.
+   */
+  limitMs?: number | null;
+  /** Called once, at expiry. */
+  onExpire?: () => void;
 }
 
 /** `m:ss`, counting up. */
@@ -17,14 +24,23 @@ export function formatElapsed(ms: number): string {
 }
 
 /**
- * A session clock, shown only when the user has asked for one.
+ * A session clock.
  *
- * It counts up rather than down: this is a study app, and a countdown turns a
- * lesson check into an exam. The interval is cleared on unmount, so leaving the
- * quiz stops the timer rather than leaving it ticking behind the results.
+ * For ordinary practice it counts up: this is a study app, and a countdown
+ * turns a lesson check into an exam. A practice exam is the one place that is
+ * the point, so passing `limitMs` flips it to a countdown that ends the
+ * sitting — the exception the original reasoning was drawing a line against,
+ * now that the app has something on the other side of it.
+ *
+ * The interval is cleared on unmount, so leaving the quiz stops the timer
+ * rather than leaving it ticking behind the results.
  */
-export function QuizTimer({ startedAt }: QuizTimerProps) {
+export function QuizTimer({ startedAt, limitMs = null, onExpire }: QuizTimerProps) {
   const [now, setNow] = useState(() => Date.now());
+  // Guards the callback rather than the render: `onExpire` tears down this
+  // component, but a re-render landing before that must not fire it twice and
+  // record two sittings.
+  const firedRef = useRef(false);
 
   useEffect(() => {
     if (startedAt === null) {
@@ -34,17 +50,33 @@ export function QuizTimer({ startedAt }: QuizTimerProps) {
     return () => clearInterval(id);
   }, [startedAt]);
 
+  const elapsed = startedAt === null ? 0 : now - startedAt;
+  const remaining = limitMs === null ? null : Math.max(0, limitMs - elapsed);
+
+  useEffect(() => {
+    if (remaining === null || remaining > 0 || firedRef.current) {
+      return;
+    }
+    firedRef.current = true;
+    onExpire?.();
+  }, [remaining, onExpire]);
+
   if (startedAt === null) {
     return null;
   }
 
+  const shown = remaining === null ? elapsed : remaining;
   return (
     <Text
       testID="quiz-timer"
-      accessibilityLabel={`Elapsed ${formatElapsed(now - startedAt)}`}
-      style={styles.timer}
+      accessibilityLabel={
+        remaining === null
+          ? `Elapsed ${formatElapsed(elapsed)}`
+          : `${formatElapsed(remaining)} remaining`
+      }
+      style={[styles.timer, remaining !== null && styles.countdown]}
     >
-      {formatElapsed(now - startedAt)}
+      {formatElapsed(shown)}
     </Text>
   );
 }
@@ -58,5 +90,8 @@ const styles = StyleSheet.create({
     // change width each second.
     minWidth: 42,
     textAlign: 'right',
+  },
+  countdown: {
+    color: colors.text.primary,
   },
 });

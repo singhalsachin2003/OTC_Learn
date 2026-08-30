@@ -2,8 +2,10 @@ import { categories } from '../data/categories';
 import { products } from '../data/products';
 import {
   navigateToCategory,
+  navigateToExam,
   navigateToGlossary,
   navigateToHome,
+  navigateToInsights,
   navigateToLesson,
   navigateToProduct,
   navigateToTab,
@@ -26,7 +28,8 @@ export interface ParsedLink {
  * - `otclearn://category/<id>`
  * - `otclearn://product/<id>` — the product page
  * - `otclearn://lesson/<id>` — straight into the lesson
- * - `otclearn://review`, `otclearn://profile`, `otclearn://glossary`
+ * - `otclearn://review`, `otclearn://profile`, `otclearn://glossary`,
+ *   `otclearn://insights`, `otclearn://exam`
  *
  * Returns `null` for anything that does not resolve to real content, so an
  * unrecognised link leaves the user where they were rather than on a blank
@@ -46,6 +49,14 @@ export function parseDeepLink(url: string): ParsedLink | null {
 
   if (kind === 'glossary') {
     return { screen: 'glossary' };
+  }
+
+  if (kind === 'insights') {
+    return { screen: 'insights' };
+  }
+
+  if (kind === 'exam') {
+    return { screen: 'exam' };
   }
 
   if (kind === 'category' && categories.some((c) => c.id === id)) {
@@ -95,6 +106,11 @@ export function actionsForLink(link: ParsedLink) {
     // whose back control and whose highlighted tab disagree.
     case 'glossary':
       return [navigateToTab('profile'), navigateToGlossary()];
+    // Reached from Profile too, and its back link says so — same reasoning.
+    case 'insights':
+      return [navigateToTab('profile'), navigateToInsights()];
+    case 'exam':
+      return [navigateToTab('profile'), navigateToExam()];
     default:
       return [navigateToHome()];
   }

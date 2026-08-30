@@ -6,6 +6,7 @@ import { Ring } from '../../components/ui/Ring';
 import { masteryFill } from '../../components/ui/ProductRow';
 import { getAchievementById } from '../../data/achievements';
 import { getCategoryById } from '../../data/categories';
+import { examScopeName } from '../../data/examScopes';
 import { getProductById, getQuestionById } from '../../data/products';
 import {
   useAppDispatch,
@@ -17,6 +18,7 @@ import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import { navigateToQuiz } from '../../store/slices/appSlice';
 import { resetQuiz } from '../../store/slices/quizSlice';
+import { EXAM_PASS_MARK } from '../../utils/exam';
 import {
   colors,
   getCategoryColors,
@@ -31,7 +33,7 @@ import { StepBreakdown } from './components/StepBreakdown';
 
 export function QuizResults() {
   const dispatch = useAppDispatch();
-  const { goToProduct, goToTab } = useNavigation();
+  const { goToExam, goToProduct, goToTab } = useNavigation();
   const productId = useSelectedProductId();
   const categoryId = useSelectedCategoryId();
   const quiz = useAppSelector((state) => state.quiz);
@@ -39,6 +41,8 @@ export function QuizResults() {
   const { masteryFor } = useProgress();
 
   const isReview = quiz.mode === 'review';
+  const isExam = quiz.mode === 'exam';
+  const examScope = examScopeName(quiz.scopeId);
   const product = getProductById(productId);
   const category = getCategoryById(categoryId ?? product?.categoryId ?? null);
   const { accent, soft } = getCategoryColors(category?.id ?? '');
@@ -46,6 +50,8 @@ export function QuizResults() {
   const total = quiz.questions.length;
   const score = quiz.score;
   const perfect = total > 0 && score === total;
+  const examPassed =
+    total > 0 && Math.round((score / total) * 100) >= EXAM_PASS_MARK;
   const mastery = product === undefined ? 0 : masteryFor(product.id);
 
   // Everything was recorded when the quiz finished, so a retake only clears the
@@ -76,15 +82,32 @@ export function QuizResults() {
             perfect={perfect}
             accent={accent}
             accentSoft={soft}
-            title={perfect ? 'Perfect score' : 'Quiz complete'}
+            title={
+              perfect
+                ? 'Perfect score'
+                : isExam
+                  ? examPassed
+                    ? 'Exam passed'
+                    : 'Exam complete'
+                  : 'Quiz complete'
+            }
             subtitle={
               isReview
                 ? `You scored ${formatScore(score, total)} on your review`
-                : `You scored ${formatScore(score, total)} on ${product?.name ?? 'this product'}`
+                : isExam
+                  ? `You scored ${formatScore(score, total)} on the ${examScope} exam · ${
+                      examPassed ? 'pass' : `${EXAM_PASS_MARK}% to pass`
+                    }`
+                  : `You scored ${formatScore(score, total)} on ${product?.name ?? 'this product'}`
             }
           />
 
-          {!isReview && product !== undefined && (
+          {/*
+            An exam deliberately moves no mastery, so it shows no mastery ring —
+            see `completeExamSession`. Rendering one here would imply a
+            measurement the sitting did not make.
+          */}
+          {!isReview && !isExam && product !== undefined && (
             <View testID="results-mastery" style={styles.masteryRow}>
               <Ring
                 size={72}
@@ -162,13 +185,23 @@ export function QuizResults() {
           <Button
             testID="results-back"
             label={
-              isReview ? 'Back to review' : `Back to ${product?.name ?? 'products'}`
+              isExam
+                ? 'Back to exams'
+                : isReview
+                  ? 'Back to review'
+                  : `Back to ${product?.name ?? 'products'}`
             }
-            onPress={() =>
-              isReview || product === undefined
-                ? goToTab('review')
-                : goToProduct(product.id)
-            }
+            onPress={() => {
+              if (isExam) {
+                goToExam();
+                return;
+              }
+              if (isReview || product === undefined) {
+                goToTab('review');
+                return;
+              }
+              goToProduct(product.id);
+            }}
             style={styles.button}
           />
         </View>

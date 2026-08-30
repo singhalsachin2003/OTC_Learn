@@ -37,9 +37,11 @@ export function QuizScreen() {
     answers,
     mode,
     startedAt,
+    timeLimitMs,
     start,
     answer,
     advance,
+    expire,
   } = useQuiz();
 
   // Draw the paper on arrival. A quiz reached from the product page, a deep
@@ -97,7 +99,19 @@ export function QuizScreen() {
             onPress={exitQuiz}
             testID="quiz-back"
           />
-          {settings.timedQuizzes && <QuizTimer startedAt={startedAt} />}
+          {/*
+            An exam states a time limit on its setup screen, so it shows the
+            clock whatever the user's preference — the preference governs
+            whether ordinary practice is timed, not whether a stated limit is
+            visible while it runs.
+          */}
+          {(settings.timedQuizzes || mode === 'exam') && (
+            <QuizTimer
+              startedAt={startedAt}
+              limitMs={mode === 'exam' ? timeLimitMs : null}
+              onExpire={expire}
+            />
+          )}
         </View>
 
         <View style={styles.meta}>

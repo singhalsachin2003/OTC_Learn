@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStore, type AppStore } from '../../src/store';
 import { setSettings } from '../../src/store/slices/settingsSlice';
 import {
+  completeExamSession,
   completeReviewSession,
   completeSession,
   toggleProductBookmark,
@@ -249,6 +250,195 @@ describe('progress thunks', () => {
       expect(earned).toEqual(['first-quiz']);
       expect(store.getState().progress.questionHistory).toEqual({});
       expect(store.getState().progress.byProduct[PRODUCT].attempts).toBe(1);
+    });
+  });
+
+  describe('completeExamSession', () => {
+    const EXAM_ANSWERS = [
+      { questionId: 'irs-q1', correct: true },
+      { questionId: 'irs-q2', correct: false },
+      { questionId: 'fxfwd-q1', correct: true },
+    ];
+
+    /**
+     * The defining property of exam mode, and the reason it is a separate
+     * thunk. An exam samples a few questions from each of many products, which
+     * is not the measurement mastery models — so it must leave mastery alone,
+     * exactly as a review sitting does.
+     */
+    it('does not move product mastery', async () => {
+      const store = createStore();
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: 120_000,
+        }),
+      );
+
+      expect(store.getState().progress.byProduct).toEqual({});
+    });
+
+    it('records the sitting in the exam history', async () => {
+      const store = createStore();
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: 120_000,
+        }),
+      );
+
+      const [result] = store.getState().progress.examResults;
+      expect(result).toMatchObject({
+        scopeId: 'ir',
+        correct: 2,
+        total: 3,
+        scorePct: 67,
+        passed: false,
+        durationMs: 120_000,
+        takenOn: toDateKey(),
+      });
+    });
+
+    it('still counts the answers toward the question history', async () => {
+      const store = createStore();
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: null,
+        }),
+      );
+
+      const history = store.getState().progress.questionHistory;
+      expect(history['irs-q1']).toEqual({ right: 1, wrong: 0 });
+      expect(history['irs-q2']).toEqual({ right: 0, wrong: 1 });
+    });
+
+    it('queues a missed question for review', async () => {
+      const store = createStore();
+      withSpacedRepetition(store, true);
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: null,
+        }),
+      );
+
+      const queue = store.getState().review.queue;
+      expect(queue.map((item) => item.id)).toEqual(['irs-q2']);
+    });
+
+    it('respects the spaced-repetition setting', async () => {
+      const store = createStore();
+      withSpacedRepetition(store, false);
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: null,
+        }),
+      );
+
+      expect(store.getState().review.queue).toEqual([]);
+    });
+
+    it('persists the history, the queue and the exam result', async () => {
+      const store = createStore();
+      withSpacedRepetition(store, true);
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: EXAM_ANSWERS,
+          durationMs: 90_000,
+        }),
+      );
+
+      await expect(stored(STORAGE_KEYS.examResults)).resolves.toHaveLength(1);
+      await expect(stored(STORAGE_KEYS.questionHistory)).resolves.toMatchObject({
+        'irs-q1': { right: 1, wrong: 0 },
+      });
+      await expect(stored(STORAGE_KEYS.reviewQueue)).resolves.toHaveLength(1);
+      // Mastery was never written, so its key should not exist at all.
+      await expect(stored(STORAGE_KEYS.progress)).resolves.toBeNull();
+    });
+
+    it('scores unanswered questions against a timed-out sitting', async () => {
+      const store = createStore();
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: [{ questionId: 'irs-q1', correct: true }],
+          unansweredCount: 9,
+          durationMs: null,
+        }),
+      );
+
+      expect(store.getState().progress.examResults[0]).toMatchObject({
+        correct: 1,
+        total: 10,
+        scorePct: 10,
+        passed: false,
+      });
+    });
+
+    /**
+     * A question the clock ran out on was not missed — it was never seen — so
+     * scheduling it for review would fill the queue with material the user has
+     * no evidence of struggling with.
+     */
+    it('does not queue unanswered questions for review', async () => {
+      const store = createStore();
+      withSpacedRepetition(store, true);
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'ir',
+          answers: [{ questionId: 'irs-q1', correct: true }],
+          unansweredCount: 9,
+          durationMs: null,
+        }),
+      );
+
+      expect(store.getState().review.queue).toEqual([]);
+    });
+
+    it('records a timed-out sitting with a null duration', async () => {
+      const store = createStore();
+
+      await store.dispatch(
+        completeExamSession({
+          scopeId: 'all',
+          answers: EXAM_ANSWERS,
+          durationMs: null,
+        }),
+      );
+
+      expect(store.getState().progress.examResults[0].durationMs).toBeNull();
+    });
+
+    it('accumulates sittings rather than replacing them', async () => {
+      const store = createStore();
+
+      for (const scopeId of ['ir', 'fx']) {
+        await store.dispatch(
+          completeExamSession({ scopeId, answers: EXAM_ANSWERS, durationMs: null }),
+        );
+      }
+
+      expect(store.getState().progress.examResults.map((r) => r.scopeId)).toEqual([
+        'ir',
+        'fx',
+      ]);
     });
   });
 

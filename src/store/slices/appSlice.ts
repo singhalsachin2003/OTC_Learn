@@ -11,7 +11,9 @@ export type ScreenName =
   | 'quiz'
   | 'results'
   | 'glossary'
-  | 'achievements';
+  | 'achievements'
+  | 'insights'
+  | 'exam';
 
 /**
  * Screens that are a tab root. Everything else is a detail screen pushed on
@@ -111,6 +113,15 @@ const appSlice = createSlice({
       state.currentScreen = 'achievements';
     },
 
+    navigateToInsights(state) {
+      state.currentScreen = 'insights';
+    },
+
+    /** The exam setup screen, not a sitting in progress. */
+    navigateToExam(state) {
+      state.currentScreen = 'exam';
+    },
+
     setProductQuery(state, action: PayloadAction<string>) {
       state.productQuery = action.payload;
     },
@@ -127,6 +138,8 @@ export const {
   navigateToResults,
   navigateToGlossary,
   navigateToAchievements,
+  navigateToInsights,
+  navigateToExam,
   setProductQuery,
 } = appSlice.actions;
 

@@ -52,6 +52,14 @@ describe('parseDeepLink', () => {
     expect(parseDeepLink('otclearn://profile')).toEqual({ screen: 'profile' });
   });
 
+  it('resolves insights', () => {
+    expect(parseDeepLink('otclearn://insights')).toEqual({ screen: 'insights' });
+  });
+
+  it('resolves the exam setup screen', () => {
+    expect(parseDeepLink('otclearn://exam')).toEqual({ screen: 'exam' });
+  });
+
   it('resolves the glossary', () => {
     expect(parseDeepLink('otclearn://glossary')).toEqual({ screen: 'glossary' });
   });
@@ -136,6 +144,22 @@ describe('actionsForLink', () => {
   it('opens the glossary under the profile tab', () => {
     expect(landOn('otclearn://glossary')).toMatchObject({
       currentScreen: 'glossary',
+      currentTab: 'profile',
+    });
+  });
+
+  // Same reasoning as the glossary: reached from Profile, and its back link
+  // says so, so the highlighted tab has to agree with the back control.
+  it('opens insights under the profile tab', () => {
+    expect(landOn('otclearn://insights')).toMatchObject({
+      currentScreen: 'insights',
+      currentTab: 'profile',
+    });
+  });
+
+  it('opens the exam setup screen under the profile tab', () => {
+    expect(landOn('otclearn://exam')).toMatchObject({
+      currentScreen: 'exam',
       currentTab: 'profile',
     });
   });

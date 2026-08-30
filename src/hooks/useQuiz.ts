@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { getProductById, getQuestionById } from '../data/products';
+import { getProductById, getQuestionById, products } from '../data/products';
 import type { Question } from '../data/types';
 import {
   finishQuiz,
@@ -12,10 +12,17 @@ import {
   type QuizMode,
 } from '../store/slices/quizSlice';
 import {
+  completeExamSession,
   completeReviewSession,
   completeSession,
 } from '../store/thunks/progressThunks';
 import { track } from '../utils/analytics';
+import {
+  buildExamPaper,
+  DEFAULT_EXAM_LENGTH,
+  EXAM_SCOPE_ALL,
+  type ExamSource,
+} from '../utils/exam';
 import { hapticImpact, hapticSuccess, hapticWarning } from '../utils/haptics';
 import {
   buildSession,
@@ -49,9 +56,22 @@ export interface QuizController {
   start: (productId: string) => void;
   /** Draws a paper from whatever is due in the review queue. */
   startReview: () => void;
+  /**
+   * Draws an exam over a category, or over the whole catalogue when the scope
+   * is `EXAM_SCOPE_ALL`.
+   */
+  startExam: (scopeId: string, questionCount?: number) => void;
+  /** The scope an exam was drawn for, or null outside exam mode. */
+  scopeId: string | null;
+  timeLimitMs: number | null;
   /** `boolean` for true/false, an option index for multiple choice. */
   answer: (value: boolean | number) => void;
   advance: () => void;
+  /**
+   * Ends a timed exam that has run out of time, banking whatever was answered.
+   * A no-op outside exam mode.
+   */
+  expire: () => void;
 }
 
 /**
@@ -127,6 +147,45 @@ export function useQuiz(): QuizController {
     );
   }, [dispatch, reviewQueue, settings.sessionSize]);
 
+  const startExam = useCallback(
+    (scopeId: string, questionCount: number = DEFAULT_EXAM_LENGTH) => {
+      const inScope =
+        scopeId === EXAM_SCOPE_ALL
+          ? products
+          : products.filter((product) => product.categoryId === scopeId);
+
+      const sources: ExamSource[] = inScope.map((product) => ({
+        productId: product.id,
+        categoryId: product.categoryId,
+        questions: product.quiz,
+      }));
+
+      // No history argument, deliberately: an exam is a measurement, so the
+      // draw must not favour anything. See `utils/exam.ts`.
+      const paper = buildExamPaper(sources, questionCount);
+      if (paper.questions.length === 0) {
+        return;
+      }
+
+      track({
+        name: 'exam_started',
+        scopeId,
+        questionCount: paper.questions.length,
+      });
+      dispatch(
+        startQuiz({
+          questions: paper.questions,
+          mode: 'exam',
+          productId: null,
+          scopeId,
+          timeLimitMs: paper.timeLimitMs,
+          startedAt: Date.now(),
+        }),
+      );
+    },
+    [dispatch],
+  );
+
   const answer = useCallback(
     (value: boolean | number) => {
       if (question === null || quiz.isAnswered) {
@@ -164,6 +223,45 @@ export function useQuiz(): QuizController {
     [dispatch, question, quiz.isAnswered, quiz.productId, haptics],
   );
 
+  const expire = useCallback(() => {
+    if (quiz.mode !== 'exam' || quiz.scopeId === null) {
+      return;
+    }
+
+    const answers = quiz.answers.map((record) => ({
+      questionId: record.questionId,
+      correct: record.correct,
+    }));
+
+    void dispatch(
+      completeExamSession({
+        scopeId: quiz.scopeId,
+        answers,
+        // Everything not reached counts against the score without being
+        // rescheduled — see `completeExamSession`.
+        unansweredCount: quiz.questions.length - answers.length,
+        // Null is the record of having run out rather than finished.
+        durationMs: null,
+      }),
+    );
+    track({
+      name: 'exam_completed',
+      scopeId: quiz.scopeId,
+      score: quiz.score,
+      total: quiz.questions.length,
+    });
+
+    goToResults();
+  }, [
+    dispatch,
+    goToResults,
+    quiz.answers,
+    quiz.mode,
+    quiz.questions.length,
+    quiz.scopeId,
+    quiz.score,
+  ]);
+
   const advance = useCallback(() => {
     if (!quiz.isAnswered) {
       return;
@@ -188,6 +286,22 @@ export function useQuiz(): QuizController {
 
     if (quiz.mode === 'review') {
       void dispatch(completeReviewSession({ answers }));
+    } else if (quiz.mode === 'exam') {
+      if (quiz.scopeId !== null) {
+        void dispatch(
+          completeExamSession({
+            scopeId: quiz.scopeId,
+            answers,
+            durationMs: quiz.startedAt === null ? null : now - quiz.startedAt,
+          }),
+        );
+        track({
+          name: 'exam_completed',
+          scopeId: quiz.scopeId,
+          score: quiz.score,
+          total: totalQuestions,
+        });
+      }
     } else if (quiz.productId !== null) {
       void dispatch(
         completeSession({ productId: quiz.productId, scorePct, answers }),
@@ -210,6 +324,8 @@ export function useQuiz(): QuizController {
     quiz.isAnswered,
     quiz.mode,
     quiz.productId,
+    quiz.scopeId,
+    quiz.startedAt,
     quiz.score,
     totalQuestions,
   ]);
@@ -228,7 +344,11 @@ export function useQuiz(): QuizController {
     startedAt: quiz.startedAt,
     start,
     startReview,
+    startExam,
+    scopeId: quiz.scopeId,
+    timeLimitMs: quiz.timeLimitMs,
     answer,
     advance,
+    expire,
   };
 }

@@ -8,7 +8,9 @@ import { useNavigation } from '../hooks/useNavigation';
 import { useReview } from '../hooks/useReview';
 import { AchievementsScreen } from '../screens/Achievements/AchievementsScreen';
 import { CategoryScreen } from '../screens/Category/CategoryScreen';
+import { ExamScreen } from '../screens/Exam/ExamScreen';
 import { GlossaryScreen } from '../screens/Glossary/GlossaryScreen';
+import { InsightsScreen } from '../screens/Insights/InsightsScreen';
 import { HomeScreen } from '../screens/Home/HomeScreen';
 import { LessonScreen } from '../screens/Lesson/LessonScreen';
 import { ProductScreen } from '../screens/Product/ProductScreen';
@@ -84,6 +86,10 @@ function Screen() {
       return <GlossaryScreen />;
     case 'achievements':
       return <AchievementsScreen />;
+    case 'insights':
+      return <InsightsScreen />;
+    case 'exam':
+      return <ExamScreen />;
     case 'home':
     default:
       return <HomeScreen />;

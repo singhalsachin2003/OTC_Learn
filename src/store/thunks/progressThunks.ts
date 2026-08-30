@@ -2,16 +2,19 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { earnedAchievements } from '../../data/achievements';
 import { getQuestionById } from '../../data/products';
+import { gradeExam, type ExamResult } from '../../utils/exam';
 import { toDateKey } from '../../utils/formatters';
 import {
   saveAchievements,
   saveBookmarks,
+  saveExamResults,
   saveProgressMap,
   saveQuestionHistory,
   saveReviewQueue,
 } from '../../utils/storage';
 import type { RootState } from '../index';
 import {
+  recordExamResult,
   recordQuestionResult,
   recordSession,
   toggleBookmark,
@@ -156,3 +159,86 @@ export const toggleProductBookmark = createAsyncThunk<
   await saveBookmarks(updated);
   return updated;
 });
+
+/**
+ * The exam equivalent of `completeSession`.
+ *
+ * Like a review sitting, an exam deliberately leaves per-product mastery
+ * alone. Mastery measures how a full paper on one product went; an exam
+ * samples a handful of questions from each of many products, which is a
+ * broader measurement than mastery models and a worse one for any single
+ * product in it. What an exam does do is record its own result, feed the
+ * per-question history that weights future papers, and reschedule anything
+ * missed — so the work still counts, just not as a mastery figure it did not
+ * earn.
+ */
+export const completeExamSession = createAsyncThunk<
+  ExamResult,
+  {
+    scopeId: string;
+    answers: SessionAnswer[];
+    /**
+     * Questions the sitting ran out of time on. Counted against the score but
+     * never rescheduled — a question the user never saw was not missed.
+     */
+    unansweredCount?: number;
+    /** Elapsed ms, or null when the sitting ran out of time. */
+    durationMs: number | null;
+  },
+  { state: RootState }
+>(
+  'progress/completeExamSession',
+  async (
+    { scopeId, answers, unansweredCount = 0, durationMs },
+    { getState, dispatch },
+  ) => {
+    const now = Date.now();
+    const spacedRepetition = getState().settings.settings.spacedRepetition;
+
+    for (const answer of answers) {
+      dispatch(recordQuestionResult(answer));
+      const owner = getQuestionById(answer.questionId)?.product.id;
+      if (spacedRepetition && owner !== undefined) {
+        dispatch(
+          applyReviewResult({
+            questionId: answer.questionId,
+            productId: owner,
+            correct: answer.correct,
+            now,
+          }),
+        );
+      }
+    }
+
+    const grade = gradeExam(
+      answers,
+      (questionId) => {
+        const entry = getQuestionById(questionId);
+        return entry === undefined
+          ? undefined
+          : { categoryId: entry.product.categoryId, step: entry.question.step };
+      },
+      unansweredCount,
+    );
+
+    const result: ExamResult = {
+      takenOn: toDateKey(),
+      scopeId,
+      correct: grade.correct,
+      total: grade.total,
+      scorePct: grade.scorePct,
+      passed: grade.passed,
+      durationMs,
+    };
+    dispatch(recordExamResult(result));
+
+    const final = getState();
+    await Promise.all([
+      saveQuestionHistory(final.progress.questionHistory),
+      saveReviewQueue(final.review.queue),
+      saveExamResults(final.progress.examResults),
+    ]);
+
+    return result;
+  },
+);

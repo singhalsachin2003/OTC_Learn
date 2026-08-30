@@ -20,6 +20,11 @@ export type AnalyticsEvent =
     }
   | { name: 'quiz_completed'; productId: string; score: number; total: number }
   | { name: 'review_started'; dueCount: number }
+  // `scopeId` is a category id or `EXAM_SCOPE_ALL`, and `questionCount` is the
+  // paper actually drawn rather than the length requested — a scope with a
+  // thin bank yields a shorter exam, and the shorter figure is the true one.
+  | { name: 'exam_started'; scopeId: string; questionCount: number }
+  | { name: 'exam_completed'; scopeId: string; score: number; total: number }
   | { name: 'achievement_unlocked'; achievementId: string }
   | { name: 'bookmark_toggled'; productId: string; bookmarked: boolean }
   | { name: 'reminder_toggled'; enabled: boolean }

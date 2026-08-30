@@ -18,8 +18,8 @@ export interface QuizAnswerRecord {
   step: number;
 }
 
-/** A product quiz, or a run through the review queue. */
-export type QuizMode = 'product' | 'review';
+/** A product quiz, a run through the review queue, or a practice exam. */
+export type QuizMode = 'product' | 'review' | 'exam';
 
 export interface QuizState {
   /**
@@ -30,6 +30,14 @@ export interface QuizState {
   questions: Question[];
   mode: QuizMode;
   productId: string | null;
+  /**
+   * Which scope an exam was drawn for — a category id, or `EXAM_SCOPE_ALL`.
+   * Null for the other two modes, which are not scoped: a product quiz already
+   * names its product, and a review draws from whatever happens to be due.
+   */
+  scopeId: string | null;
+  /** Milliseconds allowed, or null when the sitting is not timed. */
+  timeLimitMs: number | null;
   currentIndex: number;
   score: number;
   answers: QuizAnswerRecord[];
@@ -46,6 +54,8 @@ export const initialQuizState: QuizState = {
   questions: [],
   mode: 'product',
   productId: null,
+  scopeId: null,
+  timeLimitMs: null,
   currentIndex: 0,
   score: 0,
   answers: [],
@@ -59,6 +69,8 @@ export interface StartQuizPayload {
   questions: Question[];
   mode: QuizMode;
   productId: string | null;
+  scopeId?: string | null;
+  timeLimitMs?: number | null;
   /** Passed in rather than read here, so the reducer stays pure. */
   startedAt: number;
 }
@@ -83,7 +95,14 @@ const quizSlice = createSlice({
 
     /** Installs a freshly drawn paper and starts the clock. */
     startQuiz(_state, action: PayloadAction<StartQuizPayload>) {
-      const { questions, mode, productId, startedAt } = action.payload;
+      const {
+        questions,
+        mode,
+        productId,
+        scopeId = null,
+        timeLimitMs = null,
+        startedAt,
+      } = action.payload;
       // `answers` is overridden for the same reason `questions` is: spreading
       // the initial state alone would hand out the module singleton, and immer
       // freezes whatever it is given — permanently, for every later reader.
@@ -93,6 +112,8 @@ const quizSlice = createSlice({
         answers: [],
         mode,
         productId,
+        scopeId,
+        timeLimitMs,
         startedAt,
       };
     },

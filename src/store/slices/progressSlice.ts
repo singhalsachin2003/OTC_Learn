@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import type { ExamResult } from '../../utils/exam';
 import { applySession, type ProductProgress } from '../../utils/mastery';
 import type { QuestionStat } from '../../utils/quizSession';
 
@@ -10,6 +11,12 @@ export interface ProgressState {
   questionHistory: Record<string, QuestionStat>;
   bookmarkedProductIds: string[];
   unlockedAchievementIds: string[];
+  /**
+   * Finished practice exams, oldest first. Lives here rather than in its own
+   * slice so `resetProgress` clears it with everything else — an exam history
+   * that outlived a reset would report on progress that no longer exists.
+   */
+  examResults: ExamResult[];
   /**
    * Achievements earned by the sitting that just finished, so the results
    * screen can announce those and only those. Not persisted: it describes one
@@ -25,6 +32,7 @@ export const initialProgressState: ProgressState = {
   questionHistory: {},
   bookmarkedProductIds: [],
   unlockedAchievementIds: [],
+  examResults: [],
   recentlyUnlockedIds: [],
   loading: false,
 };
@@ -94,6 +102,15 @@ const progressSlice = createSlice({
       state.recentlyUnlockedIds = action.payload;
     },
 
+    /** Appends a finished sitting. Exams accumulate; nothing revises one. */
+    recordExamResult(state, action: PayloadAction<ExamResult>) {
+      state.examResults.push(action.payload);
+    },
+
+    setExamResults(state, action: PayloadAction<ExamResult[]>) {
+      state.examResults = action.payload;
+    },
+
     setProgress(state, action: PayloadAction<Record<string, ProductProgress>>) {
       state.byProduct = action.payload;
     },
@@ -114,9 +131,24 @@ const progressSlice = createSlice({
       state.loading = action.payload;
     },
 
-    /** Wipes everything this slice owns — backs "reset progress". */
-    resetProgress() {
-      return { ...initialProgressState };
+    /**
+     * Wipes everything this slice owns — backs "reset progress".
+     *
+     * Every array is rebuilt rather than taken from the spread, for the reason
+     * `quizSlice.startQuiz` spells out: a returned state is what immer freezes,
+     * so spreading alone would hand out — and permanently freeze — the module
+     * singletons that `initialProgressState` holds, for every later reader.
+     */
+    resetProgress(): ProgressState {
+      return {
+        ...initialProgressState,
+        byProduct: {},
+        questionHistory: {},
+        bookmarkedProductIds: [],
+        unlockedAchievementIds: [],
+        examResults: [],
+        recentlyUnlockedIds: [],
+      };
     },
   },
 });
@@ -124,6 +156,8 @@ const progressSlice = createSlice({
 export const {
   recordSession,
   recordQuestionResult,
+  recordExamResult,
+  setExamResults,
   toggleBookmark,
   unlockAchievements,
   setProgress,

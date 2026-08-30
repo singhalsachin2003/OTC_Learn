@@ -42,7 +42,8 @@ export function ProfileScreen() {
   const longest = useLongestStreak();
   const bookmarks = useBookmarks();
   const unlocked = useAppSelector((state) => state.progress.unlockedAchievementIds);
-  const { goToGlossary, goToAchievements, goToTab } = useNavigation();
+  const { goToGlossary, goToAchievements, goToInsights, goToExam, goToTab } =
+    useNavigation();
   const { queuedCount } = useReview();
   const {
     overallPercent,
@@ -184,6 +185,18 @@ export function ProfileScreen() {
 
         <Text style={styles.sectionTitle}>LIBRARY</Text>
         <View style={styles.rows}>
+          <DisclosureRow
+            testID="profile-exam"
+            label="Practice exam"
+            value="Timed, evenly drawn"
+            onPress={goToExam}
+          />
+          <DisclosureRow
+            testID="profile-insights"
+            label="Insights"
+            value="Where the gaps are"
+            onPress={goToInsights}
+          />
           <DisclosureRow
             testID="profile-achievements"
             label="Achievements"

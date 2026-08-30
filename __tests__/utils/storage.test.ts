@@ -6,6 +6,7 @@ import {
   defaultSettings,
   loadAchievements,
   loadBookmarks,
+  loadExamResults,
   loadProfile,
   loadProgressMap,
   loadQuestionHistory,
@@ -18,6 +19,7 @@ import {
   SCHEMA_VERSION,
   saveAchievements,
   saveBookmarks,
+  saveExamResults,
   saveProfile,
   saveProgressMap,
   saveQuestionHistory,
@@ -25,6 +27,7 @@ import {
   saveSettings,
   saveStreak,
   saveStudyDays,
+  MAX_EXAM_RESULTS,
   STORAGE_KEYS,
 } from '../../src/utils/storage';
 
@@ -490,6 +493,77 @@ describe('storage', () => {
     });
   });
 
+  describe('exam results', () => {
+    const sitting = {
+      takenOn: '2026-08-30',
+      scopeId: 'ir',
+      correct: 14,
+      total: 20,
+      scorePct: 70,
+      passed: true,
+      durationMs: 540_000,
+    };
+
+    it('round-trips a history', async () => {
+      await saveExamResults([sitting]);
+
+      await expect(loadExamResults()).resolves.toEqual([sitting]);
+    });
+
+    it('reads an absent key as an empty history', async () => {
+      await expect(loadExamResults()).resolves.toEqual([]);
+    });
+
+    it('reads a non-array payload as an empty history', async () => {
+      await AsyncStorage.setItem(STORAGE_KEYS.examResults, JSON.stringify({}));
+
+      await expect(loadExamResults()).resolves.toEqual([]);
+    });
+
+    it('drops a malformed sitting rather than the whole history', async () => {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.examResults,
+        JSON.stringify([sitting, { takenOn: '2026-08-29' }, null, 'nope']),
+      );
+
+      await expect(loadExamResults()).resolves.toEqual([sitting]);
+    });
+
+    // A sitting that ran out of time records a null duration, so null has to
+    // survive the round trip rather than being repaired to a number.
+    it('preserves a null duration', async () => {
+      await saveExamResults([{ ...sitting, durationMs: null }]);
+
+      const [loaded] = await loadExamResults();
+      expect(loaded.durationMs).toBeNull();
+    });
+
+    it('reads a non-numeric duration as null', async () => {
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.examResults,
+        JSON.stringify([{ ...sitting, durationMs: 'ages' }]),
+      );
+
+      const [loaded] = await loadExamResults();
+      expect(loaded.durationMs).toBeNull();
+    });
+
+    it('keeps the newest sittings when the history outgrows the cap', async () => {
+      const many = Array.from({ length: MAX_EXAM_RESULTS + 10 }, (_, i) => ({
+        ...sitting,
+        correct: i,
+      }));
+
+      await saveExamResults(many);
+
+      const loaded = await loadExamResults();
+      expect(loaded).toHaveLength(MAX_EXAM_RESULTS);
+      // The last written sitting survives; the first does not.
+      expect(loaded[loaded.length - 1].correct).toBe(MAX_EXAM_RESULTS + 9);
+      expect(loaded[0].correct).toBe(10);
+    });
+  });
+
   describe('migrateV1Progress', () => {
     it('turns each completed id into a record at the completion threshold', async () => {
       await writeRaw(
@@ -685,6 +759,17 @@ describe('storage', () => {
       });
       await saveBookmarks(['irs']);
       await saveSettings({ ...defaultSettings, haptics: false });
+      await saveExamResults([
+        {
+          takenOn: '2026-08-30',
+          scopeId: 'ir',
+          correct: 14,
+          total: 20,
+          scorePct: 70,
+          passed: true,
+          durationMs: 540_000,
+        },
+      ]);
 
       await clearAll();
 
@@ -692,6 +777,9 @@ describe('storage', () => {
       await expect(loadStreak()).resolves.toBeNull();
       await expect(loadBookmarks()).resolves.toEqual([]);
       await expect(loadSettings()).resolves.toEqual(defaultSettings);
+      // An exam history left behind would describe progress that no longer
+      // exists.
+      await expect(loadExamResults()).resolves.toEqual([]);
     });
 
     it('swallows a storage failure rather than throwing at the caller', async () => {
