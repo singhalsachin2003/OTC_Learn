@@ -40,7 +40,7 @@ OTC Learn
 ### Short description (80 max)
 
 ```
-Learn OTC derivatives: 20 products, lessons and quizzes that adapt. Offline.
+Learn OTC derivatives: 36 products, lessons and quizzes that adapt. Offline.
 ```
 
 [76] — this is the line under the icon in search results, so it leads with the
@@ -52,13 +52,15 @@ subject, then breadth and no-account.
 OTC Learn teaches the over-the-counter derivatives that sit behind institutional
 finance — one product at a time, in lessons short enough to finish on a commute.
 
-Twenty products across five asset classes:
+Thirty-six products across five asset classes, plus the market infrastructure
+they all sit on:
 
-• Interest Rate — Interest Rate Swap, Swaption, Forward Rate Agreement, Cap and Floor
-• FX — FX Forward, FX Option, FX Swap, Non-Deliverable Forward
-• Credit — Credit Default Swap, CDX Index, Total Return Swap, Credit-Linked Note
-• Equity — Equity Swap, OTC Equity Option, Variance Swap, Contract for Difference
-• Commodity — Commodity Swap, Commodity Option, Commodity Forward, Crack Spread Swap
+• Interest Rate — Interest Rate Swap, Swaption, Forward Rate Agreement, Cap and Floor, Inflation Swap, Basis Swap
+• FX — FX Forward, FX Option, FX Swap, Non-Deliverable Forward, Cross-Currency Swap, Risk Reversal
+• Credit — Credit Default Swap, CDX Index, Total Return Swap, Credit-Linked Note, Asset Swap, Credit Index Option
+• Equity — Equity Swap, OTC Equity Option, Variance Swap, Contract for Difference, Dividend Swap, Autocallable Note
+• Commodity — Commodity Swap, Commodity Option, Commodity Forward, Crack Spread Swap, Weather Swap, Swing Option
+• Market Foundations — Collateral and the CSA, Central Clearing, Valuation and Marking, The ISDA Architecture, XVA and Counterparty Risk, Execution and Reporting
 
 Every product follows the same five-step arc: what it is, how it works, why it is
 used, the key terms you will hear, and the risks to watch — plus a worked example

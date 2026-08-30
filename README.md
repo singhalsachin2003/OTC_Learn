@@ -1,6 +1,6 @@
 # OTC Learn
 
-A mobile learning app for OTC derivatives. Five asset classes, twenty products,
+A mobile learning app for OTC derivatives. Six categories, thirty-six products,
 each with a product page, a five-step lesson and a twelve-question bank that
 every quiz draws a different paper from. Mastery, day streaks and a
 spaced-repetition review queue persist locally; there is no sign-up, and all
@@ -61,15 +61,17 @@ See `PRODUCTION_READINESS.md` for what has not been exercised on a device.
 
 ## Content
 
-Twenty products, four per asset class:
+Thirty-six products, six per category — five asset classes plus the market
+infrastructure they all sit on:
 
-| Asset class | Products |
+| Category | Products |
 | --- | --- |
-| Interest Rate | Interest Rate Swap · Swaption · Forward Rate Agreement · Cap and Floor |
-| FX | FX Forward · FX Option · FX Swap · Non-Deliverable Forward |
-| Credit | Credit Default Swap · CDX Index · Total Return Swap · Credit-Linked Note |
-| Equity | Equity Swap · OTC Equity Option · Variance Swap · Contract for Difference |
-| Commodity | Commodity Swap · Commodity Option · Commodity Forward · Crack Spread Swap |
+| Interest Rate | Interest Rate Swap · Swaption · Forward Rate Agreement · Cap and Floor · Inflation Swap · Basis Swap |
+| FX | FX Forward · FX Option · FX Swap · Non-Deliverable Forward · Cross-Currency Swap · Risk Reversal |
+| Credit | Credit Default Swap · CDX Index · Total Return Swap · Credit-Linked Note · Asset Swap · Credit Index Option |
+| Equity | Equity Swap · OTC Equity Option · Variance Swap · Contract for Difference · Dividend Swap · Autocallable Note |
+| Commodity | Commodity Swap · Commodity Option · Commodity Forward · Crack Spread Swap · Weather Swap · Swing Option |
+| Market Foundations | Collateral and the CSA · Central Clearing · Valuation and Marking · The ISDA Architecture · XVA and Counterparty Risk · Execution and Reporting |
 
 Every product follows the same arc — what it is, how it works, why it's used,
 key terms, risks to watch — and carries, beyond the five lesson steps:
