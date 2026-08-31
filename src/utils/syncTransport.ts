@@ -1,13 +1,16 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import {
+  bookmarksToRows,
   emptyRemoteSnapshot,
   examResultToRow,
   isoFrom,
   noteToRow,
+  profileToRow,
   progressToRow,
   questionHistoryToRows,
   reviewToRow,
+  settingsToRow,
   type SyncedSnapshot,
   type RemoteSnapshot,
   type SyncTransport,
@@ -39,6 +42,9 @@ export function supabaseTransport(
         achievements,
         examResults,
         streak,
+        settings,
+        profile,
+        bookmarks,
       ] = await Promise.all([
         client.from('product_progress').select('*'),
         client.from('question_history').select('*'),
@@ -48,6 +54,9 @@ export function supabaseTransport(
         client.from('achievements').select('achievement_id'),
         client.from('exam_results').select('*'),
         client.from('streaks').select('*').maybeSingle(),
+        client.from('settings').select('*').maybeSingle(),
+        client.from('profiles').select('*').maybeSingle(),
+        client.from('bookmarks').select('*'),
       ]);
 
       // One failed table is a failed pull. Merging a partial picture would look
@@ -62,6 +71,9 @@ export function supabaseTransport(
         achievements,
         examResults,
         streak,
+        settings,
+        profile,
+        bookmarks,
       ]) {
         if (result.error !== null) {
           throw new Error(result.error.message);
@@ -80,6 +92,9 @@ export function supabaseTransport(
         ),
         examResults: examResults.data ?? [],
         streak: streak.data ?? null,
+        settings: settings.data ?? null,
+        profile: profile.data ?? null,
+        bookmarks: bookmarks.data ?? [],
       };
     },
 
@@ -135,6 +150,17 @@ export function supabaseTransport(
             },
           ]),
         ),
+        client
+          .from('settings')
+          .upsert(
+            owned([settingsToRow(snapshot.settings, snapshot.settingsUpdatedAt)]),
+          ),
+        client
+          .from('profiles')
+          .upsert(
+            owned([profileToRow(snapshot.profileName, snapshot.profileUpdatedAt)]),
+          ),
+        client.from('bookmarks').upsert(owned(bookmarksToRows(snapshot.bookmarks))),
       ];
 
       const results = await Promise.all(writes);

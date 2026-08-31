@@ -1,17 +1,26 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
+  loadBookmarkRecords,
+  loadSyncMeta,
   saveAchievements,
+  saveBookmarkRecords,
   saveExamResults,
   saveNotes,
+  saveProfile,
   saveProgressMap,
   saveQuestionHistory,
   saveReviewQueue,
+  saveSettings,
   saveStreak,
   saveStudyDays,
+  saveSyncMeta,
+  type BookmarkMap,
+  type SyncMeta,
 } from '../../utils/storage';
 import { getSupabaseClient } from '../../utils/supabase';
 import {
+  bookmarkedIds,
   mergeSnapshot,
   type LocalSnapshot,
   type SyncTransport,
@@ -27,6 +36,8 @@ import {
   setQuestionHistory,
 } from '../slices/progressSlice';
 import { setReviewQueue } from '../slices/reviewSlice';
+import { setBookmarks } from '../slices/progressSlice';
+import { setName, setSettings } from '../slices/settingsSlice';
 import { setStreak, setStudyDays } from '../slices/streakSlice';
 import {
   clearSession,
@@ -55,7 +66,16 @@ function streakUpdatedAt(lastActivityDate: string | null): number {
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-function snapshotOf(state: RootState): LocalSnapshot {
+/**
+ * Bookmarks and the two whole-row timestamps live in storage rather than in
+ * Redux — the store holds only the saved ids, which cannot express "removed
+ * at" — so a snapshot needs a read before it can be built.
+ */
+function snapshotOf(
+  state: RootState,
+  bookmarks: BookmarkMap,
+  meta: SyncMeta,
+): LocalSnapshot {
   return {
     progress: state.progress.byProduct,
     questionHistory: state.progress.questionHistory,
@@ -70,6 +90,11 @@ function snapshotOf(state: RootState): LocalSnapshot {
       lastActivityDate: state.streak.lastActivityDate,
     },
     streakUpdatedAt: streakUpdatedAt(state.streak.lastActivityDate),
+    settings: state.settings.settings,
+    settingsUpdatedAt: meta.settingsUpdatedAt,
+    profileName: state.settings.name,
+    profileUpdatedAt: meta.profileUpdatedAt,
+    bookmarks,
   };
 }
 
@@ -248,7 +273,14 @@ export const syncNow = createAsyncThunk<
   dispatch(setSyncStatus('busy'));
 
   try {
-    const merged = mergeSnapshot(snapshotOf(state), await transport.pull());
+    const [bookmarks, meta] = await Promise.all([
+      loadBookmarkRecords(),
+      loadSyncMeta(),
+    ]);
+    const merged = mergeSnapshot(
+      snapshotOf(state, bookmarks, meta),
+      await transport.pull(),
+    );
 
     dispatch(setProgress(merged.progress));
     dispatch(setQuestionHistory(merged.questionHistory));
@@ -258,6 +290,9 @@ export const syncNow = createAsyncThunk<
     dispatch(setExamResults(merged.examResults));
     dispatch(setStudyDays(merged.studyDays));
     dispatch(setStreak(merged.streak));
+    dispatch(setSettings(merged.settings));
+    dispatch(setName(merged.profileName));
+    dispatch(setBookmarks(bookmarkedIds(merged.bookmarks)));
 
     await Promise.all([
       saveProgressMap(merged.progress),
@@ -268,6 +303,13 @@ export const syncNow = createAsyncThunk<
       saveExamResults(merged.examResults),
       saveStudyDays(merged.studyDays),
       saveStreak(merged.streak),
+      saveSettings(merged.settings),
+      saveProfile({ name: merged.profileName }),
+      saveBookmarkRecords(merged.bookmarks),
+      saveSyncMeta({
+        settingsUpdatedAt: merged.settingsUpdatedAt,
+        profileUpdatedAt: merged.profileUpdatedAt,
+      }),
     ]);
 
     await transport.push(merged);

@@ -10,7 +10,12 @@ import {
 } from '../../src/store/thunks/progressThunks';
 import { toDateKey } from '../../src/utils/formatters';
 import { LEARNING_RATE } from '../../src/utils/mastery';
-import { defaultSettings, STORAGE_KEYS } from '../../src/utils/storage';
+import {
+  defaultSettings,
+  loadBookmarkRecords,
+  loadBookmarks,
+  STORAGE_KEYS,
+} from '../../src/utils/storage';
 
 /**
  * Real catalogue ids throughout: the review queue resolves a question back to
@@ -561,17 +566,25 @@ describe('progress thunks', () => {
 
       expect(updated).toEqual([PRODUCT]);
       expect(store.getState().progress.bookmarkedProductIds).toEqual([PRODUCT]);
-      await expect(stored(STORAGE_KEYS.bookmarks)).resolves.toEqual([PRODUCT]);
+      await expect(loadBookmarks()).resolves.toEqual([PRODUCT]);
     });
 
-    it('removes a bookmark on the second toggle and persists the removal', async () => {
+    /**
+     * The removal is stored as `bookmarked: false` rather than by dropping the
+     * entry. An absent entry cannot survive a merge with a device that still
+     * has the product saved — it would simply come back.
+     */
+    it('removes a bookmark on the second toggle and leaves a tombstone', async () => {
       const store = createStore();
       await store.dispatch(toggleProductBookmark(PRODUCT));
 
       const updated = await store.dispatch(toggleProductBookmark(PRODUCT)).unwrap();
 
       expect(updated).toEqual([]);
-      await expect(stored(STORAGE_KEYS.bookmarks)).resolves.toEqual([]);
+      await expect(loadBookmarks()).resolves.toEqual([]);
+      await expect(loadBookmarkRecords()).resolves.toMatchObject({
+        [PRODUCT]: { bookmarked: false, updatedAt: expect.any(Number) },
+      });
     });
 
     it('keeps the other bookmarks when one is removed', async () => {
@@ -581,7 +594,7 @@ describe('progress thunks', () => {
 
       await store.dispatch(toggleProductBookmark(PRODUCT));
 
-      await expect(stored(STORAGE_KEYS.bookmarks)).resolves.toEqual(['swaption']);
+      await expect(loadBookmarks()).resolves.toEqual(['swaption']);
     });
   });
 });

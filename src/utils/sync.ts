@@ -3,7 +3,12 @@ import type { ProductProgress } from './mastery';
 import type { Note } from './notes';
 import type { QuestionStat } from './quizSession';
 import type { ReviewItem } from './review';
-import type { StoredStreak } from './storage';
+import {
+  clampSessionSize,
+  type BookmarkMap,
+  type StoredSettings,
+  type StoredStreak,
+} from './storage';
 
 /**
  * Merge rules for progress sync.
@@ -74,6 +79,26 @@ export interface ExamResultRow {
   score_pct: number;
   passed: boolean;
   duration_ms: number | null;
+}
+
+export interface SettingsRow {
+  spaced_repetition: boolean;
+  timed_quizzes: boolean;
+  haptics: boolean;
+  daily_reminder: boolean;
+  session_size: number;
+  updated_at: string;
+}
+
+export interface ProfileRow {
+  display_name: string | null;
+  updated_at: string;
+}
+
+export interface BookmarkRow {
+  product_id: string;
+  bookmarked: boolean;
+  updated_at: string;
 }
 
 export interface StreakRow {
@@ -370,6 +395,111 @@ export function mergeExamResults(
 }
 
 // ---------------------------------------------------------------------------
+// Settings, profile and bookmarks
+
+export function settingsToRow(
+  settings: StoredSettings,
+  updatedAt: number,
+): SettingsRow {
+  return {
+    spaced_repetition: settings.spacedRepetition,
+    timed_quizzes: settings.timedQuizzes,
+    haptics: settings.haptics,
+    daily_reminder: settings.dailyReminder,
+    session_size: settings.sessionSize,
+    updated_at: isoFrom(updatedAt),
+  };
+}
+
+/**
+ * Whole-row last write wins.
+ *
+ * Settings are merged together rather than field by field because they are a
+ * set of choices made at one sitting, not independent facts: someone who turns
+ * spaced repetition off and shortens their sessions has expressed one
+ * intention, and splitting it across two devices would produce a combination
+ * neither of them chose.
+ *
+ * `dailyReminder` is carried like the rest, but see the note in
+ * `utils/notifications.ts` — the OS is the source of truth for whether a
+ * notification can actually be shown, and `syncReminder` reconciles on launch.
+ */
+export function mergeSettings(
+  local: StoredSettings,
+  localUpdatedAt: number,
+  remote: SettingsRow | null,
+): StoredSettings {
+  if (remote === null || msFrom(remote.updated_at) <= localUpdatedAt) {
+    return local;
+  }
+  return {
+    spacedRepetition: remote.spaced_repetition,
+    timedQuizzes: remote.timed_quizzes,
+    haptics: remote.haptics,
+    dailyReminder: remote.daily_reminder,
+    sessionSize: clampSessionSize(remote.session_size),
+  };
+}
+
+export function profileToRow(name: string | null, updatedAt: number): ProfileRow {
+  return { display_name: name, updated_at: isoFrom(updatedAt) };
+}
+
+/** Last write wins. Null is a real value — it is the unnamed state. */
+export function mergeProfileName(
+  local: string | null,
+  localUpdatedAt: number,
+  remote: ProfileRow | null,
+): string | null {
+  if (remote === null || msFrom(remote.updated_at) <= localUpdatedAt) {
+    return local;
+  }
+  return remote.display_name;
+}
+
+export function bookmarksToRows(bookmarks: BookmarkMap): BookmarkRow[] {
+  return Object.entries(bookmarks).map(([productId, record]) => ({
+    product_id: productId,
+    bookmarked: record.bookmarked,
+    updated_at: isoFrom(record.updatedAt),
+  }));
+}
+
+/**
+ * Per product, last write wins on the flag.
+ *
+ * A removal is `bookmarked: false` rather than a missing row, for the same
+ * reason a retired review item is a tombstone: the device that still has the
+ * product saved would otherwise read its own copy as new and put it back.
+ */
+export function mergeBookmarks(
+  local: BookmarkMap,
+  remote: readonly BookmarkRow[],
+): BookmarkMap {
+  const merged: BookmarkMap = { ...local };
+
+  for (const row of remote) {
+    const mine = merged[row.product_id];
+    const theirUpdatedAt = msFrom(row.updated_at);
+    if (mine === undefined || theirUpdatedAt > mine.updatedAt) {
+      merged[row.product_id] = {
+        bookmarked: row.bookmarked,
+        updatedAt: theirUpdatedAt,
+      };
+    }
+  }
+
+  return merged;
+}
+
+/** The saved ids, in the shape and order the store holds them. */
+export function bookmarkedIds(bookmarks: BookmarkMap): string[] {
+  return Object.entries(bookmarks).flatMap(([id, record]) =>
+    record.bookmarked ? [id] : [],
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Streak
 
 /**
@@ -423,6 +553,11 @@ export interface LocalSnapshot {
   streak: StoredStreak;
   /** When the streak figures last changed, since `StoredStreak` carries no time. */
   streakUpdatedAt: number;
+  settings: StoredSettings;
+  settingsUpdatedAt: number;
+  profileName: string | null;
+  profileUpdatedAt: number;
+  bookmarks: BookmarkMap;
 }
 
 /**
@@ -448,6 +583,9 @@ export interface RemoteSnapshot {
   achievements: string[];
   examResults: ExamResultRow[];
   streak: StreakRow | null;
+  settings: SettingsRow | null;
+  profile: ProfileRow | null;
+  bookmarks: BookmarkRow[];
 }
 
 export const emptyRemoteSnapshot: RemoteSnapshot = {
@@ -459,6 +597,9 @@ export const emptyRemoteSnapshot: RemoteSnapshot = {
   achievements: [],
   examResults: [],
   streak: null,
+  settings: null,
+  profile: null,
+  bookmarks: [],
 };
 
 /**
@@ -489,6 +630,25 @@ export function mergeSnapshot(
       local.streakUpdatedAt,
       msFrom(remote.streak?.updated_at ?? null),
     ),
+    settings: mergeSettings(
+      local.settings,
+      local.settingsUpdatedAt,
+      remote.settings,
+    ),
+    settingsUpdatedAt: Math.max(
+      local.settingsUpdatedAt,
+      msFrom(remote.settings?.updated_at ?? null),
+    ),
+    profileName: mergeProfileName(
+      local.profileName,
+      local.profileUpdatedAt,
+      remote.profile,
+    ),
+    profileUpdatedAt: Math.max(
+      local.profileUpdatedAt,
+      msFrom(remote.profile?.updated_at ?? null),
+    ),
+    bookmarks: mergeBookmarks(local.bookmarks, remote.bookmarks),
   };
 }
 

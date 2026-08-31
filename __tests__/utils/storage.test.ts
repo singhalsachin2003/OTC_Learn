@@ -5,6 +5,7 @@ import {
   clearAll,
   defaultSettings,
   loadAchievements,
+  loadBookmarkRecords,
   loadBookmarks,
   loadExamResults,
   loadProfile,
@@ -14,6 +15,7 @@ import {
   loadSettings,
   loadStreak,
   loadStudyDays,
+  loadSyncMeta,
   migrateV1Progress,
   runMigrations,
   SCHEMA_VERSION,
@@ -27,6 +29,7 @@ import {
   saveSettings,
   saveStreak,
   saveStudyDays,
+  saveSyncMeta,
   MAX_EXAM_RESULTS,
   STORAGE_KEYS,
 } from '../../src/utils/storage';
@@ -216,6 +219,66 @@ describe('storage', () => {
         .mockRejectedValueOnce(new Error('disk full'));
 
       await expect(saveQuestionHistory({})).resolves.toBe(false);
+    });
+  });
+
+  describe('bookmark records', () => {
+    it('reads the plain list written before sync existed', async () => {
+      await writeRaw(STORAGE_KEYS.bookmarks, JSON.stringify(['irs', 'cds']));
+
+      await expect(loadBookmarkRecords()).resolves.toEqual({
+        irs: { bookmarked: true, updatedAt: 0 },
+        cds: { bookmarked: true, updatedAt: 0 },
+      });
+      // A legacy list carries no times, so it loses any merge against a
+      // stamped row — but it still reads as saved.
+      await expect(loadBookmarks()).resolves.toEqual(['irs', 'cds']);
+    });
+
+    it('records a removal rather than dropping the entry', async () => {
+      await saveBookmarks(['irs', 'cds'], 1_000);
+      await saveBookmarks(['cds'], 2_000);
+
+      await expect(loadBookmarkRecords()).resolves.toEqual({
+        irs: { bookmarked: false, updatedAt: 2_000 },
+        cds: { bookmarked: true, updatedAt: 1_000 },
+      });
+      await expect(loadBookmarks()).resolves.toEqual(['cds']);
+    });
+
+    it('leaves the timestamp of an unchanged bookmark alone', async () => {
+      await saveBookmarks(['irs'], 1_000);
+      await saveBookmarks(['irs', 'cds'], 2_000);
+
+      const records = await loadBookmarkRecords();
+      expect(records.irs.updatedAt).toBe(1_000);
+      expect(records.cds.updatedAt).toBe(2_000);
+    });
+
+    it('keeps the order things were saved in', async () => {
+      await saveBookmarks(['swaption'], 1_000);
+      await saveBookmarks(['swaption', 'irs'], 2_000);
+
+      await expect(loadBookmarks()).resolves.toEqual(['swaption', 'irs']);
+    });
+  });
+
+  describe('sync meta', () => {
+    it('starts at zero, so anything stamped beats it', async () => {
+      await expect(loadSyncMeta()).resolves.toEqual({
+        settingsUpdatedAt: 0,
+        profileUpdatedAt: 0,
+      });
+    });
+
+    it('patches one field without clearing the other', async () => {
+      await saveSyncMeta({ settingsUpdatedAt: 1_000 });
+      await saveSyncMeta({ profileUpdatedAt: 2_000 });
+
+      await expect(loadSyncMeta()).resolves.toEqual({
+        settingsUpdatedAt: 1_000,
+        profileUpdatedAt: 2_000,
+      });
     });
   });
 

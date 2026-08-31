@@ -137,11 +137,14 @@ settled before accounts are offered to anyone:
   future by construction), so it starts at zero and loses any merge against a
   stamped item.
 
-  Still to do: settings, the profile name, the streak and bookmarks merge as
-  whole rows rather than per-field, so they need one timestamp each rather than
-  one per record. Bookmarks additionally need a tombstone locally — the slice
-  holds a plain `string[]`, which cannot express "removed at". Neither is
-  needed until the client pushes those tables.
+  Settings, the profile name and bookmarks are done too, on the whole-row terms
+  they need: one timestamp each rather than one per field, held in a small
+  `syncMeta` record so `StoredSettings` and `StoredProfile` stay exactly as
+  every screen already knows them. Bookmarks moved from a `string[]` to a map of
+  `{ bookmarked, updatedAt }` in storage — a removal has to be expressible, and
+  an absent id cannot say "removed at" — while `loadBookmarks` still hands the
+  store the plain list of ids, in the order they were saved. All eleven tables
+  now sync.
 - ~~**The project itself.**~~ Created on 2026-08-30: `OTCLearn`, free tier,
   `ap-northeast-1` (Tokyo), project ref `sdomtcctsxtynglmxriu`. The URL and
   **publishable** key go in `EXPO_PUBLIC_SUPABASE_URL` and

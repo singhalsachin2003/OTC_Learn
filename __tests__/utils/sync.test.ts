@@ -1,6 +1,11 @@
 import {
+  bookmarkedIds,
+  bookmarksToRows,
   examResultToRow,
   isoFrom,
+  mergeBookmarks,
+  mergeProfileName,
+  mergeSettings,
   mergeExamResults,
   mergeNotes,
   mergeProgress,
@@ -360,6 +365,140 @@ describe('mergeExamResults', () => {
     const merged = mergeExamResults([later], [examResultToRow(sitting)]);
 
     expect(merged.map((r) => r.takenOn)).toEqual(['2026-08-01', '2026-08-20']);
+  });
+});
+
+describe('mergeSettings', () => {
+  const local = {
+    spacedRepetition: true,
+    timedQuizzes: false,
+    haptics: true,
+    dailyReminder: false,
+    sessionSize: 6,
+  };
+  const row = {
+    spaced_repetition: false,
+    timed_quizzes: true,
+    haptics: false,
+    daily_reminder: true,
+    session_size: 10,
+    updated_at: isoFrom(NEW),
+  };
+
+  it('keeps the local settings when the server has none', () => {
+    expect(mergeSettings(local, OLD, null)).toEqual(local);
+  });
+
+  it('takes the whole remote row when it is newer', () => {
+    expect(mergeSettings(local, OLD, row)).toEqual({
+      spacedRepetition: false,
+      timedQuizzes: true,
+      haptics: false,
+      dailyReminder: true,
+      sessionSize: 10,
+    });
+  });
+
+  /**
+   * Whole-row, not field by field. Settings are one set of choices made at a
+   * sitting, so mixing two devices would produce a combination neither of them
+   * ever chose.
+   */
+  it('keeps every local field when the device is ahead', () => {
+    expect(mergeSettings(local, NEW, { ...row, updated_at: isoFrom(OLD) })).toEqual(
+      local,
+    );
+  });
+
+  it('clamps a session size the app could not have produced', () => {
+    const merged = mergeSettings(local, OLD, { ...row, session_size: 99 });
+
+    expect(merged.sessionSize).toBe(12);
+  });
+});
+
+describe('mergeProfileName', () => {
+  it('takes a newer name', () => {
+    expect(
+      mergeProfileName('old', OLD, {
+        display_name: 'new',
+        updated_at: isoFrom(NEW),
+      }),
+    ).toBe('new');
+  });
+
+  it('keeps the local name when the device is ahead', () => {
+    expect(
+      mergeProfileName('mine', NEW, {
+        display_name: 'theirs',
+        updated_at: isoFrom(OLD),
+      }),
+    ).toBe('mine');
+  });
+
+  /** Null is the unnamed state, not an absence of data. */
+  it('carries a name that was deliberately cleared', () => {
+    expect(
+      mergeProfileName('old', OLD, {
+        display_name: null,
+        updated_at: isoFrom(NEW),
+      }),
+    ).toBeNull();
+  });
+
+  it('keeps the local name when the server has none', () => {
+    expect(mergeProfileName('mine', OLD, null)).toBe('mine');
+  });
+});
+
+describe('mergeBookmarks', () => {
+  const saved = { irs: { bookmarked: true, updatedAt: OLD } };
+
+  it('takes a bookmark the device does not have', () => {
+    const merged = mergeBookmarks({}, [
+      { product_id: 'cds', bookmarked: true, updated_at: isoFrom(NEW) },
+    ]);
+
+    expect(bookmarkedIds(merged)).toEqual(['cds']);
+  });
+
+  /** The reason a removal is a flag rather than a missing row. */
+  it('honours a removal rather than putting the product back', () => {
+    const merged = mergeBookmarks(saved, [
+      { product_id: 'irs', bookmarked: false, updated_at: isoFrom(NEW) },
+    ]);
+
+    expect(bookmarkedIds(merged)).toEqual([]);
+  });
+
+  it('ignores a removal older than the local save', () => {
+    const merged = mergeBookmarks({ irs: { bookmarked: true, updatedAt: NEW } }, [
+      { product_id: 'irs', bookmarked: false, updated_at: isoFrom(OLD) },
+    ]);
+
+    expect(bookmarkedIds(merged)).toEqual(['irs']);
+  });
+
+  it('is stable when the same rows arrive twice', () => {
+    const rows = [
+      { product_id: 'cds', bookmarked: true, updated_at: isoFrom(NEW) },
+    ];
+    const once = mergeBookmarks(saved, rows);
+
+    expect(mergeBookmarks(once, rows)).toEqual(once);
+  });
+
+  it('round-trips through the row shape', () => {
+    expect(mergeBookmarks({}, bookmarksToRows(saved))).toEqual(saved);
+  });
+
+  it('lists only what is still saved', () => {
+    expect(
+      bookmarkedIds({
+        irs: { bookmarked: true, updatedAt: OLD },
+        cds: { bookmarked: false, updatedAt: OLD },
+      }),
+    ).toEqual(['irs']);
   });
 });
 

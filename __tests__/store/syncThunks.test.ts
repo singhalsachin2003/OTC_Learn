@@ -6,7 +6,13 @@ import { setNotes } from '../../src/store/slices/notesSlice';
 import { setProgress } from '../../src/store/slices/progressSlice';
 import { setSession } from '../../src/store/slices/syncSlice';
 import { syncNow } from '../../src/store/thunks/syncThunks';
-import { loadNotes, loadProgressMap } from '../../src/utils/storage';
+import {
+  loadBookmarks,
+  loadNotes,
+  loadProgressMap,
+  saveBookmarks,
+  saveSyncMeta,
+} from '../../src/utils/storage';
 import {
   emptyRemoteSnapshot,
   isoFrom,
@@ -250,6 +256,72 @@ describe('syncNow', () => {
       afterFirst.progress.byProduct,
     );
     expect(store.getState().streak.studyDays).toEqual(afterFirst.streak.studyDays);
+  });
+
+  it('brings down settings, a name and bookmarks the device does not have', async () => {
+    const store = signedIn();
+    const { transport } = fakeTransport({
+      settings: {
+        spaced_repetition: false,
+        timed_quizzes: true,
+        haptics: false,
+        daily_reminder: true,
+        session_size: 9,
+        updated_at: isoFrom(NEW),
+      },
+      profile: { display_name: 'Sachin', updated_at: isoFrom(NEW) },
+      bookmarks: [
+        { product_id: 'cds', bookmarked: true, updated_at: isoFrom(NEW) },
+      ],
+    });
+
+    await store.dispatch(syncNow({ transport }));
+
+    const state = store.getState();
+    expect(state.settings.settings.sessionSize).toBe(9);
+    expect(state.settings.settings.spacedRepetition).toBe(false);
+    expect(state.settings.name).toBe('Sachin');
+    expect(state.progress.bookmarkedProductIds).toEqual(['cds']);
+  });
+
+  /**
+   * The removal has to reach the device as a removal. A row simply missing from
+   * the pull would leave the product saved here for ever.
+   */
+  it('applies a bookmark removal made on another device', async () => {
+    const store = signedIn();
+    await saveBookmarks(['irs'], OLD);
+    const { transport } = fakeTransport({
+      bookmarks: [
+        { product_id: 'irs', bookmarked: false, updated_at: isoFrom(NEW) },
+      ],
+    });
+
+    await store.dispatch(syncNow({ transport }));
+
+    expect(store.getState().progress.bookmarkedProductIds).toEqual([]);
+    await expect(loadBookmarks()).resolves.toEqual([]);
+  });
+
+  it('keeps local settings when the device is the newer of the two', async () => {
+    const store = signedIn();
+    await saveSyncMeta({ settingsUpdatedAt: NEW });
+    const { transport, pushed } = fakeTransport({
+      settings: {
+        spaced_repetition: false,
+        timed_quizzes: true,
+        haptics: false,
+        daily_reminder: true,
+        session_size: 9,
+        updated_at: isoFrom(OLD),
+      },
+    });
+
+    await store.dispatch(syncNow({ transport }));
+
+    expect(store.getState().settings.settings.sessionSize).toBe(6);
+    // …and the device's own settings are what goes back up.
+    expect(pushed[0].settings.sessionSize).toBe(6);
   });
 
   it('clears a stale error once a later sync succeeds', async () => {

@@ -31,6 +31,13 @@ export const STORAGE_KEYS = {
   achievements: '@otc-learn/achievements',
   examResults: '@otc-learn/exam-results',
   notes: '@otc-learn/notes',
+  /**
+   * When settings and the profile name last changed. They merge as whole rows
+   * rather than per field, so one timestamp each is enough — and keeping them
+   * here rather than inside the payloads leaves `StoredSettings` and
+   * `StoredProfile` exactly as every screen already knows them.
+   */
+  syncMeta: '@otc-learn/sync-meta',
 } as const;
 
 export const SCHEMA_VERSION = 3;
@@ -332,16 +339,126 @@ export async function saveSettings(settings: StoredSettings): Promise<boolean> {
   return writeJson(STORAGE_KEYS.settings, settings);
 }
 
-export async function loadBookmarks(): Promise<string[]> {
-  const stored = await readJson<unknown>(STORAGE_KEYS.bookmarks);
-  if (!Array.isArray(stored)) {
-    return [];
-  }
-  return stored.filter((id): id is string => typeof id === 'string');
+/**
+ * A bookmark and when it last changed.
+ *
+ * Stored as a record per product rather than a list of ids, because removing a
+ * bookmark has to survive a merge with a device that still has it. An absent
+ * entry cannot say "removed at"; `bookmarked: false` can.
+ */
+export interface BookmarkRecord {
+  bookmarked: boolean;
+  updatedAt: number;
 }
 
-export async function saveBookmarks(ids: readonly string[]): Promise<boolean> {
-  return writeJson(STORAGE_KEYS.bookmarks, ids);
+export type BookmarkMap = Record<string, BookmarkRecord>;
+
+/**
+ * Reads the map, accepting the plain `string[]` written before sync existed.
+ * A legacy list carries no times, so every entry starts at zero and loses any
+ * merge against a stamped one.
+ */
+export async function loadBookmarkRecords(): Promise<BookmarkMap> {
+  const stored = await readJson<unknown>(STORAGE_KEYS.bookmarks);
+
+  if (Array.isArray(stored)) {
+    const out: BookmarkMap = {};
+    for (const id of stored) {
+      if (typeof id === 'string') {
+        out[id] = { bookmarked: true, updatedAt: 0 };
+      }
+    }
+    return out;
+  }
+
+  if (!isRecord(stored)) {
+    return {};
+  }
+
+  const out: BookmarkMap = {};
+  for (const [id, value] of Object.entries(stored)) {
+    if (isRecord(value) && typeof value.bookmarked === 'boolean') {
+      out[id] = {
+        bookmarked: value.bookmarked,
+        updatedAt: parseUpdatedAt(value.updatedAt, null),
+      };
+    }
+  }
+  return out;
+}
+
+export async function saveBookmarkRecords(map: BookmarkMap): Promise<boolean> {
+  return writeJson(STORAGE_KEYS.bookmarks, map);
+}
+
+/**
+ * Just the saved ids, which is all the store and every screen want.
+ *
+ * Insertion order, not sorted: the list has always been the order things were
+ * saved in, and a map preserves that for string keys. Sorting would have been a
+ * quiet change to what the user sees for no reason sync needs.
+ */
+export async function loadBookmarks(): Promise<string[]> {
+  const records = await loadBookmarkRecords();
+  return Object.entries(records).flatMap(([id, record]) =>
+    record.bookmarked ? [id] : [],
+  );
+}
+
+/**
+ * Persists the saved list, turning a removal into a tombstone rather than a
+ * missing entry. The caller passes what the user now has saved; anything that
+ * was saved before and is not in that list is recorded as un-saved, stamped
+ * now, so the removal can win a merge later.
+ */
+export async function saveBookmarks(
+  ids: readonly string[],
+  now: number = Date.now(),
+): Promise<boolean> {
+  const existing = await loadBookmarkRecords();
+  const wanted = new Set(ids);
+  const next: BookmarkMap = { ...existing };
+
+  for (const id of wanted) {
+    if (existing[id]?.bookmarked !== true) {
+      next[id] = { bookmarked: true, updatedAt: now };
+    }
+  }
+  for (const [id, record] of Object.entries(existing)) {
+    if (record.bookmarked && !wanted.has(id)) {
+      next[id] = { bookmarked: false, updatedAt: now };
+    }
+  }
+
+  return saveBookmarkRecords(next);
+}
+
+/** When settings and the profile name last changed. See `STORAGE_KEYS.syncMeta`. */
+export interface SyncMeta {
+  settingsUpdatedAt: number;
+  profileUpdatedAt: number;
+}
+
+export const emptySyncMeta: SyncMeta = {
+  settingsUpdatedAt: 0,
+  profileUpdatedAt: 0,
+};
+
+export async function loadSyncMeta(): Promise<SyncMeta> {
+  const stored = await readJson<unknown>(STORAGE_KEYS.syncMeta);
+  if (!isRecord(stored)) {
+    return { ...emptySyncMeta };
+  }
+  return {
+    settingsUpdatedAt: parseUpdatedAt(stored.settingsUpdatedAt, null),
+    profileUpdatedAt: parseUpdatedAt(stored.profileUpdatedAt, null),
+  };
+}
+
+/** Merged onto what is stored, so stamping one does not clear the other. */
+export async function saveSyncMeta(patch: Partial<SyncMeta>): Promise<boolean> {
+  const current = await loadSyncMeta();
+  return writeJson(STORAGE_KEYS.syncMeta, { ...current, ...patch });
 }
 
 /**
