@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { ProgressBar } from '../../../components/ui/ProgressBar';
-import { products } from '../../../data/products';
+import { orderedProductIds } from '../../../data/paths';
+import { getProductById } from '../../../data/products';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
 import { colors, radius, spacing, typography } from '../../../theme';
@@ -14,19 +15,23 @@ import { MASTERY_COMPLETE } from '../../../utils/mastery';
  * mastered, else the first untouched one. Deliberately not the most recently
  * opened — after finishing a product, the useful suggestion is the next gap,
  * not the thing just completed.
+ *
+ * "First" means first along the learning path, not first in the catalogue.
+ * Catalogue order is the order products were written, and going by it offered
+ * Swaption — an advanced option *on* a swap — to people who had never opened
+ * the app, purely because it was authored second.
  */
 export function ResumeCard() {
   const { goToProduct } = useNavigation();
   const { progressFor, masteryFor } = useProgress();
 
-  const inProgress = products.find((product) => {
-    const mastery = masteryFor(product.id);
+  const ordered = orderedProductIds();
+  const inProgress = ordered.find((id) => {
+    const mastery = masteryFor(id);
     return mastery > 0 && mastery < MASTERY_COMPLETE;
   });
-  const untouched = products.find(
-    (product) => progressFor(product.id).attempts === 0,
-  );
-  const resume = inProgress ?? untouched ?? products[0];
+  const untouched = ordered.find((id) => progressFor(id).attempts === 0);
+  const resume = getProductById(inProgress ?? untouched ?? ordered[0]);
 
   if (resume === undefined) {
     return null;
