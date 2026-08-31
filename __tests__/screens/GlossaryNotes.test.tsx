@@ -17,6 +17,19 @@ async function openGlossary(store: AppStore = createStore()) {
   return store;
 }
 
+/**
+ * Opens the glossary and searches down to one term first.
+ *
+ * The full list is 216 rows and takes the best part of a second to render, so
+ * six of them in one file is twenty seconds and a flaky timeout under load.
+ * Searching is also how anyone reaches a term in a list that long.
+ */
+async function openTerm(store: AppStore = createStore()) {
+  await renderWithStore(<GlossaryScreen />, { store });
+  await fireEvent.changeText(screen.getByTestId('glossary-search'), TERM.term);
+  return store;
+}
+
 describe('notes on glossary terms', () => {
   it('offers a note control on every term without opening one', async () => {
     await openGlossary();
@@ -26,7 +39,7 @@ describe('notes on glossary terms', () => {
   });
 
   it('opens an editor for that term, and closes it again', async () => {
-    await openGlossary();
+    await openTerm();
 
     await fireEvent.press(screen.getByTestId(NOTE_BUTTON));
     expect(screen.getByTestId(EDITOR)).toBeTruthy();
@@ -36,7 +49,7 @@ describe('notes on glossary terms', () => {
   });
 
   it('stores the note against the term, not the product', async () => {
-    const store = await openGlossary();
+    const store = await openTerm();
 
     await fireEvent.press(screen.getByTestId(NOTE_BUTTON));
     await fireEvent.changeText(
@@ -56,7 +69,7 @@ describe('notes on glossary terms', () => {
     store.dispatch(
       setNotes({ [KEY]: { body: 'kept', updatedOn: '2026-08-30', updatedAt: 0 } }),
     );
-    await openGlossary(store);
+    await openTerm(store);
 
     await fireEvent.press(screen.getByTestId(NOTE_BUTTON));
 
@@ -68,7 +81,7 @@ describe('notes on glossary terms', () => {
    * same target would make one of the two a surprise.
    */
   it('leaves the row itself opening the product', async () => {
-    const store = await openGlossary();
+    const store = await openTerm();
 
     await fireEvent.press(
       screen.getByTestId(`glossary-${TERM.productId}-${TERM.term}`),

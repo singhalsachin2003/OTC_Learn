@@ -60,16 +60,21 @@ that is the point of it.
 
 ## Crash reporting
 
-Version 1.1 has crash reporting switched off. The app does not send us error
-reports, and we have no visibility into problems you encounter.
+**Crash reporting is switched off.** The app does not send us error reports, and
+we have no visibility into problems you encounter.
 
 The app contains the Sentry crash-reporting library, but it is inert without a
-configuration key, which version 1.1 does not ship. If a future version turns it
-on, this policy and the app's Play Store Data safety section will be updated
-before that version is released. Such a report would contain technical
-information only — the error and where in the code it happened, the app version,
-the device model and OS version — and never your progress, your streak, or a
-personal identifier.
+configuration key and no released version ships one — the library's own
+`io.sentry.auto-init` flag is set to `false` in the app you install, so it does
+not start itself either.
+
+If a future version turns it on, this policy and the app's Play Store Data
+safety section will both be updated **before** that version is released, and the
+Data safety section will declare Crash logs. Such a report would contain
+technical information only — the error and where in the code it happened, the
+app version, the device model and OS version — and never your progress, your
+streak, your notes, or your email address. Performance tracing is disabled
+separately and would stay off.
 
 ## Purchases
 

@@ -162,6 +162,14 @@ base64 licensing public key is available in Monetisation setup when it is needed
 
 ### Housekeeping
 
+- **The glossary renders all 216 terms eagerly.** It is a `ScrollView`, not a
+  virtualised list, because `stickyHeaderIndices` needs the rows flattened as
+  siblings of their headers. Measured at ~850ms for a full render in the test
+  renderer, and adding a note control per row in the term-notes work made each
+  row heavier. It is fine on an emulator and the search narrows it immediately,
+  but it is the obvious thing to be slow on a low-end device, and moving to a
+  `SectionList` would trade the sticky-header approach for virtualisation.
+
 - **Screen-level test coverage was thin** where the logic is thickest in components.
   Closed on 2026-08-30: `SettingsRows` 35% → 100%, `ProfileScreen` 69% → 100%,
   `ReviewScreen` 39% → 93%, `QuizTimer` → 100%, `LessonScreen` 71% → 80%. The
@@ -174,14 +182,34 @@ base64 licensing public key is available in Monetisation setup when it is needed
   left in place as a guard rather than deleted.
 ### Deferred by choice
 
-- **Crash reporting.** v1.1 ships dark: the Sentry code is merged and tested but no DSN
-  is set, and the native SDK sets `io.sentry.auto-init` to `false`, so it is genuinely
-  dormant. Turning it on later is three steps, in this order: update `docs/privacy.md`,
-  update the Play Data safety form to declare **Crash logs**, then set
-  `EXPO_PUBLIC_SENTRY_DSN` and `EXPO_PUBLIC_APP_ENV=production` as EAS build secrets.
-  Also add the `@sentry/react-native/expo` config plugin, or stack traces arrive
-  minified. Sentry is native code, so it needs a new build — an OTA update cannot
-  switch it on.
+- **Crash reporting.** Still ships dark, and deliberately so, but everything that
+  does not need a Sentry account is now done.
+
+  Confirmed dormant against the built bundle rather than assumed:
+  `bundletool dump manifest` shows `io.sentry.auto-init` set to `false`, and the
+  SDK contributes only its two providers. `initErrorReporting` returns early
+  without a DSN, sets `sendDefaultPii: false`, and pins `tracesSampleRate: 0` —
+  performance tracing is a separate product with its own quota, and enabling it
+  by accident is the usual way a free account is exhausted.
+
+  The `@sentry/react-native/expo` config plugin is now added — without it stack
+  traces arrive minified and are close to useless. Two traps came with it:
+
+  1. It needs `@expo/config-plugins` present at the top level, or `expo prebuild`
+     fails with `Cannot find module`. It is a devDependency now.
+  2. **It breaks the release build when no Sentry credentials exist.**
+     `sentry-cli` exits non-zero trying to upload source maps, failing
+     `assembleRelease` — the debug build passes, so this would only have shown up
+     on the production build that matters. Every `eas.json` profile therefore
+     sets `SENTRY_DISABLE_AUTO_UPLOAD=true`.
+
+  **To switch it on**, in this order: update `docs/privacy.md`; update the Play
+  Data safety form to declare **Crash logs**; then set `EXPO_PUBLIC_SENTRY_DSN`,
+  `EXPO_PUBLIC_APP_ENV=production`, `SENTRY_ORG`, `SENTRY_PROJECT` and
+  `SENTRY_AUTH_TOKEN` as EAS secrets and **remove `SENTRY_DISABLE_AUTO_UPLOAD`
+  from `eas.json`** — leaving it in is the one way to ship a build whose stack
+  traces are unreadable. Sentry is native code, so it needs a new build; an OTA
+  update cannot switch it on.
 - **iOS.** Scripts, `bundleIdentifier` and config remain, unverified. Revisit after
   Android ships.
 - **Review mode does not move mastery.** A deliberate choice, documented in the README:

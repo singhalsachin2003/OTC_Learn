@@ -34,9 +34,14 @@ export function initErrorReporting({
   Sentry.init({
     dsn,
     environment: environment ?? 'production',
-    // The catalogue is static and the app stores nothing about the user, so
-    // there is no personal data to attach to an event.
+    // The catalogue is static, and while an account now exists it is never
+    // attached to an event — nothing here calls `setUser`, and this keeps the
+    // SDK from inferring one from the request.
     sendDefaultPii: false,
+    // Crashes only. Performance tracing is a separate product with its own
+    // quota, and switching it on by accident is the usual way a free Sentry
+    // account is exhausted by an app nobody has complained about yet.
+    tracesSampleRate: 0,
   });
 
   setAnalyticsSink(report);

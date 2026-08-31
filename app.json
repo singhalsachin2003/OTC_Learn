@@ -86,6 +86,10 @@
           "resizeMode": "contain",
           "backgroundColor": "#EAE8E0"
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {}
       ]
     ],
     "extra": {

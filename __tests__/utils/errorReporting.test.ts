@@ -48,6 +48,19 @@ describe('initErrorReporting', () => {
     );
   });
 
+  /**
+   * Performance tracing is a separate Sentry product with its own quota, and
+   * turning it on by accident is the usual way a free account is exhausted by
+   * an app nobody has complained about.
+   */
+  it('reports crashes without switching on performance tracing', () => {
+    initErrorReporting({ dsn: DSN });
+
+    expect(init).toHaveBeenCalledWith(
+      expect.objectContaining({ tracesSampleRate: 0, sendDefaultPii: false }),
+    );
+  });
+
   it('defaults the environment to production', () => {
     initErrorReporting({ dsn: DSN });
 
