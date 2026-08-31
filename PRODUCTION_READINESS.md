@@ -94,22 +94,37 @@ is no longer entirely unexercised.
 
 ### Before anything can be sold
 
-The console will not let a subscription or a one-time product be created at all:
-both pages answer with **"To add one-time products, you need to add the BILLING
-permission to your APK"**. `com.android.vending.BILLING` is not in the shipped
-bundle — v1.1's verified permission list is `INTERNET`, `POST_NOTIFICATIONS`,
-`RECEIVE_BOOT_COMPLETED`, `VIBRATE` and the generated receiver permission, and
-nothing has added billing since.
+1. ~~Add the billing dependency.~~ **Done, 2026-08-31.** `react-native-purchases`
+   is in, `com.android.vending.BILLING` is declared, and the *release* manifest
+   merge was checked rather than assumed — `expo prebuild` cannot show the real
+   list, so `processReleaseMainManifest` was run and its output read. It is
+   exactly v1.1's verified list plus `BILLING`:
 
-That fixes the order of the monetisation work, which was previously assumed to
-start with the RevenueCat account:
+   ```
+   INTERNET · POST_NOTIFICATIONS · RECEIVE_BOOT_COMPLETED · VIBRATE
+   com.android.vending.BILLING · com.otclearn.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+   ```
 
-1. Add the billing dependency so the merged manifest declares `BILLING`, and
-   ship it to a test track. This is native code, so it needs a real build — an
-   `eas update` cannot carry it.
-2. Only then can the subscription be created in the Play Console.
-3. The RevenueCat account and API key are needed to *wire* entitlements, but
-   not to clear step 1.
+   RevenueCat added nothing else, and none of the blocked FCM permissions leaked
+   back in. A *debug* build additionally carries `SYSTEM_ALERT_WINDOW` from
+   React Native's dev-overlay source set — expected, and absent from release.
+
+2. **Upload a build to a test track.** Not done: this is native code, so it
+   needs `eas build`, and the upload is the owner's to make. Until an uploaded
+   binary declares `BILLING`, the console still refuses to create products.
+
+3. **Finish the merchant verification.** The console reports *"There is an issue
+   with your payments profile"* — verification under the RBI's Payment
+   Aggregator Cross Border rules, initiated with **BillDesk**, status *in
+   progress*, with a **90-day clock** from when the application was begun.
+   Instructions were sent from `onboarding@billdesk.com`. Nothing can be sold
+   until this completes, regardless of the binary.
+
+4. **Then** create the subscription, and wire entitlements with a RevenueCat
+   account and key — still not created.
+
+Also offered in the console and worth taking: enrolment for the **15% service
+fee** rather than the default 30%.
 
 Also read while confirming this: subscription settings are enabled, real-time
 developer notifications are **not** configured (no Pub/Sub topic set), and the

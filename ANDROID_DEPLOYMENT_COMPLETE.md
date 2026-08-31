@@ -371,6 +371,28 @@ unlocked achievements, settings, and the name typed into the profile. Android
 auto-backup is disabled (`android.allowBackup: false`), so none of it reaches
 Google Drive either.
 
+### These answers are wrong for v1.2 and must be redone before it ships
+
+v1.2 adds optional accounts and progress sync, which moves most of that list
+from "never leaves the device" to "collected, and only when the user signs in".
+The declaration has to change with it, or it is exactly the mismatch this
+section warns about:
+
+| Question | v1.2 answer |
+| --- | --- |
+| Data types collected | **Device or other IDs** (as before) · **Email address** · **App activity** — the progress list above |
+| Collected or shared? | Collected, not shared |
+| Required or optional? | **Optional** — the app works fully without an account |
+| Purpose | App functionality |
+| Encrypted in transit? | Yes |
+| Way to request deletion? | Yes — the contact email, which is what `docs/privacy.md` now promises |
+
+**Purchases do not add a data type yet.** The binary declares
+`com.android.vending.BILLING` and bundles RevenueCat so that products can be
+created in the console at all, but no version has anything to buy, so nothing
+about a purchase exists to declare. That changes the moment a product is
+published, and the form has to be updated *before* that release, not with it.
+
 **The daily reminder does not change these answers.** It is a local
 notification, scheduled on the device by `expo-notifications` and shown by the
 device; there is no push token, no registration call and no server. The app

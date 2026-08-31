@@ -16,6 +16,7 @@ import { recordActivity } from './store/thunks/streakThunks';
 import { restoreSession, syncNow } from './store/thunks/syncThunks';
 import { colors } from './theme';
 import { initErrorReporting } from './utils/errorReporting';
+import { initPurchases } from './utils/purchases';
 import { syncReminder } from './utils/notifications';
 
 // Hold the native splash until fonts and persisted state are ready.
@@ -23,6 +24,10 @@ void SplashScreen.preventAutoHideAsync();
 
 // Before any component renders, so a crash during start-up is still reported.
 initErrorReporting();
+
+// Also at module scope: RevenueCat has to be configured before anything asks
+// about an entitlement. Inert without a key, which is every build so far.
+initPurchases();
 
 function AppContent() {
   const [fontsLoaded, fontError] = useAppFonts();

@@ -51,6 +51,18 @@ jest.mock('expo-haptics', () => ({
 
 // Permission is granted by default here so the happy path needs no setup; the
 // tests that care about a refusal override `getPermissionsAsync` themselves.
+// Native module: the JS entry point throws without an install under Jest.
+jest.mock('react-native-purchases', () => ({
+  __esModule: true,
+  default: {
+    setLogLevel: jest.fn(),
+    configure: jest.fn(),
+    getCustomerInfo: jest.fn().mockResolvedValue({ entitlements: { active: {} } }),
+    logIn: jest.fn(),
+  },
+  LOG_LEVEL: { ERROR: 'ERROR', WARN: 'WARN' },
+}));
+
 jest.mock('expo-notifications', () => ({
   getPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
   requestPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
