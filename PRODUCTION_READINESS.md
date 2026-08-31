@@ -140,8 +140,22 @@ base64 licensing public key is available in Monetisation setup when it is needed
    change, haptics, the lesson swipe gesture, and an `eas update` push. The closed test
    that unlocked production access ran the pre-v1.1 build, so none of this is covered
    by real-user testing either.
-2. **Font scaling.** Several styles pin `lineHeight` next to `fontSize`; text may clip
-   at the largest accessibility sizes. One pass on a device.
+2. ~~**Font scaling.**~~ Done on 2026-08-31, on a Pixel 7 at `font_scale 2.0` —
+   the largest Android offers.
+
+   The worry as written was wrong: React Native scales `lineHeight` along with
+   `fontSize` on Android, so the pinned pairs in `theme/typography.ts` were never
+   the problem, and body copy reflows correctly at 2x.
+
+   What did break was the navigation furniture. "Products" wrapped onto a second
+   line and spilled out of the tab bar on every screen; the review badge, a fixed
+   circle drawn over its icon, could not contain its own number; and the
+   dashboard's stat row ran off the card, rendering "DUE NOW" as "DUE NO" — which
+   reads as a different phrase rather than as a cut-off one.
+
+   The rule applied: **content scales in full, chrome does not.** Tab labels cap
+   at 1.3x and the badge at 1.1x; the stat row shrinks so its label wraps. Nothing
+   in the type scale is capped, and a test asserts that it stays that way.
 3. **Migration on a real v1 install.** The v1→v2 migration is unit-tested — including
    the case where the write fails part-way, which is where it previously lost data —
    but has not been run against an actual app upgrade on a device holding v1 data.

@@ -97,7 +97,10 @@ function Stat({
   tint?: string;
 }) {
   return (
-    <View>
+    // Shrinkable, so the label wraps instead of the row running off the card.
+    // At the largest text sizes "DUE NOW" was rendering as "DUE NO", which
+    // reads as a different phrase rather than as a cut-off one.
+    <View style={styles.stat}>
       <Text style={[styles.statValue, { color: tint }]}>{value}</Text>
       <Text style={styles.statLabel}>{label}</Text>
     </View>
@@ -183,6 +186,9 @@ const styles = StyleSheet.create({
     width: 1,
     alignSelf: 'stretch',
     backgroundColor: colors.border,
+  },
+  stat: {
+    flexShrink: 1,
   },
   statValue: {
     ...typography.h3,

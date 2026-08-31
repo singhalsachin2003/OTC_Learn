@@ -86,11 +86,29 @@ export function TabBar({
               />
               {badge > 0 && (
                 <View style={styles.badge}>
-                  <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+                  {/* Capped harder than the label: the badge is a fixed circle
+                      drawn over the icon, so a scaling number escapes it. The
+                      count is also in the tab's accessibility label. */}
+                  <Text
+                    numberOfLines={1}
+                    maxFontSizeMultiplier={1.1}
+                    style={styles.badgeText}
+                  >
+                    {badge > 99 ? '99+' : badge}
+                  </Text>
                 </View>
               )}
             </View>
-            <Text style={[styles.label, focused && styles.labelFocused]}>
+            {/* Navigation furniture caps its scaling where the content it
+                leads to does not. At the largest accessibility sizes "Products"
+                wrapped onto a second line and overflowed the bar on every
+                screen; a tab label that is unreadable *because* it is enormous
+                helps nobody. The screens themselves still scale in full. */}
+            <Text
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.3}
+              style={[styles.label, focused && styles.labelFocused]}
+            >
               {tab.label}
             </Text>
           </Pressable>
