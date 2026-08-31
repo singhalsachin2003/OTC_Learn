@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   Pressable,
-  ScrollView,
+  SectionList,
   StyleSheet,
   Text,
   TextInput,
@@ -25,9 +25,10 @@ import {
 } from '../../theme';
 
 type Entry = ReturnType<typeof allKeyTerms>[number];
-type Row =
-  | { kind: 'letter'; key: string; letter: string }
-  | { kind: 'term'; key: string; entry: Entry };
+interface Section {
+  letter: string;
+  data: Entry[];
+}
 
 /** The section a term is grouped under — its first letter, or "#" for the
  * handful of terms (e.g. "25-delta") that start with a digit. */
@@ -66,48 +67,97 @@ export function GlossaryScreen() {
   }, [terms, query]);
   const isSearching = query.trim() !== '';
 
-  // Flattened, not grouped-then-nested, for the same reason as the Products
-  // screen: `stickyHeaderIndices` pins a header only if it is a sibling of
-  // its rows rather than their parent.
-  const rows = useMemo(() => {
-    const list: Row[] = [];
-    let currentLetter: string | null = null;
+  // Grouped, not flattened. The previous version flattened headers and rows
+  // into one array because `stickyHeaderIndices` on a ScrollView only pins a
+  // header that is a sibling of its rows — but that meant rendering all 216
+  // terms eagerly, every time, with no virtualisation. A SectionList gives the
+  // sticky behaviour and windowing together, so the shape that was a workaround
+  // is no longer needed.
+  const sections = useMemo<Section[]>(() => {
+    const byLetter = new Map<string, Entry[]>();
     filtered.forEach((entry) => {
       const letter = letterFor(entry.term);
-      if (letter !== currentLetter) {
-        currentLetter = letter;
-        list.push({ kind: 'letter', key: `letter-${letter}`, letter });
+      const bucket = byLetter.get(letter);
+      if (bucket === undefined) {
+        byLetter.set(letter, [entry]);
+      } else {
+        bucket.push(entry);
       }
-      list.push({
-        kind: 'term',
-        key: `${entry.productId}-${entry.term}`,
-        entry,
-      });
     });
-    return list;
+    return [...byLetter.entries()].map(([letter, data]) => ({ letter, data }));
   }, [filtered]);
 
-  // Offset by the four fixed children (back button, title, subtitle, search
-  // row) that always precede the flattened rows.
-  const stickyHeaderIndices = useMemo(
-    () =>
-      rows.reduce<number[]>((indices, row, index) => {
-        if (row.kind === 'letter') {
-          indices.push(index + 4);
-        }
-        return indices;
-      }, []),
-    [rows],
+  const renderItem = useCallback(
+    ({ item: entry }: { item: Entry }) => {
+      const { text: accent } = getCategoryColors(entry.categoryId);
+      const noteKey = noteKeyFor(entry.productId, entry.term);
+      const noted = notes[noteKey] !== undefined;
+      const editing = openNote === noteKey;
+
+      return (
+        <View>
+          <Pressable
+            testID={`glossary-${entry.productId}-${entry.term}`}
+            onPress={() => goToProduct(entry.productId)}
+            accessibilityRole="button"
+            accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
+            style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+          >
+            <View style={styles.rowMain}>
+              <Text style={styles.term}>{entry.term}</Text>
+              <Text style={styles.definition}>{entry.definition}</Text>
+              <Text style={[styles.source, { color: accent }]}>
+                {entry.productName}
+              </Text>
+            </View>
+            {/* Its own control, not part of the row's tap target: tapping the
+                row means "explain this", and folding a second meaning into it
+                would make one of the two a surprise. */}
+            <Pressable
+              testID={`glossary-note-${entry.productId}-${entry.term}`}
+              onPress={() => setOpenNote(editing ? null : noteKey)}
+              accessibilityRole="button"
+              accessibilityLabel={
+                noted
+                  ? `Edit your note on ${entry.term}`
+                  : `Add a note on ${entry.term}`
+              }
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+              style={styles.noteButton}
+            >
+              <NotebookPen
+                size={17}
+                strokeWidth={2}
+                color={noted || editing ? accent : colors.chevron}
+              />
+            </Pressable>
+            <Text style={styles.chevron}>›</Text>
+          </Pressable>
+
+          {editing && (
+            <View style={styles.noteEditor}>
+              <NoteEditor
+                noteKey={noteKey}
+                testID={`glossary-editor-${entry.productId}-${entry.term}`}
+                placeholder={`What do you want to remember about ${entry.term}?`}
+              />
+            </View>
+          )}
+        </View>
+      );
+    },
+    [goToProduct, notes, openNote],
   );
 
   return (
     <SafeAreaWrapper testID="glossary-screen">
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        stickyHeaderIndices={rows.length > 0 ? stickyHeaderIndices : undefined}
-      >
+      {/* Fixed above the list rather than passed as `ListHeaderComponent`.
+          A `TextInput` inside a list header remounts whenever the header's
+          identity changes — which is every keystroke, since the subtitle reads
+          the query — and a remounted input loses focus after one character.
+          Pinning it also means the search stays reachable in a list this long,
+          which is the right behaviour for a reference screen anyway. */}
+      <View style={styles.header}>
         <BackButton
           label="Profile"
           onPress={() => goToTab('profile')}
@@ -147,86 +197,43 @@ export function GlossaryScreen() {
             </Pressable>
           )}
         </View>
+      </View>
 
-        {rows.length === 0 ? (
+      <SectionList
+        sections={sections}
+        keyExtractor={(entry) => `${entry.productId}-${entry.term}`}
+        renderItem={renderItem}
+        renderSectionHeader={({ section }) => (
+          <View style={styles.letterHeader}>
+            <Text style={styles.letterText}>{section.letter}</Text>
+          </View>
+        )}
+        // Off by default on Android, which is the platform this ships on.
+        stickySectionHeadersEnabled
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+        // The open editor and the saved notes both live outside `sections`, so
+        // the list would not otherwise know a row had changed.
+        extraData={`${openNote ?? ''}|${Object.keys(notes).length}`}
+        ListEmptyComponent={
           <Text testID="glossary-empty" style={styles.empty}>
             No term matches “{query.trim()}”.
           </Text>
-        ) : (
-          rows.map((row) => {
-            if (row.kind === 'letter') {
-              return (
-                <View key={row.key} style={styles.letterHeader}>
-                  <Text style={styles.letterText}>{row.letter}</Text>
-                </View>
-              );
-            }
-            const { entry } = row;
-            const { text: accent } = getCategoryColors(entry.categoryId);
-            const noteKey = noteKeyFor(entry.productId, entry.term);
-            const noted = notes[noteKey] !== undefined;
-            const editing = openNote === noteKey;
-            return (
-              <View key={row.key}>
-                <Pressable
-                  testID={`glossary-${entry.productId}-${entry.term}`}
-                  onPress={() => goToProduct(entry.productId)}
-                  accessibilityRole="button"
-                  accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
-                  style={({ pressed }) => [styles.row, pressed && styles.pressed]}
-                >
-                  <View style={styles.rowMain}>
-                    <Text style={styles.term}>{entry.term}</Text>
-                    <Text style={styles.definition}>{entry.definition}</Text>
-                    <Text style={[styles.source, { color: accent }]}>
-                      {entry.productName}
-                    </Text>
-                  </View>
-                  {/* Its own control, not part of the row's tap target: tapping
-                      the row means "explain this", and folding a second meaning
-                      into it would make one of the two a surprise. */}
-                  <Pressable
-                    testID={`glossary-note-${entry.productId}-${entry.term}`}
-                    onPress={() => setOpenNote(editing ? null : noteKey)}
-                    accessibilityRole="button"
-                    accessibilityLabel={
-                      noted
-                        ? `Edit your note on ${entry.term}`
-                        : `Add a note on ${entry.term}`
-                    }
-                    hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-                    style={styles.noteButton}
-                  >
-                    <NotebookPen
-                      size={17}
-                      strokeWidth={2}
-                      color={noted || editing ? accent : colors.chevron}
-                    />
-                  </Pressable>
-                  <Text style={styles.chevron}>›</Text>
-                </Pressable>
-
-                {editing && (
-                  <View style={styles.noteEditor}>
-                    <NoteEditor
-                      noteKey={noteKey}
-                      testID={`glossary-editor-${entry.productId}-${entry.term}`}
-                      placeholder={`What do you want to remember about ${entry.term}?`}
-                    />
-                  </View>
-                )}
-              </View>
-            );
-          })
-        )}
-      </ScrollView>
+        }
+      />
     </SafeAreaWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
+  // The fixed block above the list. `SafeAreaWrapper` supplies the horizontal
+  // padding the ScrollView used to; the list needs its own so rows can still
+  // draw their separators edge to edge.
+  header: {
     paddingTop: spacing.lg,
+  },
+  content: {
     paddingBottom: spacing.xxl,
   },
   title: {

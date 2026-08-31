@@ -162,13 +162,12 @@ base64 licensing public key is available in Monetisation setup when it is needed
 
 ### Housekeeping
 
-- **The glossary renders all 216 terms eagerly.** It is a `ScrollView`, not a
-  virtualised list, because `stickyHeaderIndices` needs the rows flattened as
-  siblings of their headers. Measured at ~850ms for a full render in the test
-  renderer, and adding a note control per row in the term-notes work made each
-  row heavier. It is fine on an emulator and the search narrows it immediately,
-  but it is the obvious thing to be slow on a low-end device, and moving to a
-  `SectionList` would trade the sticky-header approach for virtualisation.
+- ~~**The glossary renders all 216 terms eagerly.**~~ Fixed on 2026-08-31 by
+  moving it to a `SectionList`. The flattened-rows shape existed only because
+  `stickyHeaderIndices` on a `ScrollView` pins a header just when it is a
+  sibling of its rows; a `SectionList` gives sticky headers and windowing
+  together, so the workaround was no longer buying anything. Measured in the
+  test renderer: **856ms with all 216 rows mounted, down to 428ms with 7**.
 
 - **Screen-level test coverage was thin** where the logic is thickest in components.
   Closed on 2026-08-30: `SettingsRows` 35% → 100%, `ProfileScreen` 69% → 100%,
