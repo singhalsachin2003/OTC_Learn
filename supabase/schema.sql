@@ -165,6 +165,10 @@ create table if not exists public.achievements (
 
 create table if not exists public.notes (
   user_id uuid not null references auth.users (id) on delete cascade,
+  -- What the note is about, not only which product: a note on a key term is
+  -- keyed `productId#term`. Plain text with no foreign key, so the client is
+  -- free to widen what it means without a migration here — see
+  -- `noteKeyFor` in `src/utils/notes.ts`.
   product_id text not null,
   -- Null means the note was cleared. The length cap mirrors NOTE_MAX_LENGTH.
   body text check (body is null or length(body) <= 2000),

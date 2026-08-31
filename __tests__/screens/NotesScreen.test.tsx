@@ -81,6 +81,61 @@ describe('NotesScreen', () => {
     expect(state.app.selectedProductId).toBe('cds');
   });
 
+  it('lists a note written on a glossary term, naming the term', async () => {
+    const store = createStore();
+    store.dispatch(
+      setNotes({
+        ...NOTES,
+        'irs#Notional': {
+          body: 'The reference amount, never exchanged.',
+          updatedOn: '2026-08-30',
+          updatedAt: 0,
+        },
+      }),
+    );
+    await renderWithStore(<NotesScreen />, { store });
+
+    const row = screen.getByTestId('notes-row-irs#Notional');
+    expect(row).toBeTruthy();
+    // The term alone would not say which product's — several products define
+    // overlapping vocabulary.
+    expect(row).toHaveTextContent(/Notional · Interest Rate Swap/);
+  });
+
+  it('opens the product a term note belongs to', async () => {
+    const store = createStore();
+    store.dispatch(
+      setNotes({
+        'irs#Notional': { body: 'x', updatedOn: '2026-08-30', updatedAt: 0 },
+      }),
+    );
+    await renderWithStore(<NotesScreen />, { store });
+
+    await fireEvent.press(screen.getByTestId('notes-row-irs#Notional'));
+
+    expect(store.getState().app.selectedProductId).toBe('irs');
+  });
+
+  it('searches the term as well as the body and product name', async () => {
+    const store = createStore();
+    store.dispatch(
+      setNotes({
+        ...NOTES,
+        'irs#Notional': {
+          body: 'unrelated',
+          updatedOn: '2026-08-30',
+          updatedAt: 0,
+        },
+      }),
+    );
+    await renderWithStore(<NotesScreen />, { store });
+
+    await fireEvent.changeText(screen.getByTestId('notes-search'), 'Notional');
+
+    expect(screen.getByTestId('notes-row-irs#Notional')).toBeTruthy();
+    expect(screen.queryByTestId('notes-row-cds')).toBeNull();
+  });
+
   /**
    * Ids are a persisted schema. A note stored against content that has since
    * been renamed cannot be opened, so a row for it would be a dead end.

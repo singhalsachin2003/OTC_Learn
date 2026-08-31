@@ -40,6 +40,13 @@ damage the learning rate exists to prevent.
 | Notes | `notes` | Later `updated_at` wins. A cleared note is a null `body`, not a missing row. |
 | Exam results | `exam_results` | Union on `client_id`. Append-only. |
 
+`notes.product_id` holds **what the note is about**, not only a product id: a
+note on a key term is keyed `productId#term`. That widening costs nothing on the
+server, because the column is plain text with no foreign key — the catalogue
+ships inside the app, so the server was never interpreting the value. A second
+table would have meant a migration and another schema for the owner to apply,
+for no gain the client can see.
+
 Two rules carry the weight and are worth stating plainly:
 
 - **Counters take the greater, never the sum.** Both devices count the same

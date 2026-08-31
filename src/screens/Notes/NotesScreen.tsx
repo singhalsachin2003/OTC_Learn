@@ -27,6 +27,8 @@ interface Row {
   entry: NoteEntry;
   productName: string;
   categoryId: string;
+  /** What the note is about: the product, or one of its key terms. */
+  subject: string;
 }
 
 /**
@@ -53,7 +55,14 @@ export function NotesScreen() {
         const product = getProductById(entry.productId);
         return product === undefined
           ? []
-          : [{ entry, productName: product.name, categoryId: product.categoryId }];
+          : [
+              {
+                entry,
+                productName: product.name,
+                categoryId: product.categoryId,
+                subject: entry.term ?? product.name,
+              },
+            ];
       }),
     [notes],
   );
@@ -66,7 +75,8 @@ export function NotesScreen() {
     return rows.filter(
       (row) =>
         row.entry.body.toLowerCase().includes(needle) ||
-        row.productName.toLowerCase().includes(needle),
+        row.productName.toLowerCase().includes(needle) ||
+        row.subject.toLowerCase().includes(needle),
     );
   }, [rows, query]);
 
@@ -139,16 +149,20 @@ export function NotesScreen() {
             const { text: accent } = getCategoryColors(row.categoryId);
             return (
               <Pressable
-                key={row.entry.productId}
-                testID={`notes-row-${row.entry.productId}`}
+                key={row.entry.key}
+                testID={`notes-row-${row.entry.key}`}
                 onPress={() => goToProduct(row.entry.productId)}
                 accessibilityRole="button"
-                accessibilityLabel={`Note on ${row.productName}, last edited ${row.entry.updatedOn}. ${row.entry.body}`}
+                accessibilityLabel={`Note on ${row.subject}, last edited ${row.entry.updatedOn}. ${row.entry.body}`}
                 style={({ pressed }) => [styles.row, pressed && styles.pressed]}
               >
                 <View style={styles.rowMain}>
                   <Text style={[styles.product, { color: accent }]}>
-                    {row.productName}
+                    {/* A term note names the term, then where it came from —
+                        "Notional" alone would not say which product's. */}
+                    {row.entry.term === undefined
+                      ? row.productName
+                      : `${row.entry.term} · ${row.productName}`}
                   </Text>
                   <Text style={styles.preview}>{notePreview(row.entry.body)}</Text>
                   <Text style={styles.edited}>Edited {row.entry.updatedOn}</Text>

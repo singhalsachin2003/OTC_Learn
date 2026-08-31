@@ -12,7 +12,10 @@ import {
 import { colors, radius, spacing, typography } from '../../../theme';
 
 export interface NoteEditorProps {
-  productId: string;
+  /** `productId`, or `productId#term` for a note on a key term. */
+  noteKey: string;
+  placeholder?: string;
+  testID?: string;
 }
 
 /**
@@ -23,16 +26,20 @@ export interface NoteEditorProps {
  * Clearing the box and saving is how a note is deleted — there is no separate
  * destructive control to mis-tap.
  */
-export function NoteEditor({ productId }: NoteEditorProps) {
+export function NoteEditor({
+  noteKey,
+  placeholder = 'What do you want to remember about this one?',
+  testID = 'note-editor',
+}: NoteEditorProps) {
   const dispatch = useAppDispatch();
-  const saved = useAppSelector((state) => state.notes.byProduct[productId]);
+  const saved = useAppSelector((state) => state.notes.byProduct[noteKey]);
   const [draft, setDraft] = useState(saved?.body ?? '');
 
   // Re-seeds when the product changes, or when the stored note is replaced from
   // elsewhere — a reset, or hydration finishing after this mounted.
   useEffect(() => {
     setDraft(saved?.body ?? '');
-  }, [productId, saved?.body]);
+  }, [noteKey, saved?.body]);
 
   const stored = saved?.body ?? '';
   const dirty = draft.trim() !== stored;
@@ -40,32 +47,32 @@ export function NoteEditor({ productId }: NoteEditorProps) {
   const remaining = remainingLength(draft);
 
   return (
-    <View testID="note-editor">
+    <View testID={testID}>
       <TextInput
-        testID="note-input"
+        testID={`${testID}-input`}
         value={draft}
         onChangeText={setDraft}
         multiline
         textAlignVertical="top"
         maxLength={NOTE_MAX_LENGTH}
-        placeholder="What do you want to remember about this one?"
+        placeholder={placeholder}
         placeholderTextColor={colors.text.tertiary}
         accessibilityLabel="Your note on this product"
         style={styles.input}
       />
 
       <View style={styles.footer}>
-        <Text style={styles.counter} testID="note-counter">
+        <Text style={styles.counter} testID={`${testID}-counter`}>
           {saved === undefined ? 'Not saved yet' : `Last edited ${saved.updatedOn}`}
           {remaining < 200 ? ` · ${Math.max(0, remaining)} left` : ''}
         </Text>
         <Button
-          testID="note-save"
+          testID={`${testID}-save`}
           label={deleting ? 'Delete note' : 'Save note'}
           variant="secondary"
           disabled={!dirty}
           onPress={() => {
-            void dispatch(saveProductNote({ productId, body: draft }));
+            void dispatch(saveProductNote({ noteKey, body: draft }));
           }}
         />
       </View>

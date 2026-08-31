@@ -25,6 +25,39 @@ export interface Note {
 export type NoteMap = Readonly<Record<string, Note | undefined>>;
 
 /**
+ * Notes are keyed by what they are about, not only by product.
+ *
+ * A product note is keyed by the product id; a note on a key term is keyed by
+ * the product and the term together. One map rather than two, and one column
+ * rather than a second table, because `notes.product_id` in
+ * `supabase/schema.sql` is plain text with no foreign key — the catalogue ships
+ * inside the app, so the server was never interpreting that value. Widening it
+ * from "a product id" to "what the note is about" therefore costs no migration
+ * and no schema change, and term notes sync the day they exist.
+ *
+ * Split on the *first* separator, so a term containing one still parses.
+ */
+const KEY_SEPARATOR = '#';
+
+export function noteKeyFor(productId: string, term?: string): string {
+  return term === undefined ? productId : `${productId}${KEY_SEPARATOR}${term}`;
+}
+
+export interface NoteSubject {
+  productId: string;
+  /** Undefined when the note is about the product as a whole. */
+  term?: string;
+}
+
+export function parseNoteKey(key: string): NoteSubject {
+  const at = key.indexOf(KEY_SEPARATOR);
+  if (at === -1) {
+    return { productId: key };
+  }
+  return { productId: key.slice(0, at), term: key.slice(at + 1) };
+}
+
+/**
  * Applies an edit. Returns the note to store, or `null` to remove it.
  *
  * Trimming happens here rather than at the input, so whitespace a user is
@@ -57,8 +90,9 @@ export function remainingLength(body: string): number {
   return NOTE_MAX_LENGTH - body.trim().length;
 }
 
-export interface NoteEntry extends Note {
-  productId: string;
+export interface NoteEntry extends Note, NoteSubject {
+  /** The key it is stored under — `productId`, or `productId#term`. */
+  key: string;
 }
 
 /**
@@ -69,13 +103,12 @@ export interface NoteEntry extends Note {
  */
 export function sortedNotes(notes: NoteMap): NoteEntry[] {
   return Object.entries(notes)
-    .flatMap(([productId, note]) =>
-      note === undefined ? [] : [{ productId, ...note }],
+    .flatMap(([key, note]) =>
+      note === undefined ? [] : [{ key, ...parseNoteKey(key), ...note }],
     )
     .sort(
       (a, b) =>
-        b.updatedOn.localeCompare(a.updatedOn) ||
-        a.productId.localeCompare(b.productId),
+        b.updatedOn.localeCompare(a.updatedOn) || a.key.localeCompare(b.key),
     );
 }
 

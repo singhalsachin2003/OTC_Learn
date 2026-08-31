@@ -7,12 +7,15 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
+import { NotebookPen, X } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { allKeyTerms } from '../../data/products';
+import { useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
+import { NoteEditor } from '../Product/components/NoteEditor';
+import { noteKeyFor } from '../../utils/notes';
 import {
   colors,
   getCategoryColors,
@@ -44,6 +47,10 @@ function letterFor(term: string): string {
 export function GlossaryScreen() {
   const { goToTab, goToProduct } = useNavigation();
   const [query, setQuery] = useState('');
+  // Which term's editor is open. One at a time: a screen of open text boxes is
+  // a form, and this is a reference list you occasionally annotate.
+  const [openNote, setOpenNote] = useState<string | null>(null);
+  const notes = useAppSelector((state) => state.notes.byProduct);
 
   const terms = useMemo(() => allKeyTerms(), []);
   const filtered = useMemo(() => {
@@ -156,24 +163,59 @@ export function GlossaryScreen() {
             }
             const { entry } = row;
             const { text: accent } = getCategoryColors(entry.categoryId);
+            const noteKey = noteKeyFor(entry.productId, entry.term);
+            const noted = notes[noteKey] !== undefined;
+            const editing = openNote === noteKey;
             return (
-              <Pressable
-                key={row.key}
-                testID={`glossary-${entry.productId}-${entry.term}`}
-                onPress={() => goToProduct(entry.productId)}
-                accessibilityRole="button"
-                accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
-                style={({ pressed }) => [styles.row, pressed && styles.pressed]}
-              >
-                <View style={styles.rowMain}>
-                  <Text style={styles.term}>{entry.term}</Text>
-                  <Text style={styles.definition}>{entry.definition}</Text>
-                  <Text style={[styles.source, { color: accent }]}>
-                    {entry.productName}
-                  </Text>
-                </View>
-                <Text style={styles.chevron}>›</Text>
-              </Pressable>
+              <View key={row.key}>
+                <Pressable
+                  testID={`glossary-${entry.productId}-${entry.term}`}
+                  onPress={() => goToProduct(entry.productId)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
+                  style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+                >
+                  <View style={styles.rowMain}>
+                    <Text style={styles.term}>{entry.term}</Text>
+                    <Text style={styles.definition}>{entry.definition}</Text>
+                    <Text style={[styles.source, { color: accent }]}>
+                      {entry.productName}
+                    </Text>
+                  </View>
+                  {/* Its own control, not part of the row's tap target: tapping
+                      the row means "explain this", and folding a second meaning
+                      into it would make one of the two a surprise. */}
+                  <Pressable
+                    testID={`glossary-note-${entry.productId}-${entry.term}`}
+                    onPress={() => setOpenNote(editing ? null : noteKey)}
+                    accessibilityRole="button"
+                    accessibilityLabel={
+                      noted
+                        ? `Edit your note on ${entry.term}`
+                        : `Add a note on ${entry.term}`
+                    }
+                    hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                    style={styles.noteButton}
+                  >
+                    <NotebookPen
+                      size={17}
+                      strokeWidth={2}
+                      color={noted || editing ? accent : colors.chevron}
+                    />
+                  </Pressable>
+                  <Text style={styles.chevron}>›</Text>
+                </Pressable>
+
+                {editing && (
+                  <View style={styles.noteEditor}>
+                    <NoteEditor
+                      noteKey={noteKey}
+                      testID={`glossary-editor-${entry.productId}-${entry.term}`}
+                      placeholder={`What do you want to remember about ${entry.term}?`}
+                    />
+                  </View>
+                )}
+              </View>
             );
           })
         )}
@@ -261,6 +303,12 @@ const styles = StyleSheet.create({
   chevron: {
     ...typography.h3,
     color: colors.chevron,
+  },
+  noteButton: {
+    paddingHorizontal: spacing.xs,
+  },
+  noteEditor: {
+    paddingBottom: spacing.md,
   },
   empty: {
     ...typography.body2,

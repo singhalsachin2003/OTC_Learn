@@ -15,15 +15,15 @@ import { removeNote, setNote } from '../slices/notesSlice';
  */
 export const saveProductNote = createAsyncThunk<
   void,
-  { productId: string; body: string },
+  { noteKey: string; body: string },
   { state: RootState }
->('notes/save', async ({ productId, body }, { getState, dispatch }) => {
+>('notes/save', async ({ noteKey, body }, { getState, dispatch }) => {
   const note = editNote(body, toDateKey());
 
   if (note === null) {
-    dispatch(removeNote(productId));
+    dispatch(removeNote(noteKey));
   } else {
-    dispatch(setNote({ productId, note }));
+    dispatch(setNote({ productId: noteKey, note }));
   }
 
   await saveNotes(getState().notes.byProduct);

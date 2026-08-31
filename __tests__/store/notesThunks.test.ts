@@ -26,7 +26,7 @@ describe('notes thunks', () => {
     const store = createStore();
 
     await store.dispatch(
-      saveProductNote({ productId: 'irs', body: '  fixed leg  ' }),
+      saveProductNote({ noteKey: 'irs', body: '  fixed leg  ' }),
     );
 
     expect(notesOf(store).irs).toEqual({
@@ -40,8 +40,8 @@ describe('notes thunks', () => {
   it('replaces the note on a second edit rather than appending', async () => {
     const store = createStore();
 
-    await store.dispatch(saveProductNote({ productId: 'irs', body: 'first' }));
-    await store.dispatch(saveProductNote({ productId: 'irs', body: 'second' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: 'first' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: 'second' }));
 
     expect(notesOf(store).irs.body).toBe('second');
   });
@@ -49,9 +49,9 @@ describe('notes thunks', () => {
   /** Clearing the box is how a note is deleted — there is no separate control. */
   it('deletes the note when the body is cleared', async () => {
     const store = createStore();
-    await store.dispatch(saveProductNote({ productId: 'irs', body: 'temporary' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: 'temporary' }));
 
-    await store.dispatch(saveProductNote({ productId: 'irs', body: '   ' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: '   ' }));
 
     expect(notesOf(store).irs).toBeUndefined();
     await expect(stored()).resolves.toEqual({});
@@ -59,10 +59,10 @@ describe('notes thunks', () => {
 
   it('leaves other products alone when one note is deleted', async () => {
     const store = createStore();
-    await store.dispatch(saveProductNote({ productId: 'irs', body: 'keep' }));
-    await store.dispatch(saveProductNote({ productId: 'cds', body: 'drop' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: 'keep' }));
+    await store.dispatch(saveProductNote({ noteKey: 'cds', body: 'drop' }));
 
-    await store.dispatch(saveProductNote({ productId: 'cds', body: '' }));
+    await store.dispatch(saveProductNote({ noteKey: 'cds', body: '' }));
 
     expect(notesOf(store).irs.body).toBe('keep');
     expect(notesOf(store).cds).toBeUndefined();
@@ -72,10 +72,7 @@ describe('notes thunks', () => {
     const store = createStore();
 
     await store.dispatch(
-      saveProductNote({
-        productId: 'irs',
-        body: 'x'.repeat(NOTE_MAX_LENGTH + 100),
-      }),
+      saveProductNote({ noteKey: 'irs', body: 'x'.repeat(NOTE_MAX_LENGTH + 100) }),
     );
 
     expect(notesOf(store).irs.body).toHaveLength(NOTE_MAX_LENGTH);
@@ -88,7 +85,7 @@ describe('notes thunks', () => {
    */
   it('clears notes from memory as well as disk on a full reset', async () => {
     const store = createStore();
-    await store.dispatch(saveProductNote({ productId: 'irs', body: 'mine' }));
+    await store.dispatch(saveProductNote({ noteKey: 'irs', body: 'mine' }));
 
     await store.dispatch(resetEverything());
 
@@ -144,7 +141,7 @@ describe('notes storage', () => {
       }),
     );
 
-    await store.dispatch(saveProductNote({ productId: 'cds', body: 'added' }));
+    await store.dispatch(saveProductNote({ noteKey: 'cds', body: 'added' }));
 
     await expect(loadNotes()).resolves.toMatchObject({
       irs: { body: 'kept' },

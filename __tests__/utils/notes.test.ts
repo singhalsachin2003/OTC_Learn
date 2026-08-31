@@ -1,7 +1,9 @@
 import {
   editNote,
   isNoteEmpty,
+  noteKeyFor,
   notePreview,
+  parseNoteKey,
   NOTE_MAX_LENGTH,
   remainingLength,
   sortedNotes,
@@ -58,6 +60,31 @@ describe('remainingLength', () => {
 
   it('goes negative once the cap is passed', () => {
     expect(remainingLength('x'.repeat(NOTE_MAX_LENGTH + 5))).toBe(-5);
+  });
+});
+
+describe('note keys', () => {
+  it('keys a product note by the product alone', () => {
+    expect(noteKeyFor('irs')).toBe('irs');
+    expect(parseNoteKey('irs')).toEqual({ productId: 'irs' });
+  });
+
+  it('keys a term note by product and term', () => {
+    const key = noteKeyFor('irs', 'Notional');
+
+    expect(parseNoteKey(key)).toEqual({ productId: 'irs', term: 'Notional' });
+  });
+
+  it('round-trips a term containing the separator', () => {
+    const key = noteKeyFor('irs', 'A#B');
+
+    expect(parseNoteKey(key)).toEqual({ productId: 'irs', term: 'A#B' });
+  });
+
+  it('round-trips terms with spaces and punctuation', () => {
+    for (const term of ['Fixed leg', '25-delta', 'Day-count (ACT/360)']) {
+      expect(parseNoteKey(noteKeyFor('irs', term)).term).toBe(term);
+    }
   });
 });
 

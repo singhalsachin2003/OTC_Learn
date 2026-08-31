@@ -10,10 +10,12 @@ const PRODUCT = 'irs';
 
 describe('NoteEditor', () => {
   it('starts empty for a product with no note', async () => {
-    await renderWithStore(<NoteEditor productId={PRODUCT} />);
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />);
 
-    expect(screen.getByTestId('note-input').props.value).toBe('');
-    expect(screen.getByTestId('note-counter')).toHaveTextContent('Not saved yet');
+    expect(screen.getByTestId('note-editor-input').props.value).toBe('');
+    expect(screen.getByTestId('note-editor-counter')).toHaveTextContent(
+      'Not saved yet',
+    );
   });
 
   it('seeds the box with an existing note', async () => {
@@ -24,10 +26,10 @@ describe('NoteEditor', () => {
       }),
     );
 
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    expect(screen.getByTestId('note-input').props.value).toBe('fixed leg');
-    expect(screen.getByTestId('note-counter')).toHaveTextContent(
+    expect(screen.getByTestId('note-editor-input').props.value).toBe('fixed leg');
+    expect(screen.getByTestId('note-editor-counter')).toHaveTextContent(
       'Last edited 2026-08-20',
     );
   });
@@ -35,19 +37,25 @@ describe('NoteEditor', () => {
   /** Typing must not persist; only Save commits. */
   it('does not store a draft until it is saved', async () => {
     const store = createStore();
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    await fireEvent.changeText(screen.getByTestId('note-input'), 'half a thought');
+    await fireEvent.changeText(
+      screen.getByTestId('note-editor-input'),
+      'half a thought',
+    );
 
     expect(store.getState().notes.byProduct[PRODUCT]).toBeUndefined();
   });
 
   it('saves the draft on press', async () => {
     const store = createStore();
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    await fireEvent.changeText(screen.getByTestId('note-input'), 'pay fixed');
-    await fireEvent.press(screen.getByTestId('note-save'));
+    await fireEvent.changeText(
+      screen.getByTestId('note-editor-input'),
+      'pay fixed',
+    );
+    await fireEvent.press(screen.getByTestId('note-editor-save'));
 
     expect(store.getState().notes.byProduct[PRODUCT]).toEqual({
       body: 'pay fixed',
@@ -63,12 +71,15 @@ describe('NoteEditor', () => {
         [PRODUCT]: { body: 'same', updatedOn: '2026-08-20', updatedAt: 0 },
       }),
     );
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    expect(screen.getByTestId('note-save')).toBeDisabled();
+    expect(screen.getByTestId('note-editor-save')).toBeDisabled();
 
-    await fireEvent.changeText(screen.getByTestId('note-input'), 'different');
-    expect(screen.getByTestId('note-save')).not.toBeDisabled();
+    await fireEvent.changeText(
+      screen.getByTestId('note-editor-input'),
+      'different',
+    );
+    expect(screen.getByTestId('note-editor-save')).not.toBeDisabled();
   });
 
   /**
@@ -82,13 +93,13 @@ describe('NoteEditor', () => {
         [PRODUCT]: { body: 'doomed', updatedOn: '2026-08-20', updatedAt: 0 },
       }),
     );
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    await fireEvent.changeText(screen.getByTestId('note-input'), '  ');
+    await fireEvent.changeText(screen.getByTestId('note-editor-input'), '  ');
 
     expect(screen.getByText('Delete note')).toBeTruthy();
 
-    await fireEvent.press(screen.getByTestId('note-save'));
+    await fireEvent.press(screen.getByTestId('note-editor-save'));
     expect(store.getState().notes.byProduct[PRODUCT]).toBeUndefined();
   });
 
@@ -99,10 +110,13 @@ describe('NoteEditor', () => {
         [PRODUCT]: { body: 'stable', updatedOn: '2026-08-20', updatedAt: 0 },
       }),
     );
-    await renderWithStore(<NoteEditor productId={PRODUCT} />, { store });
+    await renderWithStore(<NoteEditor noteKey={PRODUCT} />, { store });
 
-    await fireEvent.changeText(screen.getByTestId('note-input'), '  stable  ');
+    await fireEvent.changeText(
+      screen.getByTestId('note-editor-input'),
+      '  stable  ',
+    );
 
-    expect(screen.getByTestId('note-save')).toBeDisabled();
+    expect(screen.getByTestId('note-editor-save')).toBeDisabled();
   });
 });

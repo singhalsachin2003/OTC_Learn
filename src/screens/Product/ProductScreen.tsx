@@ -174,7 +174,7 @@ export function ProductScreen() {
         </Section>
 
         <Section title="YOUR NOTE">
-          <NoteEditor productId={product.id} />
+          <NoteEditor noteKey={product.id} />
         </Section>
 
         <Section title="READ NEXT">
