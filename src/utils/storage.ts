@@ -38,9 +38,15 @@ export const STORAGE_KEYS = {
    * `StoredProfile` exactly as every screen already knows them.
    */
   syncMeta: '@otc-learn/sync-meta',
+  /**
+   * Set once, for installs that were using the app before it had a paywall.
+   * See `utils/access.ts` — this is what stops a subscription taking away
+   * content someone already had.
+   */
+  grandfathered: '@otc-learn/grandfathered',
 } as const;
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export interface StoredStreak {
   currentStreak: number;
@@ -637,6 +643,34 @@ export async function migrateExamResultIds(): Promise<boolean> {
 }
 
 /**
+ * v3 -> v4: grants existing installs permanent access to the whole catalogue.
+ *
+ * The app shipped free with every asset class open, and people are studying
+ * them now. Introducing a subscription that locks five of six would not be
+ * putting a price on new work — it would be taking back what someone already
+ * had, along with the mastery they built in it. So anyone whose install
+ * predates the paywall keeps all of it, for good.
+ *
+ * "Predates the paywall" means any stored schema version at all: a device that
+ * has run the app before has a version stamp, and a fresh install has none.
+ * That is a cleaner test than looking for progress, because someone who
+ * installed the app last week and has not finished a quiz yet is still an
+ * existing user.
+ */
+export async function migrateGrandfathering(
+  previousVersion: number | null,
+): Promise<boolean> {
+  if (previousVersion === null) {
+    return true;
+  }
+  return writeJson(STORAGE_KEYS.grandfathered, true);
+}
+
+export async function loadGrandfathered(): Promise<boolean> {
+  return (await readJson<boolean>(STORAGE_KEYS.grandfathered)) === true;
+}
+
+/**
  * Runs any pending migration and stamps the schema version.
  *
  * Idempotent: the version stamp is written last, so a crash mid-migration
@@ -645,6 +679,12 @@ export async function migrateExamResultIds(): Promise<boolean> {
 export async function runMigrations(): Promise<void> {
   const version = await readJson<number>(STORAGE_KEYS.schemaVersion);
   if (version === SCHEMA_VERSION) {
+    return;
+  }
+
+  // Before anything else, and reading the version we arrived with rather than
+  // the one we are about to write.
+  if (!(await migrateGrandfathering(version))) {
     return;
   }
 

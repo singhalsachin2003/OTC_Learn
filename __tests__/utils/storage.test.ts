@@ -8,6 +8,7 @@ import {
   loadBookmarkRecords,
   loadBookmarks,
   loadExamResults,
+  loadGrandfathered,
   loadProfile,
   loadProgressMap,
   loadQuestionHistory,
@@ -825,6 +826,61 @@ describe('storage', () => {
     // The v1 key is the only copy of that progress until the v2 write lands, so
     // a failed write must leave both it and the missing version stamp behind —
     // otherwise one bad write destroys everything the user had done.
+    describe('v3 -> v4 grandfathering', () => {
+      /**
+       * The app shipped free with every asset class open. A subscription that
+       * locked five of six would be taking back what someone already had,
+       * along with the mastery they built in it — so anyone who was already
+       * here keeps all of it.
+       */
+      it('grants permanent access to an install that has run before', async () => {
+        await writeRaw(STORAGE_KEYS.schemaVersion, JSON.stringify(3));
+
+        await runMigrations();
+
+        await expect(loadGrandfathered()).resolves.toBe(true);
+      });
+
+      /**
+       * Any stored version counts, not just the one before. Someone who
+       * installed last week and has not finished a quiz yet is still an
+       * existing user, and a version stamp is a cleaner test of that than
+       * looking for progress.
+       */
+      it('grants it on an install still back at v1', async () => {
+        await writeRaw(STORAGE_KEYS.schemaVersion, JSON.stringify(1));
+
+        await runMigrations();
+
+        await expect(loadGrandfathered()).resolves.toBe(true);
+      });
+
+      it('does not grant it to a fresh install', async () => {
+        await runMigrations();
+
+        await expect(loadGrandfathered()).resolves.toBe(false);
+      });
+
+      it('is false before any migration has run', async () => {
+        await expect(loadGrandfathered()).resolves.toBe(false);
+      });
+
+      // Same rule as every other migration here: an unstamped version is what
+      // makes the next launch try again.
+      it('does not stamp the version when the write fails', async () => {
+        await writeRaw(STORAGE_KEYS.schemaVersion, JSON.stringify(3));
+        jest
+          .spyOn(AsyncStorage, 'setItem')
+          .mockRejectedValueOnce(new Error('disk full'));
+
+        await runMigrations();
+
+        await expect(
+          AsyncStorage.getItem(STORAGE_KEYS.schemaVersion),
+        ).resolves.toBe(JSON.stringify(3));
+      });
+    });
+
     describe('v2 -> v3 exam result ids', () => {
       /** A sitting as v2 stored it: everything except an id. */
       const legacySitting = {
