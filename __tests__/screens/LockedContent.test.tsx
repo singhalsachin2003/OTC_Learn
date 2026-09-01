@@ -333,3 +333,24 @@ describe('the headline on a paywalled home screen', () => {
     expect(screen.getByText(/^432 questions are waiting/)).toBeTruthy();
   });
 });
+
+describe('the route through a locked category', () => {
+  /** "START HERE" is an invitation, and the next tap would refuse it. */
+  it('does not invite the reader into a locked first step', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToCategory('credit'));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    expect(screen.queryByTestId('category-next-cds')).toBeNull();
+  });
+
+  it('still marks the next step in the free asset class', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToCategory('ir'));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    expect(screen.getByTestId('category-next-irs')).toBeTruthy();
+  });
+});

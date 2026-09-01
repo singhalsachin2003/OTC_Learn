@@ -208,6 +208,25 @@ describe('restoreSubscription', () => {
    * Finding nothing is the ordinary answer for someone who has never bought
    * anything. Styling it as an error would accuse them of having a problem.
    */
+  /**
+   * A dropped connection must not revoke a subscriber. Nothing was learned
+   * from a call that never landed.
+   */
+  it('leaves an existing entitlement alone when the store cannot be reached', async () => {
+    getCustomerInfo.mockResolvedValue(entitled);
+    initPurchases({ apiKey: 'goog_test' });
+    await store.dispatch(refreshEntitlement());
+    restorePurchases.mockRejectedValue(new Error('offline'));
+
+    await store.dispatch(restoreSubscription());
+
+    expect(store.getState().access).toMatchObject({
+      premium: true,
+      error: 'offline',
+      notice: null,
+    });
+  });
+
   it('says so plainly when there is nothing to restore', async () => {
     initPurchases({ apiKey: 'goog_test' });
 

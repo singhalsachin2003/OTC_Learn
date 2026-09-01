@@ -277,28 +277,36 @@ describe('purchaseOffer', () => {
 
 describe('restoreEntitlements', () => {
   it('does nothing on a build that cannot transact', async () => {
-    await expect(restoreEntitlements()).resolves.toBe(false);
+    await expect(restoreEntitlements()).resolves.toEqual({ result: 'none' });
     expect(restorePurchases).not.toHaveBeenCalled();
   });
 
-  it('is true when the account already owns the entitlement', async () => {
+  it('restores when the account already owns the entitlement', async () => {
     restorePurchases.mockResolvedValue(entitled);
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(restoreEntitlements()).resolves.toBe(true);
+    await expect(restoreEntitlements()).resolves.toEqual({ result: 'restored' });
   });
 
-  it('is false when the account owns nothing', async () => {
+  it('finds nothing when the account owns nothing', async () => {
     restorePurchases.mockResolvedValue(notEntitled);
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(restoreEntitlements()).resolves.toBe(false);
+    await expect(restoreEntitlements()).resolves.toEqual({ result: 'none' });
   });
 
-  it('fails closed when the store cannot be reached', async () => {
+  /**
+   * The distinction that matters most here. Someone the app has lost track of
+   * is exactly who presses restore, and "no subscription found" when the truth
+   * is "Play could not be reached" tells them the thing they are afraid of.
+   */
+  it('separates a store it could not reach from an account with nothing', async () => {
     restorePurchases.mockRejectedValue(new Error('offline'));
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(restoreEntitlements()).resolves.toBe(false);
+    await expect(restoreEntitlements()).resolves.toEqual({
+      result: 'failed',
+      message: 'offline',
+    });
   });
 });

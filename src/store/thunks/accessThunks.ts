@@ -96,12 +96,23 @@ export const restoreSubscription = createAsyncThunk<
   { state: RootState }
 >('access/restore', async (_arg, { dispatch }) => {
   dispatch(setPurchaseStatus('restoring'));
-  const premium = await restoreEntitlements();
-  dispatch(setPremium(premium));
-  if (premium) {
+  const outcome = await restoreEntitlements();
+
+  if (outcome.result === 'restored') {
+    dispatch(setPremium(true));
     dispatch(setPurchaseStatus('idle'));
     track({ name: 'purchase_restored' });
     return;
   }
+
+  // Deliberately not `setPremium(false)` on a failure: the store was never
+  // reached, so nothing was learned, and revoking a subscriber's access over a
+  // dropped connection would be the worst thing this button could do.
+  if (outcome.result === 'failed') {
+    dispatch(purchaseFailed(outcome.message));
+    return;
+  }
+
+  dispatch(setPremium(false));
   dispatch(setNotice('No subscription found on this Google account.'));
 });

@@ -111,7 +111,10 @@ export function CategoryScreen() {
               </View>
 
               <View style={styles.stepBody}>
-                {step.state === 'current' && (
+                {/* Not over a locked row: "START HERE" is an invitation, and
+                    the next tap would refuse it. The lock on the row is what
+                    this reader needs to see instead. */}
+                {step.state === 'current' && !productLocked(product.id) && (
                   <Text
                     testID={`category-next-${step.productId}`}
                     style={[styles.upNext, { color: accent }]}

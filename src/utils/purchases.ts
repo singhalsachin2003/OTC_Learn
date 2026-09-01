@@ -199,21 +199,42 @@ export async function purchaseOffer(offerId: string): Promise<PurchaseOutcome> {
 }
 
 /**
+ * What asking the store about an existing purchase ended as.
+ *
+ * "Found nothing" and "could not ask" are separated because they are the two
+ * answers it is most damaging to confuse. Someone whose subscription the app
+ * has lost is exactly the person pressing this button, and telling them no
+ * subscription exists — when the truth is that Play could not be reached —
+ * says the thing they are afraid of, in the one moment they are afraid of it.
+ */
+export type RestoreOutcome =
+  | { result: 'restored' }
+  | { result: 'none' }
+  | { result: 'failed'; message: string };
+
+/**
  * Re-reads what the Play account already owns.
  *
  * Needed on every store that sells subscriptions: a reinstall, a second device
  * or a cleared app storage leaves someone paying with nothing to show for it,
  * and the only remedy is a button that asks the store again.
  */
-export async function restoreEntitlements(): Promise<boolean> {
+export async function restoreEntitlements(): Promise<RestoreOutcome> {
   if (!configured) {
-    return false;
+    return { result: 'none' };
   }
   try {
     const info = await Purchases.restorePurchases();
-    return info.entitlements.active[PREMIUM_ENTITLEMENT_ID] !== undefined;
-  } catch {
-    return false;
+    return info.entitlements.active[PREMIUM_ENTITLEMENT_ID] === undefined
+      ? { result: 'none' }
+      : { result: 'restored' };
+  } catch (error) {
+    return {
+      result: 'failed',
+      message:
+        (error as { message?: string }).message ??
+        'Could not reach Google Play just now.',
+    };
   }
 }
 
