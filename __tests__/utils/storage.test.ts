@@ -1044,6 +1044,22 @@ describe('storage', () => {
       await expect(loadExamResults()).resolves.toEqual([]);
     });
 
+    it('leaves grandfathering and the schema stamp in place', async () => {
+      // Resetting progress is not giving up access someone already had. If
+      // this key went, the paywall would close over an install that predates
+      // it — and with the version stamp gone too, the next launch would look
+      // like a fresh install and would not grant it back.
+      await writeRaw(STORAGE_KEYS.schemaVersion, JSON.stringify(3));
+      await runMigrations();
+
+      await clearAll();
+
+      await expect(loadGrandfathered()).resolves.toBe(true);
+      await expect(AsyncStorage.getItem(STORAGE_KEYS.schemaVersion)).resolves.toBe(
+        JSON.stringify(SCHEMA_VERSION),
+      );
+    });
+
     it('swallows a storage failure rather than throwing at the caller', async () => {
       jest
         .spyOn(AsyncStorage, 'multiRemove')

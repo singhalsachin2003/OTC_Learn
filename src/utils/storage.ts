@@ -718,9 +718,33 @@ export async function runMigrations(): Promise<void> {
 }
 
 /** Clears all app-owned keys. Backs the "reset progress" action in Profile. */
+/**
+ * Keys `clearAll` leaves alone, because neither is anything the user asked to
+ * be rid of.
+ *
+ * `grandfathered` is the one that matters: it records that this install
+ * predates the paywall, and it is meant to last forever. Wiping it turns
+ * "reset my progress" into "give up five asset classes", which nobody would
+ * read that button as offering — and because the version stamp went with it,
+ * the next launch looked like a fresh install and `migrateGrandfathering`
+ * would not grant it back either.
+ *
+ * `schemaVersion` goes with it for the same reason in a smaller way: the disk
+ * after a reset is empty but current, not old, and dropping the stamp makes
+ * the next launch re-run every migration over nothing.
+ */
+const KEYS_SURVIVING_RESET: readonly string[] = [
+  STORAGE_KEYS.grandfathered,
+  STORAGE_KEYS.schemaVersion,
+];
+
 export async function clearAll(): Promise<void> {
   try {
-    await AsyncStorage.multiRemove(Object.values(STORAGE_KEYS));
+    await AsyncStorage.multiRemove(
+      Object.values(STORAGE_KEYS).filter(
+        (key) => !KEYS_SURVIVING_RESET.includes(key),
+      ),
+    );
   } catch {
     // Nothing actionable — the caller is resetting state anyway.
   }
