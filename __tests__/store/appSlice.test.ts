@@ -1,11 +1,13 @@
 import reducer, {
   initialAppState,
   isTabScreen,
+  navigateBackFromPaywall,
   navigateToAchievements,
   navigateToCategory,
   navigateToGlossary,
   navigateToHome,
   navigateToLesson,
+  navigateToPaywall,
   navigateToProduct,
   navigateToQuiz,
   navigateToResults,
@@ -127,6 +129,33 @@ describe('appSlice', () => {
     const typed = reducer(initialAppState, setProductQuery('cap'));
 
     expect(reducer(typed, setProductQuery('')).productQuery).toBe('');
+  });
+
+  /**
+   * Every other detail screen is reached from a tab root, which `currentTab`
+   * already records. The paywall is reached from a locked row halfway down a
+   * category, so sending someone back to the tab root would lose their place.
+   */
+  it('returns from the paywall to the screen that opened it', () => {
+    const browsing = reducer(initialAppState, navigateToCategory('credit'));
+    const paywall = reducer(browsing, navigateToPaywall());
+
+    expect(paywall.currentScreen).toBe('paywall');
+    expect(reducer(paywall, navigateBackFromPaywall()).currentScreen).toBe(
+      'category',
+    );
+  });
+
+  it('keeps the first way in when the paywall is opened over itself', () => {
+    const browsing = reducer(initialAppState, navigateToCategory('credit'));
+    const once = reducer(browsing, navigateToPaywall());
+    const twice = reducer(once, navigateToPaywall());
+
+    // Without the guard the second arrival records "paywall" as the way back,
+    // and backing out of it does nothing at all.
+    expect(reducer(twice, navigateBackFromPaywall()).currentScreen).toBe(
+      'category',
+    );
   });
 });
 

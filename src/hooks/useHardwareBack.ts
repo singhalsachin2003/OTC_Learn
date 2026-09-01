@@ -37,7 +37,8 @@ export function useHardwareBack() {
   const screen = useCurrentScreen();
   const categoryId = useSelectedCategoryId();
   const productId = useSelectedProductId();
-  const { goHome, goToTab, goToCategory, goToProduct, goToExam } = useNavigation();
+  const { goHome, goToTab, goToCategory, goToProduct, goToExam, leavePaywall } =
+    useNavigation();
   const mode = useAppSelector((state) => state.quiz.mode);
   const exitQuiz = useQuizExit();
 
@@ -59,6 +60,14 @@ export function useHardwareBack() {
       // through the same exit the on-screen control uses.
       if (screen === 'quiz') {
         exitQuiz();
+        return true;
+      }
+
+      // The paywall is the one detail screen not reached from a tab root —
+      // a locked row halfway down a category opens it — so it remembers where
+      // it came from rather than being listed below.
+      if (screen === 'paywall') {
+        leavePaywall();
         return true;
       }
 
@@ -119,6 +128,7 @@ export function useHardwareBack() {
     goToCategory,
     goToProduct,
     goToExam,
+    leavePaywall,
     exitQuiz,
   ]);
 }

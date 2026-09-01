@@ -114,6 +114,7 @@ describe('actionsForLink', () => {
     expect(landOn('otclearn://product/cmopt')).toEqual({
       currentScreen: 'product',
       currentTab: 'home',
+      paywallReturn: 'home',
       selectedCategoryId: 'commodity',
       selectedProductId: 'cmopt',
       productQuery: '',
@@ -193,5 +194,23 @@ describe('actionsForLink', () => {
     }
 
     expect(store.getState().app.currentScreen).toBe('home');
+  });
+});
+
+describe('the paywall link', () => {
+  it('parses', () => {
+    expect(parseDeepLink('otclearn://paywall')).toEqual({ screen: 'paywall' });
+  });
+
+  /**
+   * Reached from Profile like the other detail screens, so a deep-linked
+   * paywall backs out to a tab rather than to whatever was selected last.
+   */
+  it('selects the Profile tab first, so backing out lands somewhere', () => {
+    expect(landOn('otclearn://paywall')).toMatchObject({
+      currentScreen: 'paywall',
+      currentTab: 'profile',
+      paywallReturn: 'profile',
+    });
   });
 });

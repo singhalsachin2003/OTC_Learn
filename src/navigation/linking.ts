@@ -9,6 +9,7 @@ import {
   navigateToInsights,
   navigateToLesson,
   navigateToNotes,
+  navigateToPaywall,
   navigateToProduct,
   navigateToTab,
   type ScreenName,
@@ -32,7 +33,7 @@ export interface ParsedLink {
  * - `otclearn://lesson/<id>` — straight into the lesson
  * - `otclearn://review`, `otclearn://profile`, `otclearn://glossary`,
  *   `otclearn://insights`, `otclearn://exam`, `otclearn://notes`,
- *   `otclearn://account`
+ *   `otclearn://account`, `otclearn://paywall`
  *
  * Returns `null` for anything that does not resolve to real content, so an
  * unrecognised link leaves the user where they were rather than on a blank
@@ -68,6 +69,10 @@ export function parseDeepLink(url: string): ParsedLink | null {
 
   if (kind === 'account') {
     return { screen: 'account' };
+  }
+
+  if (kind === 'paywall') {
+    return { screen: 'paywall' };
   }
 
   if (kind === 'category' && categories.some((c) => c.id === id)) {
@@ -126,6 +131,10 @@ export function actionsForLink(link: ParsedLink) {
       return [navigateToTab('profile'), navigateToNotes()];
     case 'account':
       return [navigateToTab('profile'), navigateToAccount()];
+    // Reached from Profile too, so backing out of a deep-linked paywall lands
+    // on a tab rather than on whatever screen happened to be selected last.
+    case 'paywall':
+      return [navigateToTab('profile'), navigateToPaywall()];
     default:
       return [navigateToHome()];
   }

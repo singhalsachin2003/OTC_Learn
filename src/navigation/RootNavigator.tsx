@@ -17,6 +17,7 @@ import { LessonScreen } from '../screens/Lesson/LessonScreen';
 import { NotesScreen } from '../screens/Notes/NotesScreen';
 import { ProductScreen } from '../screens/Product/ProductScreen';
 import { ProductsScreen } from '../screens/Products/ProductsScreen';
+import { PaywallScreen } from '../screens/Paywall/PaywallScreen';
 import { ProfileScreen } from '../screens/Profile/ProfileScreen';
 import { QuizResults } from '../screens/Quiz/QuizResults';
 import { QuizScreen } from '../screens/Quiz/QuizScreen';
@@ -96,6 +97,8 @@ function Screen() {
       return <NotesScreen />;
     case 'account':
       return <AccountScreen />;
+    case 'paywall':
+      return <PaywallScreen />;
     case 'home':
     default:
       return <HomeScreen />;

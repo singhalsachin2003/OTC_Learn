@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import {
+  navigateBackFromPaywall,
   navigateToAccount,
   navigateToAchievements,
   navigateToCategory,
@@ -10,6 +11,7 @@ import {
   navigateToInsights,
   navigateToLesson,
   navigateToNotes,
+  navigateToPaywall,
   navigateToProduct,
   navigateToQuiz,
   navigateToResults,
@@ -17,7 +19,7 @@ import {
   type TabName,
 } from '../store/slices/appSlice';
 import { resetQuiz } from '../store/slices/quizSlice';
-import { track } from '../utils/analytics';
+import { track, type PaywallSource } from '../utils/analytics';
 import { hapticSelection } from '../utils/haptics';
 import { useAppDispatch, useHapticsEnabled } from './useAppState';
 
@@ -36,6 +38,8 @@ export interface AppNavigation {
   goToExam: () => void;
   goToNotes: () => void;
   goToAccount: () => void;
+  goToPaywall: (source: PaywallSource) => void;
+  leavePaywall: () => void;
   /** Enters a drawn exam paper. The draw itself happens in `useQuiz`. */
   goToExamQuiz: () => void;
 }
@@ -137,6 +141,23 @@ export function useNavigation(): AppNavigation {
     dispatch(navigateToAccount());
   }, [dispatch]);
 
+  /**
+   * `source` is recorded but not stored: where someone met the paywall is the
+   * only interesting thing about the event, and the screen itself reads the
+   * same however it was reached.
+   */
+  const goToPaywall = useCallback(
+    (source: PaywallSource) => {
+      dispatch(navigateToPaywall());
+      track({ name: 'paywall_shown', source });
+    },
+    [dispatch],
+  );
+
+  const leavePaywall = useCallback(() => {
+    dispatch(navigateBackFromPaywall());
+  }, [dispatch]);
+
   // Takes no product, for the same reason `goToReviewQuiz` does not: an exam
   // spans many products, so selecting one would misattribute the sitting.
   const goToExamQuiz = useCallback(() => {
@@ -160,6 +181,8 @@ export function useNavigation(): AppNavigation {
       goToExamQuiz,
       goToNotes,
       goToAccount,
+      goToPaywall,
+      leavePaywall,
     }),
     [
       goToTab,
@@ -177,6 +200,8 @@ export function useNavigation(): AppNavigation {
       goToExamQuiz,
       goToNotes,
       goToAccount,
+      goToPaywall,
+      leavePaywall,
     ],
   );
 }

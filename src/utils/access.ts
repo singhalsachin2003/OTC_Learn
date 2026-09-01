@@ -1,4 +1,5 @@
-import { categories } from '../data/categories';
+import { categories, getCategoryById } from '../data/categories';
+import { products } from '../data/products';
 
 /**
  * Who can open what.
@@ -65,4 +66,21 @@ export function canOpenProduct(
 /** How many asset classes a subscription would add, for the paywall's copy. */
 export function lockedCategoryCount(): number {
   return categories.filter((c) => c.id !== FREE_CATEGORY_ID).length;
+}
+
+/** How many products a subscription would add. Counted, never written down. */
+export function lockedProductCount(): number {
+  return products.filter((p) => p.categoryId !== FREE_CATEGORY_ID).length;
+}
+
+/** The free asset class by name, for copy that should not say "ir". */
+export function freeCategoryName(): string {
+  return getCategoryById(FREE_CATEGORY_ID)?.name ?? 'Interest Rate';
+}
+
+/** How many questions come with them. Also counted from the catalogue. */
+export function lockedQuestionCount(): number {
+  return products
+    .filter((p) => p.categoryId !== FREE_CATEGORY_ID)
+    .reduce((total, p) => total + p.quiz.length, 0);
 }

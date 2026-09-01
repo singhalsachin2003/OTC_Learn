@@ -216,3 +216,28 @@ export async function restoreEntitlements(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * What the annual term saves against twelve months of the monthly one, as a
+ * whole percentage, or null when the comparison cannot be made.
+ *
+ * Worked out from the store's own two prices rather than written down, so it
+ * stays true when the prices change or differ by country — and says nothing
+ * at all rather than something wrong when only one term is on sale.
+ */
+export function annualSavingPercent(offers: SubscriptionOffer[]): number | null {
+  const monthly = offers.find((o) => o.period === 'monthly');
+  const annual = offers.find((o) => o.period === 'annual');
+  if (monthly === undefined || annual === undefined || monthly.price <= 0) {
+    return null;
+  }
+  // Different currencies would make the subtraction meaningless. It should not
+  // happen — one offering is priced in one currency — but a wrong "save 94%"
+  // is worse than no claim.
+  if (monthly.currencyCode !== annual.currencyCode) {
+    return null;
+  }
+  const yearOfMonthly = monthly.price * 12;
+  const saving = Math.round(((yearOfMonthly - annual.price) / yearOfMonthly) * 100);
+  return saving > 0 ? saving : null;
+}

@@ -15,7 +15,8 @@ export type ScreenName =
   | 'insights'
   | 'exam'
   | 'notes'
-  | 'account';
+  | 'account'
+  | 'paywall';
 
 /**
  * Screens that are a tab root. Everything else is a detail screen pushed on
@@ -51,6 +52,15 @@ export interface AppState {
   selectedProductId: string | null;
   /** Free-text filter on the products tab, kept here so it survives a detour. */
   productQuery: string;
+  /**
+   * The screen the paywall was opened from, so backing out returns there.
+   *
+   * Every other detail screen is reached from a tab root, which is what
+   * `currentTab` records. The paywall is not: it is reached from a locked
+   * product row halfway down a category, and sending someone back to the tab
+   * root would lose the place they were browsing.
+   */
+  paywallReturn: ScreenName;
 }
 
 export const initialAppState: AppState = {
@@ -59,6 +69,7 @@ export const initialAppState: AppState = {
   selectedCategoryId: null,
   selectedProductId: null,
   productQuery: '',
+  paywallReturn: 'home',
 };
 
 const appSlice = createSlice({
@@ -134,6 +145,21 @@ const appSlice = createSlice({
       state.currentScreen = 'account';
     },
 
+    /** What a subscription opens, and how to buy one. */
+    navigateToPaywall(state) {
+      // Guarded so that arriving at the paywall twice — a deep link on top of
+      // an open paywall — cannot make backing out of it a no-op.
+      if (state.currentScreen !== 'paywall') {
+        state.paywallReturn = state.currentScreen;
+      }
+      state.currentScreen = 'paywall';
+    },
+
+    /** Leaves the paywall for wherever it was opened from. */
+    navigateBackFromPaywall(state) {
+      state.currentScreen = state.paywallReturn;
+    },
+
     setProductQuery(state, action: PayloadAction<string>) {
       state.productQuery = action.payload;
     },
@@ -154,6 +180,8 @@ export const {
   navigateToExam,
   navigateToNotes,
   navigateToAccount,
+  navigateToPaywall,
+  navigateBackFromPaywall,
   setProductQuery,
 } = appSlice.actions;
 
