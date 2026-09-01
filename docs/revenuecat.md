@@ -220,6 +220,37 @@ Then, in the same release, three documents stop being true. They are listed in
 to buy, the store listing's content-rating answers say the app has no purchases,
 and Play's Data safety form does not declare them.
 
+## Verified end to end, 2026-09-01
+
+Against the Test Store on a Pixel 7 emulator, with `react-native-purchases-ui`
+in the build. The Test Store's purchase dialog offers **TEST VALID PURCHASE**,
+**TEST FAILED PURCHASE** and **CANCEL**, which is all three branches the code
+has:
+
+- **Cancel** — silent. No error, no message, nothing said about a decision the
+  reader made deliberately.
+- **Failed** — shows the store's own message, passed through rather than
+  rewritten.
+- **Valid** — entitlement granted, the paywall flips to "You are subscribed",
+  the catalogue unlocks, and Profile's Subscription row reads **Active** and
+  opens the Customer Center.
+
+**This is what confirmed `otc_learn_pro` is right.** It is the one identifier
+the offerings endpoint cannot show, and a wrong value fails silently — a real
+purchase granting the entitlement and the app seeing it is the only proof
+available short of selling something.
+
+Two things to fix in the dashboard before this ships:
+
+1. **The Customer Center does not look like this app.** It renders in
+   RevenueCat's default light-purple theme against a cream and near-black
+   palette. Its appearance is dashboard-configurable; nothing in the repo
+   changes it.
+2. **No cancel or manage option appeared**, only "Restore past purchases" —
+   expected of a Test Store subscription, which has nothing to manage. Worth
+   re-checking against a real Play subscription rather than assuming it
+   appears.
+
 ## Checking it without a store
 
 `src/utils/access.ts` and the screens are covered by tests, but the purchase
