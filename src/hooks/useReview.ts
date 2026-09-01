@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { getQuestionById } from '../data/products';
 import type { Product, Question } from '../data/types';
 import { dueItems, nextDueDate, type ReviewItem } from '../utils/review';
+import { useAccess } from './useAccess';
 import { useAppSelector } from './useAppState';
 
 export interface ResolvedReviewItem {
@@ -31,39 +32,54 @@ export interface ReviewSummary {
 /**
  * Reads the review queue and resolves it against the catalogue.
  *
- * Items whose question no longer exists are dropped rather than surfaced: a
- * release that removes or renames a question would otherwise leave a queue the
- * user can see but never clear.
+ * Two kinds of item are dropped rather than surfaced, for the same reason: a
+ * queue the user can see but never clear. One is a question a later release
+ * removed or renamed. The other is a question inside a product they can no
+ * longer open — which happens to anyone whose subscription lapses, and whose
+ * queue would otherwise both count down to a sitting that cannot run and hand
+ * back the paid questions if it did.
+ *
+ * Nothing is deleted. The items stay in storage and come back the moment
+ * access does, along with the schedule they were on.
  */
 export function useReview(): ReviewSummary {
   const queue = useAppSelector((state) => state.review.queue);
   const loading = useAppSelector((state) => state.review.loading);
+  const { productLocked } = useAccess();
 
-  const resolve = (item: ReviewItem): ResolvedReviewItem | null => {
-    const found = getQuestionById(item.id);
-    return found === undefined
-      ? null
-      : { item, question: found.question, product: found.product };
-  };
+  const visible = useMemo(() => {
+    const resolve = (item: ReviewItem): ResolvedReviewItem | null => {
+      const found = getQuestionById(item.id);
+      if (found === undefined || productLocked(found.product.id)) {
+        return null;
+      }
+      return { item, question: found.question, product: found.product };
+    };
+    return queue.flatMap((item) => resolve(item) ?? []);
+  }, [queue, productLocked]);
 
   const due = useMemo(() => {
-    return dueItems(queue).flatMap((item) => resolve(item) ?? []);
-  }, [queue]);
+    const dueIds = new Set(
+      dueItems(visible.map((entry) => entry.item)).map((item) => item.id),
+    );
+    return visible.filter((entry) => dueIds.has(entry.item.id));
+  }, [visible]);
 
   const upcoming = useMemo(() => {
     const dueIds = new Set(due.map((entry) => entry.item.id));
-    return queue
-      .filter((item) => !dueIds.has(item.id))
-      .sort((a, b) => a.dueOn.localeCompare(b.dueOn))
-      .flatMap((item) => resolve(item) ?? []);
-  }, [queue, due]);
+    return visible
+      .filter((entry) => !dueIds.has(entry.item.id))
+      .sort((a, b) => a.item.dueOn.localeCompare(b.item.dueOn));
+  }, [visible, due]);
 
   return {
     queue,
     due,
     dueCount: due.length,
-    queuedCount: queue.length,
-    nextDueOn: nextDueDate(queue),
+    // Counted from what resolved, so the figure in Profile matches what the
+    // review screen can actually show.
+    queuedCount: visible.length,
+    nextDueOn: nextDueDate(visible.map((entry) => entry.item)),
     upcoming,
     loading,
   };

@@ -14,6 +14,7 @@ import {
   navigateToProduct,
   navigateToTab,
 } from '../../src/store/slices/appSlice';
+import { setReviewQueue } from '../../src/store/slices/reviewSlice';
 import { initPurchases, resetPurchases } from '../../src/utils/purchases';
 import { renderWithStore } from '../helpers/renderWithStore';
 
@@ -236,5 +237,56 @@ describe('the subscription row in Profile', () => {
     expect(screen.getByTestId('profile-subscription')).toHaveTextContent(
       /Free plan/,
     );
+  });
+});
+
+describe('a review queue holding content that has since locked', () => {
+  /** What a lapsed subscriber has: items from an asset class now shut. */
+  function queueOf(store: AppStore, questionIds: string[]) {
+    store.dispatch(
+      setReviewQueue(
+        questionIds.map((id) => ({
+          id,
+          productId: id.split('-')[0] ?? '',
+          step: 0,
+          dueOn: '2020-01-01',
+          lapses: 1,
+          updatedAt: 0,
+        })),
+      ),
+    );
+  }
+
+  it('does not count items it could never show', async () => {
+    const store = paywalled();
+    queueOf(store, ['cds-q1', 'cds-q2', 'irs-q1']);
+    store.dispatch(navigateToTab('review'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    // Only the free question is left — a badge counting the other two would
+    // count down to a sitting that cannot run.
+    expect(screen.getByTestId('review-due-tile')).toHaveTextContent(/^1DUE/);
+  });
+
+  it('draws a sitting from the open questions alone', async () => {
+    const store = paywalled();
+    queueOf(store, ['cds-q1', 'cds-q2', 'irs-q1']);
+    store.dispatch(navigateToTab('review'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('review-start'));
+
+    const drawn = store.getState().quiz.questions.map((q) => q.id);
+    expect(drawn).toEqual(['irs-q1']);
+  });
+
+  /** Dropped from view, not from storage — access can come back. */
+  it('leaves the locked items in the queue', async () => {
+    const store = paywalled();
+    queueOf(store, ['cds-q1', 'irs-q1']);
+    store.dispatch(navigateToTab('review'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    expect(store.getState().review.queue).toHaveLength(2);
   });
 });

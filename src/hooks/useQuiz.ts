@@ -125,10 +125,16 @@ export function useQuiz(): QuizController {
   const startReview = useCallback(() => {
     const due = dueItems(reviewQueue);
     // Resolve ids back to questions, dropping any whose question no longer
-    // exists — a release that removes a question must not strand the queue.
+    // exists — a release that removes a question must not strand the queue —
+    // and any inside a product the user can no longer open, which is the same
+    // situation arrived at from the other direction.
     const questions = due
-      .map((item) => getQuestionById(item.id)?.question)
-      .filter((found): found is Question => found !== undefined);
+      .map((item) => getQuestionById(item.id))
+      .filter(
+        (found): found is NonNullable<typeof found> =>
+          found !== undefined && canOpenProduct(found.product, access),
+      )
+      .map((found) => found.question);
 
     if (questions.length === 0) {
       return;
@@ -147,7 +153,7 @@ export function useQuiz(): QuizController {
         startedAt: Date.now(),
       }),
     );
-  }, [dispatch, reviewQueue, settings.sessionSize]);
+  }, [dispatch, reviewQueue, settings.sessionSize, access]);
 
   const startExam = useCallback(
     (scopeId: string, questionCount: number = DEFAULT_EXAM_LENGTH) => {
