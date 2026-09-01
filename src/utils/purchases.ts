@@ -122,13 +122,15 @@ export type OfferPeriod = 'monthly' | 'annual' | 'lifetime' | 'other';
  * `purchaseOffer` looks the real package up again here.
  *
  * There are no prices in this repo and there never should be. Play returns them
- * localised and tax-inclusive per country, and a hardcoded "₹399" would be
- * wrong in 176 of the 177 countries the app is listed in.
+ * localised and tax-inclusive per country, so any figure written here would be
+ * wrong in 176 of the 177 countries the app is listed in — including the INR
+ * ones chosen on 2026-09-01, which are set in the Play Console and reach the
+ * app only through `priceString`.
  */
 export interface SubscriptionOffer {
   id: string;
   period: OfferPeriod;
-  /** Already formatted by the store, e.g. "₹399.00". Render it as given. */
+  /** Already formatted by the store, e.g. "US$4.99". Render it as given. */
   priceString: string;
   /** The same figure as a number, only for comparing the two terms. */
   price: number;

@@ -95,7 +95,7 @@ is no longer entirely unexercised.
 ### Before anything can be sold
 
 1. ~~Add the billing dependency.~~ **Done, 2026-08-31.** `react-native-purchases`
-   is in, `com.android.vending.BILLING` is declared, and the *release* manifest
+   is in, `com.android.vending.BILLING` is declared, and the _release_ manifest
    merge was checked rather than assumed — `expo prebuild` cannot show the real
    list, so `processReleaseMainManifest` was run and its output read. It is
    exactly v1.1's verified list plus `BILLING`:
@@ -106,25 +106,28 @@ is no longer entirely unexercised.
    ```
 
    RevenueCat added nothing else, and none of the blocked FCM permissions leaked
-   back in. A *debug* build additionally carries `SYSTEM_ALERT_WINDOW` from
+   back in. A _debug_ build additionally carries `SYSTEM_ALERT_WINDOW` from
    React Native's dev-overlay source set — expected, and absent from release.
 
 2. **Upload a build to a test track.** Not done: this is native code, so it
    needs `eas build`, and the upload is the owner's to make. Until an uploaded
    binary declares `BILLING`, the console still refuses to create products.
 
-3. **Finish the merchant verification.** The console reports *"There is an issue
-   with your payments profile"* — verification under the RBI's Payment
-   Aggregator Cross Border rules, initiated with **BillDesk**, status *in
-   progress*, with a **90-day clock** from when the application was begun.
+3. **Finish the merchant verification.** The console reports _"There is an issue
+   with your payments profile"_ — verification under the RBI's Payment
+   Aggregator Cross Border rules, initiated with **BillDesk**, status _in
+   progress_, with a **90-day clock** from when the application was begun.
    Instructions were sent from `onboarding@billdesk.com`. Nothing can be sold
    until this completes, regardless of the binary.
 
-4. **Then** create the subscription, and wire entitlements with a RevenueCat
-   account and key — still not created. **`docs/revenuecat.md` is the runbook**:
-   the app reads three identifiers by exact string (`premium`, the *current*
-   offering, the `goog_` key) and a typo in any of them fails silently, leaving
-   the app behaving as a free app with no error anywhere.
+4. **Then** create the products and price them. Decided 2026-09-01:
+   **₹29 monthly, ₹199 yearly, ₹399 lifetime** (India). The RevenueCat project
+   already carries all three in its `default` offering; only the Play Console
+   side is missing, and it stays missing until items 2 and 3 above clear. **`docs/revenuecat.md` is the runbook**:
+   it carries the prices, and the three identifiers the app reads by exact
+   string (`otc_learn_pro`, the _current_ offering, the `goog_` key) — a typo in
+   any of which fails silently, leaving the app behaving as a free app with no
+   error anywhere.
 
 5. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
    now have a screen and every locked surface consumes them: the home grid,
@@ -133,7 +136,7 @@ is no longer entirely unexercised.
 
    - **It is still invisible, and the key alone will not change that.** With
      no RevenueCat key `paywallApplies` is false for everybody. It stays false
-     until RevenueCat is *also* serving an offering with a real Play product
+     until RevenueCat is _also_ serving an offering with a real Play product
      in it — because the alternative is locking five asset classes with no way
      to pay for them, and the key is one environment variable while the
      product is weeks of merchant verification away. The key can therefore be
@@ -191,6 +194,7 @@ base64 licensing public key is available in Monetisation setup when it is needed
    The rule applied: **content scales in full, chrome does not.** Tab labels cap
    at 1.3x and the badge at 1.1x; the stat row shrinks so its label wraps. Nothing
    in the type scale is capped, and a test asserts that it stays that way.
+
 3. **Migration on a real v1 install.** The v1→v2 migration is unit-tested — including
    the case where the write fails part-way, which is where it previously lost data —
    but has not been run against an actual app upgrade on a device holding v1 data.
@@ -214,6 +218,7 @@ base64 licensing public key is available in Monetisation setup when it is needed
   in `__tests__/utils/swipe.test.ts`. `ReviewScreen`'s `whenLabel` still has an
   unreachable `'Today'` branch — both callers exclude items that are already due —
   left in place as a guard rather than deleted.
+
 ### Deferred by choice
 
 - **Crash reporting.** Still ships dark, and deliberately so, but everything that
@@ -244,6 +249,7 @@ base64 licensing public key is available in Monetisation setup when it is needed
   from `eas.json`** — leaving it in is the one way to ship a build whose stack
   traces are unreadable. Sentry is native code, so it needs a new build; an OTA
   update cannot switch it on.
+
 - **iOS.** Scripts, `bundleIdentifier` and config remain, unverified. Revisit after
   Android ships.
 - **Review mode does not move mastery.** A deliberate choice, documented in the README:

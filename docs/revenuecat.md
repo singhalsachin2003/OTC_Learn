@@ -74,7 +74,41 @@ the product would be _"monthly and annual, not a one-time unlock"_; the
 dashboard now has all three, and the app renders whatever the offering
 contains.
 
-**Prices are not set here and are not in this repo.** They are set per country
+## Prices
+
+Chosen on **2026-09-01**, and set in the **Play Console** — not here, and not in
+RevenueCat, which only reads what Play returns.
+
+| Product    | India (INR) | Notes                                     |
+| ---------- | ----------- | ----------------------------------------- |
+| `monthly`  | ₹29         | base plan on the subscription             |
+| `yearly`   | ₹199        | base plan; the paywall shows **SAVE 43%** |
+| `lifetime` | ₹399        | one-time in-app product, does not renew   |
+
+The 43% is computed at runtime from the two figures Play returns — 29 × 12 =
+348, against 199 — so it stays correct per country and disappears if only one
+term is on sale. `annualSavingPercent` is pinned to these numbers by a test, so
+changing a price and quietly breaking the badge shows up as a failure.
+
+Two things to weigh before entering them, both consequences of the ratios
+rather than objections to the plan:
+
+- **₹399 lifetime is 2.0× the annual and 13.8 months of the monthly.** Anyone
+  who expects to stay much beyond a year is better off buying lifetime, so
+  lifetime will be the common choice and revenue per user is effectively capped
+  at ₹399. That is a fine outcome if the goal is reach; it is worth knowing it
+  is the outcome.
+- **These are the India prices.** Play will generate the other 176 countries by
+  conversion unless each is set. ₹29 converts to roughly a third of a US dollar,
+  which is likely below what the same content would sell for elsewhere — worth
+  reviewing the auto-converted table rather than accepting it wholesale.
+
+Prices cannot be entered yet: the Play Console will not create a product until
+an uploaded binary declares `BILLING`, and nothing can be sold until BillDesk
+merchant verification completes. Confirmed 2026-09-01 — the subscriptions route
+in the Console still bounces back to the app list.
+
+**Prices are not set in the app and are not in this repo.** They are set per country
 in the Play Console; RevenueCat passes through Play's localised, tax-inclusive
 `priceString`, which is what the paywall renders. The annual saving is computed
 from the two prices at runtime, so it stays correct per country and disappears

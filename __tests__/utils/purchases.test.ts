@@ -1,6 +1,7 @@
 import Purchases from 'react-native-purchases';
 
 import {
+  annualSavingPercent,
   initPurchases,
   isPremium,
   isPurchasesConfigured,
@@ -309,5 +310,53 @@ describe('restoreEntitlements', () => {
       result: 'failed',
       message: 'offline',
     });
+  });
+});
+
+describe('annualSavingPercent', () => {
+  function offer(period: 'monthly' | 'annual', price: number, currency = 'INR') {
+    return {
+      id: period,
+      period,
+      priceString: String(price),
+      price,
+      currencyCode: currency,
+    } as const;
+  }
+
+  /**
+   * The figures chosen on 2026-09-01: ₹29 monthly against ₹199 annually. The
+   * badge is the only place either price is compared, so pinning the arithmetic
+   * here is what catches a later price change quietly making it wrong.
+   *
+   * 29 × 12 = 348; (348 − 199) / 348 = 42.8%.
+   */
+  it('reads 43% for the chosen INR prices', () => {
+    expect(annualSavingPercent([offer('monthly', 29), offer('annual', 199)])).toBe(
+      43,
+    );
+  });
+
+  it('says nothing when only one term is on sale', () => {
+    expect(annualSavingPercent([offer('monthly', 29)])).toBeNull();
+    expect(annualSavingPercent([offer('annual', 199)])).toBeNull();
+  });
+
+  /** A "saving" that costs more is not one, and no badge is better than a lie. */
+  it('says nothing when the annual term saves nothing', () => {
+    expect(annualSavingPercent([offer('monthly', 29), offer('annual', 400)])).toBe(
+      null,
+    );
+  });
+
+  /**
+   * Currencies are per country and one offering is priced in one of them, so
+   * this should not happen — but subtracting across two would produce a
+   * confident, wrong number.
+   */
+  it('refuses to compare two different currencies', () => {
+    expect(
+      annualSavingPercent([offer('monthly', 29), offer('annual', 199, 'USD')]),
+    ).toBeNull();
   });
 });
