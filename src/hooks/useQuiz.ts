@@ -16,6 +16,7 @@ import {
   completeReviewSession,
   completeSession,
 } from '../store/thunks/progressThunks';
+import { canOpenProduct } from '../utils/access';
 import { track } from '../utils/analytics';
 import {
   buildExamPaper,
@@ -87,6 +88,7 @@ export function useQuiz(): QuizController {
   const quiz = useAppSelector((state) => state.quiz);
   const questionHistory = useAppSelector((state) => state.progress.questionHistory);
   const reviewQueue = useAppSelector((state) => state.review.queue);
+  const access = useAppSelector((state) => state.access);
   const settings = useSettings();
   const haptics = useHapticsEnabled();
 
@@ -149,10 +151,15 @@ export function useQuiz(): QuizController {
 
   const startExam = useCallback(
     (scopeId: string, questionCount: number = DEFAULT_EXAM_LENGTH) => {
-      const inScope =
+      const inScope = (
         scopeId === EXAM_SCOPE_ALL
           ? products
-          : products.filter((product) => product.categoryId === scopeId);
+          : products.filter((product) => product.categoryId === scopeId)
+      )
+        // The last gate on locked content, and the one that matters most: an
+        // exam over "everything" would otherwise draw from every paid bank in
+        // the catalogue and hand the questions over one paper at a time.
+        .filter((product) => canOpenProduct(product, access));
 
       const sources: ExamSource[] = inScope.map((product) => ({
         productId: product.id,
@@ -183,7 +190,7 @@ export function useQuiz(): QuizController {
         }),
       );
     },
-    [dispatch],
+    [dispatch, access],
   );
 
   const answer = useCallback(

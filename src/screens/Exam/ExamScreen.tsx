@@ -6,6 +6,7 @@ import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { Button } from '../../components/ui/Button';
 import { examScopes, examScopeName } from '../../data/examScopes';
 import { useAppSelector } from '../../hooks/useAppState';
+import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useQuiz } from '../../hooks/useQuiz';
 import {
@@ -28,11 +29,15 @@ import { colors, radius, spacing, tabularNumbers, typography } from '../../theme
  * hard exam reads as losing progress.
  */
 export function ExamScreen() {
-  const { goToTab, goToExamQuiz } = useNavigation();
+  const { goToTab, goToExamQuiz, goToPaywall } = useNavigation();
   const { startExam } = useQuiz();
   const results = useAppSelector((state) => state.progress.examResults);
 
-  const scopes = examScopes();
+  const { productLocked } = useAccess();
+
+  // Scoped to what the reader can open, so the question counts on screen are
+  // the ones a paper would actually be drawn from.
+  const scopes = examScopes((productId) => !productLocked(productId));
   const [scopeId, setScopeId] = useState(scopes[0]?.id ?? '');
   const [length, setLength] = useState<number>(DEFAULT_EXAM_LENGTH);
 
@@ -78,9 +83,16 @@ export function ExamScreen() {
             <Chip
               key={entry.id}
               testID={`exam-scope-${entry.id}`}
-              label={entry.name}
+              label={entry.locked ? `${entry.name} · locked` : entry.name}
               selected={entry.id === scopeId}
-              onPress={() => setScopeId(entry.id)}
+              // A locked scope explains itself rather than selecting: choosing
+              // it would leave the paper at zero questions with nothing on
+              // screen saying why.
+              onPress={
+                entry.locked
+                  ? () => goToPaywall('profile')
+                  : () => setScopeId(entry.id)
+              }
             />
           ))}
         </View>

@@ -1,5 +1,6 @@
 import { act, fireEvent, screen } from '@testing-library/react-native';
 
+import { getProductById } from '../../src/data/products';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
 import { createStore, type AppStore } from '../../src/store';
 import {
@@ -8,6 +9,7 @@ import {
 } from '../../src/store/slices/accessSlice';
 import {
   navigateToCategory,
+  navigateToExam,
   navigateToLesson,
   navigateToProduct,
   navigateToTab,
@@ -167,5 +169,72 @@ describe('for an install that predates the paywall', () => {
 
     expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
     expect(screen.queryByTestId('product-locked')).toBeNull();
+  });
+});
+
+describe('exams under a paywall', () => {
+  /**
+   * The leak that mattered most. An exam over "everything" draws round-robin
+   * across the whole catalogue, so without this it would have handed the paid
+   * question banks over one paper at a time.
+   */
+  it('draws an "everything" paper only from what is open', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToExam());
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('exam-length-40'));
+    await fireEvent.press(screen.getByTestId('exam-begin'));
+
+    const drawn = store.getState().quiz.questions;
+    expect(drawn.length).toBeGreaterThan(0);
+    for (const question of drawn) {
+      // Every question id is prefixed with its product's id.
+      expect(getProductById(question.id.split('-')[0] ?? '')?.categoryId).toBe(
+        'ir',
+      );
+    }
+  });
+
+  it('says which scopes are locked rather than offering an empty paper', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToExam());
+    await renderWithStore(<RootNavigator />, { store });
+
+    expect(screen.getByText('Credit · locked')).toBeTruthy();
+    expect(screen.getByText('Interest Rate')).toBeTruthy();
+  });
+
+  it('sends a tap on a locked scope to the paywall', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToExam());
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('exam-scope-credit'));
+
+    expect(screen.getByTestId('paywall-screen')).toBeTruthy();
+  });
+});
+
+describe('the subscription row in Profile', () => {
+  it('reaches the paywall on a build with nothing to sell', async () => {
+    const store = createStore();
+    store.dispatch(navigateToTab('profile'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    expect(screen.getByTestId('profile-subscription')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('profile-subscription'));
+
+    expect(screen.getByTestId('paywall-screen')).toBeTruthy();
+  });
+
+  it('names the state the reader is actually in', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToTab('profile'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    expect(screen.getByTestId('profile-subscription')).toHaveTextContent(
+      /Free plan/,
+    );
   });
 });

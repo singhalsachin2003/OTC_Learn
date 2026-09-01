@@ -47,6 +47,19 @@ export function ProfileScreen() {
   );
   const syncEmail = useAppSelector((state) => state.sync.email);
   const signedIn = useAppSelector((state) => state.sync.userId !== null);
+  const { premium, grandfathered, purchasesConfigured } = useAppSelector(
+    (state) => state.access,
+  );
+
+  // Four states, four different answers — and "Free" is only honest when
+  // something is actually being withheld.
+  const subscriptionValue = premium
+    ? 'Active'
+    : grandfathered
+      ? 'Full access'
+      : purchasesConfigured
+        ? 'Free plan'
+        : 'Everything open';
   const {
     goToGlossary,
     goToAchievements,
@@ -54,6 +67,7 @@ export function ProfileScreen() {
     goToExam,
     goToNotes,
     goToAccount,
+    goToPaywall,
     goToTab,
   } = useNavigation();
   const { queuedCount } = useReview();
@@ -234,6 +248,21 @@ export function ProfileScreen() {
             onPress={() => goToTab('products')}
           />
           <DisclosureRow label="In the review queue" value={String(queuedCount)} />
+        </View>
+
+        <Text style={styles.sectionTitle}>SUBSCRIPTION</Text>
+        <View style={styles.rows}>
+          {/* Shown whatever the state, because all four of them are worth
+              being able to check: what you are paying for, what is still
+              locked, and — for an install that predates the paywall — that it
+              stays open. A row that appeared only when there was something to
+              sell would make the answer unreachable in the other three. */}
+          <DisclosureRow
+            testID="profile-subscription"
+            label="Subscription"
+            value={subscriptionValue}
+            onPress={() => goToPaywall('profile')}
+          />
         </View>
 
         <Text style={styles.sectionTitle}>DATA</Text>

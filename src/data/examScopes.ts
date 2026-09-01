@@ -15,24 +15,49 @@ import { products } from './products';
 export interface ExamScope {
   id: string;
   name: string;
-  /** How many questions exist to draw from, so the UI can rule out thin scopes. */
+  /**
+   * How many questions exist to draw from, so the UI can rule out thin scopes.
+   * Counts only what the reader can actually open — a figure that included
+   * locked banks would promise a paper the draw cannot produce.
+   */
   questionCount: number;
+  /** Whether a subscription is needed before this scope can be sat at all. */
+  locked: boolean;
 }
 
-export function examScopes(): ExamScope[] {
+function questionsIn(pool: typeof products): number {
+  return pool.reduce((sum, product) => sum + product.quiz.length, 0);
+}
+
+/**
+ * `canOpen` defaults to "everything", which is what every caller that only
+ * wants to *name* a scope needs — a stored result from an asset class the
+ * reader no longer subscribes to must still render as a row in the history.
+ */
+export function examScopes(
+  canOpen: (productId: string) => boolean = () => true,
+): ExamScope[] {
+  const open = products.filter((product) => canOpen(product.id));
+
   const all: ExamScope = {
     id: EXAM_SCOPE_ALL,
     name: 'Everything',
-    questionCount: products.reduce((sum, product) => sum + product.quiz.length, 0),
+    questionCount: questionsIn(open),
+    // Never locked: there is always the free asset class to sit it over.
+    locked: false,
   };
 
-  const byCategory = categories.map((category) => ({
-    id: category.id,
-    name: category.name,
-    questionCount: products
-      .filter((product) => product.categoryId === category.id)
-      .reduce((sum, product) => sum + product.quiz.length, 0),
-  }));
+  const byCategory = categories.map((category) => {
+    const openInCategory = open.filter(
+      (product) => product.categoryId === category.id,
+    );
+    return {
+      id: category.id,
+      name: category.name,
+      questionCount: questionsIn(openInCategory),
+      locked: openInCategory.length === 0,
+    };
+  });
 
   return [all, ...byCategory];
 }
