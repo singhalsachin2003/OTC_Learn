@@ -299,6 +299,32 @@ describe('PaywallScreen with a lifetime purchase on sale', () => {
     expect(screen.queryByText(/renew until you cancel/)).toBeNull();
   });
 
+  /** Found on a device: the button still said "Subscribe" for a one-off. */
+  it('does not call buying it subscribing', async () => {
+    await renderLifetimeOnly();
+
+    expect(screen.getByTestId('paywall-subscribe')).toHaveTextContent('Buy');
+  });
+
+  it('still says subscribe once a term is selected instead', async () => {
+    getOfferings.mockResolvedValue({
+      current: {
+        availablePackages: [
+          ...bothTerms.current.availablePackages,
+          ...withLifetime.current.availablePackages,
+        ],
+      },
+    });
+    const store = sellingTo(createStore());
+    await renderWithStore(<PaywallScreen />, { store });
+
+    // Annual is selected first, so the label starts as the subscription one.
+    expect(screen.getByTestId('paywall-subscribe')).toHaveTextContent('Subscribe');
+
+    await fireEvent.press(screen.getByTestId('paywall-offer-lifetime'));
+    expect(screen.getByTestId('paywall-subscribe')).toHaveTextContent('Buy');
+  });
+
   it('offers no saving badge against a term it cannot be compared to', async () => {
     await renderLifetimeOnly();
 

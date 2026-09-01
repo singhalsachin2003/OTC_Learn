@@ -61,13 +61,22 @@ cmd_boot() {
     echo "already booted"; return
   fi
   echo "booting $avd…"
-  nohup "$EMU" -avd "$avd" -no-snapshot-load >/tmp/otc-emulator.log 2>&1 &
+  # Headless, always. Launched from a shell with no window-server connection,
+  # a windowed emulator initialises its graphics stack, blocks forever trying
+  # to open a window, and sits at 0% CPU — which reads as "boot is slow" right
+  # up until the timeout. Nothing here needs a window: every command in this
+  # script goes through adb, and `shot` uses `adb exec-out screencap`.
+  # swiftshader_indirect for the same reason — there is no host GPU to reach.
+  nohup "$EMU" -avd "$avd" -no-window -gpu swiftshader_indirect \
+    -no-snapshot -no-boot-anim -no-audio >/tmp/otc-emulator.log 2>&1 &
   local i
   for i in $(seq 1 60); do
     [ "$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && { echo "booted"; return; }
     sleep 5
   done
-  die "emulator did not boot within 5 minutes — see /tmp/otc-emulator.log"
+  die "emulator did not boot within 5 minutes. Check /tmp/otc-emulator.log, and
+see the Gotchas: a stale multiinstance.lock and hw.gpu.enabled=no in the AVD's
+config.ini have each caused this"
 }
 
 cmd_install() {

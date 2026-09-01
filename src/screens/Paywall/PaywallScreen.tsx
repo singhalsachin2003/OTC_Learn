@@ -208,7 +208,14 @@ export function PaywallScreen() {
           <Button
             testID="paywall-subscribe"
             label={
-              status === 'purchasing' ? 'Contacting Google Play…' : 'Subscribe'
+              status === 'purchasing'
+                ? 'Contacting Google Play…'
+                : // A lifetime purchase is not a subscription, and a button
+                  // saying it is describes the wrong commitment at the moment
+                  // the reader is deciding to make it.
+                  selected.period === 'lifetime'
+                  ? 'Buy'
+                  : 'Subscribe'
             }
             disabled={busy}
             onPress={() => {

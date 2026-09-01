@@ -167,6 +167,23 @@ npm run verify        # type-check + lint + format:check + test — the CI gate
   a normal-looking log, exits **0**, and never builds. With one device
   attached, pass no flag at all. This is why `install` takes no device argument.
 
+- **The emulator boots headless, and must.** Launched from a shell with no
+  window-server connection, a windowed emulator initialises its graphics stack
+  and then blocks forever trying to open a window — 0% CPU, no adb device, and
+  a log whose last line is a cheerful "Vulkan emulation initialized". That
+  reads exactly like a slow boot until the five-minute timeout fires. `boot`
+  passes `-no-window -gpu swiftshader_indirect`; headless costs nothing here
+  because every command goes through adb and `shot` uses `adb exec-out
+  screencap`. Boot then takes about 20 seconds.
+
+- **Two other things have stopped it booting, both silent:**
+  a stale `~/.android/avd/<avd>.avd/multiinstance.lock` left by a killed
+  instance (the log says "Another emulator instance is running"; delete the
+  lock), and **`hw.gpu.enabled=no` in the AVD's `config.ini`**, which forces
+  software rendering. Neither is reported by the timeout message. Check
+  `emulator -accel-check` too — it returns 0 when the hypervisor is fine, which
+  rules out the whole class of virtualisation problems in one command.
+
 - **A black screen after launch is usually the splash hold, not a crash.**
   `App.tsx` renders `null` until fonts and hydration both settle, and a debug
   build refetches the whole JS bundle from Metro on every cold start, so how
