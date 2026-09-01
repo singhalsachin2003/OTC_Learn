@@ -6,6 +6,7 @@
   "build": {
     "development": {
       "channel": "development",
+      "environment": "development",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -22,6 +23,7 @@
     },
     "preview": {
       "channel": "preview",
+      "environment": "preview",
       "distribution": "internal",
       "ios": {
         "image": "latest",
@@ -37,6 +39,7 @@
     },
     "production": {
       "channel": "production",
+      "environment": "production",
       "distribution": "store",
       "autoIncrement": true,
       "ios": {
