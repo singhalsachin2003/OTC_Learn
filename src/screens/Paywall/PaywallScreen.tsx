@@ -15,6 +15,8 @@ import {
   loadPaywallOffers,
   restoreSubscription,
 } from '../../store/thunks/accessThunks';
+import { categories } from '../../data/categories';
+import { TOTAL_PRODUCTS } from '../../data/products';
 import { colors, spacing, typography } from '../../theme';
 import {
   freeCategoryName,
@@ -88,7 +90,7 @@ export function PaywallScreen() {
         <BackButton label="Back" onPress={leavePaywall} testID="paywall-back" />
 
         <Text accessibilityRole="header" style={styles.title}>
-          Open the whole book
+          {paywalled ? 'Open the whole book' : 'Your access'}
         </Text>
 
         {!paywalled ? (
@@ -108,15 +110,30 @@ export function PaywallScreen() {
           </Text>
         )}
 
+        {/* Only where something is actually being withheld. Listing what a
+            subscription adds under "there is nothing to buy" reads as a pitch
+            for content the reader already has. */}
         <View style={styles.list}>
-          <Point
-            text={`${lockedProductCount()} more products, across ${lockedCategoryCount()} asset classes`}
-          />
-          <Point
-            text={`Their full question banks — ${lockedQuestionCount()} questions, drawn fresh each sitting`}
-          />
-          <Point text="Exams and spaced review across everything you have studied" />
-          <Point text="Still no adverts, and still nothing to sign up for" />
+          {paywalled ? (
+            <>
+              <Point
+                text={`${lockedProductCount()} more products, across ${lockedCategoryCount()} asset classes`}
+              />
+              <Point
+                text={`Their full question banks — ${lockedQuestionCount()} questions, drawn fresh each sitting`}
+              />
+              <Point text="Exams and spaced review across everything you have studied" />
+              <Point text="Still no adverts, and still nothing to sign up for" />
+            </>
+          ) : (
+            <>
+              <Point
+                text={`All ${TOTAL_PRODUCTS} products, across ${categories.length} asset classes`}
+              />
+              <Point text="Every question bank, exam and review sitting" />
+              <Point text="No adverts, and nothing to sign up for" />
+            </>
+          )}
         </View>
 
         {paywalled && offers.length > 0 && (

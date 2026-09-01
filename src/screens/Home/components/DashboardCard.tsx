@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Ring } from '../../../components/ui/Ring';
-import { TOTAL_QUESTIONS } from '../../../data/products';
+import { products, TOTAL_QUESTIONS } from '../../../data/products';
 import { useLongestStreak, useStreak } from '../../../hooks/useAppState';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
@@ -15,6 +15,7 @@ import {
   typography,
 } from '../../../theme';
 import { masteryBand } from '../../../utils/mastery';
+import { useAccess } from '../../../hooks/useAccess';
 
 /**
  * The headline card: overall mastery as a ring, with the two numbers most
@@ -22,9 +23,28 @@ import { masteryBand } from '../../../utils/mastery';
  * waiting for them.
  */
 export function DashboardCard() {
-  const { overallPercent, masteredCount, totalCount, questionsAnswered } =
+  const { overallPercent, totalCount, questionsAnswered, isProductMastered } =
     useProgress();
+  const { productLocked } = useAccess();
   const streak = useStreak();
+
+  /**
+   * The two headline sentences count what this reader can actually open, not
+   * the whole catalogue. Told "36 products to learn" and "432 questions are
+   * waiting — start anywhere" while five of six asset classes are shut, they
+   * would find out otherwise on the next tap.
+   *
+   * The ring keeps the catalogue as its denominator, deliberately: it is a
+   * measure of the book, the locked cards below explain the rest of it, and
+   * achievements are earned against the same figure. So the sentences never
+   * claim "every product" while the ring reads 17%.
+   */
+  const open = products.filter((product) => !productLocked(product.id));
+  const openCount = open.length;
+  const masteredOpen = open.filter((product) =>
+    isProductMastered(product.id),
+  ).length;
+  const openQuestions = open.reduce((sum, product) => sum + product.quiz.length, 0);
   const longest = useLongestStreak();
   const { dueCount } = useReview();
   const { goToTab } = useNavigation();
@@ -44,7 +64,7 @@ export function DashboardCard() {
       testID="dashboard-card"
       onPress={() => goToTab('profile')}
       accessibilityRole="button"
-      accessibilityLabel={`Overall mastery ${overallPercent} percent. ${leadLine(masteredCount, totalCount)}`}
+      accessibilityLabel={`Overall mastery ${overallPercent} percent. ${leadLine(masteredOpen, openCount, totalCount)}`}
       accessibilityHint="Opens your full profile and stats"
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}
     >
@@ -61,9 +81,11 @@ export function DashboardCard() {
       </Ring>
 
       <View style={styles.detail}>
-        <Text style={styles.lead}>{leadLine(masteredCount, totalCount)}</Text>
+        <Text style={styles.lead}>
+          {leadLine(masteredOpen, openCount, totalCount)}
+        </Text>
         <Text style={styles.secondary}>
-          {pacingLine(overallPercent, questionsAnswered)}
+          {pacingLine(overallPercent, questionsAnswered, openQuestions)}
         </Text>
 
         <View style={styles.stats}>
@@ -107,23 +129,36 @@ function Stat({
   );
 }
 
-function leadLine(mastered: number, total: number): string {
+/**
+ * `open` is what the reader can reach; `total` is the catalogue. They are the
+ * same number for everyone the paywall does not apply to, which is every
+ * install today — so this reads exactly as it always has unless something is
+ * genuinely locked.
+ */
+function leadLine(mastered: number, open: number, total: number): string {
   if (mastered === 0) {
-    return `${total} products to learn`;
+    return `${open} products to learn`;
   }
-  if (mastered === total) {
-    return 'Every product mastered';
+  if (mastered === open) {
+    // "Every product mastered" would sit above a ring reading 17%.
+    return open === total
+      ? 'Every product mastered'
+      : `All ${open} open products mastered`;
   }
-  return `${mastered} of ${total} products mastered`;
+  return `${mastered} of ${open} products mastered`;
 }
 
 /**
  * Honest pacing copy derived from the actual numbers rather than a fixed
  * string — nothing here claims progress the user has not made.
  */
-function pacingLine(percent: number, answered: number): string {
+function pacingLine(
+  percent: number,
+  answered: number,
+  openQuestions: number = TOTAL_QUESTIONS,
+): string {
   if (answered === 0) {
-    return `${TOTAL_QUESTIONS} questions are waiting. Start anywhere.`;
+    return `${openQuestions} questions are waiting. Start anywhere.`;
   }
   if (percent >= 70) {
     return 'Strong across the book. Keep the review queue clear.';

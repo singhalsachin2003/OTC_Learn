@@ -310,3 +310,26 @@ describe('what home suggests next', () => {
     expect(screen.queryByTestId('product-locked')).toBeNull();
   });
 });
+
+describe('the headline on a paywalled home screen', () => {
+  /**
+   * "36 products to learn" and "432 questions are waiting — start anywhere"
+   * are both promises the app would break on the next tap.
+   */
+  it('counts what the reader can open, not the catalogue', async () => {
+    const store = paywalled();
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    expect(screen.getByText('6 products to learn')).toBeTruthy();
+    expect(screen.getByText(/^72 questions are waiting/)).toBeTruthy();
+  });
+
+  it('reads exactly as it always did when nothing is locked', async () => {
+    await renderWithStore(<RootNavigator />);
+    await settleRings();
+
+    expect(screen.getByText('36 products to learn')).toBeTruthy();
+    expect(screen.getByText(/^432 questions are waiting/)).toBeTruthy();
+  });
+});
