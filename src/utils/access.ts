@@ -21,6 +21,22 @@ import { products } from '../data/products';
  * the paywall, and never expires.
  */
 
+/**
+ * What is deliberately *not* behind this, so a later reader does not take it
+ * for an oversight:
+ *
+ * - **The glossary.** Every key term in the catalogue, defined, stays open. It
+ *   is a reference rather than a lesson, and it is the best argument the app
+ *   makes for itself to someone deciding whether to pay. Worth revisiting if
+ *   the terms ever become the product rather than an index into it.
+ * - **Insights and achievements.** They describe the reader's own record. A
+ *   locked product showing as a gap is an argument for subscribing, not
+ *   content being given away.
+ * - **Mastery already earned.** Nothing is ever recalculated or withdrawn. A
+ *   lapsed subscriber keeps every number they earned and gets it all back the
+ *   moment they resubscribe.
+ */
+
 /** The asset class that stays free. Its id, so a rename breaks the build. */
 export const FREE_CATEGORY_ID = 'ir';
 
