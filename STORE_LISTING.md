@@ -80,15 +80,16 @@ desk from another part of the business, students covering financial instruments,
 and anyone who has nodded along in a meeting about basis risk and wanted to
 actually understand it.
 
-NO ACCOUNT, NO ADS, NO TRACKING
+OPTIONAL ACCOUNT, NO ADS, NO TRACKING
 
-There is no sign-up and no login. Your progress and your day streak are stored on
-your device and never sent anywhere. There are no adverts, no advertising
-identifiers, and no analytics following you around.
+Everything works without an account — your progress and your day streak are
+stored on your device. Sign in only if you want them to survive a reinstall or
+follow you to a new phone; it is off until you ask for it. There are no adverts,
+no advertising identifiers, and no analytics following you around.
 
 WORKS OFFLINE
 
-All 100 lesson steps, 120 key terms and 240 quiz questions ship inside the app.
+All 180 lesson steps, 216 key terms and 432 quiz questions ship inside the app.
 Use it on the underground, on a plane, or anywhere else with no signal.
 
 TRACK WHAT YOU ACTUALLY KNOW
