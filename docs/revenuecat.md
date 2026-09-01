@@ -44,19 +44,36 @@ is added to the project** — it is not requested or issued separately.
 1. **Apps → New app configuration → Google Play Store**, package name
    `com.otclearn.app`. The key then appears under **API keys**. ✅ Done
    2026-09-01.
-2. Give RevenueCat a **Play service account JSON** — **still outstanding as of
-   2026-09-01**. Without it the app entry cannot verify a purchase server-side,
-   so an entitlement will not be granted reliably even though Play takes the
-   money. Nothing may be sold until this is done:
-   - Google Cloud → enable the **Android Publisher API**, **Google Play
-     Developer Reporting API** and **Pub/Sub API**.
-   - IAM → create a service account with **Pub/Sub Editor** and **Monitoring
-     Viewer**, and download its JSON key.
-   - Play Console → **Users and permissions** → invite the service account's
-     email and grant: view app information, view financial data, manage orders
-     and subscriptions, manage store presence.
+2. Give RevenueCat a **Play service account JSON**. Without it the app entry
+   cannot verify a purchase server-side, so an entitlement is not granted
+   reliably even though Play takes the money.
+
+   **The Google Cloud half is done — 2026-09-01.** A dedicated project rather
+   than one of the existing "My First Project" ones, so the credential and its
+   Pub/Sub topic are not mixed in with unrelated work:
+
+   ```
+   project         otc-learn-play
+   service account otc-learn-revenuecat@otc-learn-play.iam.gserviceaccount.com
+   roles           roles/pubsub.editor, roles/monitoring.viewer
+   APIs            androidpublisher, playdeveloperreporting, pubsub
+   key             ~/.config/otc-learn/play-service-account.json  (chmod 600)
+   ```
+
+   The script that did it is idempotent and worth keeping if the key ever has
+   to be regenerated. **The key is a server credential** — it can publish
+   releases and read financial data. It lives outside the repo, and
+   `.gitignore` now blocks `*service-account*.json` so a copy made "just for a
+   minute" cannot be committed.
+
+   **Two web steps remain**, neither scriptable:
+   - Play Console → **Users and permissions → Invite new users** → the service
+     account email above, with: view app information and download bulk reports;
+     view financial data, orders and cancellation survey responses; manage
+     orders and subscriptions; manage store presence.
    - RevenueCat → **Project settings → Google Play App Settings** → upload the
-     JSON. RevenueCat has a validator for checking it took.
+     JSON, then run their credential validator.
+
 3. **Allow up to 36 hours** for the credentials to propagate to the Play
    Developer API.
 

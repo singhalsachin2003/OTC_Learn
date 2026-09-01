@@ -161,6 +161,16 @@ move in the same release:
 - Play's Data safety form needs "Purchases" declared for what RevenueCat
   receives.
 
+**The Play service account's Cloud half is done, 2026-09-01** — project
+`otc-learn-play`, service account
+`otc-learn-revenuecat@otc-learn-play.iam.gserviceaccount.com`, the three APIs
+enabled and the key at `~/.config/otc-learn/play-service-account.json`. What
+remains is inviting that email into the Play Console and uploading the key to
+RevenueCat; see `docs/revenuecat.md`. Doing this early matters because the
+credentials take **up to 36 hours** to reach the Play Developer API, and none
+of it waits on BillDesk. The same key is what lets `eas submit` replace the
+manual AAB upload.
+
 Also offered in the console and worth taking: enrolment for the **15% service
 fee** rather than the default 30%.
 

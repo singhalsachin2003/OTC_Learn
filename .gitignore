@@ -40,3 +40,10 @@ yarn-error.*
 .claude/*
 !.claude/skills/
 .claude-flow/
+
+# Google Play service account keys. The real one lives outside this repo, in
+# ~/.config/otc-learn/ — this is here so that a copy made "just for a minute"
+# cannot be committed by accident. It is a server credential: it can publish
+# releases and read financial data.
+*service-account*.json
+play-service-account*.json
