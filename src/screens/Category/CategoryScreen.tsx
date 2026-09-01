@@ -11,6 +11,7 @@ import { pathFor } from '../../data/paths';
 import { pathSteps } from '../../utils/paths';
 import { getProductById } from '../../data/products';
 import { useBookmarks, useSelectedCategoryId } from '../../hooks/useAppState';
+import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import {
@@ -26,6 +27,7 @@ export function CategoryScreen() {
   const { goHome, goToProduct } = useNavigation();
   const { masteryFor, categoryPercent, masteredInCategory } = useProgress();
   const bookmarks = useBookmarks();
+  const { productLocked } = useAccess();
 
   const category = getCategoryById(categoryId);
   // Path order, not catalogue order — the catalogue is the order things were
@@ -121,6 +123,7 @@ export function CategoryScreen() {
                   product={product}
                   mastery={step.mastery}
                   bookmarked={bookmarks.includes(product.id)}
+                  locked={productLocked(product.id)}
                   onPress={() => goToProduct(product.id)}
                 />
               </View>

@@ -13,6 +13,7 @@ import {
   useAppDispatch,
   useSelectedProductId,
 } from '../../hooks/useAppState';
+import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import { toggleProductBookmark } from '../../store/thunks/progressThunks';
@@ -26,6 +27,7 @@ import {
 import { track } from '../../utils/analytics';
 import { masteryBand } from '../../utils/mastery';
 import { KeyTermList } from './components/KeyTermList';
+import { LockedProduct } from './components/LockedProduct';
 import { NoteEditor } from './components/NoteEditor';
 import { RelatedProducts } from './components/RelatedProducts';
 import { WorkedExample } from './components/WorkedExample';
@@ -46,6 +48,7 @@ export function ProductScreen() {
   const { goToCategory, goToLesson, goToQuiz } = useNavigation();
   const { progressFor, masteryFor } = useProgress();
   const bookmarks = useBookmarks();
+  const { productLocked } = useAccess();
 
   const product = getProductById(productId);
   const category = getCategoryById(product?.categoryId ?? null);
@@ -68,6 +71,9 @@ export function ProductScreen() {
   const progress = progressFor(product.id);
   const bookmarked = bookmarks.includes(product.id);
   const started = progress.attempts > 0;
+  // Checked here rather than at the rows that link here, so a deep link into
+  // paid content is stopped by the same branch as a tap.
+  const locked = productLocked(product.id);
 
   const onToggleBookmark = () => {
     void dispatch(toggleProductBookmark(product.id));
@@ -145,41 +151,51 @@ export function ProductScreen() {
 
         <Text style={styles.summary}>{product.summary}</Text>
 
-        <View style={styles.actions}>
-          <Button
-            testID="product-start-lesson"
-            label={started ? 'Read the lesson again' : 'Start the lesson'}
-            flex={1}
-            onPress={() => goToLesson(product.id)}
-          />
-        </View>
-        <Button
-          testID="product-start-quiz"
-          label={`Go straight to the quiz · ${product.quiz.length} in the bank`}
-          variant="outline"
-          onPress={() => goToQuiz(product.id)}
-          style={styles.quizButton}
-        />
+        {locked ? (
+          <LockedProduct categoryName={category?.name ?? 'This asset class'} />
+        ) : (
+          <>
+            <View style={styles.actions}>
+              <Button
+                testID="product-start-lesson"
+                label={started ? 'Read the lesson again' : 'Start the lesson'}
+                flex={1}
+                onPress={() => goToLesson(product.id)}
+              />
+            </View>
+            <Button
+              testID="product-start-quiz"
+              label={`Go straight to the quiz · ${product.quiz.length} in the bank`}
+              variant="outline"
+              onPress={() => goToQuiz(product.id)}
+              style={styles.quizButton}
+            />
 
-        <Section title="KEY TERMS">
-          <KeyTermList terms={product.keyTerms} accent={accent} />
-        </Section>
+            <Section title="KEY TERMS">
+              <KeyTermList terms={product.keyTerms} accent={accent} />
+            </Section>
 
-        <Section title="WORKED EXAMPLE">
-          <WorkedExample example={product.example} accent={accent} soft={soft} />
-        </Section>
+            <Section title="WORKED EXAMPLE">
+              <WorkedExample
+                example={product.example}
+                accent={accent}
+                soft={soft}
+              />
+            </Section>
 
-        <Section title="IN PRACTICE">
-          <Text style={styles.body}>{product.inPractice}</Text>
-        </Section>
+            <Section title="IN PRACTICE">
+              <Text style={styles.body}>{product.inPractice}</Text>
+            </Section>
 
-        <Section title="YOUR NOTE">
-          <NoteEditor noteKey={product.id} />
-        </Section>
+            <Section title="YOUR NOTE">
+              <NoteEditor noteKey={product.id} />
+            </Section>
 
-        <Section title="READ NEXT">
-          <RelatedProducts ids={product.relatedProductIds} />
-        </Section>
+            <Section title="READ NEXT">
+              <RelatedProducts ids={product.relatedProductIds} />
+            </Section>
+          </>
+        )}
       </ScrollView>
     </SafeAreaWrapper>
   );

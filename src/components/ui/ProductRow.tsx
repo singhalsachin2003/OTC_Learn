@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Star } from 'lucide-react-native';
+import { Lock, Star } from 'lucide-react-native';
 
 import type { Product } from '../../data/types';
 import {
@@ -24,6 +24,8 @@ export interface ProductRowProps {
   bookmarked?: boolean;
   /** Shown instead of the hook where the extra context helps — e.g. search. */
   subtitle?: string;
+  /** Needs a subscription. Shows a lock where the mastery ring would be. */
+  locked?: boolean;
 }
 
 export function masteryFill(mastery: number): string {
@@ -51,6 +53,7 @@ export function ProductRow({
   onPress,
   bookmarked = false,
   subtitle,
+  locked = false,
 }: ProductRowProps) {
   const mastered = mastery >= MASTERY_COMPLETE;
 
@@ -59,7 +62,11 @@ export function ProductRow({
       testID={`product-row-${product.id}`}
       onPress={onPress}
       accessibilityLabel={`${product.name}. ${subtitle ?? product.hook}. ${
-        mastered ? 'Mastered.' : `${mastery} percent mastery.`
+        locked
+          ? 'Needs a subscription.'
+          : mastered
+            ? 'Mastered.'
+            : `${mastery} percent mastery.`
       }${bookmarked ? ' Saved.' : ''}`}
       accessibilityHint="Opens this product"
       style={styles.card}
@@ -88,7 +95,14 @@ export function ProductRow({
         <Text style={styles.hook}>{subtitle ?? product.hook}</Text>
       </View>
 
-      {mastered ? (
+      {locked ? (
+        // Where the ring would be, because it answers the same question — how
+        // far in are you — with the reason there is no answer yet. lucide's
+        // icons do not forward testID, so the hook sits on a wrapping View.
+        <View testID={`product-locked-${product.id}`} style={styles.lock}>
+          <Lock size={15} strokeWidth={2.5} color={colors.text.tertiary} />
+        </View>
+      ) : mastered ? (
         <CompletedBadge testID={`product-done-${product.id}`} />
       ) : (
         <Ring
@@ -136,6 +150,11 @@ const styles = StyleSheet.create({
   hook: {
     ...typography.labelSmall,
     color: colors.text.muted,
+  },
+  lock: {
+    width: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ringLabel: {
     ...typography.micro,

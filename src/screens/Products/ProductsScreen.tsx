@@ -19,6 +19,7 @@ import {
   useBookmarks,
   useProductQuery,
 } from '../../hooks/useAppState';
+import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import { setProductQuery } from '../../store/slices/appSlice';
@@ -65,6 +66,7 @@ export function ProductsScreen() {
   const bookmarks = useBookmarks();
   const { goToProduct } = useNavigation();
   const { masteryFor } = useProgress();
+  const { productLocked } = useAccess();
 
   const grouped = useMemo(() => {
     const found = products.filter((product) => matches(product, query));
@@ -181,6 +183,7 @@ export function ProductsScreen() {
                 mastery={masteryFor(row.product.id)}
                 bookmarked={bookmarks.includes(row.product.id)}
                 subtitle={row.subtitle}
+                locked={productLocked(row.product.id)}
                 onPress={() => goToProduct(row.product.id)}
               />
             ),

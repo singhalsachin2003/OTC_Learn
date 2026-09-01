@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 import { getCategoryById } from '../../data/categories';
 import { getProductById } from '../../data/products';
 import { useHapticsEnabled, useSelectedProductId } from '../../hooks/useAppState';
+import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { colors, getCategoryColors, spacing, typography } from '../../theme';
 import { track } from '../../utils/analytics';
@@ -24,6 +25,7 @@ export function LessonScreen() {
   const productId = useSelectedProductId();
   const { goToProduct, goToQuiz } = useNavigation();
   const haptics = useHapticsEnabled();
+  const { productLocked } = useAccess();
 
   // The step index is view-local: it never needs to survive leaving the screen,
   // and every entry point resets it to the first step.
@@ -99,6 +101,24 @@ export function LessonScreen() {
       goToProduct(product.id);
     }
   };
+
+  // `otclearn://lesson/<id>` goes straight here, skipping the product page and
+  // its lock, so the same question is asked again at the content itself.
+  if (product !== undefined && productLocked(product.id)) {
+    return (
+      <SafeAreaWrapper testID="lesson-screen">
+        <BackButton
+          label={backLabel}
+          accessibilityLabel={backAccessibilityLabel}
+          onPress={goBack}
+          testID="lesson-back"
+        />
+        <Text testID="lesson-locked" style={styles.productName}>
+          This lesson is part of the subscription.
+        </Text>
+      </SafeAreaWrapper>
+    );
+  }
 
   if (product === undefined || product.lessons.length === 0) {
     return (
