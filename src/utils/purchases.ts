@@ -1,3 +1,4 @@
+import RevenueCatUI from 'react-native-purchases-ui';
 import Purchases, {
   LOG_LEVEL,
   PACKAGE_TYPE,
@@ -279,4 +280,30 @@ export function annualSavingPercent(offers: SubscriptionOffer[]): number | null 
   const yearOfMonthly = monthly.price * 12;
   const saving = Math.round(((yearOfMonthly - annual.price) / yearOfMonthly) * 100);
   return saving > 0 ? saving : null;
+}
+
+/**
+ * Opens RevenueCat's Customer Center — the sheet where someone manages the
+ * subscription they already hold: cancel, change plan, request a refund, or
+ * restore.
+ *
+ * Native, and rendered by RevenueCat rather than by this app, which is the
+ * whole reason to use it: the wording of a cancellation flow is the kind of
+ * thing that has to track store policy, and tracking store policy is not
+ * something this app should be doing by hand.
+ *
+ * Returns whether it opened. It can fail for a reason the user cannot act on —
+ * an unconfigured Customer Center in the dashboard is the likely one — so the
+ * caller needs to be able to fall back rather than leave a dead control.
+ */
+export async function presentCustomerCenter(): Promise<boolean> {
+  if (!configured) {
+    return false;
+  }
+  try {
+    await RevenueCatUI.presentCustomerCenter();
+    return true;
+  } catch {
+    return false;
+  }
 }

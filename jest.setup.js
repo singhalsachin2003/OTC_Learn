@@ -72,6 +72,14 @@ jest.mock('react-native-purchases', () => ({
   },
 }));
 
+// The Customer Center is a native sheet. Resolving by default means the happy
+// path needs no setup; the test that cares about a dashboard without one
+// configured rejects it itself.
+jest.mock('react-native-purchases-ui', () => ({
+  __esModule: true,
+  default: { presentCustomerCenter: jest.fn().mockResolvedValue(undefined) },
+}));
+
 // Permission is granted by default here so the happy path needs no setup; the
 // tests that care about a refusal override `getPermissionsAsync` themselves.
 jest.mock('expo-notifications', () => ({

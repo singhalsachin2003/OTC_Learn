@@ -15,6 +15,8 @@ import {
   navigateToTab,
 } from '../../src/store/slices/appSlice';
 import { setReviewQueue } from '../../src/store/slices/reviewSlice';
+import RevenueCatUI from 'react-native-purchases-ui';
+
 import { initPurchases, resetPurchases } from '../../src/utils/purchases';
 import { renderWithStore } from '../helpers/renderWithStore';
 
@@ -39,8 +41,12 @@ function paywalled(): AppStore {
   return store;
 }
 
+const presentCustomerCenter = RevenueCatUI.presentCustomerCenter as jest.Mock;
+
 beforeEach(() => {
   resetPurchases();
+  jest.clearAllMocks();
+  presentCustomerCenter.mockResolvedValue(undefined);
 });
 
 describe('with no paywall in force', () => {
@@ -384,5 +390,59 @@ describe('a key set before the Play product exists', () => {
 
     expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
     expect(screen.queryByTestId('product-locked')).toBeNull();
+  });
+});
+
+describe('the Subscription row for someone who holds one', () => {
+  function subscriber(): AppStore {
+    const store = createStore();
+    initPurchases({ apiKey: 'goog_test' });
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: true,
+        premium: true,
+      }),
+    );
+    store.dispatch(navigateToTab('profile'));
+    return store;
+  }
+
+  /**
+   * A subscriber wants to manage what they have, not be sold it again. The
+   * cancellation and refund wording has to track store policy, which is why
+   * it is RevenueCat's sheet rather than one written here.
+   */
+  it('opens the Customer Center rather than the paywall', async () => {
+    const store = subscriber();
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('profile-subscription'));
+
+    expect(presentCustomerCenter).toHaveBeenCalled();
+    expect(screen.queryByTestId('paywall-screen')).toBeNull();
+  });
+
+  /** It needs configuring in the dashboard, and nothing here can check that. */
+  it('falls back to the paywall rather than leaving a dead row', async () => {
+    presentCustomerCenter.mockRejectedValueOnce(new Error('not configured'));
+    const store = subscriber();
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('profile-subscription'));
+    await act(async () => {});
+
+    expect(screen.getByTestId('paywall-screen')).toBeTruthy();
+  });
+
+  it('still sends everyone else straight to the paywall', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToTab('profile'));
+    await renderWithStore(<RootNavigator />, { store });
+
+    await fireEvent.press(screen.getByTestId('profile-subscription'));
+
+    expect(presentCustomerCenter).not.toHaveBeenCalled();
+    expect(screen.getByTestId('paywall-screen')).toBeTruthy();
   });
 });

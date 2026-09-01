@@ -94,6 +94,27 @@ if only one term is on sale.
    and grants nothing on its own, so shipping it in the bundle is expected. The
    `sk_` secret key is not, and must never appear here.
 
+## Customer Center
+
+`react-native-purchases-ui` is installed, pinned to the **exact** version of
+`react-native-purchases` — the two are a matched pair and a drift between them
+is a native crash, not a type error. It deduped against the existing install, so
+there is still only one copy of the native SDK.
+
+Profile's **Subscription** row leads to RevenueCat's Customer Center for anyone
+holding the entitlement, and to the paywall for everyone else. A subscriber
+wants to manage what they have, not be sold it again — and the cancellation and
+refund wording has to track store policy, which is a poor thing to hand-write.
+
+It has to be **configured in the RevenueCat dashboard** before it will open, and
+nothing in the app can check whether it has been. `presentCustomerCenter`
+returns whether it opened and the row falls back to the paywall when it did not,
+so an unconfigured dashboard is a slightly wrong destination rather than a dead
+control.
+
+This is a native module: it reaches users in a **store build**, not an
+`eas update`.
+
 ## Turning it on
 
 Set `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` as an EAS secret and rebuild —

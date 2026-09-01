@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Pencil, User } from 'lucide-react-native';
 
+import { presentCustomerCenter } from '../../utils/purchases';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { StatTile } from '../../components/ui/StatTile';
 import { achievements } from '../../data/achievements';
@@ -70,6 +71,27 @@ export function ProfileScreen() {
     goToPaywall,
     goToTab,
   } = useNavigation();
+  /**
+   * A subscriber wants to manage what they have; everyone else wants to know
+   * what it is. So the same row leads to RevenueCat's Customer Center for the
+   * first and to the paywall for the rest.
+   *
+   * The Customer Center can decline to open — it needs configuring in the
+   * dashboard, and nothing here can check that — so the paywall is the
+   * fallback rather than leaving the row doing nothing.
+   */
+  const openSubscription = useCallback(() => {
+    if (!premium) {
+      goToPaywall('profile');
+      return;
+    }
+    void (async () => {
+      if (!(await presentCustomerCenter())) {
+        goToPaywall('profile');
+      }
+    })();
+  }, [premium, goToPaywall]);
+
   const { queuedCount } = useReview();
   const {
     overallPercent,
@@ -261,7 +283,7 @@ export function ProfileScreen() {
             testID="profile-subscription"
             label="Subscription"
             value={subscriptionValue}
-            onPress={() => goToPaywall('profile')}
+            onPress={openSubscription}
           />
         </View>
 

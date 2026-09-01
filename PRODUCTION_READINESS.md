@@ -143,6 +143,10 @@ is no longer entirely unexercised.
      the two figures the store returns. Setting price points in the Play
      Console is the only place they get decided.
 
+`react-native-purchases-ui` was added on 2026-09-01 for the Customer Center, so
+**the next release is a store build rather than an `eas update`** — as the
+billing dependency already required.
+
 **When the RevenueCat key is set, three things stop being true** and have to
 move in the same release:
 
