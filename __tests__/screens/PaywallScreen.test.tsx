@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react-native';
 import Purchases from 'react-native-purchases';
+import RevenueCatUI from 'react-native-purchases-ui';
 
 import { PaywallScreen } from '../../src/screens/Paywall/PaywallScreen';
 import { createStore, type AppStore } from '../../src/store';
@@ -14,6 +15,7 @@ const getCustomerInfo = Purchases.getCustomerInfo as jest.Mock;
 const getOfferings = Purchases.getOfferings as jest.Mock;
 const purchasePackage = Purchases.purchasePackage as jest.Mock;
 const restorePurchases = Purchases.restorePurchases as jest.Mock;
+const presentCustomerCenter = RevenueCatUI.presentCustomerCenter as jest.Mock;
 
 const entitled = { entitlements: { active: { otc_learn_pro: {} } } };
 const notEntitled = { entitlements: { active: {} } };
@@ -54,6 +56,7 @@ beforeEach(() => {
   getCustomerInfo.mockResolvedValue(notEntitled);
   getOfferings.mockResolvedValue({ current: null });
   restorePurchases.mockResolvedValue(notEntitled);
+  presentCustomerCenter.mockResolvedValue(undefined);
 });
 
 describe('PaywallScreen on a build that cannot transact', () => {
@@ -222,6 +225,30 @@ describe('PaywallScreen restoring', () => {
 });
 
 describe('PaywallScreen for someone who already has everything', () => {
+  /**
+   * Before the Customer Center existed this screen told a subscriber to go to
+   * Google Play. The app can open the manage and cancel flow itself now, so
+   * sending them elsewhere to do it would be the app being unhelpful on
+   * purpose.
+   */
+  it('offers a subscriber the manage flow rather than an instruction', async () => {
+    const store = createStore();
+    initPurchases({ apiKey: 'goog_test' });
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: true,
+        premium: true,
+      }),
+    );
+    await renderWithStore(<PaywallScreen />, { store });
+
+    await fireEvent.press(screen.getByTestId('paywall-manage'));
+
+    expect(presentCustomerCenter).toHaveBeenCalled();
+    expect(screen.queryByText(/in Google Play at any time/)).toBeNull();
+  });
+
   it('does not sell to a subscriber', async () => {
     const store = createStore();
     initPurchases({ apiKey: 'goog_test' });

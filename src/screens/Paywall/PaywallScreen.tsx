@@ -27,6 +27,7 @@ import {
 import {
   annualSavingPercent,
   hasRenewingOffer,
+  presentCustomerCenter,
   type SubscriptionOffer,
 } from '../../utils/purchases';
 
@@ -106,7 +107,7 @@ export function PaywallScreen() {
           // "subscribe" to them would be selling something they hold.
           <Text testID="paywall-already-open" style={styles.body}>
             {premium
-              ? 'You are subscribed, and every asset class is open. Manage or cancel the subscription in Google Play at any time.'
+              ? 'You are subscribed, and every asset class is open.'
               : grandfathered
                 ? 'You were here before this app had a subscription, so all of it stays open to you — permanently, and at no cost.'
                 : 'Every asset class is open on this build. There is nothing to buy.'}
@@ -220,6 +221,22 @@ export function PaywallScreen() {
             disabled={busy}
             onPress={() => {
               void dispatch(buyOffer(selected.id));
+            }}
+            style={styles.action}
+          />
+        )}
+
+        {/* Written before the Customer Center existed, this used to tell a
+            subscriber to go to Google Play. The app can now open the manage
+            and cancel flow itself, so it should, rather than sending them
+            somewhere else to do it. */}
+        {premium && (
+          <Button
+            testID="paywall-manage"
+            label="Manage subscription"
+            variant="outline"
+            onPress={() => {
+              void presentCustomerCenter();
             }}
             style={styles.action}
           />
