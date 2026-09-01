@@ -22,7 +22,7 @@ permanently.
 | App name | `OTC Learn` |
 | Default language | English (United Kingdom) — the copy is British-flavoured |
 | App or game | App |
-| Free or paid | Free |
+| Free or paid | Free — the download is free and paid access is bought inside the app, so this field stays Free. Play derives the "In-app purchases" label from the products themselves |
 | Declarations | Tick both: developer programme policies, US export laws |
 
 ---
@@ -178,7 +178,7 @@ no region lock, no paywall.
 | --- | --- |
 | Email | `singhalsachin2003@gmail.com` |
 | Category | Reference, News, or Educational |
-| Every content question | **No** — no violence, sexuality, profanity, drugs, gambling, user-generated content, sharing, or purchases |
+| Every content question | **No** — no violence, sexuality, profanity, drugs, gambling, user-generated content or sharing. **Digital purchases must now be answered Yes**: the app sells subscriptions and a lifetime unlock, so the previous blanket No is false |
 
 Expected result: Everyone / PEGI 3.
 
@@ -199,19 +199,31 @@ aimed at graduates and professionals.
 
 ### Data safety
 
-Read each question rather than copying blindly. Answers for v1.1:
+Read each question rather than copying blindly. **These answers are for v1.2 and
+differ materially from v1.1**, which declared Device or other IDs and nothing
+else. v1.2 is the first build in which Supabase and RevenueCat are actually
+configured, so two data types go live that were previously dark code.
 
 | Question | Answer |
 | --- | --- |
 | Does your app collect or share any of the required user data types? | **Yes** |
-| Data type | **Device or other IDs** — nothing else |
-| Collected or shared? | Collected, **not** shared |
+| Collected or shared? | Collected, **not** shared, for every type below |
 | Processed ephemerally? | No |
-| Required or optional? | Required |
-| Purpose | App functionality |
 | Is all user data encrypted in transit? | Yes |
 | Can users request data deletion? | Yes — via the contact email |
 | Privacy policy URL | as above |
+
+| Data type | Required? | Purpose | Why |
+| --- | --- | --- | --- |
+| **Device or other IDs** | Required | App functionality | The `u.expo.dev` update check, plus the anonymous identifier RevenueCat mints |
+| **Email address** | **Optional** | App functionality, Account management | Only when the user creates an account; the app is fully usable without one |
+| **App activity** — progress | **Optional** | App functionality | Mastery scores and the review queue, synced only while signed in |
+| **Purchases** | **Optional** | App functionality | Whether this device has paid access |
+
+Mark the last three **optional** — an account is genuinely optional, and so is
+buying. Confirm the exact option labels in the Console against this list rather
+than assuming: Play's taxonomy wording for the progress and purchase types is
+easy to mismatch, and the form is what gets enforced.
 
 **Why "Device or other IDs".** The app contacts `u.expo.dev` on every launch to
 check for an over-the-air update, and that request carries an install-scoped
@@ -219,9 +231,11 @@ UUID plus platform and runtime version. Play's definition of that data type
 covers app-scoped identifiers, and the ephemeral-processing exemption does not
 apply because Expo's servers receive and retain it.
 
-**What is deliberately not declared.** Completed products and the day streak
-never leave the device, and Android auto-backup is off
-(`android.allowBackup: false`), so they do not reach Drive either.
+**What is deliberately not declared.** Android auto-backup is off
+(`android.allowBackup: false`), so nothing reaches Drive. For a user who never
+signs in, progress and the day streak still never leave the device — but that is
+now a property of *not signing in* rather than of the app, which is why the
+progress row above exists and is marked optional.
 
 **This changes if crash reporting is switched on.** A build carrying a Sentry
 DSN also collects **Crash logs** (App activity and performance) — update this
@@ -279,6 +293,9 @@ First release.
 - Privacy policy URL opens in a browser — Play rejects an unreachable link.
 - The AAB you uploaded is the **production** profile build, not the preview APK.
 - Data safety answers match the build you actually uploaded, in particular
-  whether it carries a Sentry DSN.
+  whether it carries a Sentry DSN, and whether RevenueCat and Supabase are
+  configured in it — v1.2 is the first build where both are.
+- Data safety declares **Purchases** before the Play products are created. That
+  step needs no new binary, so nothing else will force the form to be corrected.
 - Screenshots show current content — recapture with
   `scripts/capture-screenshots.sh` if the UI or catalogue changes.

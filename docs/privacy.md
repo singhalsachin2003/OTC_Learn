@@ -5,7 +5,7 @@ permalink: /privacy/
 
 # Privacy Policy for OTC Learn
 
-**Last updated: 31 August 2026**
+**Last updated: 1 September 2026**
 
 OTC Learn is an educational app about over-the-counter derivatives. This policy
 describes what the app does and does not do with your information.
@@ -78,15 +78,20 @@ separately and would stay off.
 
 ## Purchases
 
-The app contains Google Play Billing, through RevenueCat, so that a paid feature
-can be offered in future. **No version has anything to buy yet**, and until one
-does, no purchase information exists and nothing is sent.
+The app offers optional paid access to most of the catalogue, through Google
+Play Billing and RevenueCat. One category is free to everyone and stays that
+way, so the app remains useful indefinitely without buying anything.
 
-When there is something to buy, a purchase is made by Google Play, and Google —
-not us — handles your payment details. We never see or store a card number.
-RevenueCat records that a purchase happened, against an identifier of its own
-that is not your name or email, so the app can tell whether you are entitled to
-the feature. Their privacy policy is at <https://www.revenuecat.com/privacy>.
+If you do buy, the purchase is made by Google Play, and Google — not us —
+handles your payment details. We never see or store a card number. RevenueCat
+records that a purchase happened, against an identifier of its own that is not
+your name or email, so the app can tell whether this device has paid access.
+Their privacy policy is at <https://www.revenuecat.com/privacy>.
+
+**A purchase is not tied to an account.** The app deliberately does not tell
+RevenueCat who you are, even when you are signed in, and Google Play restores a
+purchase through the Google account that made it. Buying therefore requires no
+account with us, and signing in reveals nothing about what you have bought.
 
 ## Checking for updates
 
@@ -100,9 +105,12 @@ analytics. The identifier changes if you reinstall the app.
 Expo processes this on our behalf; their privacy policy is at
 <https://expo.dev/privacy>.
 
-Apart from this update check, an app with no account signed in makes no network
-requests at all. Signing in adds requests to the sync service described above,
-and only while you are signed in.
+Apart from this update check, an app you never sign into makes one other kind
+of request: it asks RevenueCat whether this device has paid access, so that a
+purchase is honoured on a device you have not signed into. That request carries
+the anonymous identifier described under Purchases, and nothing about you or
+how you use the app. Signing in adds requests to the sync service described
+above, and only while you are signed in.
 
 ## Children
 

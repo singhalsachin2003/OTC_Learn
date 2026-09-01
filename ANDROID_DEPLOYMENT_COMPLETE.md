@@ -387,11 +387,19 @@ section warns about:
 | Encrypted in transit? | Yes |
 | Way to request deletion? | Yes — the contact email, which is what `docs/privacy.md` now promises |
 
-**Purchases do not add a data type yet.** The binary declares
-`com.android.vending.BILLING` and bundles RevenueCat so that products can be
-created in the console at all, but no version has anything to buy, so nothing
-about a purchase exists to declare. That changes the moment a product is
-published, and the form has to be updated *before* that release, not with it.
+**Purchases: the form has to change before a product exists, not before a
+build.** v1.2 is the first build carrying a live RevenueCat key, so the app now
+contacts RevenueCat at launch to ask whether the device has paid access. That
+request carries an anonymous identifier and is already covered by Device or
+other IDs. What is not yet collected is a *purchase*, because no product is
+published and the offering comes back empty.
+
+The trap is that publishing a product needs **no new binary**. The moment the
+three Play products go live, this already-uploaded build starts selling and
+**Purchases** becomes a declarable type with no release to hang the form update
+on. Update Data safety *before* creating the products, not after — and note
+that `STORE_LISTING.md` now carries the full v1.2 table, so change it there
+first and keep this section pointing at the same answers.
 
 **The daily reminder does not change these answers.** It is a local
 notification, scheduled on the device by `expo-notifications` and shown by the
