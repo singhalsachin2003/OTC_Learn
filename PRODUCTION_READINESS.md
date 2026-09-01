@@ -161,7 +161,12 @@ move in the same release:
 - Play's Data safety form needs "Purchases" declared for what RevenueCat
   receives.
 
-**The Play service account's Cloud half is done, 2026-09-01** — project
+**The Play service account is done and working, 2026-09-01** — RevenueCat
+reports "Valid credentials" and the Play Developer API honours the service
+account on all three capabilities it needs. Details and the three misleading
+error codes are in `docs/revenuecat.md`.
+
+**The Cloud half, for reference:** — project
 `otc-learn-play`, service account
 `otc-learn-revenuecat@otc-learn-play.iam.gserviceaccount.com`, the three APIs
 enabled and the key at `~/.config/otc-learn/play-service-account.json`. What

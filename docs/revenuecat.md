@@ -31,46 +31,37 @@ current_offering_id: default
 That is the offering the app reads, and all three package slots are RevenueCat's
 standard ones, so `periodOf` types them correctly without further work.
 
-## Credential status, 2026-09-01
+## Credential status, 2026-09-01 — working
 
-Set up and **waiting on Google's propagation**. Everything controllable is
-done and verified:
-
-|                     |                                                                                                                                |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Service account     | Active in the Play Console                                                                                                     |
-| Account permissions | App access (view app info), View financial data, Manage orders and subscriptions, Manage store presence — all ticked and saved |
-| App permissions     | OTC Learn added; its ticks are inherited from the account ones                                                                 |
-| RevenueCat          | JSON uploaded and saved against the Play Store app                                                                             |
-
-What the Play Developer API says, probed directly with the service account
-(`scripts` in the session scratchpad; the probes mirror RevenueCat's own three
-checks):
+RevenueCat reports **"Valid credentials"** against the Play Store app, and the
+Play Developer API agrees when probed directly with the service account:
 
 ```
-financial data / orders   401 insufficient permissions
+financial data / orders   200
 subscription catalogue    204
-purchase validation       401 insufficient permissions
+purchase validation       400 Invalid Value   <- a pass, see below
 ```
 
-So RevenueCat's validator is right to fail — it is not a RevenueCat problem.
-Google allows **up to 36 hours** for Play service credentials to take effect,
-and the financial permissions were granted the same day.
+It took roughly an hour from granting the Play Console permissions to the API
+honouring them. Google documents up to 36 hours, so anything inside that window
+is propagation and not worth debugging.
 
-**If it is still 401 after 36 hours** it is no longer propagation. The next
-place to look is **Play Console → Settings → API access**, which shows the
-Google Cloud project the Console is linked to; the service account lives in
-`otc-learn-play`, created the same day.
+**Three ways this chain lies to you, all of which cost time on the day:**
 
-**Two traps worth not repeating.** `/inappproducts` answers 403 "Please migrate
-to the new publishing API" for everyone now, which reads exactly like a
-permissions failure and is not one — probe `/subscriptions` instead. And a
-probe of the catalogue alone is not a test of anything: it passed throughout,
-including while purchase validation was broken, so a check that only looks at
-it reports success at every point.
+1. **`/inappproducts` answers `403 "Please migrate to the new publishing API"`**
+   for everyone now. It reads exactly like a permissions failure. Probe
+   `/subscriptions` instead.
+2. **`400 Invalid Value` on purchase validation is success.** With a nonsense
+   purchase token the API only gets as far as judging the token once it has
+   accepted the caller, so 400 and 404 mean the permissions are fine. Only
+   401/403 say anything about permissions. Reading 400 as a failure kept the
+   check red for an hour after it had started working.
+3. **Probing the catalogue alone proves nothing.** `/subscriptions` returned 204
+   throughout, including while purchase validation was refused outright, so a
+   check built on it reports success unconditionally.
 
-Nothing here is on the critical path: no Play products exist, and nothing can
-be sold until BillDesk clears regardless.
+`verify-play-creds.sh` (session scratchpad) runs all three probes with these
+rules baked in. Re-create it from this section if it is gone.
 
 ## Getting the `goog_` production key
 
