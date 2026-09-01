@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ProgressBar } from '../../../components/ui/ProgressBar';
 import { orderedProductIds } from '../../../data/paths';
 import { getProductById } from '../../../data/products';
+import { useAccess } from '../../../hooks/useAccess';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
 import { colors, radius, spacing, typography } from '../../../theme';
@@ -24,8 +25,11 @@ import { MASTERY_COMPLETE } from '../../../utils/mastery';
 export function ResumeCard() {
   const { goToProduct } = useNavigation();
   const { progressFor, masteryFor } = useProgress();
+  const { productLocked } = useAccess();
 
-  const ordered = orderedProductIds();
+  // "Pick up where you left off" has to name something that opens. The free
+  // asset class is always in here, so this can never empty the list.
+  const ordered = orderedProductIds().filter((id) => !productLocked(id));
   const inProgress = ordered.find((id) => {
     const mastery = masteryFor(id);
     return mastery > 0 && mastery < MASTERY_COMPLETE;

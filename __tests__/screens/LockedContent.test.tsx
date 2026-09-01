@@ -290,3 +290,23 @@ describe('a review queue holding content that has since locked', () => {
     expect(store.getState().review.queue).toHaveLength(2);
   });
 });
+
+describe('what home suggests next', () => {
+  /**
+   * "Pick up where you left off" naming something that will not open is a bad
+   * first screen, and it is the first thing a new install sees.
+   */
+  it('never suggests a product the reader cannot open', async () => {
+    const store = paywalled();
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    const suggested = screen.getByTestId('resume-card');
+    expect(suggested).toBeTruthy();
+    await fireEvent.press(suggested);
+    await settleRings();
+
+    expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
+    expect(screen.queryByTestId('product-locked')).toBeNull();
+  });
+});
