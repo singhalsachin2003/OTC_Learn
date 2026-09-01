@@ -31,6 +31,47 @@ current_offering_id: default
 That is the offering the app reads, and all three package slots are RevenueCat's
 standard ones, so `periodOf` types them correctly without further work.
 
+## Credential status, 2026-09-01
+
+Set up and **waiting on Google's propagation**. Everything controllable is
+done and verified:
+
+|                     |                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Service account     | Active in the Play Console                                                                                                     |
+| Account permissions | App access (view app info), View financial data, Manage orders and subscriptions, Manage store presence — all ticked and saved |
+| App permissions     | OTC Learn added; its ticks are inherited from the account ones                                                                 |
+| RevenueCat          | JSON uploaded and saved against the Play Store app                                                                             |
+
+What the Play Developer API says, probed directly with the service account
+(`scripts` in the session scratchpad; the probes mirror RevenueCat's own three
+checks):
+
+```
+financial data / orders   401 insufficient permissions
+subscription catalogue    204
+purchase validation       401 insufficient permissions
+```
+
+So RevenueCat's validator is right to fail — it is not a RevenueCat problem.
+Google allows **up to 36 hours** for Play service credentials to take effect,
+and the financial permissions were granted the same day.
+
+**If it is still 401 after 36 hours** it is no longer propagation. The next
+place to look is **Play Console → Settings → API access**, which shows the
+Google Cloud project the Console is linked to; the service account lives in
+`otc-learn-play`, created the same day.
+
+**Two traps worth not repeating.** `/inappproducts` answers 403 "Please migrate
+to the new publishing API" for everyone now, which reads exactly like a
+permissions failure and is not one — probe `/subscriptions` instead. And a
+probe of the catalogue alone is not a test of anything: it passed throughout,
+including while purchase validation was broken, so a check that only looks at
+it reports success at every point.
+
+Nothing here is on the critical path: no Play products exist, and nothing can
+be sold until BillDesk clears regardless.
+
 ## Getting the `goog_` production key
 
 The key supplied on 2026-09-01 was `test_…`, which is a **Test Store** key —
