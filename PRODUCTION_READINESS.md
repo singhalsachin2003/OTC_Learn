@@ -121,7 +121,10 @@ is no longer entirely unexercised.
    until this completes, regardless of the binary.
 
 4. **Then** create the subscription, and wire entitlements with a RevenueCat
-   account and key — still not created.
+   account and key — still not created. **`docs/revenuecat.md` is the runbook**:
+   the app reads three identifiers by exact string (`premium`, the *current*
+   offering, the `goog_` key) and a typo in any of them fails silently, leaving
+   the app behaving as a free app with no error anywhere.
 
 5. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
    now have a screen and every locked surface consumes them: the home grid,
