@@ -42,9 +42,12 @@ A `goog_` key is **generated automatically when a Google Play app configuration
 is added to the project** — it is not requested or issued separately.
 
 1. **Apps → New app configuration → Google Play Store**, package name
-   `com.otclearn.app`. The key then appears under **API keys**.
-2. Give RevenueCat a **Play service account JSON**, or the app entry cannot
-   validate anything:
+   `com.otclearn.app`. The key then appears under **API keys**. ✅ Done
+   2026-09-01.
+2. Give RevenueCat a **Play service account JSON** — **still outstanding as of
+   2026-09-01**. Without it the app entry cannot verify a purchase server-side,
+   so an entitlement will not be granted reliably even though Play takes the
+   money. Nothing may be sold until this is done:
    - Google Cloud → enable the **Android Publisher API**, **Google Play
      Developer Reporting API** and **Pub/Sub API**.
    - IAM → create a service account with **Pub/Sub Editor** and **Monitoring
@@ -62,11 +65,31 @@ propagation is the longest lead time in the whole billing setup. The same JSON
 is what `eas submit` needs, so obtaining it once also makes the AAB upload
 scriptable instead of manual.
 
-**Setting the `goog_` key before the Play products exist is safe.** Packages
-whose store product cannot be fetched are dropped from the offering, so
-`availablePackages` comes back empty, `hasPurchasableOffer` is false, and the
-paywall stays off — the third guard in `access.ts`. Worth confirming on device
-the first time rather than assuming.
+**Setting the `goog_` key before the Play products exist is safe**, and this was
+measured rather than assumed. The same offering, fetched with each key on
+2026-09-01:
+
+```
+test_… -> offering "default", 3 packages (monthly, yearly, lifetime)
+goog_… -> offering "default", packages: []
+```
+
+So `availablePackages` is empty under Google Play, `hasPurchasableOffer` is
+false, and the paywall stays off — the third guard in `access.ts`, doing exactly
+what it is for.
+
+**The reason it is empty is worth knowing: packages are attached per store.**
+The three products live in the **Test Store**, not in the Google Play app. When
+the Play products are eventually created they have to be attached to the same
+packages in the RevenueCat product catalogue for the Play app — creating them in
+the Play Console alone will not populate this offering.
+
+### Which key to run locally
+
+`.env` holds the `goog_` key with the `test_` one commented out beneath it. Swap
+to `test_` when you want to **see** the paywall on a device: the Test Store has
+the packages, so offers render and the locked states appear. With `goog_` the
+app is, correctly, indistinguishable from a free build.
 
 ## The three strings the app reads
 
