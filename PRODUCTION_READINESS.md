@@ -123,6 +123,32 @@ is no longer entirely unexercised.
 4. **Then** create the subscription, and wire entitlements with a RevenueCat
    account and key — still not created.
 
+5. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
+   now have a screen and every locked surface consumes them: the home grid,
+   both product lists, the product page, the lesson, and the exam scopes. Two
+   things worth knowing about it —
+
+   - **It is still invisible.** With no RevenueCat key `purchasesConfigured` is
+     false, so `paywallApplies` is false for everybody and nothing locks. The
+     paywall screen is reachable from Profile in that state and says there is
+     nothing to buy. Setting the key is what turns all of this on, which is
+     why it must be done *after* the two guards are understood, not before.
+   - **No price is written anywhere in the repo.** They come from Play, per
+     country, through `getOfferings`, and the annual saving is computed from
+     the two figures the store returns. Setting price points in the Play
+     Console is the only place they get decided.
+
+**When the RevenueCat key is set, three things stop being true** and have to
+move in the same release:
+
+- `docs/privacy.md` says "**No version has anything to buy yet**". Correct it;
+  the rest of its Purchases section is already accurate.
+- `STORE_LISTING.md`'s content-rating answers say the app has no purchases.
+  With a subscription live that answer changes, and the rating questionnaire
+  has to be re-submitted.
+- Play's Data safety form needs "Purchases" declared for what RevenueCat
+  receives.
+
 Also offered in the console and worth taking: enrolment for the **15% service
 fee** rather than the default 30%.
 
