@@ -5,6 +5,7 @@ import {
   loadAchievements,
   loadBookmarks,
   loadExamResults,
+  loadGrandfathered,
   loadNotes,
   loadProfile,
   loadProgressMap,
@@ -15,6 +16,7 @@ import {
   loadStudyDays,
   runMigrations,
 } from '../../utils/storage';
+import { setGrandfathered } from '../slices/accessSlice';
 import { clearNotes, setNotes } from '../slices/notesSlice';
 import type { RootState } from '../index';
 import {
@@ -67,6 +69,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         unlocked,
         examResults,
         notes,
+        grandfathered,
       ] = await Promise.all([
         loadProgressMap(),
         loadQuestionHistory(),
@@ -79,6 +82,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         loadAchievements(),
         loadExamResults(),
         loadNotes(),
+        loadGrandfathered(),
       ]);
 
       dispatch(setProgress(progress));
@@ -89,6 +93,10 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
       dispatch(setAchievements(unlocked));
       dispatch(setExamResults(examResults));
       dispatch(setNotes(notes));
+      // Whether this install predates the paywall. Read here with everything
+      // else persisted, so it is settled before the first frame rather than
+      // arriving after it and locking content that was already on screen.
+      dispatch(setGrandfathered(grandfathered));
       dispatch(setSettings(settings));
       dispatch(setName(profile.name));
 

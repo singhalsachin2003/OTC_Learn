@@ -4,16 +4,41 @@ import {
   initPurchases,
   isPremium,
   isPurchasesConfigured,
+  loadOffers,
+  purchaseOffer,
   resetPurchases,
+  restoreEntitlements,
 } from '../../src/utils/purchases';
 
 const configure = Purchases.configure as jest.Mock;
 const getCustomerInfo = Purchases.getCustomerInfo as jest.Mock;
+const getOfferings = Purchases.getOfferings as jest.Mock;
+const purchasePackage = Purchases.purchasePackage as jest.Mock;
+const restorePurchases = Purchases.restorePurchases as jest.Mock;
+
+/** A RevenueCat package, cut down to the fields the facade reads. */
+function pkg(
+  identifier: string,
+  packageType: string,
+  priceString: string,
+  price: number,
+) {
+  return {
+    identifier,
+    packageType,
+    product: { priceString, price, currencyCode: 'INR' },
+  };
+}
+
+const entitled = { entitlements: { active: { premium: {} } } };
+const notEntitled = { entitlements: { active: {} } };
 
 beforeEach(() => {
   resetPurchases();
   jest.clearAllMocks();
   getCustomerInfo.mockResolvedValue({ entitlements: { active: {} } });
+  getOfferings.mockResolvedValue({ current: null });
+  restorePurchases.mockResolvedValue({ entitlements: { active: {} } });
 });
 
 describe('initPurchases', () => {
@@ -92,5 +117,188 @@ describe('isPremium', () => {
     initPurchases({ apiKey: 'goog_test' });
 
     await expect(isPremium('premium')).resolves.toBe(false);
+  });
+});
+
+describe('loadOffers', () => {
+  it('offers nothing on a build that cannot transact', async () => {
+    await expect(loadOffers()).resolves.toEqual([]);
+    expect(getOfferings).not.toHaveBeenCalled();
+  });
+
+  it('flattens the current offering into plain rows', async () => {
+    getOfferings.mockResolvedValue({
+      current: {
+        availablePackages: [
+          pkg('$rc_monthly', 'MONTHLY', '₹399.00', 399),
+          pkg('$rc_annual', 'ANNUAL', '₹2,999.00', 2999),
+        ],
+      },
+    });
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(loadOffers()).resolves.toEqual([
+      {
+        id: '$rc_monthly',
+        period: 'monthly',
+        priceString: '₹399.00',
+        price: 399,
+        currencyCode: 'INR',
+      },
+      {
+        id: '$rc_annual',
+        period: 'annual',
+        priceString: '₹2,999.00',
+        price: 2999,
+        currencyCode: 'INR',
+      },
+    ]);
+  });
+
+  /** Prices are the store's to format, per country. None are written here. */
+  it('renders the store’s own price string rather than building one', async () => {
+    getOfferings.mockResolvedValue({
+      current: { availablePackages: [pkg('m', 'MONTHLY', '$4.99', 4.99)] },
+    });
+    initPurchases({ apiKey: 'goog_test' });
+
+    const [offer] = await loadOffers();
+    expect(offer?.priceString).toBe('$4.99');
+  });
+
+  it('calls anything that is neither term "other" rather than guessing', async () => {
+    getOfferings.mockResolvedValue({
+      current: { availablePackages: [pkg('c', 'CUSTOM', '₹99.00', 99)] },
+    });
+    initPurchases({ apiKey: 'goog_test' });
+
+    const [offer] = await loadOffers();
+    expect(offer?.period).toBe('other');
+  });
+
+  /**
+   * No key, no network and no offering configured all mean the same thing on
+   * screen — nothing can be bought right now — and none of them is an error
+   * the user can do anything about.
+   */
+  it('is empty when the offering has not been configured yet', async () => {
+    getOfferings.mockResolvedValue({ current: null });
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(loadOffers()).resolves.toEqual([]);
+  });
+
+  it('is empty when the lookup throws', async () => {
+    getOfferings.mockRejectedValue(new Error('offline'));
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(loadOffers()).resolves.toEqual([]);
+  });
+});
+
+describe('purchaseOffer', () => {
+  async function withOffers() {
+    getOfferings.mockResolvedValue({
+      current: {
+        availablePackages: [pkg('$rc_monthly', 'MONTHLY', '₹399.00', 399)],
+      },
+    });
+    initPurchases({ apiKey: 'goog_test' });
+    await loadOffers();
+  }
+
+  it('fails rather than throwing when the offer is unknown', async () => {
+    await withOffers();
+
+    await expect(purchaseOffer('nope')).resolves.toEqual({
+      result: 'failed',
+      message: 'That subscription is unavailable.',
+    });
+    expect(purchasePackage).not.toHaveBeenCalled();
+  });
+
+  it('buys the package the offer id stands for', async () => {
+    await withOffers();
+    purchasePackage.mockResolvedValue({ customerInfo: entitled });
+
+    await expect(purchaseOffer('$rc_monthly')).resolves.toEqual({
+      result: 'purchased',
+    });
+    expect(purchasePackage).toHaveBeenCalledWith(
+      expect.objectContaining({ identifier: '$rc_monthly' }),
+    );
+  });
+
+  /**
+   * Backing out of Play's sheet is the commonest ending there is, and it wants
+   * the opposite treatment from a failure: an error message after someone has
+   * deliberately cancelled reads as the app arguing with them.
+   */
+  it('separates a cancellation from a failure', async () => {
+    await withOffers();
+    purchasePackage.mockRejectedValue({ userCancelled: true });
+
+    await expect(purchaseOffer('$rc_monthly')).resolves.toEqual({
+      result: 'cancelled',
+    });
+  });
+
+  it('reports the store’s message when the purchase fails', async () => {
+    await withOffers();
+    purchasePackage.mockRejectedValue({ message: 'Payment declined' });
+
+    await expect(purchaseOffer('$rc_monthly')).resolves.toEqual({
+      result: 'failed',
+      message: 'Payment declined',
+    });
+  });
+
+  /** A sale that leaves no entitlement behind has not granted anything. */
+  it('fails when the purchase returns without the entitlement', async () => {
+    await withOffers();
+    purchasePackage.mockResolvedValue({ customerInfo: notEntitled });
+
+    await expect(purchaseOffer('$rc_monthly')).resolves.toEqual({
+      result: 'failed',
+      message: 'The purchase did not complete.',
+    });
+  });
+
+  it('forgets its packages when purchases are reset', async () => {
+    await withOffers();
+    resetPurchases();
+
+    await expect(purchaseOffer('$rc_monthly')).resolves.toEqual({
+      result: 'failed',
+      message: 'That subscription is unavailable.',
+    });
+  });
+});
+
+describe('restoreEntitlements', () => {
+  it('does nothing on a build that cannot transact', async () => {
+    await expect(restoreEntitlements()).resolves.toBe(false);
+    expect(restorePurchases).not.toHaveBeenCalled();
+  });
+
+  it('is true when the account already owns the entitlement', async () => {
+    restorePurchases.mockResolvedValue(entitled);
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(restoreEntitlements()).resolves.toBe(true);
+  });
+
+  it('is false when the account owns nothing', async () => {
+    restorePurchases.mockResolvedValue(notEntitled);
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(restoreEntitlements()).resolves.toBe(false);
+  });
+
+  it('fails closed when the store cannot be reached', async () => {
+    restorePurchases.mockRejectedValue(new Error('offline'));
+    initPurchases({ apiKey: 'goog_test' });
+
+    await expect(restoreEntitlements()).resolves.toBe(false);
   });
 });

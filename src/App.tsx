@@ -11,6 +11,7 @@ import { useAppFonts } from './hooks/useAppFonts';
 import { useNavigation } from './hooks/useNavigation';
 import { RootNavigator } from './navigation/RootNavigator';
 import { store } from './store';
+import { refreshEntitlement } from './store/thunks/accessThunks';
 import { hydrateApp } from './store/thunks/bootstrapThunks';
 import { recordActivity } from './store/thunks/streakThunks';
 import { restoreSession, syncNow } from './store/thunks/syncThunks';
@@ -46,6 +47,12 @@ function AppContent() {
       // keeping the preference. `syncReminder` repairs or reports either.
       const { settings } = store.getState().settings;
       void syncReminder(settings.dailyReminder);
+
+      // Same rule as sync below, and for the same reason: asking RevenueCat
+      // what someone owns is a network call, and nothing on screen may wait on
+      // one. Until it answers the store says no purchases are configured, so
+      // the catalogue is open — which is the safe direction to be wrong in.
+      void store.dispatch(refreshEntitlement());
 
       // Sync last, and never awaited by anything that renders. It runs after
       // hydration so the merge sees the device's real state rather than the

@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import accessReducer, { type AccessSliceState } from './slices/accessSlice';
 import appReducer, { type AppState } from './slices/appSlice';
 import notesReducer, { type NotesState } from './slices/notesSlice';
 import progressReducer, { type ProgressState } from './slices/progressSlice';
@@ -15,6 +16,7 @@ import syncReducer, { type SyncState } from './slices/syncSlice';
  * the store would make that a circular type reference.
  */
 export interface RootState {
+  access: AccessSliceState;
   app: AppState;
   notes: NotesState;
   progress: ProgressState;
@@ -26,6 +28,7 @@ export interface RootState {
 }
 
 export const rootReducer = {
+  access: accessReducer,
   app: appReducer,
   notes: notesReducer,
   progress: progressReducer,

@@ -6,6 +6,11 @@
  * `sink` — every call site already routes through `track`.
  */
 
+import type { OfferPeriod } from './purchases';
+
+/** Where someone met the paywall, which is the only thing worth knowing. */
+export type PaywallSource = 'home' | 'category' | 'product' | 'profile';
+
 export type AnalyticsEvent =
   | { name: 'category_opened'; categoryId: string }
   | { name: 'product_opened'; productId: string }
@@ -35,6 +40,13 @@ export type AnalyticsEvent =
   | { name: 'signed_in' }
   | { name: 'signed_out' }
   | { name: 'sync_completed' }
+  // Purchase events carry the term and nothing else. What someone bought is a
+  // product question; who they are is not one this sink should be able to ask.
+  | { name: 'paywall_shown'; source: PaywallSource }
+  | { name: 'purchase_started'; period: OfferPeriod }
+  | { name: 'purchase_completed'; period: OfferPeriod }
+  | { name: 'purchase_restored' }
+  | { name: 'purchase_failed' }
   | {
       /** A render error caught by `ErrorBoundary`. */
       name: 'app_error';
