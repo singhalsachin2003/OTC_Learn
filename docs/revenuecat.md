@@ -31,6 +31,43 @@ current_offering_id: default
 That is the offering the app reads, and all three package slots are RevenueCat's
 standard ones, so `periodOf` types them correctly without further work.
 
+## Getting the `goog_` production key
+
+The key supplied on 2026-09-01 was `test_…`, which is a **Test Store** key —
+RevenueCat's sandbox. It serves offerings and is fine for wiring, but it cannot
+transact through Google Play. Confirmed in the dashboard: the project's only app
+is the Test Store one.
+
+A `goog_` key is **generated automatically when a Google Play app configuration
+is added to the project** — it is not requested or issued separately.
+
+1. **Apps → New app configuration → Google Play Store**, package name
+   `com.otclearn.app`. The key then appears under **API keys**.
+2. Give RevenueCat a **Play service account JSON**, or the app entry cannot
+   validate anything:
+   - Google Cloud → enable the **Android Publisher API**, **Google Play
+     Developer Reporting API** and **Pub/Sub API**.
+   - IAM → create a service account with **Pub/Sub Editor** and **Monitoring
+     Viewer**, and download its JSON key.
+   - Play Console → **Users and permissions** → invite the service account's
+     email and grant: view app information, view financial data, manage orders
+     and subscriptions, manage store presence.
+   - RevenueCat → **Project settings → Google Play App Settings** → upload the
+     JSON. RevenueCat has a validator for checking it took.
+3. **Allow up to 36 hours** for the credentials to propagate to the Play
+   Developer API.
+
+**Start this early.** None of it waits on BillDesk or on the AAB, and the 36-hour
+propagation is the longest lead time in the whole billing setup. The same JSON
+is what `eas submit` needs, so obtaining it once also makes the AAB upload
+scriptable instead of manual.
+
+**Setting the `goog_` key before the Play products exist is safe.** Packages
+whose store product cannot be fetched are dropped from the offering, so
+`availablePackages` comes back empty, `hasPurchasableOffer` is false, and the
+paywall stays off — the third guard in `access.ts`. Worth confirming on device
+the first time rather than assuming.
+
 ## The three strings the app reads
 
 | What                   | Value                          | Read at                              |
