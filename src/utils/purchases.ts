@@ -94,15 +94,23 @@ export async function isPremium(entitlementId: string): Promise<boolean> {
 }
 
 /**
- * The entitlement a subscription grants, as named in the RevenueCat dashboard.
+ * The entitlement a purchase grants, as named in the RevenueCat dashboard.
  *
  * A string constant rather than a literal at each call site, because the name
  * has to match a value typed into a web console that nothing here can check:
- * if it is ever wrong, it should be wrong in exactly one place.
+ * if it is ever wrong, it should be wrong in exactly one place. And it fails
+ * *silently* — a purchase completes, grants no entitlement, and the app looks
+ * as though nothing happened.
  */
-export const PREMIUM_ENTITLEMENT_ID = 'premium';
+export const PREMIUM_ENTITLEMENT_ID = 'otc_learn_pro';
 
-export type OfferPeriod = 'monthly' | 'annual' | 'other';
+/**
+ * `lifetime` is a one-off purchase, not a term. It is kept distinct from
+ * `other` because the paywall has to say different things about it: no "per
+ * month", no saving comparison, and none of the renew-until-cancelled small
+ * print, which would be untrue of it.
+ */
+export type OfferPeriod = 'monthly' | 'annual' | 'lifetime' | 'other';
 
 /**
  * One thing the user can buy, flattened out of RevenueCat's package objects.
@@ -130,7 +138,17 @@ function periodOf(pkg: PurchasesPackage): OfferPeriod {
   if (pkg.packageType === PACKAGE_TYPE.ANNUAL) {
     return 'annual';
   }
+  if (pkg.packageType === PACKAGE_TYPE.LIFETIME) {
+    return 'lifetime';
+  }
   return pkg.packageType === PACKAGE_TYPE.MONTHLY ? 'monthly' : 'other';
+}
+
+/** Whether anything on sale actually renews, for copy that says it does. */
+export function hasRenewingOffer(offers: SubscriptionOffer[]): boolean {
+  return offers.some(
+    (offer) => offer.period === 'monthly' || offer.period === 'annual',
+  );
 }
 
 /**

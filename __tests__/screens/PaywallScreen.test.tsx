@@ -15,7 +15,7 @@ const getOfferings = Purchases.getOfferings as jest.Mock;
 const purchasePackage = Purchases.purchasePackage as jest.Mock;
 const restorePurchases = Purchases.restorePurchases as jest.Mock;
 
-const entitled = { entitlements: { active: { premium: {} } } };
+const entitled = { entitlements: { active: { otc_learn_pro: {} } } };
 const notEntitled = { entitlements: { active: {} } };
 
 const bothTerms = {
@@ -194,7 +194,7 @@ describe('PaywallScreen as a pitch', () => {
   it('says what renewal and cancellation mean', async () => {
     await renderSelling();
 
-    expect(screen.getByText(/renewed until you cancel/)).toBeTruthy();
+    expect(screen.getByText(/renew until you cancel/)).toBeTruthy();
   });
 });
 
@@ -262,5 +262,64 @@ describe('PaywallScreen for someone who already has everything', () => {
 
     expect(screen.getByText(/permanently, and at no cost/)).toBeTruthy();
     expect(screen.queryByTestId('paywall-subscribe')).toBeNull();
+  });
+});
+
+describe('PaywallScreen with a lifetime purchase on sale', () => {
+  const withLifetime = {
+    current: {
+      availablePackages: [
+        {
+          identifier: '$rc_lifetime',
+          packageType: 'LIFETIME',
+          product: { priceString: '₹7,999.00', price: 7999, currencyCode: 'INR' },
+        },
+      ],
+    },
+  };
+
+  async function renderLifetimeOnly() {
+    getOfferings.mockResolvedValue(withLifetime);
+    const store = sellingTo(createStore());
+    return renderWithStore(<PaywallScreen />, { store });
+  }
+
+  it('names it as a one-off rather than a term', async () => {
+    await renderLifetimeOnly();
+
+    expect(screen.getByTestId('paywall-offer-lifetime')).toBeTruthy();
+    expect(screen.getByText('Lifetime')).toBeTruthy();
+    expect(screen.getByText(/₹7,999\.00 once/)).toBeTruthy();
+  });
+
+  /** "Renewed until you cancel" is untrue of the thing being sold. */
+  it('does not claim a one-off payment renews', async () => {
+    await renderLifetimeOnly();
+
+    expect(screen.queryByText(/renew until you cancel/)).toBeNull();
+  });
+
+  it('offers no saving badge against a term it cannot be compared to', async () => {
+    await renderLifetimeOnly();
+
+    expect(screen.queryByTestId('paywall-saving')).toBeNull();
+  });
+
+  it('still explains renewal when a subscription is on sale beside it', async () => {
+    getOfferings.mockResolvedValue({
+      current: {
+        availablePackages: [
+          ...bothTerms.current.availablePackages,
+          ...withLifetime.current.availablePackages,
+        ],
+      },
+    });
+    const store = sellingTo(createStore());
+    await renderWithStore(<PaywallScreen />, { store });
+
+    expect(screen.getByTestId('paywall-offer-lifetime')).toBeTruthy();
+    expect(screen.getByText(/renew until you cancel/)).toBeTruthy();
+    // The saving still compares the two terms, and ignores the one-off.
+    expect(screen.getByText('SAVE 37%')).toBeTruthy();
   });
 });

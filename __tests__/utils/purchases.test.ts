@@ -5,6 +5,7 @@ import {
   isPremium,
   isPurchasesConfigured,
   loadOffers,
+  PREMIUM_ENTITLEMENT_ID,
   purchaseOffer,
   resetPurchases,
   restoreEntitlements,
@@ -30,7 +31,7 @@ function pkg(
   };
 }
 
-const entitled = { entitlements: { active: { premium: {} } } };
+const entitled = { entitlements: { active: { otc_learn_pro: {} } } };
 const notEntitled = { entitlements: { active: {} } };
 
 beforeEach(() => {
@@ -85,17 +86,17 @@ describe('initPurchases', () => {
 
 describe('isPremium', () => {
   it('is false on a build that cannot transact', async () => {
-    await expect(isPremium('premium')).resolves.toBe(false);
+    await expect(isPremium(PREMIUM_ENTITLEMENT_ID)).resolves.toBe(false);
     expect(getCustomerInfo).not.toHaveBeenCalled();
   });
 
   it('is true when the entitlement is active', async () => {
     getCustomerInfo.mockResolvedValue({
-      entitlements: { active: { premium: { identifier: 'premium' } } },
+      entitlements: { active: { otc_learn_pro: { identifier: 'otc_learn_pro' } } },
     });
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(isPremium('premium')).resolves.toBe(true);
+    await expect(isPremium(PREMIUM_ENTITLEMENT_ID)).resolves.toBe(true);
   });
 
   it('is false for an entitlement the user does not hold', async () => {
@@ -104,7 +105,7 @@ describe('isPremium', () => {
     });
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(isPremium('premium')).resolves.toBe(false);
+    await expect(isPremium(PREMIUM_ENTITLEMENT_ID)).resolves.toBe(false);
   });
 
   /**
@@ -116,7 +117,7 @@ describe('isPremium', () => {
     getCustomerInfo.mockRejectedValue(new Error('offline'));
     initPurchases({ apiKey: 'goog_test' });
 
-    await expect(isPremium('premium')).resolves.toBe(false);
+    await expect(isPremium(PREMIUM_ENTITLEMENT_ID)).resolves.toBe(false);
   });
 });
 

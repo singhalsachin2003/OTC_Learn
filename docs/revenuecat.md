@@ -18,21 +18,32 @@ Console lets it be finished.
 
 ## Account
 
-No account exists yet as of 2026-09-01. Sign up at
-<https://app.revenuecat.com/signup> — name, email, password, then a
-confirmation email. Use **singhalsachin2003@gmail.com**, the Google account that
-owns the Play Console listing and the GitHub repo.
+Created, and the project is configured. Confirmed 2026-09-01 by fetching
+`/v1/subscribers/<id>/offerings` with the publishable key:
+
+```
+current_offering_id: default
+  $rc_monthly   -> monthly
+  $rc_annual    -> yearly
+  $rc_lifetime  -> lifetime
+```
+
+That is the offering the app reads, and all three package slots are RevenueCat's
+standard ones, so `periodOf` types them correctly without further work.
 
 ## The three strings the app reads
 
-| What                   | Value                           | Read at                              |
-| ---------------------- | ------------------------------- | ------------------------------------ |
-| Entitlement identifier | `premium`                       | `PREMIUM_ENTITLEMENT_ID`             |
-| Offering               | whichever is marked **current** | `offerings.current`                  |
-| Android SDK key        | `goog_…`                        | `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` |
+| What                   | Value                          | Read at                              |
+| ---------------------- | ------------------------------ | ------------------------------------ |
+| Entitlement identifier | `otc_learn_pro`                | `PREMIUM_ENTITLEMENT_ID`             |
+| Offering               | `default` (marked **current**) | `offerings.current`                  |
+| Android SDK key        | `goog_…`                       | `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` |
 
-- **The entitlement must be called `premium`.** RevenueCat's own default when
-  you create a project is `pro`. Renaming it later means a rebuild.
+- **The entitlement must be called `otc_learn_pro`.** This is the one value
+  above that the offerings endpoint cannot confirm — entitlements are only
+  visible against a subscriber who holds one. If it is wrong, a purchase
+  succeeds, grants nothing, and `purchaseOffer` reports that the purchase did
+  not complete. Worth checking in the dashboard before the first real sale.
 - **The offering must be set as `current`.** The app reads only
   `offerings.current`; an offering that exists but is not current is invisible
   to it, and the app reads that as "nothing on sale" and unlocks everything.
@@ -44,16 +55,24 @@ owns the Play Console listing and the GitHub repo.
 
 Two, in the current offering:
 
-| Package | Type      | Shown as                                           |
-| ------- | --------- | -------------------------------------------------- |
-| Monthly | `MONTHLY` | "Monthly", _per month_                             |
-| Annual  | `ANNUAL`  | "Annual", _per year_, with a computed saving badge |
+| Package        | Product    | Type       | Shown as                                           |
+| -------------- | ---------- | ---------- | -------------------------------------------------- |
+| `$rc_monthly`  | `monthly`  | `MONTHLY`  | "Monthly", _per month_                             |
+| `$rc_annual`   | `yearly`   | `ANNUAL`   | "Annual", _per year_, with a computed saving badge |
+| `$rc_lifetime` | `lifetime` | `LIFETIME` | "Lifetime", _once_, no saving badge                |
 
 The **package type** matters, not the identifier — `periodOf` switches on
-`PACKAGE_TYPE.MONTHLY` / `PACKAGE_TYPE.ANNUAL`. Anything else renders as
-"Subscription" with no period suffix and no saving badge. Using RevenueCat's
-standard `$rc_monthly` / `$rc_annual` package slots gets the types right for
-free.
+`PACKAGE_TYPE`. Anything it does not recognise renders as "Subscription" with
+no period suffix and no saving badge, which is a safe but uninformative
+fallback. The standard `$rc_*` slots all type correctly.
+
+**Lifetime is a one-off, and the screen says different things about it**: no
+"per month", no saving comparison, and the renew-until-cancelled small print is
+suppressed unless a subscription is also on sale — it would be untrue of a
+single payment. Note this cuts across the decision recorded on 2026-08-31 that
+the product would be _"monthly and annual, not a one-time unlock"_; the
+dashboard now has all three, and the app renders whatever the offering
+contains.
 
 **Prices are not set here and are not in this repo.** They are set per country
 in the Play Console; RevenueCat passes through Play's localised, tax-inclusive

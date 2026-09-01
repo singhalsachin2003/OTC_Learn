@@ -64,7 +64,12 @@ jest.mock('react-native-purchases', () => ({
     logIn: jest.fn(),
   },
   LOG_LEVEL: { ERROR: 'ERROR', WARN: 'WARN' },
-  PACKAGE_TYPE: { MONTHLY: 'MONTHLY', ANNUAL: 'ANNUAL', CUSTOM: 'CUSTOM' },
+  PACKAGE_TYPE: {
+    MONTHLY: 'MONTHLY',
+    ANNUAL: 'ANNUAL',
+    LIFETIME: 'LIFETIME',
+    CUSTOM: 'CUSTOM',
+  },
 }));
 
 // Permission is granted by default here so the happy path needs no setup; the

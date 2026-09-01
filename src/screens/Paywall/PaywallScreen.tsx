@@ -24,18 +24,26 @@ import {
   lockedProductCount,
   lockedQuestionCount,
 } from '../../utils/access';
-import { annualSavingPercent, type SubscriptionOffer } from '../../utils/purchases';
+import {
+  annualSavingPercent,
+  hasRenewingOffer,
+  type SubscriptionOffer,
+} from '../../utils/purchases';
 
 /** How a term reads in a sentence, since the store only supplies a price. */
 const PERIOD_LABEL: Record<SubscriptionOffer['period'], string> = {
   monthly: 'Monthly',
   annual: 'Annual',
+  lifetime: 'Lifetime',
   other: 'Subscription',
 };
 
 const PER_PERIOD: Record<SubscriptionOffer['period'], string> = {
   monthly: 'per month',
   annual: 'per year',
+  // A one-off payment has no period, and "once" says so where a blank would
+  // read as a value that failed to render.
+  lifetime: 'once',
   other: '',
 };
 
@@ -226,11 +234,14 @@ export function PaywallScreen() {
           />
         )}
 
-        {paywalled && offers.length > 0 && (
+        {/* Only where something actually renews. "Renewed until you cancel"
+            under a lifetime purchase would be untrue of the thing being sold. */}
+        {paywalled && hasRenewingOffer(offers) && (
           <Text style={styles.smallPrint}>
-            Billed through Google Play and renewed until you cancel. Cancel any time
-            in the Play Store; access lasts to the end of the period you have paid
-            for.
+            Subscriptions are billed through Google Play and renew until you cancel.
+            Cancel any time in the Play Store; access lasts to the end of the period
+            you have paid for. A lifetime purchase is a single payment and does not
+            renew.
           </Text>
         )}
       </ScrollView>

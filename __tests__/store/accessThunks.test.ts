@@ -15,7 +15,7 @@ const getOfferings = Purchases.getOfferings as jest.Mock;
 const purchasePackage = Purchases.purchasePackage as jest.Mock;
 const restorePurchases = Purchases.restorePurchases as jest.Mock;
 
-const entitled = { entitlements: { active: { premium: {} } } };
+const entitled = { entitlements: { active: { otc_learn_pro: {} } } };
 const notEntitled = { entitlements: { active: {} } };
 
 const offering = {
