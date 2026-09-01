@@ -226,6 +226,24 @@ base64 licensing public key is available in Monetisation setup when it is needed
    the case where the write fails part-way, which is where it previously lost data —
    but has not been run against an actual app upgrade on a device holding v1 data.
 
+   **The v3→v4 grandfathering migration has now been, 2026-09-01**, which is the
+   one that matters most: it protects the ~21 people already using the app. Run
+   the way a real install upgrades, not simulated — the pre-paywall build
+   (`22907d5`, schema v3) onto a wiped device, a quiz sat on **Credit Default
+   Swap, deliberately a paid asset class**, to earn 23% mastery, then the
+   current build launched over that data without clearing it.
+
+   Mastery survived at 23% with its attempt history, the catalogue stayed open
+   ("36 products to learn"), Credit Default Swap still opened its lesson, and
+   the paywall screen read *"You were here before this app had a subscription,
+   so all of it stays open to you — permanently, and at no cost."*
+
+   What makes the test mean anything is Profile's Subscription row reading
+   **"Full access"**. That string renders only when purchases *are* configured
+   **and** the install is grandfathered, so it separates the guard working from
+   the paywall merely being switched off — which is how this test would
+   otherwise have passed for the wrong reason.
+
 ### Housekeeping
 
 - ~~**The glossary renders all 216 terms eagerly.**~~ Fixed on 2026-08-31 by
