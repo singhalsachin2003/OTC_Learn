@@ -19,6 +19,7 @@ export type PurchaseStatus = 'idle' | 'loading' | 'purchasing' | 'restoring';
  */
 export interface AccessSliceState {
   purchasesConfigured: boolean;
+  hasPurchasableOffer: boolean;
   premium: boolean;
   grandfathered: boolean;
   offers: SubscriptionOffer[];
@@ -33,6 +34,7 @@ export const initialAccessState: AccessSliceState = {
   // Every field defaults to the state the app has always been in: nothing to
   // sell, nobody paying, and so no paywall anywhere.
   purchasesConfigured: false,
+  hasPurchasableOffer: false,
   premium: false,
   grandfathered: false,
   offers: [],
@@ -62,9 +64,14 @@ const accessSlice = createSlice({
      */
     setEntitlement(
       state,
-      action: PayloadAction<{ purchasesConfigured: boolean; premium: boolean }>,
+      action: PayloadAction<{
+        purchasesConfigured: boolean;
+        hasPurchasableOffer: boolean;
+        premium: boolean;
+      }>,
     ) {
       state.purchasesConfigured = action.payload.purchasesConfigured;
+      state.hasPurchasableOffer = action.payload.hasPurchasableOffer;
       state.premium = action.payload.premium;
     },
 
@@ -74,6 +81,9 @@ const accessSlice = createSlice({
 
     setOffers(state, action: PayloadAction<SubscriptionOffer[]>) {
       state.offers = action.payload;
+      // The paywall screen refetches on every visit, so this is the freshest
+      // answer to "is there anything to sell" the app ever has.
+      state.hasPurchasableOffer = action.payload.length > 0;
     },
 
     setPurchaseStatus(state, action: PayloadAction<PurchaseStatus>) {

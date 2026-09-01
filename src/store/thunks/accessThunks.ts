@@ -34,12 +34,33 @@ export const refreshEntitlement = createAsyncThunk<
   { state: RootState }
 >('access/refreshEntitlement', async (_arg, { dispatch }) => {
   const configured = isPurchasesConfigured();
+  if (!configured) {
+    dispatch(
+      setEntitlement({
+        purchasesConfigured: false,
+        hasPurchasableOffer: false,
+        premium: false,
+      }),
+    );
+    return;
+  }
+
+  // Both questions asked before either answer lands, so the paywall never
+  // switches on halfway through knowing whether it should.
+  const [premium, offers] = await Promise.all([
+    isPremium(PREMIUM_ENTITLEMENT_ID),
+    loadOffers(),
+  ]);
   dispatch(
     setEntitlement({
-      purchasesConfigured: configured,
-      premium: configured && (await isPremium(PREMIUM_ENTITLEMENT_ID)),
+      purchasesConfigured: true,
+      hasPurchasableOffer: offers.length > 0,
+      premium,
     }),
   );
+  // Kept, so the paywall screen has something to render before its own fetch
+  // returns rather than a moment of "nothing on sale".
+  dispatch(setOffers(offers));
 });
 
 /**

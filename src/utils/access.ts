@@ -14,6 +14,14 @@ import { products } from '../data/products';
  * build that has no way to sell them anything — including the build that
  * introduces billing. Off by default is the only safe default here.
  *
+ * **Never lock what cannot be bought.** A key alone is not enough: the Play
+ * product has to exist and RevenueCat has to be serving an offering that
+ * contains it. The key is one environment variable and the product is weeks of
+ * merchant verification away, so the order they arrive in is not something to
+ * rely on getting right — without this guard, setting the key first would shut
+ * five asset classes with no way to pay for them. The SDK caches the last
+ * offering it fetched, so this stays true offline once it has been true once.
+ *
  * **Anyone who was already using the app keeps all of it.** The app shipped
  * free with thirty-six products and people are studying them now; taking five
  * asset classes back, along with the mastery someone built in them, is not a
@@ -43,6 +51,8 @@ export const FREE_CATEGORY_ID = 'ir';
 export interface AccessState {
   /** Whether this build can sell anything at all. */
   purchasesConfigured: boolean;
+  /** Whether the store is actually offering something to buy. */
+  hasPurchasableOffer: boolean;
   /** Whether the user holds the entitlement. */
   premium: boolean;
   /** Whether this install predates the paywall. */
@@ -56,7 +66,12 @@ export interface AccessState {
  * existed, which is the state the overwhelming majority of installs are in.
  */
 export function paywallApplies(access: AccessState): boolean {
-  return access.purchasesConfigured && !access.premium && !access.grandfathered;
+  return (
+    access.purchasesConfigured &&
+    access.hasPurchasableOffer &&
+    !access.premium &&
+    !access.grandfathered
+  );
 }
 
 export function canOpenCategory(categoryId: string, access: AccessState): boolean {

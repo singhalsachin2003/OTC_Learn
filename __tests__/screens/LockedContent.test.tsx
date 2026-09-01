@@ -29,7 +29,13 @@ async function settleRings() {
 function paywalled(): AppStore {
   const store = createStore();
   initPurchases({ apiKey: 'goog_test' });
-  store.dispatch(setEntitlement({ purchasesConfigured: true, premium: false }));
+  store.dispatch(
+    setEntitlement({
+      purchasesConfigured: true,
+      hasPurchasableOffer: true,
+      premium: false,
+    }),
+  );
   return store;
 }
 
@@ -352,5 +358,31 @@ describe('the route through a locked category', () => {
     await settleRings();
 
     expect(screen.getByTestId('category-next-irs')).toBeTruthy();
+  });
+});
+
+describe('a key set before the Play product exists', () => {
+  /**
+   * The order these two arrive in is not something to rely on: the key is one
+   * environment variable, the product is weeks of merchant verification away.
+   * Setting the key first must not shut five asset classes with no way to pay.
+   */
+  it('locks nothing while there is nothing on sale', async () => {
+    const store = createStore();
+    initPurchases({ apiKey: 'goog_test' });
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: false,
+        premium: false,
+      }),
+    );
+    store.dispatch(navigateToCategory('credit'));
+    store.dispatch(navigateToProduct('cds'));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
+    expect(screen.queryByTestId('product-locked')).toBeNull();
   });
 });

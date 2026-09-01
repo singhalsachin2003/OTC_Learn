@@ -128,11 +128,13 @@ is no longer entirely unexercised.
    both product lists, the product page, the lesson, and the exam scopes. Two
    things worth knowing about it —
 
-   - **It is still invisible.** With no RevenueCat key `purchasesConfigured` is
-     false, so `paywallApplies` is false for everybody and nothing locks. The
-     paywall screen is reachable from Profile in that state and says there is
-     nothing to buy. Setting the key is what turns all of this on, which is
-     why it must be done *after* the two guards are understood, not before.
+   - **It is still invisible, and the key alone will not change that.** With
+     no RevenueCat key `paywallApplies` is false for everybody. It stays false
+     until RevenueCat is *also* serving an offering with a real Play product
+     in it — because the alternative is locking five asset classes with no way
+     to pay for them, and the key is one environment variable while the
+     product is weeks of merchant verification away. The key can therefore be
+     set at any point without waiting for anything.
    - **No price is written anywhere in the repo.** They come from Play, per
      country, through `getOfferings`, and the annual saving is computed from
      the two figures the store returns. Setting price points in the Play

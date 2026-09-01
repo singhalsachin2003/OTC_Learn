@@ -38,7 +38,13 @@ const bothTerms = {
 /** A build that can transact, with a user who has not paid — the sales case. */
 function sellingTo(store: AppStore): AppStore {
   initPurchases({ apiKey: 'goog_test' });
-  store.dispatch(setEntitlement({ purchasesConfigured: true, premium: false }));
+  store.dispatch(
+    setEntitlement({
+      purchasesConfigured: true,
+      hasPurchasableOffer: true,
+      premium: false,
+    }),
+  );
   return store;
 }
 
@@ -78,14 +84,27 @@ describe('PaywallScreen on a build that cannot transact', () => {
 });
 
 describe('PaywallScreen when the store has no offering yet', () => {
-  /** Key in place, subscription not yet published in the Play Console. */
-  it('says so plainly rather than styling it as a failure', async () => {
+  /**
+   * Key in place, subscription not yet published in the Play Console. The
+   * third guard makes this a not-paywalled state — locking content that
+   * cannot be bought is the one outcome nobody would want — so the screen
+   * says there is nothing to buy rather than pitching.
+   */
+  it('stops selling once it finds there is nothing on sale', async () => {
     const store = sellingTo(createStore());
     await renderWithStore(<PaywallScreen />, { store });
 
-    expect(screen.getByTestId('paywall-unavailable')).toBeTruthy();
+    expect(screen.getByTestId('paywall-already-open')).toBeTruthy();
+    expect(screen.getByText(/There is nothing to buy/)).toBeTruthy();
     expect(screen.queryByTestId('paywall-subscribe')).toBeNull();
     expect(screen.queryByTestId('paywall-error')).toBeNull();
+  });
+
+  it('unlocks the catalogue rather than shutting it', async () => {
+    const store = sellingTo(createStore());
+    await renderWithStore(<PaywallScreen />, { store });
+
+    expect(store.getState().access.hasPurchasableOffer).toBe(false);
   });
 });
 
@@ -206,7 +225,13 @@ describe('PaywallScreen for someone who already has everything', () => {
   it('does not sell to a subscriber', async () => {
     const store = createStore();
     initPurchases({ apiKey: 'goog_test' });
-    store.dispatch(setEntitlement({ purchasesConfigured: true, premium: true }));
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: true,
+        premium: true,
+      }),
+    );
     getOfferings.mockResolvedValue(bothTerms);
 
     await renderWithStore(<PaywallScreen />, { store });
@@ -223,7 +248,13 @@ describe('PaywallScreen for someone who already has everything', () => {
   it('does not sell to a grandfathered install', async () => {
     const store = createStore();
     initPurchases({ apiKey: 'goog_test' });
-    store.dispatch(setEntitlement({ purchasesConfigured: true, premium: false }));
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: true,
+        premium: false,
+      }),
+    );
     store.dispatch(setGrandfathered(true));
     getOfferings.mockResolvedValue(bothTerms);
 

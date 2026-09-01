@@ -185,16 +185,6 @@ export function PaywallScreen() {
           </View>
         )}
 
-        {/* Nothing on sale is the state every build has shipped in so far, and
-            it is not the reader's problem — so it is stated plainly rather
-            than styled as a failure. */}
-        {paywalled && offers.length === 0 && status !== 'loading' && (
-          <Text testID="paywall-unavailable" style={styles.meta}>
-            Subscriptions are not available on this build yet. Everything you can
-            already open stays open.
-          </Text>
-        )}
-
         {error !== null && (
           <Text testID="paywall-error" style={styles.error}>
             {error}

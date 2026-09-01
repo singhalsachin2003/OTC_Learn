@@ -7,17 +7,36 @@ import {
   paywallApplies,
 } from '../../src/utils/access';
 
-const PAYING = { purchasesConfigured: true, premium: true, grandfathered: false };
-const LOCKED = { purchasesConfigured: true, premium: false, grandfathered: false };
+const PAYING = {
+  purchasesConfigured: true,
+  hasPurchasableOffer: true,
+  premium: true,
+  grandfathered: false,
+};
+const LOCKED = {
+  purchasesConfigured: true,
+  hasPurchasableOffer: true,
+  premium: false,
+  grandfathered: false,
+};
 const NO_BILLING = {
   purchasesConfigured: false,
+  hasPurchasableOffer: false,
   premium: false,
   grandfathered: false,
 };
 const OLD_HAND = {
   purchasesConfigured: true,
+  hasPurchasableOffer: true,
   premium: false,
   grandfathered: true,
+};
+/** A key in place, but no Play product yet — the order these arrive in. */
+const NOTHING_ON_SALE = {
+  purchasesConfigured: true,
+  hasPurchasableOffer: false,
+  premium: false,
+  grandfathered: false,
 };
 
 describe('paywallApplies', () => {
@@ -29,6 +48,15 @@ describe('paywallApplies', () => {
    */
   it('does not apply when the build cannot sell anything', () => {
     expect(paywallApplies(NO_BILLING)).toBe(false);
+  });
+
+  /**
+   * The key is one environment variable; the Play product is weeks of merchant
+   * verification away. Setting the key first must not shut five asset classes
+   * with no way to pay for them.
+   */
+  it('does not apply when there is nothing on sale to buy', () => {
+    expect(paywallApplies(NOTHING_ON_SALE)).toBe(false);
   });
 
   /**
