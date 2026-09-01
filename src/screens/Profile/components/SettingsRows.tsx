@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Toggle } from '../../../components/ui/Toggle';
@@ -10,6 +10,7 @@ import { track } from '../../../utils/analytics';
 import {
   cancelDailyReminder,
   reminderTimeLabel,
+  canNotify,
   scheduleDailyReminder,
 } from '../../../utils/notifications';
 
@@ -49,6 +50,39 @@ export function SettingsRows() {
   // The OS owns whether a notification can be shown. If scheduling fails the
   // toggle must not claim otherwise, so the row explains why instead.
   const [reminderBlocked, setReminderBlocked] = useState(false);
+
+  /**
+   * The same question asked again on arrival, because permission can be
+   * revoked in system settings long after the toggle was turned on.
+   *
+   * `syncReminder` already tries to repair that at launch, but when the repair
+   * itself fails — which is exactly what a revoked permission does to it —
+   * nothing reported the failure, and the row went on promising a nudge at
+   * 7:30pm that could never arrive. Found by revoking the permission on a
+   * device and relaunching.
+   *
+   * It asks about *permission*, not about the schedule. Revoking permission
+   * leaves the scheduled notification in place, so the schedule still reports
+   * itself as present while nothing can be delivered — which is how the first
+   * attempt at this fix passed its tests and still said the wrong thing on a
+   * device.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    if (!settings.dailyReminder) {
+      setReminderBlocked(false);
+      return;
+    }
+    void (async () => {
+      const allowed = await canNotify();
+      if (!cancelled) {
+        setReminderBlocked(!allowed);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [settings.dailyReminder]);
 
   const onToggleReminder = useCallback(async () => {
     if (settings.dailyReminder) {

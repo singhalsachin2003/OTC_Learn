@@ -184,6 +184,15 @@ npm run verify        # type-check + lint + format:check + test — the CI gate
   `emulator -accel-check` too — it returns 0 when the hypervisor is fine, which
   rules out the whole class of virtualisation problems in one command.
 
+- **Moving the clock tests date logic, but not alarms.** `adb shell date`
+  (after `adb root`, with `settings put global auto_time 0`) is a clean way to
+  check anything the app derives from the date — the review queue coming due
+  across midnight was verified exactly that way. It does **not** deliver a
+  scheduled notification: AlarmManager recomputes `whenElapsed` against a wall
+  clock that does not follow the shell's, so the alarm re-arms instead of
+  firing. Verify the *schedule* with `dumpsys alarm | grep otclearn` and decode
+  `origWhen`; delivery needs a real device. Put `auto_time` back to 1 after.
+
 - **A black screen after launch is usually the splash hold, not a crash.**
   `App.tsx` renders `null` until fonts and hydration both settle, and a debug
   build refetches the whole JS bundle from Metro on every cold start, so how

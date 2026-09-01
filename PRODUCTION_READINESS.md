@@ -170,14 +170,31 @@ base64 licensing public key is available in Monetisation setup when it is needed
 
 ### Verification gaps
 
-1. **Only the happy path has been seen on a device.** Verified on a Pixel 7 emulator on
-   2026-08-13: the home dashboard, category, product page, lesson, quiz (both question
-   kinds, with option shuffling and feedback), review, glossary and profile. Still
-   unexercised on real hardware: the daily reminder actually firing, permission being
-   revoked in system settings mid-life, the review queue coming due across a real date
-   change, haptics, the lesson swipe gesture, and an `eas update` push. The closed test
-   that unlocked production access ran the pre-v1.1 build, so none of this is covered
-   by real-user testing either.
+1. **Most of this is now closed.** Verified on a Pixel 7 emulator on 2026-08-13:
+   the home dashboard, category, product page, lesson, quiz (both question kinds,
+   with option shuffling and feedback), review, glossary and profile.
+
+   Closed on **2026-09-01**:
+
+   - **The review queue across a real date change.** Six questions missed on
+     1 September read "0 due · 6 in queue · next up tomorrow"; with the device
+     clock moved to 2 September they read "6 due · review 6 questions".
+   - **Permission revoked in system settings mid-life** — and it found a defect,
+     since fixed. See "Housekeeping" below.
+   - **The reminder is scheduled correctly**: `dumpsys alarm` shows an
+     `RTC_WAKEUP` at exactly 19:30 against the `study-reminders` channel at
+     importance 3, and refusing the permission leaves the toggle off with the
+     row explaining why rather than claiming success.
+
+   **Still open — and one of them cannot be closed on an emulator:**
+
+   - **The reminder actually being delivered.** Scheduling is proven; firing is
+     not. Moving the clock past the trigger does not deliver it: AlarmManager
+     recomputes `whenElapsed` against a wall clock that does not follow
+     `adb shell date`, so the alarm simply re-arms. Short of waiting six real
+     hours, this needs a real device.
+   - Haptics and the lesson swipe gesture, both of which need real hardware.
+   - An `eas update` push, which needs a published build.
 2. ~~**Font scaling.**~~ Done on 2026-08-31, on a Pixel 7 at `font_scale 2.0` —
    the largest Android offers.
 
@@ -207,6 +224,18 @@ base64 licensing public key is available in Monetisation setup when it is needed
   sibling of its rows; a `SectionList` gives sticky headers and windowing
   together, so the workaround was no longer buying anything. Measured in the
   test renderer: **856ms with all 216 rows mounted, down to 428ms with 7**.
+
+- **The reminder toggle lied after an out-of-app revocation.** Fixed
+  2026-09-01, found by revoking `POST_NOTIFICATIONS` on a device and
+  relaunching. `syncReminder` runs at launch to repair a mismatch, but a
+  revoked permission is precisely what makes the repair fail, and its `false`
+  return was discarded — so the row went on promising "a nudge at 7:30pm" that
+  could never arrive.
+
+  The first fix was wrong in an instructive way: it asked whether the reminder
+  was still *scheduled*. Revoking permission leaves the schedule in place, so
+  that check passed its unit tests and still said the wrong thing on a device.
+  It asks `canNotify()` — the OS permission — now.
 
 - **Screen-level test coverage was thin** where the logic is thickest in components.
   Closed on 2026-08-30: `SettingsRows` 35% → 100%, `ProfileScreen` 69% → 100%,

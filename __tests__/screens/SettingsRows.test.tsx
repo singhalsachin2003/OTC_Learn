@@ -3,6 +3,8 @@ import * as Notifications from 'expo-notifications';
 
 import { SettingsRows } from '../../src/screens/Profile/components/SettingsRows';
 import { createStore } from '../../src/store';
+import { setSettings } from '../../src/store/slices/settingsSlice';
+import { defaultSettings } from '../../src/utils/storage';
 import { reminderTimeLabel } from '../../src/utils/notifications';
 import { renderWithStore } from '../helpers/renderWithStore';
 
@@ -88,5 +90,51 @@ describe('SettingsRows', () => {
     expect(cancel).toHaveBeenCalled();
     expect(store.getState().settings.settings.dailyReminder).toBe(false);
     expect(screen.getByText(`A nudge at ${reminderTimeLabel()}`)).toBeTruthy();
+  });
+});
+
+describe('when notification permission is revoked outside the app', () => {
+  /**
+   * Found by revoking POST_NOTIFICATIONS on a device and relaunching. The
+   * preference is still on and `syncReminder` tries to repair it, but the
+   * repair is the very thing a revoked permission blocks — so the row went on
+   * promising a nudge at 7:30pm that could never arrive.
+   */
+  it('says so rather than leaving the toggle claiming a nudge', async () => {
+    // Permission revoked in system settings. The schedule is deliberately left
+    // in place, because that is what the OS actually does — mocking it away
+    // would hide the reason the first version of this fix was wrong.
+    (Notifications.getPermissionsAsync as jest.Mock).mockResolvedValue({
+      status: 'denied',
+    });
+    (
+      Notifications.getAllScheduledNotificationsAsync as jest.Mock
+    ).mockResolvedValue([{ identifier: 'otc-learn-daily-reminder' }]);
+    const store = createStore();
+    store.dispatch(setSettings({ ...defaultSettings, dailyReminder: true }));
+
+    await renderWithStore(<SettingsRows />, { store });
+
+    expect(
+      await screen.findByText(
+        'Notifications are turned off for OTC Learn in system settings',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('says nothing of the sort when notifications are allowed', async () => {
+    (Notifications.getPermissionsAsync as jest.Mock).mockResolvedValue({
+      status: 'granted',
+    });
+    const store = createStore();
+    store.dispatch(setSettings({ ...defaultSettings, dailyReminder: true }));
+
+    await renderWithStore(<SettingsRows />, { store });
+
+    expect(
+      screen.queryByText(
+        'Notifications are turned off for OTC Learn in system settings',
+      ),
+    ).toBeNull();
   });
 });

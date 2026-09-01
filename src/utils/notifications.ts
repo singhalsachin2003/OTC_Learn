@@ -42,6 +42,27 @@ async function ensureChannel(): Promise<void> {
 }
 
 /**
+ * Whether the OS will currently let a notification through, asked without
+ * prompting for anything.
+ *
+ * The distinction from `isReminderScheduled` matters and cost a device test to
+ * find: revoking notification permission in system settings leaves the
+ * scheduled notification in place, so the schedule still reports itself as
+ * present while nothing can ever be delivered from it. Permission is the
+ * question worth asking; the schedule is not.
+ */
+export async function canNotify(): Promise<boolean> {
+  if (!supported) {
+    return false;
+  }
+  try {
+    return (await Notifications.getPermissionsAsync()).status === 'granted';
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Asks for permission only if it has not already been decided.
  *
  * Calling `requestPermissionsAsync` when permission was previously denied does
