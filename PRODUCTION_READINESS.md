@@ -236,7 +236,7 @@ to be re-submitted before anything goes on sale.
 ### Growth surfaces (2026-09-06)
 
 Five things gated the marketing push, and four of them were app-side here. All
-four are built and on `v1.2-marketing-hooks`:
+four are built and **merged to `main` (`53acac2`, pushed)**:
 
 - **An in-app review prompt.** Zero ratings is what caps a listing's ranking,
   and there was no `StoreReview` call anywhere. It now fires from the results
@@ -256,20 +256,28 @@ four are built and on `v1.2-marketing-hooks`:
   and `scripts/generate-site.js` publishes the 42 pages behind them so a
   claimed address resolves for a reader without the app.
 
-**Two things are outstanding and neither is code**, both in `APP_LINKS.md`:
+The 42 pages are live: every claimed address was checked against the published
+site and returns 200.
 
-1. The Digital Asset Links statement has to be served from
-   `https://singhalsachin2003.github.io/.well-known/assetlinks.json` — the
-   **host root**, which a project Pages site cannot serve. It needs a public
-   repo named `singhalsachin2003.github.io`, which does not exist.
-2. The fingerprint in it is the Play **app signing** key, readable only from
-   Play Console → App integrity. The upload key in the AAB is not it, and no
-   `androidpublisher` endpoint returns it.
+**The Digital Asset Links statement is live too**, from the user-site repo
+`singhalsachin2003.github.io` created for it — the statement has to be fetched
+from the **host root**, which a project Pages site cannot serve. Google's own
+`statements:list` endpoint parses it back correctly.
 
-Shipping the intent filter without the statement is harmless — verification
-fails and links open in the browser, exactly as they do now — which is why this
-half went first. The fifth item, Cornerstone's placeholder tab icons, is in the
-other repo.
+**What is still outstanding on App Links, and it is not code:**
+
+1. **The previous app signing key's SHA-256 is missing from the statement.** The
+   key was upgraded on 29 Jul 2026 and the current one reads 0.0% install base,
+   so every install in the field still runs the old certificate; with
+   `minSdkVersion 28` some devices keep it through an update and will not
+   verify. `sha256_cert_fingerprints` is an array — both belong in it.
+2. **Nothing verifies until a build carries the intent filter.** versionCode 7
+   predates it. `expo run:android` will not show you this locally either: it
+   builds the existing `android/` directory and does not re-apply `app.json`, so
+   the filter is simply absent and `dumpsys package` reports nothing.
+
+The fifth item, Cornerstone's placeholder tab icons, is in the other repo and is
+also done (branch `marketing-hooks`, unmerged, never run on a device).
 
 ### Verification gaps
 
