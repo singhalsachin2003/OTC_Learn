@@ -16,6 +16,7 @@ import {
 } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
+import { useReviewPrompt } from '../../hooks/useReviewPrompt';
 import { navigateToQuiz } from '../../store/slices/appSlice';
 import { resetQuiz } from '../../store/slices/quizSlice';
 import { EXAM_PASS_MARK } from '../../utils/exam';
@@ -38,7 +39,14 @@ export function QuizResults() {
   const categoryId = useSelectedCategoryId();
   const quiz = useAppSelector((state) => state.quiz);
   const justEarned = useAppSelector((state) => state.progress.recentlyUnlockedIds);
+  const crossedMastery = useAppSelector(
+    (state) => state.progress.crossedMasteryProductId,
+  );
   const { masteryFor } = useProgress();
+
+  // The one moment in the app where someone has just been told they finished
+  // something. Review and exam sittings never set this — neither moves mastery.
+  useReviewPrompt(crossedMastery !== null);
 
   const isReview = quiz.mode === 'review';
   const isExam = quiz.mode === 'exam';

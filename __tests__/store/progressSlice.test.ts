@@ -55,6 +55,50 @@ describe('progressSlice mastery', () => {
     expect(state.byProduct.irs.lastStudiedOn).toBe('2026-08-13');
   });
 
+  // What the results screen reads to decide whether to ask for a store review:
+  // the mastery a sitting replaced is gone by the time that screen renders, so
+  // the crossing has to be recorded here or not at all.
+  it('records the product a sitting carried over the mastery threshold', () => {
+    let state = initialProgressState;
+    // Three runs at 100 to climb past 70 under the 0.35 learning rate.
+    for (const day of ['2026-08-12', '2026-08-13', '2026-08-14']) {
+      state = reducer(
+        state,
+        recordSession({ productId: 'irs', scorePct: 100, today: day }),
+      );
+    }
+
+    expect(state.byProduct.irs.mastery).toBeGreaterThanOrEqual(70);
+    expect(state.crossedMasteryProductId).toBe('irs');
+  });
+
+  it('clears the crossing on the next sitting, which crosses nothing', () => {
+    let state = initialProgressState;
+    for (const day of ['2026-08-12', '2026-08-13', '2026-08-14']) {
+      state = reducer(
+        state,
+        recordSession({ productId: 'irs', scorePct: 100, today: day }),
+      );
+    }
+
+    state = reducer(
+      state,
+      recordSession({ productId: 'irs', scorePct: 100, today: '2026-08-15' }),
+    );
+
+    expect(state.crossedMasteryProductId).toBeNull();
+  });
+
+  it('does not treat a first sitting below the threshold as a crossing', () => {
+    const state = reducer(
+      initialProgressState,
+      recordSession({ productId: 'irs', scorePct: 100, today: TODAY }),
+    );
+
+    expect(state.byProduct.irs.mastery).toBeLessThan(70);
+    expect(state.crossedMasteryProductId).toBeNull();
+  });
+
   it('never revises the best score down after a poor run', () => {
     let state = reducer(
       initialProgressState,

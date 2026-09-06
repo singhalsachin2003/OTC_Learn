@@ -11,6 +11,9 @@ import type { OfferPeriod } from './purchases';
 /** Where someone met the paywall, which is the only thing worth knowing. */
 export type PaywallSource = 'home' | 'category' | 'product' | 'profile';
 
+/** Which screen a share was sent from. What was shared is not recorded. */
+export type ShareSurface = 'product' | 'results';
+
 export type AnalyticsEvent =
   | { name: 'category_opened'; categoryId: string }
   | { name: 'product_opened'; productId: string }
@@ -34,6 +37,10 @@ export type AnalyticsEvent =
   | { name: 'bookmark_toggled'; productId: string; bookmarked: boolean }
   | { name: 'reminder_toggled'; enabled: boolean }
   | { name: 'progress_reset' }
+  // Only that the store was asked. Play never reports what came of a prompt,
+  // so there is no completion event to pair this with.
+  | { name: 'review_prompted' }
+  | { name: 'content_shared'; surface: ShareSurface }
   // Sync events carry no identifier of any kind. Whose account it is has no
   // bearing on whether sync works, and the sink is a crash reporter.
   | { name: 'account_created' }

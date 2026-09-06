@@ -1,7 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import type { ExamResult } from '../../utils/exam';
-import { applySession, type ProductProgress } from '../../utils/mastery';
+import {
+  applySession,
+  MASTERY_COMPLETE,
+  type ProductProgress,
+} from '../../utils/mastery';
 import type { QuestionStat } from '../../utils/quizSession';
 
 export interface ProgressState {
@@ -23,6 +27,14 @@ export interface ProgressState {
    * moment, and a badge already celebrated should not reappear on next launch.
    */
   recentlyUnlockedIds: string[];
+  /**
+   * The product whose mastery the sitting just recorded carried over the
+   * completion threshold, or null. Like `recentlyUnlockedIds` it describes one
+   * moment and is not persisted — it exists because "you have just finished
+   * something" is knowable only by comparing against the mastery this sitting
+   * replaced, and by the time the results screen renders that value is gone.
+   */
+  crossedMasteryProductId: string | null;
   /** True while progress is being hydrated from AsyncStorage. */
   loading: boolean;
 }
@@ -34,6 +46,7 @@ export const initialProgressState: ProgressState = {
   unlockedAchievementIds: [],
   examResults: [],
   recentlyUnlockedIds: [],
+  crossedMasteryProductId: null,
   loading: false,
 };
 
@@ -58,11 +71,13 @@ const progressSlice = createSlice({
     /** Folds one finished session into the product's running mastery. */
     recordSession(state, action: PayloadAction<RecordSessionPayload>) {
       const { productId, scorePct, today } = action.payload;
-      state.byProduct[productId] = applySession(
-        state.byProduct[productId],
-        scorePct,
-        today,
-      );
+      const before = state.byProduct[productId]?.mastery ?? 0;
+      const next = applySession(state.byProduct[productId], scorePct, today);
+      state.byProduct[productId] = next;
+      state.crossedMasteryProductId =
+        before < MASTERY_COMPLETE && next.mastery >= MASTERY_COMPLETE
+          ? productId
+          : null;
     },
 
     /** Accumulates one answer into the question's lifetime tally. */
@@ -148,6 +163,7 @@ const progressSlice = createSlice({
         unlockedAchievementIds: [],
         examResults: [],
         recentlyUnlockedIds: [],
+        crossedMasteryProductId: null,
       };
     },
   },

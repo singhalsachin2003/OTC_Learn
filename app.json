@@ -27,6 +27,7 @@
     },
     "android": {
       "package": "com.otclearn.app",
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.otclearn.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#181611"

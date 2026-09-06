@@ -49,6 +49,16 @@ jest.mock('expo-haptics', () => ({
   },
 }));
 
+// The store review sheet is unavailable by default, which is what a simulator
+// and a sideloaded build both report; a test that wants the prompt overrides
+// these two calls.
+jest.mock('expo-store-review', () => ({
+  isAvailableAsync: jest.fn().mockResolvedValue(false),
+  hasAction: jest.fn().mockResolvedValue(false),
+  requestReview: jest.fn().mockResolvedValue(undefined),
+  storeUrl: jest.fn().mockReturnValue(null),
+}));
+
 // Native module: the JS entry point throws without an install under Jest.
 // Nobody owns an entitlement and nothing is on sale by default, which is the
 // state every build so far ships in; the tests that care override a call.

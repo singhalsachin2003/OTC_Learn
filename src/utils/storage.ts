@@ -44,6 +44,12 @@ export const STORAGE_KEYS = {
    * content someone already had.
    */
   grandfathered: '@otc-learn/grandfathered',
+  /**
+   * When the in-app review prompt was last shown, in epoch milliseconds. See
+   * `utils/storeReview.ts` — the store never reports what came of a prompt, so
+   * this is the only record that one happened.
+   */
+  reviewPromptedAt: '@otc-learn/review-prompted-at',
 } as const;
 
 export const SCHEMA_VERSION = 4;
@@ -670,6 +676,19 @@ export async function loadGrandfathered(): Promise<boolean> {
   return (await readJson<boolean>(STORAGE_KEYS.grandfathered)) === true;
 }
 
+// ---------------------------------------------------------------------------
+// Review prompt
+
+export async function saveReviewPromptedAt(at: number): Promise<boolean> {
+  return writeJson(STORAGE_KEYS.reviewPromptedAt, at);
+}
+
+/** Null means never asked, which is also what an unreadable value means. */
+export async function loadReviewPromptedAt(): Promise<number | null> {
+  const value = await readJson<number>(STORAGE_KEYS.reviewPromptedAt);
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
 /**
  * Runs any pending migration and stamps the schema version.
  *
@@ -732,10 +751,15 @@ export async function runMigrations(): Promise<void> {
  * `schemaVersion` goes with it for the same reason in a smaller way: the disk
  * after a reset is empty but current, not old, and dropping the stamp makes
  * the next launch re-run every migration over nothing.
+ *
+ * `reviewPromptedAt` stays for a plainer reason: nobody reaches for "reset my
+ * progress" meaning "ask me to rate the app again", and clearing it would hand
+ * anyone who starts over a second prompt.
  */
 const KEYS_SURVIVING_RESET: readonly string[] = [
   STORAGE_KEYS.grandfathered,
   STORAGE_KEYS.schemaVersion,
+  STORAGE_KEYS.reviewPromptedAt,
 ];
 
 export async function clearAll(): Promise<void> {
