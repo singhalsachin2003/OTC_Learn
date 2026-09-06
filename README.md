@@ -85,7 +85,7 @@ key terms, risks to watch — and carries, beyond the five lesson steps:
 - a bank of **twelve questions**, mixing true/false and four-option multiple
   choice, each tagged with the lesson step it tests and a difficulty.
 
-That is 100 lesson steps, 120 key terms and 240 questions.
+That is 180 lesson steps, 216 key terms and 432 questions.
 
 Content lives in `src/data/catalogue/`, one file per asset class, with
 `src/data/products.ts` as the barrel that composes them. **Product and question

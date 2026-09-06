@@ -271,15 +271,19 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 4. **Release notes** (500 max):
 
 ```
-First release.
-
-• 20 OTC derivative products across interest rate, FX, credit, equity and commodity
+• 36 OTC derivative products across interest rate, FX, credit, equity,
+  commodity and market foundations
 • A five-step lesson, a worked example and a 12-question bank for every product
-• Progress tracking and day streaks, stored on your device
+• Mastery that moves with each sitting, and a review queue for what you miss
 • Works fully offline — no account, no ads, no tracking
 ```
 
-[~280]
+[~290]
+
+These notes describe the catalogue as it stands, not the first release — that
+shipped in July 2026 with 20 products. Derive the figures from
+`src/data/products.ts` rather than editing them by hand; `README.md` carries
+the same three totals and they have drifted apart before.
 
 5. **Countries and regions:** all, unless you want to limit the first release.
 6. **Rollout:** consider a staged rollout rather than 100%. With no installs yet
