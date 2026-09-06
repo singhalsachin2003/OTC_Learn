@@ -10,6 +10,17 @@
 export const PLAY_LISTING_URL =
   'https://play.google.com/store/apps/details?id=com.otclearn.app';
 
+/**
+ * The companion app on the same developer account, offered from Profile.
+ *
+ * Cornerstone is exam study for CFA and FRM candidates, so its readers are
+ * already people who meet swaps and options on a syllabus. Named descriptively
+ * wherever it appears: those are other organisations' marks, and this app is
+ * not endorsed by either body.
+ */
+export const CORNERSTONE_PLAY_URL =
+  'https://play.google.com/store/apps/details?id=io.cornerstone.study';
+
 /** The published site: the privacy policy, the account-deletion page, the rest. */
 export const WEB_HOME_URL = 'https://singhalsachin2003.github.io/OTC_Learn/';
 

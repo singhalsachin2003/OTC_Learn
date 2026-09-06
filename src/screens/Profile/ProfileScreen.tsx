@@ -33,6 +33,7 @@ import { updateName } from '../../store/thunks/settingsThunks';
 import { colors, spacing, typography } from '../../theme';
 import { track } from '../../utils/analytics';
 import { SessionSizePicker } from './components/SessionSizePicker';
+import { MoreFromUs } from './components/MoreFromUs';
 import { SettingsRows } from './components/SettingsRows';
 
 export function ProfileScreen() {
@@ -313,6 +314,9 @@ export function ProfileScreen() {
             <Text style={styles.resetText}>Reset all progress</Text>
           </Pressable>
         </View>
+
+        <Text style={styles.sectionTitle}>MORE FROM US</Text>
+        <MoreFromUs />
 
         <Text style={styles.disclaimer}>
           Educational content only. Nothing here is financial advice or an offer to

@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, fireEvent, screen } from '@testing-library/react-native';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 
+import { CORNERSTONE_PLAY_URL } from '../../src/data/links';
 import { ProfileScreen } from '../../src/screens/Profile/ProfileScreen';
 import { createStore, type AppStore } from '../../src/store';
 import { setNotes } from '../../src/store/slices/notesSlice';
@@ -178,3 +179,28 @@ function answerSomething(store: AppStore) {
 function answeredCount(store: AppStore) {
   return Object.keys(store.getState().progress.questionHistory).length;
 }
+
+describe('more from us', () => {
+  it('opens the companion app on Play', async () => {
+    const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
+    await renderWithStore(<ProfileScreen />, { store: createStore() });
+
+    await fireEvent.press(screen.getByTestId('profile-cornerstone'));
+
+    expect(openURL).toHaveBeenCalledWith(CORNERSTONE_PLAY_URL);
+    openURL.mockRestore();
+  });
+
+  // Those are other organisations' marks. Naming the exams an app helps with
+  // is fair use; putting them in a title or implying endorsement is not, and
+  // it is the usual cause of a takedown.
+  it('names the exams descriptively and claims no endorsement', async () => {
+    await renderWithStore(<ProfileScreen />, { store: createStore() });
+
+    expect(screen.getByText(/CFA and FRM candidates/)).toBeTruthy();
+    expect(screen.queryByText(/official|endorsed|approved by/i)).toBeNull();
+    // The mark stays out of the app's name, which is the part that reads as a
+    // claim to it.
+    expect(screen.getByText(/Cornerstone: Exam Study/)).toBeTruthy();
+  });
+});
