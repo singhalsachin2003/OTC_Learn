@@ -5,7 +5,6 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { colors, spacing, typography } from '../../../theme';
-import { freeCategoryName } from '../../../utils/access';
 
 export interface LockedProductProps {
   /** The asset class this product belongs to, named rather than coded. */
@@ -14,7 +13,8 @@ export interface LockedProductProps {
 
 /**
  * What stands in for the lesson, quiz and reference sections on a product the
- * user cannot open.
+ * user cannot open — which today means nothing, and will mean the asset
+ * classes added after the paywall.
  *
  * The page above it still shows the product's name, difficulty and summary,
  * which is the honest version of a teaser: enough to know whether it is worth
@@ -32,7 +32,8 @@ export function LockedProduct({ categoryName }: LockedProductProps) {
       </View>
       <Text style={styles.body}>
         The lesson, the question bank and the worked example for this product are
-        part of the subscription. {freeCategoryName()} stays free, always.
+        part of the subscription. Everything the app shipped with stays free — this
+        is one of the asset classes added since.
       </Text>
       <Button
         testID="product-unlock"

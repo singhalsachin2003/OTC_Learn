@@ -1,6 +1,34 @@
+import type { Category } from '../../src/data/types';
 import { act, fireEvent, screen } from '@testing-library/react-native';
 
-import { getProductById } from '../../src/data/products';
+/**
+ * Credit is stood up as the premium asset class, because there is not a real
+ * one yet.
+ *
+ * A subscription now sells the asset classes added after the paywall, and none
+ * have been added, so with the true catalogue every screen below is simply
+ * open and none of these paths exist. Flipping one category to `premium` gives
+ * them something to lock that has the exact shape a future addition will —
+ * real products, real question banks, real deep links — without inventing
+ * content. `accessShippedCatalogue.test.ts` holds the other half of this: that
+ * the catalogue as actually shipped locks nothing.
+ */
+const PREMIUM_CATEGORY = 'credit';
+
+jest.mock('../../src/data/categories', () => {
+  // Type-only, so it is erased before the factory is hoisted.
+  const actual = jest.requireActual('../../src/data/categories') as {
+    categories: Category[];
+  };
+  return {
+    ...actual,
+    categories: actual.categories.map((c) =>
+      c.id === 'credit' ? { ...c, premium: true } : c,
+    ),
+  };
+});
+
+import { getProductById, products } from '../../src/data/products';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
 import { createStore, type AppStore } from '../../src/store';
 import {
@@ -203,8 +231,8 @@ describe('exams under a paywall', () => {
     expect(drawn.length).toBeGreaterThan(0);
     for (const question of drawn) {
       // Every question id is prefixed with its product's id.
-      expect(getProductById(question.id.split('-')[0] ?? '')?.categoryId).toBe(
-        'ir',
+      expect(getProductById(question.id.split('-')[0] ?? '')?.categoryId).not.toBe(
+        PREMIUM_CATEGORY,
       );
     }
   });
@@ -329,12 +357,19 @@ describe('the headline on a paywalled home screen', () => {
    * are both promises the app would break on the next tap.
    */
   it('counts what the reader can open, not the catalogue', async () => {
+    // Derived, so adding content cannot quietly turn this into a wrong number.
+    const open = products.filter((p) => p.categoryId !== PREMIUM_CATEGORY);
+    const openQuestions = open.reduce((total, p) => total + p.quiz.length, 0);
+    expect(open.length).toBeLessThan(products.length);
+
     const store = paywalled();
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
-    expect(screen.getByText('6 products to learn')).toBeTruthy();
-    expect(screen.getByText(/^72 questions are waiting/)).toBeTruthy();
+    expect(screen.getByText(`${open.length} products to learn`)).toBeTruthy();
+    expect(
+      screen.getByText(new RegExp(`^${openQuestions} questions are waiting`)),
+    ).toBeTruthy();
   });
 
   it('reads exactly as it always did when nothing is locked', async () => {

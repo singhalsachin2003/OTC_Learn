@@ -1,7 +1,30 @@
+import type { Category } from '../../src/data/types';
 import { fireEvent, screen } from '@testing-library/react-native';
 import Purchases from 'react-native-purchases';
 import RevenueCatUI from 'react-native-purchases-ui';
 
+/**
+ * Credit stands in for a premium asset class, as in `LockedContent.test.tsx`.
+ * The pitch below only renders where a subscription would add something, and
+ * the shipped catalogue adds nothing yet — see `accessShippedCatalogue.test.ts`
+ * for the assertion that this is so.
+ */
+const PREMIUM_CATEGORY = 'credit';
+
+jest.mock('../../src/data/categories', () => {
+  // Type-only, so it is erased before the factory is hoisted.
+  const actual = jest.requireActual('../../src/data/categories') as {
+    categories: Category[];
+  };
+  return {
+    ...actual,
+    categories: actual.categories.map((c) =>
+      c.id === 'credit' ? { ...c, premium: true } : c,
+    ),
+  };
+});
+
+import { products } from '../../src/data/products';
 import { PaywallScreen } from '../../src/screens/Paywall/PaywallScreen';
 import { createStore, type AppStore } from '../../src/store';
 import {
@@ -187,11 +210,14 @@ describe('PaywallScreen as a pitch', () => {
   it('counts what a subscription adds from the catalogue', async () => {
     await renderSelling();
 
-    // 36 products in six categories of six, one of which stays free.
+    // Derived from the catalogue, exactly as the screen derives it, so adding
+    // content cannot quietly turn the pitch into a wrong number.
+    const premium = products.filter((p) => p.categoryId === PREMIUM_CATEGORY);
+    const questions = premium.reduce((total, p) => total + p.quiz.length, 0);
     expect(
-      screen.getByText(/30 more products, across 5 asset classes/),
+      screen.getByText(`${premium.length} more products, across 1 new asset class`),
     ).toBeTruthy();
-    expect(screen.getByText(/360 questions/)).toBeTruthy();
+    expect(screen.getByText(new RegExp(`${questions} questions`))).toBeTruthy();
   });
 
   it('says what renewal and cancellation mean', async () => {

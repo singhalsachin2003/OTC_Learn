@@ -19,10 +19,9 @@ import { categories } from '../../data/categories';
 import { TOTAL_PRODUCTS } from '../../data/products';
 import { colors, spacing, typography } from '../../theme';
 import {
-  freeCategoryName,
-  lockedCategoryCount,
-  lockedProductCount,
-  lockedQuestionCount,
+  premiumCategoryCount,
+  premiumProductCount,
+  premiumQuestionCount,
 } from '../../utils/access';
 import {
   annualSavingPercent,
@@ -52,9 +51,15 @@ const PER_PERIOD: Record<SubscriptionOffer['period'], string> = {
  * What a subscription opens, and how to buy one.
  *
  * The screen has to read sensibly in four states, only one of which is the
- * ordinary sales pitch: nothing on sale (every build so far), already
- * subscribed, and grandfathered in. It is reachable from Profile in all of
- * them, so none can be an error page.
+ * ordinary sales pitch: nothing on sale (every build so far, and every build
+ * until the catalogue gains a premium asset class), already subscribed, and
+ * grandfathered in. It is reachable from Profile in all of them, so none can
+ * be an error page.
+ *
+ * What it sells is the pipeline, not the catalogue — everything already
+ * written is free. So the pitch counts what a subscription *adds*, and that
+ * count is read from the catalogue rather than written here, which is what
+ * keeps it from promising content that does not exist.
  *
  * No price is written here. Play returns them localised and tax-inclusive per
  * country, and the annual saving is worked out from the store's own two
@@ -110,12 +115,12 @@ export function PaywallScreen() {
               ? 'You are subscribed, and every asset class is open.'
               : grandfathered
                 ? 'You were here before this app had a subscription, so all of it stays open to you — permanently, and at no cost.'
-                : 'Every asset class is open on this build. There is nothing to buy.'}
+                : 'Every asset class is open to you. There is nothing to buy.'}
           </Text>
         ) : (
           <Text style={styles.body}>
-            {freeCategoryName()} stays free, always. A subscription adds the rest of
-            the catalogue.
+            Everything the app shipped with stays free, permanently. A subscription
+            adds the asset classes written since — and the ones still to come.
           </Text>
         )}
 
@@ -126,12 +131,12 @@ export function PaywallScreen() {
           {paywalled ? (
             <>
               <Point
-                text={`${lockedProductCount()} more products, across ${lockedCategoryCount()} asset classes`}
+                text={`${premiumProductCount()} more products, across ${premiumCategoryCount()} new asset ${premiumCategoryCount() === 1 ? 'class' : 'classes'}`}
               />
               <Point
-                text={`Their full question banks — ${lockedQuestionCount()} questions, drawn fresh each sitting`}
+                text={`Their full question banks — ${premiumQuestionCount()} questions, drawn fresh each sitting`}
               />
-              <Point text="Exams and spaced review across everything you have studied" />
+              <Point text="Every asset class added from here on, at no extra cost" />
               <Point text="Still no adverts, and still nothing to sign up for" />
             </>
           ) : (

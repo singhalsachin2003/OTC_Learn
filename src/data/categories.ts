@@ -5,6 +5,12 @@ import type { Category } from './types';
  * run through. `accentColor` records the original OKLCH value from the design
  * handoff; the rendered hex equivalents live in `theme/colors.ts` keyed by
  * the same category id.
+ *
+ * All six are `premium: false` and must stay that way. They are what the app
+ * shipped free to its first users, and a subscription sells what comes *after*
+ * them rather than access to them — flipping one to `true` would take back
+ * something people already have. A new asset class is where the decision
+ * actually lives.
  */
 export const categories: Category[] = [
   {
@@ -14,6 +20,7 @@ export const categories: Category[] = [
       'Products that manage exposure to interest rate movements on loans, bonds and cash flows.',
     accentColor: 'oklch(55% .13 250)',
     icon: 'IR',
+    premium: false,
   },
   {
     id: 'fx',
@@ -22,6 +29,7 @@ export const categories: Category[] = [
       'Contracts used to hedge or speculate on currency exchange rate movements.',
     accentColor: 'oklch(55% .13 160)',
     icon: 'FX',
+    premium: false,
   },
   {
     id: 'credit',
@@ -30,6 +38,7 @@ export const categories: Category[] = [
       'Instruments that transfer or hedge the credit/default risk of borrowers.',
     accentColor: 'oklch(55% .13 20)',
     icon: 'CR',
+    premium: false,
   },
   {
     id: 'equity',
@@ -38,6 +47,7 @@ export const categories: Category[] = [
       'OTC instruments giving synthetic exposure to stocks, baskets, or indices.',
     accentColor: 'oklch(55% .13 300)',
     icon: 'EQ',
+    premium: false,
   },
   {
     id: 'commodity',
@@ -46,6 +56,7 @@ export const categories: Category[] = [
       'Contracts that hedge or speculate on the price of physical commodities.',
     accentColor: 'oklch(55% .13 80)',
     icon: 'CM',
+    premium: false,
   },
   {
     id: 'foundations',
@@ -54,6 +65,7 @@ export const categories: Category[] = [
       'The infrastructure every other product runs through — collateral, clearing, valuation and the legal architecture that ties an OTC relationship together.',
     accentColor: 'oklch(45% .03 250)',
     icon: 'MF',
+    premium: false,
   },
 ];
 

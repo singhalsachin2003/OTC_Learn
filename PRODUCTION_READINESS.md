@@ -120,27 +120,33 @@ is no longer entirely unexercised.
    Instructions were sent from `onboarding@billdesk.com`. Nothing can be sold
    until this completes, regardless of the binary.
 
-4. **Then** create the products and price them. Decided 2026-09-01:
-   **₹29 monthly, ₹199 yearly, ₹399 lifetime** (India). The RevenueCat project
-   already carries all three in its `default` offering; only the Play Console
-   side is missing, and it stays missing until items 2 and 3 above clear. **`docs/revenuecat.md` is the runbook**:
-   it carries the prices, and the three identifiers the app reads by exact
-   string (`otc_learn_pro`, the _current_ offering, the `goog_` key) — a typo in
-   any of which fails silently, leaving the app behaving as a free app with no
-   error anywhere.
+4. ~~**Then** create the products and price them.~~ **Done 2026-09-02.** One
+   subscription `otc_learn_pro` with two active base plans, **₹29 monthly and
+   ₹199 yearly**, India only. The **₹399 lifetime was deliberately not
+   created** and should not be — see "The gating model" below.
+
+   The RevenueCat side was finished on **2026-09-06**: the Play products are
+   attached to `$rc_monthly` and `$rc_annual` in the `default` offering.
+   Creating them in the Play Console was never enough on its own — packages are
+   attached per store, the three original products lived only in the Test
+   Store, and the Play app therefore resolved an empty offering with no error
+   anywhere. `$rc_lifetime` still holds only its Test Store product.
+
+   **`docs/revenuecat.md` is the runbook**: it carries the prices and the three
+   identifiers the app reads by exact string (`otc_learn_pro`, the _current_
+   offering, the `goog_` key) — a typo in any of which fails silently, leaving
+   the app behaving as a free app.
 
 5. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
    now have a screen and every locked surface consumes them: the home grid,
    both product lists, the product page, the lesson, and the exam scopes. Two
    things worth knowing about it —
 
-   - **It is still invisible, and the key alone will not change that.** With
-     no RevenueCat key `paywallApplies` is false for everybody. It stays false
-     until RevenueCat is _also_ serving an offering with a real Play product
-     in it — because the alternative is locking five asset classes with no way
-     to pay for them, and the key is one environment variable while the
-     product is weeks of merchant verification away. The key can therefore be
-     set at any point without waiting for anything.
+   - **It is still invisible, and neither the key nor the offering will
+     change that now.** `paywallApplies` needs four things true, and as of
+     2026-09-06 the binding one is the fourth: the catalogue has to hold an
+     asset class marked `premium`, and none does. See "The gating model" below
+     — that is the intended state, not an outstanding task.
    - **No price is written anywhere in the repo.** They come from Play, per
      country, through `getOfferings`, and the annual saving is computed from
      the two figures the store returns. Setting price points in the Play
@@ -182,6 +188,50 @@ fee** rather than the default 30%.
 Also read while confirming this: subscription settings are enabled, real-time
 developer notifications are **not** configured (no Pub/Sub topic set), and the
 base64 licensing public key is available in Monetisation setup when it is needed.
+
+### The gating model
+
+Settled **2026-09-06**, reversing what v1.2 first built.
+
+**Everything the app has already shipped is free, permanently** — all 36
+products across all six asset classes, plus exams, review, Insights, notes,
+achievements and the glossary. A subscription buys the asset classes added
+*after* the paywall.
+
+The model it replaced held five of six asset classes back and left Interest Rate
+open. It was wrong for a reason worth keeping written down, because it will look
+like the obvious design again: **a content paywall over a finished catalogue
+makes the subscriptions irrational.** Nothing renews if nothing is added, so
+every rational buyer takes the cheapest one-off tier and recurring revenue
+collapses. Exam mode, Insights and Notes were already built and unlocked; new
+asset classes are the only thing that makes a renewal make sense.
+
+Implementation: `Category.premium` is a **required** field, so a new asset class
+cannot be added without someone deciding which side of the line it falls on. All
+six current categories are `premium: false` and must stay that way — flipping one
+takes back something people already have. `utils/access.ts` holds the rule, and
+gained a fourth guard alongside the existing three: **never sell what does not
+exist.** With nothing marked premium, `paywallApplies` is false for everybody.
+
+Three consequences:
+
+- **There is nothing to sell yet, and that is correct.** The paywall is inert
+  on every build until new content is written.
+  `__tests__/utils/accessShippedCatalogue.test.ts` asserts exactly this and
+  should be changed deliberately, not patched, when the first premium asset
+  class lands.
+- **₹399 lifetime is now the dangerous tier.** Under a content pipeline it sells
+  every future asset class forever for under fourteen months of monthly, and
+  Play never revokes a product from someone who has bought it. Monthly and
+  yearly are safe under either model. Do not create it without settling this.
+- **Grandfathering is a larger promise than it was.** It used to stop asset
+  classes being taken back; now that nothing is taken from anybody, it means the
+  ~21 existing installs get the future paid asset classes free as well,
+  permanently. The shipped build already told them so in as many words.
+
+**Still to do off the back of it:** the Play **content rating** questionnaire was
+last edited 29 Jul 2026 and still answers that the app has no purchases. It has
+to be re-submitted before anything goes on sale.
 
 ### Verification gaps
 

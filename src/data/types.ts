@@ -70,6 +70,17 @@ export interface Category {
   accentColor: string;
   /** Two-letter identifier rendered inside the category icon (IR, FX, …). */
   icon: string;
+  /**
+   * Whether this asset class is part of the subscription rather than the free
+   * catalogue. Required, and deliberately so: a new asset class is the one
+   * thing a subscription buys, so whoever adds one has to decide which side of
+   * the line it falls on. Leaving it to a default would answer the question
+   * silently, in whichever direction the default happened to point.
+   *
+   * Every category that shipped before the paywall is `false` and stays that
+   * way — see `utils/access.ts`.
+   */
+  premium: boolean;
 }
 
 export interface Product {

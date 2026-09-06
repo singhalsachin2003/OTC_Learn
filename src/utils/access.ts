@@ -1,52 +1,75 @@
-import { categories, getCategoryById } from '../data/categories';
+import { categories } from '../data/categories';
 import { products } from '../data/products';
 
 /**
  * Who can open what.
  *
- * The rule is simple — one asset class is free, the rest need a subscription —
- * but two guards around it are not, and both exist to stop the paywall doing
- * damage rather than to make it work.
+ * The rule is that **everything the app has already shipped is free, and stays
+ * free**. A subscription buys the asset classes added after the paywall — new
+ * topics, not the existing catalogue — and each category says which side of
+ * that line it falls on through its own `premium` flag.
+ *
+ * This is the inverse of what v1.2 first built, which held five of six asset
+ * classes back and left Interest Rate open. That model was wrong for a reason
+ * worth recording, because it will look like the obvious design again to the
+ * next person who reads this: **a content paywall over a finished catalogue
+ * makes the subscriptions irrational.** Nothing renews if nothing is added, so
+ * every rational buyer takes the cheapest one-off tier and recurring revenue
+ * collapses. Selling the pipeline instead is what gives a renewal something to
+ * be a renewal *of*.
+ *
+ * Four guards sit around the rule, and all four exist to stop the paywall
+ * doing damage rather than to make it work.
  *
  * **It is inert unless purchases are configured.** A build with no RevenueCat
  * key cannot tell whether anyone has paid, so `isPremium` answers `false` for
- * everybody. Gating on that would lock the whole catalogue for every user of a
- * build that has no way to sell them anything — including the build that
- * introduces billing. Off by default is the only safe default here.
+ * everybody. Gating on that would lock content for every user of a build that
+ * has no way to sell them anything. Off by default is the only safe default.
  *
  * **Never lock what cannot be bought.** A key alone is not enough: the Play
  * product has to exist and RevenueCat has to be serving an offering that
  * contains it. The key is one environment variable and the product is weeks of
  * merchant verification away, so the order they arrive in is not something to
- * rely on getting right — without this guard, setting the key first would shut
- * five asset classes with no way to pay for them. The SDK caches the last
- * offering it fetched, so this stays true offline once it has been true once.
+ * rely on getting right. The SDK caches the last offering it fetched, so this
+ * stays true offline once it has been true once.
  *
- * **Anyone who was already using the app keeps all of it.** The app shipped
- * free with thirty-six products and people are studying them now; taking five
- * asset classes back, along with the mastery someone built in them, is not a
- * paywall but a removal. `grandfathered` is set once, for installs that predate
- * the paywall, and never expires.
+ * **Never sell what does not exist.** The mirror of the guard above, and the
+ * one this model needs that the old one did not. Until a category is actually
+ * marked `premium`, a subscription would add nothing to what the reader
+ * already has, and the honest thing to do with a pitch for nothing is not show
+ * it. `premiumCategoryCount()` is zero today, so the paywall is inert on every
+ * build until the first new asset class lands — which is the correct state,
+ * not a bug to route around.
+ *
+ * **Anyone who was already using the app keeps all of it.** `grandfathered` is
+ * set once, for installs that predate the paywall, and never expires. Under
+ * the old model this stopped five asset classes being taken back from people
+ * who had them. Under this one nothing is being taken from anybody, so what it
+ * now means is narrower and more generous: those installs get the new asset
+ * classes free as well, permanently. That is a promise the shipped build
+ * already made them in as many words, so it is kept.
  */
 
 /**
  * What is deliberately *not* behind this, so a later reader does not take it
  * for an oversight:
  *
- * - **The glossary.** Every key term in the catalogue, defined, stays open. It
- *   is a reference rather than a lesson, and it is the best argument the app
- *   makes for itself to someone deciding whether to pay. Worth revisiting if
- *   the terms ever become the product rather than an index into it.
- * - **Insights and achievements.** They describe the reader's own record. A
- *   locked product showing as a gap is an argument for subscribing, not
- *   content being given away.
+ * - **The entire current catalogue** — every product, question bank, exam and
+ *   review sitting in all six asset classes. That is the point of the model,
+ *   not an omission from it.
+ * - **The glossary.** Every key term, defined, stays open.
+ * - **Insights, notes and achievements.** They describe the reader's own
+ *   record. They were built before the paywall and shipped unlocked, and
+ *   closing them now would be the same removal this model exists to avoid.
  * - **Mastery already earned.** Nothing is ever recalculated or withdrawn. A
  *   lapsed subscriber keeps every number they earned and gets it all back the
  *   moment they resubscribe.
  */
 
-/** The asset class that stays free. Its id, so a rename breaks the build. */
-export const FREE_CATEGORY_ID = 'ir';
+/** The ids of the asset classes a subscription adds. Read from the catalogue. */
+function premiumCategoryIds(): Set<string> {
+  return new Set(categories.filter((c) => c.premium).map((c) => c.id));
+}
 
 export interface AccessState {
   /** Whether this build can sell anything at all. */
@@ -63,26 +86,36 @@ export interface AccessState {
  * Whether the paywall applies to this user at all.
  *
  * Every `false` here means the app behaves exactly as it did before billing
- * existed, which is the state the overwhelming majority of installs are in.
+ * existed, which is the state every install is in today and will stay in until
+ * the catalogue has something premium in it.
  */
 export function paywallApplies(access: AccessState): boolean {
   return (
     access.purchasesConfigured &&
     access.hasPurchasableOffer &&
     !access.premium &&
-    !access.grandfathered
+    !access.grandfathered &&
+    premiumCategoryCount() > 0
   );
 }
 
 export function canOpenCategory(categoryId: string, access: AccessState): boolean {
-  return !paywallApplies(access) || categoryId === FREE_CATEGORY_ID;
+  return !paywallApplies(access) || !premiumCategoryIds().has(categoryId);
 }
 
 /**
  * Products carry their category, so this is the same question asked of a
- * product. An unknown category is treated as locked rather than open: a
- * catalogue id that does not resolve is a bug, and failing closed on it is the
- * same choice `isPremium` makes.
+ * product.
+ *
+ * An id that does not resolve now fails *open*, where under the old model it
+ * failed closed. That reversal is deliberate and follows from the inversion:
+ * when only one asset class was free, anything unrecognised might well have
+ * been paid content, so locking it protected revenue. Now that paid content is
+ * an explicit, short list, anything unrecognised is by definition not on it —
+ * and locking it would put a "subscribe to read this" card in front of
+ * something that does not exist to be sold. A bad id is still a bug; the
+ * screens handle a missing product on their own, and this should not answer a
+ * question about pricing by inventing a product.
  */
 export function canOpenProduct(
   product: { categoryId: string } | undefined,
@@ -91,27 +124,32 @@ export function canOpenProduct(
   if (!paywallApplies(access)) {
     return true;
   }
-  return product?.categoryId === FREE_CATEGORY_ID;
+  return product === undefined || !premiumCategoryIds().has(product.categoryId);
 }
 
-/** How many asset classes a subscription would add, for the paywall's copy. */
-export function lockedCategoryCount(): number {
-  return categories.filter((c) => c.id !== FREE_CATEGORY_ID).length;
+/** How many asset classes a subscription adds, for the paywall's copy. */
+export function premiumCategoryCount(): number {
+  return categories.filter((c) => c.premium).length;
 }
 
-/** How many products a subscription would add. Counted, never written down. */
-export function lockedProductCount(): number {
-  return products.filter((p) => p.categoryId !== FREE_CATEGORY_ID).length;
-}
-
-/** The free asset class by name, for copy that should not say "ir". */
-export function freeCategoryName(): string {
-  return getCategoryById(FREE_CATEGORY_ID)?.name ?? 'Interest Rate';
+/** How many products come with them. Counted, never written down. */
+export function premiumProductCount(): number {
+  const premium = premiumCategoryIds();
+  return products.filter((p) => premium.has(p.categoryId)).length;
 }
 
 /** How many questions come with them. Also counted from the catalogue. */
-export function lockedQuestionCount(): number {
+export function premiumQuestionCount(): number {
+  const premium = premiumCategoryIds();
   return products
-    .filter((p) => p.categoryId !== FREE_CATEGORY_ID)
+    .filter((p) => premium.has(p.categoryId))
     .reduce((total, p) => total + p.quiz.length, 0);
+}
+
+/**
+ * The premium asset classes by name, for copy that should list what is on
+ * offer rather than count it.
+ */
+export function premiumCategoryNames(): string[] {
+  return categories.filter((c) => c.premium).map((c) => c.name);
 }

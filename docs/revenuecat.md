@@ -10,11 +10,18 @@ The code is `src/utils/purchases.ts`; the rules it feeds are `src/utils/access.t
 ## Nothing here is urgent, and the order does not matter
 
 The paywall stays off until _all_ of these are true: a key is configured, the
-Play product exists, and RevenueCat is serving an offering that contains it.
-Miss any one and `paywallApplies` is false and the app behaves exactly as it
-does today. That is deliberate — see "Never lock what cannot be bought" in
-`access.ts`. So the account can be created now and finished whenever the Play
-Console lets it be finished.
+Play product exists, RevenueCat is serving an offering that contains it, **and
+the catalogue holds an asset class marked `premium`**. Miss any one and
+`paywallApplies` is false and the app behaves exactly as it does today. That is
+deliberate — see "Never lock what cannot be bought" and "Never sell what does
+not exist" in `access.ts`. So the account can be created now and finished
+whenever the Play Console lets it be finished.
+
+**The fourth condition is the one that is false today, and it is not a task.**
+A subscription sells the asset classes added _after_ the paywall; all six that
+shipped are `premium: false` and stay that way. So there is nothing to sell
+until new content is written, and the app is a free app until then no matter
+what the dashboard says. See "What a subscription actually buys" below.
 
 ## Account
 
@@ -127,18 +134,66 @@ So `availablePackages` is empty under Google Play, `hasPurchasableOffer` is
 false, and the paywall stays off — the third guard in `access.ts`, doing exactly
 what it is for.
 
-**The reason it is empty is worth knowing: packages are attached per store.**
-The three products live in the **Test Store**, not in the Google Play app. When
-the Play products are eventually created they have to be attached to the same
-packages in the RevenueCat product catalogue for the Play app — creating them in
-the Play Console alone will not populate this offering.
+**The reason it was empty is worth knowing: packages are attached per store.**
+The three products lived in the **Test Store** only, so the Play app resolved
+nothing. Creating the products in the Play Console does not fix this on its own
+— they have to be attached to the same packages in the RevenueCat catalogue for
+the Play app, and nothing anywhere reports the mismatch.
+
+**Fixed 2026-09-06.** `$rc_monthly` now carries `otc_learn_pro:monthly` and
+`$rc_annual` carries `otc_learn_pro:yearly` alongside their Test Store products,
+so both stores resolve. `$rc_lifetime` still holds only its Test Store product,
+because no one-time product exists in Play — deliberately, see the gating note.
+
+RevenueCat warns that the colon-joined ids need Android SDK v6+ and offers a
+fallback slot for older SDKs. Left empty: `react-native-purchases` 10.8.1 is far
+past that, and a fallback would be a second product to keep in step.
 
 ### Which key to run locally
 
-`.env` holds the `goog_` key with the `test_` one commented out beneath it. Swap
-to `test_` when you want to **see** the paywall on a device: the Test Store has
-the packages, so offers render and the locked states appear. With `goog_` the
-app is, correctly, indistinguishable from a free build.
+`.env` holds the `goog_` key with the `test_` one commented out beneath it.
+Swapping to `test_` used to be enough to **see** the paywall on a device.
+
+**It is not enough any more.** Since the gating model was inverted, the fourth
+guard holds the paywall off whatever the key is, because no asset class is
+premium. To see the locked states on a device you now have to give it something
+to lock: flip one category to `premium: true` in `src/data/categories.ts`
+locally, and do not commit it. `__tests__/utils/access.test.ts` does the same
+thing with a jest mock, for the same reason.
+
+## What a subscription actually buys
+
+Decided 2026-09-06, reversing what v1.2 first built.
+
+**Everything the app has already shipped is free, permanently.** All 36 products
+across all six asset classes, every question bank, exams, review, Insights,
+notes, achievements and the glossary. A subscription buys the asset classes
+added *after* the paywall — new topics, not the existing catalogue.
+
+The model it replaced held five of six asset classes back and left Interest Rate
+open. The argument against it is worth keeping, because it will look like the
+obvious design again: **a content paywall over a finished catalogue makes the
+subscriptions irrational.** Nothing renews if nothing is added, so every
+rational buyer takes the cheapest one-off tier and recurring revenue collapses.
+Selling the pipeline gives a renewal something to be a renewal of.
+
+Three consequences that follow, and are easy to miss:
+
+- **There is nothing to sell yet.** `premiumCategoryCount()` is zero, so the
+  paywall is inert on every build. That is the correct state, not a gap to
+  route around, and it is what `__tests__/utils/accessShippedCatalogue.test.ts`
+  asserts.
+- **₹399 lifetime is now the dangerous tier**, not a safe one. Under a content
+  pipeline it sells every future asset class forever for under fourteen months
+  of monthly, and Play never revokes a product from someone who has bought it.
+  Monthly and yearly are safe under either model. This is why no one-time
+  product exists in the Play Console.
+- **Grandfathering means something different.** It used to stop five asset
+  classes being taken back from existing installs. Nothing is being taken from
+  anybody now, so what it means is that those ~21 installs get the future paid
+  asset classes free as well, permanently. The shipped build already promised
+  them that in as many words, so it is kept — but it is a larger promise than
+  it was.
 
 ## The three strings the app reads
 
