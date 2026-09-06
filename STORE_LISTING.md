@@ -174,13 +174,43 @@ no region lock, no paywall.
 
 ### Content ratings
 
+The live questionnaire was last edited **29 July 2026** and still answers that
+the app has no purchases. That was true then and is not now, so it has to be
+re-submitted. Re-submitting is free, needs no new binary, and takes effect
+within minutes.
+
 | Step | Answer |
 | --- | --- |
 | Email | `singhalsachin2003@gmail.com` |
 | Category | Reference, News, or Educational |
-| Every content question | **No** — no violence, sexuality, profanity, drugs, gambling, user-generated content or sharing. **Digital purchases must now be answered Yes**: the app sells subscriptions and a lifetime unlock, so the previous blanket No is false |
+| Violence, sexuality, profanity, drugs, gambling, horror | **No** to all |
+| **Does the app allow users to purchase digital goods?** | **Yes** |
+| Are purchases randomised (loot boxes)? | **No** |
+| Do users interact or exchange content with each other? | **No** |
+| Is user-generated content shared with other users? | **No** |
+| Is the user's location shared with other users? | **No** |
 
-Expected result: Everyone / PEGI 3.
+Expected result: Everyone / PEGI 3. Declaring purchases does not raise the
+rating; it is a disclosure, not content.
+
+**Why Yes on purchases, even though the app currently shows no purchase path.**
+The subscription `otc_learn_pro` is live in the Console with two active base
+plans, so the store can transact against this app whatever the binary does
+today, and the listing carries the in-app purchases badge accordingly. The
+paywall being inert is a property of one build; the rating describes the app.
+Answering No here is the version that becomes silently false the moment the
+first premium asset class ships.
+
+**Why No on interaction and user-generated content, despite the share action.**
+The share sheet sends a fixed line of text and a store link out to whatever app
+the reader picks. Nobody exchanges anything with another user inside this app,
+there is no content anyone can author for others to see, and the account exists
+only to sync one person's own progress between their own devices. The question
+is about social features, and there are none.
+
+**There is no API for this.** `androidpublisher` exposes listings, tracks,
+bundles and Data safety, but not content ratings — the questionnaire is Console
+only. It lives on the **App content** page.
 
 ### Target audience and content
 

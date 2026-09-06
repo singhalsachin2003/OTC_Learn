@@ -231,7 +231,17 @@ Three consequences:
 
 **Still to do off the back of it:** the Play **content rating** questionnaire was
 last edited 29 Jul 2026 and still answers that the app has no purchases. It has
-to be re-submitted before anything goes on sale.
+to be re-submitted, and not only "before anything goes on sale" — `otc_learn_pro`
+is already live with two active base plans, so the answer is false *now*,
+independently of the paywall being inert in the binary. The answers to give are
+in `STORE_LISTING.md` → Content ratings, along with the reasoning for the two
+that are not obvious: **Yes** to digital purchases, and **No** to user
+interaction and user-generated content despite the new share action, which sends
+a fixed line out to another app rather than exchanging anything between users.
+
+There is no `androidpublisher` endpoint for content ratings — Data safety has
+one (POST only), ratings do not. It is Console-only, on the **App content**
+page, free, and needs no new binary.
 
 ### Growth surfaces (2026-09-06)
 
