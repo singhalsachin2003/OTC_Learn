@@ -26,7 +26,7 @@ the store listing into a dead end for anyone who has the app installed. The
 `lesson` route is left out for the opposite reason — the website publishes no
 lesson page, because the lesson is part of the product page there.
 
-## What is still missing, and why it cannot be done from this repo
+## The statement, and where it had to go
 
 Verification needs a Digital Asset Links statement at the **host root**:
 
@@ -34,37 +34,40 @@ Verification needs a Digital Asset Links statement at the **host root**:
 
 Not under `/OTC_Learn/`. Android fetches the file from the origin, and a path
 prefix in the intent filter does not move it. This repo publishes a *project*
-Pages site, which can only ever serve `/OTC_Learn/…`, so the file cannot live
-here. It needs the user-site repo — a public repo literally named
-`singhalsachin2003.github.io`, which does not exist yet — with the file at
-`.well-known/assetlinks.json` in its Pages source.
+Pages site, which can only ever serve `/OTC_Learn/…`, so the file could not live
+here. It is served from a separate user-site repo,
+[`singhalsachin2003.github.io`](https://github.com/singhalsachin2003/singhalsachin2003.github.io),
+created for that purpose on 2026-09-06 — live, `application/json`, and parsed
+back correctly by Google's own endpoint:
 
-The statement itself, once the fingerprint below is in hand:
-
-```json
-[
-  {
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.otclearn.app",
-      "sha256_cert_fingerprints": ["<PLAY APP SIGNING SHA-256>"]
-    }
-  }
-]
+```bash
+curl -s "https://digitalassetlinks.googleapis.com/v1/statements:list\
+?source.web.site=https://singhalsachin2003.github.io\
+&relation=delegate_permission/common.handle_all_urls"
 ```
+
+**`.nojekyll` in that repo is load-bearing.** Pages runs Jekyll by default and
+Jekyll excludes every path beginning with a dot, `.well-known` among them —
+without it the statement builds to nothing and 404s, with no error anywhere.
 
 **The fingerprint is the Play *app signing* key, not the upload key.** Play
 re-signs every release, so the certificate a device sees is Google's, and the
 one in the AAB you built is not it. `keytool -printcert -jarfile app.aab` gives
-the wrong answer confidently. Read it from Play Console → Test and release →
-App integrity → App signing → *SHA-256 certificate fingerprint*; the same page
-offers the whole JSON above pre-filled. There is no `androidpublisher` endpoint
-that returns it.
+the wrong answer confidently. It is in Play Console → **Protected with Play** →
+App signing (the old Test and release → App integrity page now redirects there),
+under **Classical key** — the *Post-quantum cryptography* fingerprint beside it
+is not what Digital Asset Links matches, and using it would fail silently. There
+is no `androidpublisher` endpoint that returns any of them.
 
-Cornerstone needs its own statement, with its own package name and its own
-fingerprint. Two apps can share one file — the JSON is an array — if both are
-ever served from the same host.
+**Still to add: the previous app signing key.** The key was upgraded on
+29 Jul 2026 and the current one reads 0.0% install base, so every install in the
+field is still running APKs signed by the old certificate. `minSdkVersion` is 28,
+below the rotation threshold, so some devices will keep that old key through an
+update — and App Links will not verify for them until its SHA-256 is added
+alongside. `sha256_cert_fingerprints` is an array; both belong in it.
+
+Cornerstone needs its own entry, with its own package name and its own
+fingerprint. The JSON is an array, so one file serves both.
 
 ## One trap while checking this locally
 
