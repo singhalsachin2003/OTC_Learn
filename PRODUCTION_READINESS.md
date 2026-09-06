@@ -113,14 +113,41 @@ is no longer entirely unexercised.
    needs `eas build`, and the upload is the owner's to make. Until an uploaded
    binary declares `BILLING`, the console still refuses to create products.
 
-3. **Finish the merchant verification.** The console reports _"There is an issue
-   with your payments profile"_ — verification under the RBI's Payment
-   Aggregator Cross Border rules, initiated with **BillDesk**, status _in
-   progress_, with a **90-day clock** from when the application was begun.
-   Instructions were sent from `onboarding@billdesk.com`. Nothing can be sold
-   until this completes, regardless of the binary.
+3. **Finish the merchant verification.** Read from the Console on
+   **2026-09-06**, and it is **still open**. Settings → Developer account →
+   Payments profile shows **two** payments accounts, both flagged _"Issue with
+   account"_:
 
-4. ~~**Then** create the products and price them.~~ **Done 2026-09-02.** One
+   | Account | Scope | Status |
+   | --- | --- | --- |
+   | `…0122-7525-9540` | Cross border | Issue with account |
+   | `…7416-6616-5410` | India only | Issue with account |
+
+   The banner reads: _"Merchant account verification is required to meet Payment
+   Aggregator Cross Border (PA-CB) regulations. Account verification initiated.
+   Follow the instructions sent to the primary contact for your payments profile
+   from `onboarding@billdesk.com` to complete your application."_ Status: **In
+   progress**, with a 90-day clock from when it was begun.
+
+   **Two things this makes precise, and both were understated before.**
+
+   First, **it is waiting on us, not on them.** The wording is "follow the
+   instructions sent to you", so there is an action sitting in the inbox of the
+   payments profile's primary contact. It is not a queue to wait out.
+
+   Second, **it is not only cross-border sales.** The India-only account carries
+   its own warning — _"Failure to verify will stop your ability to sell and to
+   receive payouts"_ — so the domestic prices being India-only does not route
+   around it.
+
+4. **No payout method is attached.** Found on the same screen, and independent
+   of BillDesk: the payments account reads _"Add a payment method to receive
+   your earnings"_. Earnings ₹0.00 against a ₹100 threshold, no transactions.
+   Even with verification complete, nothing can be paid out until a bank
+   account is added — and that is the owner's to enter, not something to
+   automate.
+
+5. ~~**Then** create the products and price them.~~ **Done 2026-09-02.** One
    subscription `otc_learn_pro` with two active base plans, **₹29 monthly and
    ₹199 yearly**, India only. The **₹399 lifetime was deliberately not
    created** and should not be — see "The gating model" below.
@@ -137,7 +164,7 @@ is no longer entirely unexercised.
    offering, the `goog_` key) — a typo in any of which fails silently, leaving
    the app behaving as a free app.
 
-5. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
+6. ~~Build the paywall.~~ **Done, 2026-09-01.** The rules in `utils/access.ts`
    now have a screen and every locked surface consumes them: the home grid,
    both product lists, the product page, the lesson, and the exam scopes. Two
    things worth knowing about it —
