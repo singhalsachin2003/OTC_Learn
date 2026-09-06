@@ -65,7 +65,26 @@
         "me.everything.badger.permission.BADGE_COUNT_READ",
         "me.everything.badger.permission.BADGE_COUNT_WRITE"
       ],
-      "allowBackup": false
+      "allowBackup": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "category": ["BROWSABLE", "DEFAULT"],
+          "data": [
+            {
+              "scheme": "https",
+              "host": "singhalsachin2003.github.io",
+              "pathPrefix": "/OTC_Learn/category/"
+            },
+            {
+              "scheme": "https",
+              "host": "singhalsachin2003.github.io",
+              "pathPrefix": "/OTC_Learn/product/"
+            }
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",

@@ -1,7 +1,11 @@
+import appConfig from '../../app.json';
+
 import {
   actionsForLink,
   parseDeepLink,
   SCHEME,
+  WEB_LINK_PREFIX,
+  WEB_LINK_ROUTES,
 } from '../../src/navigation/linking';
 import { createStore } from '../../src/store';
 
@@ -212,5 +216,76 @@ describe('the paywall link', () => {
       currentTab: 'profile',
       paywallReturn: 'profile',
     });
+  });
+});
+
+/**
+ * The https links are the only form that survives being posted anywhere public,
+ * and Android only hands them over if `app.json` claims the exact same host and
+ * paths the parser reads. Nothing in the build checks that, so this does.
+ */
+describe('web links', () => {
+  const filter = appConfig.expo.android.intentFilters?.[0];
+  const claimed = filter?.data ?? [];
+
+  it('claims the host the parser is looking for', () => {
+    expect(filter?.autoVerify).toBe(true);
+    for (const entry of claimed) {
+      expect(`${entry.scheme}://${entry.host}${entry.pathPrefix}`).toBe(
+        `${WEB_LINK_PREFIX}${entry.pathPrefix.split('/')[2]}/`,
+      );
+    }
+  });
+
+  it('claims exactly the routes the app can show', () => {
+    expect(claimed.map((entry) => entry.pathPrefix.split('/')[2]).sort()).toEqual(
+      [...WEB_LINK_ROUTES].sort(),
+    );
+  });
+
+  it('opens a product page shared as a web link', () => {
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}product/irs`)).toEqual({
+      screen: 'product',
+      categoryId: 'ir',
+      productId: 'irs',
+    });
+  });
+
+  // Jekyll serves every page with a trailing slash, and a share sheet or a
+  // referral tracker may append a query string on the way.
+  it('tolerates the trailing slash and a query string', () => {
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}product/irs/?utm_source=x`)).toEqual({
+      screen: 'product',
+      categoryId: 'ir',
+      productId: 'irs',
+    });
+  });
+
+  // Every claimed address has to resolve for a reader who does not have the
+  // app, and the website publishes no lesson page — the lesson is part of the
+  // product page there.
+  it('does not claim the lesson route from the web', () => {
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}lesson/irs`)).toBeNull();
+    expect(parseDeepLink('otclearn://lesson/irs')).toEqual({
+      screen: 'lesson',
+      categoryId: 'ir',
+      productId: 'irs',
+    });
+  });
+
+  // The website owns these, and swallowing them would turn the privacy policy
+  // link on the store listing into a dead end for anyone with the app.
+  it('leaves the site pages the app has nothing to show for', () => {
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}privacy/`)).toBeNull();
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}account-deletion/`)).toBeNull();
+    expect(parseDeepLink(WEB_LINK_PREFIX)).toBeNull();
+  });
+
+  it('ignores a link from another host entirely', () => {
+    expect(parseDeepLink('https://example.com/OTC_Learn/product/irs')).toBeNull();
+  });
+
+  it('still refuses a product that does not exist', () => {
+    expect(parseDeepLink(`${WEB_LINK_PREFIX}product/nope`)).toBeNull();
   });
 });
