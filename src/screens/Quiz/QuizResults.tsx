@@ -143,6 +143,12 @@ export function QuizResults() {
             </View>
           )}
 
+          {quiz.finishedInMs !== null && (
+            <Text testID="results-time" style={styles.time}>
+              Finished in {formatElapsed(quiz.finishedInMs)}
+            </Text>
+          )}
+
           {canShare && (
             <Pressable
               testID="results-share"
@@ -160,12 +166,6 @@ export function QuizResults() {
               <Share2 size={16} strokeWidth={2} color={colors.text.tertiary} />
               <Text style={styles.shareLabel}>Share this result</Text>
             </Pressable>
-          )}
-
-          {quiz.finishedInMs !== null && (
-            <Text testID="results-time" style={styles.time}>
-              Finished in {formatElapsed(quiz.finishedInMs)}
-            </Text>
           )}
 
           <StepBreakdown answers={quiz.answers} accent={accent} />

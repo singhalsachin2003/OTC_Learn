@@ -66,6 +66,21 @@ Cornerstone needs its own statement, with its own package name and its own
 fingerprint. Two apps can share one file — the JSON is an array — if both are
 ever served from the same host.
 
+## One trap while checking this locally
+
+**`expo run:android` does not re-apply `app.json`'s native config.** With an
+`android/` directory already present it builds what is there, so a freshly added
+intent filter is simply absent from the APK — and `dumpsys package` then reports
+no filter at all, which reads exactly like a syntax error in `app.json`. Run
+`npx expo prebuild -p android` first, then check the generated manifest:
+
+```bash
+grep -A 8 autoVerify android/app/src/main/AndroidManifest.xml
+```
+
+EAS builds prebuild from scratch every time, so this only bites locally. The
+filter above was confirmed this way on 2026-09-06.
+
 ## Verifying it, once the file is up
 
 Shipping the intent filter before the file is harmless: verification simply
