@@ -233,6 +233,44 @@ Three consequences:
 last edited 29 Jul 2026 and still answers that the app has no purchases. It has
 to be re-submitted before anything goes on sale.
 
+### Growth surfaces (2026-09-06)
+
+Five things gated the marketing push, and four of them were app-side here. All
+four are built and on `v1.2-marketing-hooks`:
+
+- **An in-app review prompt.** Zero ratings is what caps a listing's ranking,
+  and there was no `StoreReview` call anywhere. It now fires from the results
+  screen when a sitting carries a product over the mastery threshold, at most
+  once every 120 days, and the stamp is spent only when the request actually
+  reached the OS. `expo-store-review` is native, so **this needs a store build**
+  — the release already needed one for `react-native-purchases-ui`.
+- **A share action**, on the product page and the results screen. It sends the
+  Play listing rather than a page about the product, because until today the
+  site had no product pages.
+- **Cross-promotion.** Neither app has ever mentioned the other, which was the
+  most qualified traffic either could send. Profile now carries a "More from
+  us" card for `io.cornerstone.study`, naming the exams descriptively and
+  claiming no endorsement.
+- **Android App Links.** `app.json` claims `/OTC_Learn/category/…` and
+  `/OTC_Learn/product/…` with `autoVerify`, the parser reads the https form,
+  and `scripts/generate-site.js` publishes the 42 pages behind them so a
+  claimed address resolves for a reader without the app.
+
+**Two things are outstanding and neither is code**, both in `APP_LINKS.md`:
+
+1. The Digital Asset Links statement has to be served from
+   `https://singhalsachin2003.github.io/.well-known/assetlinks.json` — the
+   **host root**, which a project Pages site cannot serve. It needs a public
+   repo named `singhalsachin2003.github.io`, which does not exist.
+2. The fingerprint in it is the Play **app signing** key, readable only from
+   Play Console → App integrity. The upload key in the AAB is not it, and no
+   `androidpublisher` endpoint returns it.
+
+Shipping the intent filter without the statement is harmless — verification
+fails and links open in the browser, exactly as they do now — which is why this
+half went first. The fifth item, Cornerstone's placeholder tab icons, is in the
+other repo.
+
 ### Verification gaps
 
 1. **Most of this is now closed.** Verified on a Pixel 7 emulator on 2026-08-13:

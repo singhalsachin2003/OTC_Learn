@@ -319,6 +319,21 @@ emulator at 1080×2400 by `scripts/capture-screenshots.sh`. That script drives
 the app through `otclearn://` deep links rather than synthetic taps, so it stays
 stable against layout changes. `STORE_LISTING.md` holds the listing copy.
 
+## The public site
+
+`docs/` is published by GitHub Pages at
+`https://singhalsachin2003.github.io/OTC_Learn/`. The privacy policy and the
+account-deletion page Play requires are hand-written; the 36 product pages and
+6 category pages are generated from the catalogue by
+`node scripts/generate-site.js` and should never be edited by hand.
+
+They exist because `app.json` claims those two routes as verified Android App
+Links, so `…/OTC_Learn/product/irs` opens the lesson for a reader who has the
+app and the page for one who does not. **A claimed address that 404s is worse
+than no link**, so re-run the generator after any content change — a test fails
+if a page is missing. `APP_LINKS.md` covers what is still needed to make
+verification pass.
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
