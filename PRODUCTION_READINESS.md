@@ -256,19 +256,23 @@ Three consequences:
   ~21 existing installs get the future paid asset classes free as well,
   permanently. The shipped build already told them so in as many words.
 
-**Still to do off the back of it:** the Play **content rating** questionnaire was
-last edited 29 Jul 2026 and still answers that the app has no purchases. It has
-to be re-submitted, and not only "before anything goes on sale" — `otc_learn_pro`
-is already live with two active base plans, so the answer is false *now*,
-independently of the paywall being inert in the binary. The answers to give are
-in `STORE_LISTING.md` → Content ratings, along with the reasoning for the two
-that are not obvious: **Yes** to digital purchases, and **No** to user
-interaction and user-generated content despite the new share action, which sends
-a fixed line out to another app rather than exchanging anything between users.
+~~**Still to do off the back of it:** the content rating questionnaire.~~
+**Re-submitted 6 Sept 2026**, and the ratings came back issued at the lowest
+band on every board — ESRB Everyone, PEGI 3, USK 0, ClassInd L, IARC 3+. So
+declaring digital purchases did not raise the rating, which is what the
+reasoning in `STORE_LISTING.md` predicted.
 
-There is no `androidpublisher` endpoint for content ratings — Data safety has
-one (POST only), ratings do not. It is Console-only, on the **App content**
-page, free, and needs no new binary.
+Read from the Console the same day: **App content → "Need attention" is
+empty** — ten actioned declarations, and Policy status reports no issues.
+**Data safety** is among them, last edited 2 Sept, showing four data types and
+the account-deletion URL resolving; the worry that it might be submitted but
+not accepted was unfounded.
+
+Worth keeping: there is no `androidpublisher` endpoint for content ratings —
+Data safety has one (POST only), ratings do not. It is Console-only, needs no
+binary, and the page is **Monitor and improve → Policy and programmes → App
+content** (not under Test and release, and the `app-content` deep link bounces
+to the app list).
 
 ### Growth surfaces (2026-09-06)
 
