@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Star } from 'lucide-react-native';
+import { Share2, Star } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
@@ -26,6 +26,7 @@ import {
 } from '../../theme';
 import { track } from '../../utils/analytics';
 import { masteryBand } from '../../utils/mastery';
+import { productShareMessage, shareText } from '../../utils/share';
 import { KeyTermList } from './components/KeyTermList';
 import { LockedProduct } from './components/LockedProduct';
 import { NoteEditor } from './components/NoteEditor';
@@ -84,6 +85,10 @@ export function ProductScreen() {
     });
   };
 
+  const onShare = () => {
+    void shareText(productShareMessage(product.name, product.hook), 'product');
+  };
+
   return (
     <SafeAreaWrapper testID="product-screen">
       <ScrollView
@@ -96,28 +101,40 @@ export function ProductScreen() {
             onPress={() => goToCategory(product.categoryId)}
             testID="product-back"
           />
-          <Pressable
-            testID="product-bookmark"
-            onPress={onToggleBookmark}
-            hitSlop={16}
-            accessibilityRole="button"
-            accessibilityState={{ selected: bookmarked }}
-            accessibilityLabel={
-              bookmarked ? 'Remove from saved' : 'Save this product'
-            }
-            style={styles.bookmark}
-          >
-            {/* A drawn star rather than "★"/"☆" characters — Plus Jakarta Sans
-                lacks both glyphs, so Android substituted them from another
-                family at a different weight, the same risk already fixed for
-                the chevron beside this control. */}
-            <Star
-              size={22}
-              strokeWidth={2}
-              color={bookmarked ? accent : colors.chevron}
-              fill={bookmarked ? accent : 'none'}
-            />
-          </Pressable>
+          <View style={styles.topActions}>
+            <Pressable
+              testID="product-share"
+              onPress={onShare}
+              hitSlop={16}
+              accessibilityRole="button"
+              accessibilityLabel={`Share ${product.name}`}
+              style={styles.topAction}
+            >
+              <Share2 size={21} strokeWidth={2} color={colors.chevron} />
+            </Pressable>
+            <Pressable
+              testID="product-bookmark"
+              onPress={onToggleBookmark}
+              hitSlop={16}
+              accessibilityRole="button"
+              accessibilityState={{ selected: bookmarked }}
+              accessibilityLabel={
+                bookmarked ? 'Remove from saved' : 'Save this product'
+              }
+              style={styles.topAction}
+            >
+              {/* A drawn star rather than "★"/"☆" characters — Plus Jakarta Sans
+                  lacks both glyphs, so Android substituted them from another
+                  family at a different weight, the same risk already fixed for
+                  the chevron beside this control. */}
+              <Star
+                size={22}
+                strokeWidth={2}
+                color={bookmarked ? accent : colors.chevron}
+                fill={bookmarked ? accent : 'none'}
+              />
+            </Pressable>
+          </View>
         </View>
 
         <View style={styles.header}>
@@ -228,7 +245,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  bookmark: {
+  topActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: spacing.md,
+  },
+  topAction: {
     alignItems: 'center',
     justifyContent: 'center',
   },

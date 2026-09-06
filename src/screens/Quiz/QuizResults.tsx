@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Share2 } from 'lucide-react-native';
 
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { Button } from '../../components/ui/Button';
@@ -28,6 +29,7 @@ import {
   typography,
 } from '../../theme';
 import { formatScore } from '../../utils/formatters';
+import { resultShareMessage, shareText } from '../../utils/share';
 import { formatElapsed } from './components/QuizTimer';
 import { ResultsCard } from './components/ResultsCard';
 import { StepBreakdown } from './components/StepBreakdown';
@@ -68,6 +70,11 @@ export function QuizResults() {
     dispatch(resetQuiz());
     dispatch(navigateToQuiz());
   };
+
+  // A review sitting has nothing to share: its score is spread over whichever
+  // questions happened to fall due, so it means nothing to whoever receives it.
+  const shareName = isExam ? `the ${examScope} exam` : product?.name;
+  const canShare = !isReview && total > 0 && shareName !== undefined;
 
   const missed = quiz.answers.filter((record) => !record.correct);
   const newBadges = justEarned
@@ -134,6 +141,25 @@ export function QuizResults() {
                 </Text>
               </View>
             </View>
+          )}
+
+          {canShare && (
+            <Pressable
+              testID="results-share"
+              onPress={() => {
+                void shareText(
+                  resultShareMessage(shareName ?? '', score, total),
+                  'results',
+                );
+              }}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel="Share this result"
+              style={styles.share}
+            >
+              <Share2 size={16} strokeWidth={2} color={colors.text.tertiary} />
+              <Text style={styles.shareLabel}>Share this result</Text>
+            </Pressable>
           )}
 
           {quiz.finishedInMs !== null && (
@@ -253,6 +279,20 @@ const styles = StyleSheet.create({
   masteryNote: {
     ...typography.labelSmall,
     color: colors.text.muted,
+  },
+  share: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 8,
+    alignSelf: 'center',
+    marginTop: spacing.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  shareLabel: {
+    ...typography.labelSmall,
+    color: colors.text.tertiary,
   },
   time: {
     ...typography.labelSmall,
