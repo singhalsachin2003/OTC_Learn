@@ -89,27 +89,20 @@ no advertising identifiers, and no analytics following you around.
 
 WORKS OFFLINE
 
-All 180 lesson steps, 216 key terms and 432 quiz questions in the free
-catalogue ship inside the app. Use it on the underground, on a plane, or
-anywhere else with no signal.
+All 180 lesson steps, 216 key terms and 432 quiz questions in the free catalogue
+ship inside the app. Use it on the underground, on a plane, or anywhere else with
+no signal.
 
-MORE ASSET CLASSES BY SUBSCRIPTION
+MORE BY SUBSCRIPTION, IF YOU WANT IT
 
-Everything above is free and stays free. An optional subscription adds what is
-released after it, and so far brings
-30 products, 150 lesson steps and 360 questions: Exotics, on barriers, digitals,
-range accruals, accumulators, target redemption forwards and cliquets; Risk &
-the Greeks, on DV01, delta and gamma, vega, CS01 and jump to default, P&L
-attribution and value at risk; twelve Case Studies, from Barings and
-Metallgesellschaft to the gilt LDI crisis and Archegos; and Alternative
-Underlyings, on perpetual swaps, cash and carry basis, freight, power,
-catastrophe bonds and longevity swaps.
+Everything above is free and stays free. An optional subscription adds what came
+after it: 30 products, 150 lesson steps and 360 questions across Exotics, Risk &
+the Greeks, twelve Case Studies and Alternative Underlyings — barriers and
+digitals, DV01 and the Greeks, Barings to Archegos, perpetual swaps to longevity.
 
-It also adds depth to every one of the 36 free products — a "Going deeper"
-section and a second question bank on each, so a quiz draws from twenty-four
-questions instead of twelve. That is 108 further sections and 432 more
-questions. The lesson, worked example and twelve questions each free product
-shipped with stay free and always will. You can read the app
+It also adds a "Going deeper" section and a second question bank to every one of
+the 36 free products, so a quiz draws from twenty-four questions instead of
+twelve. What each free product shipped with stays free. You can read the app
 without ever seeing a purchase screen.
 
 TRACK WHAT YOU ACTUALLY KNOW
