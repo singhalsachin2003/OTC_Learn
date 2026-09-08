@@ -186,6 +186,19 @@ function productPage(product, category, products) {
   lines.push(
     `The app adds a twelve-question bank for ${product.name}, drawn differently every sitting, and a review queue for whatever you miss.`,
     '',
+  );
+
+  // Depth is paid, so the page says it exists and does not publish it — the
+  // same line the app draws on the product page, for the reader who arrived
+  // here from a search instead.
+  if (product.depth !== undefined) {
+    lines.push(
+      `A subscription adds ${product.depth.sections.length} further sections on ${product.name} — ${product.depth.sections.map((section) => section.title).join(', ')} — and ${product.depth.quiz.length} more questions to its bank.`,
+      '',
+    );
+  }
+
+  lines.push(
     '[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)',
     '',
     'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',

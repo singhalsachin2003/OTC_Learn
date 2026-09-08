@@ -56,20 +56,48 @@ export function getProductsByCategory(categoryId: string | null): Product[] {
  * question belongs to exactly one and carrying both would let the two disagree.
  * This index is what turns an id back into something renderable.
  */
-const questionIndex = new Map(
-  products.flatMap((product) =>
-    product.quiz.map((question) => [question.id, { question, product }] as const),
-  ),
+interface IndexedQuestion {
+  question: Question;
+  product: Product;
+  /** Whether this question is in the paid depth bank rather than the free one. */
+  depth: boolean;
+}
+
+const questionIndex = new Map<string, IndexedQuestion>(
+  products.flatMap((product) => [
+    ...product.quiz.map((question): [string, IndexedQuestion] => [
+      question.id,
+      { question, product, depth: false },
+    ]),
+    // Depth questions are indexed too: the review queue stores ids without
+    // their product, and an id it cannot resolve is dropped silently. Whether
+    // a subscriber may *see* one is a separate question, answered by
+    // `utils/access.ts` rather than by whether it exists.
+    ...(product.depth?.quiz ?? []).map((question): [string, IndexedQuestion] => [
+      question.id,
+      { question, product, depth: true },
+    ]),
+  ]),
 );
 
-export function getQuestionById(
-  id: string,
-): { question: Question; product: Product } | undefined {
+export function getQuestionById(id: string): IndexedQuestion | undefined {
   return questionIndex.get(id);
 }
 
-/** Total questions across the catalogue — shown on the home screen. */
+/**
+ * Total questions across the catalogue, including the paid depth banks. Screens
+ * that quote a figure to a reader should count what *that* reader can open —
+ * see `openQuestionCount` in `hooks/useAccess.ts` — and use this only where the
+ * whole catalogue is genuinely what is meant.
+ */
 export const TOTAL_QUESTIONS = questionIndex.size;
+
+/** The questions a product's quiz may draw from, before access is considered. */
+export function fullQuizFor(product: Product): Question[] {
+  return product.depth === undefined
+    ? product.quiz
+    : [...product.quiz, ...product.depth.quiz];
+}
 
 /** Every key term in the catalogue, flattened for the glossary. */
 export function allKeyTerms(): {

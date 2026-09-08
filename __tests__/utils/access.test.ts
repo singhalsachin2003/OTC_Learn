@@ -158,8 +158,15 @@ describe('the counts the paywall sells on', () => {
     const premiumProducts = products.filter((p) => paidIds.has(p.categoryId));
     expect(premiumProducts.length).toBeGreaterThan(0);
     expect(premiumProductCount()).toBe(premiumProducts.length);
+    // Both halves of what a subscription sells: the banks inside the paid
+    // asset classes, and the depth banks added to the free ones.
+    const depthQuestions = products.reduce(
+      (total, p) => total + (p.depth?.quiz.length ?? 0),
+      0,
+    );
     expect(premiumQuestionCount()).toBe(
-      premiumProducts.reduce((total, p) => total + p.quiz.length, 0),
+      premiumProducts.reduce((total, p) => total + p.quiz.length, 0) +
+        depthQuestions,
     );
   });
 });

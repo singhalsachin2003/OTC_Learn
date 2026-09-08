@@ -25,7 +25,7 @@ import { useAccess } from '../../../hooks/useAccess';
 export function DashboardCard() {
   const { overallPercent, totalCount, questionsAnswered, isProductMastered } =
     useProgress();
-  const { productLocked } = useAccess();
+  const { productLocked, openQuiz } = useAccess();
   const streak = useStreak();
 
   /**
@@ -44,7 +44,12 @@ export function DashboardCard() {
   const masteredOpen = open.filter((product) =>
     isProductMastered(product.id),
   ).length;
-  const openQuestions = open.reduce((sum, product) => sum + product.quiz.length, 0);
+  // Counts the depth banks too where the reader has them, so the headline says
+  // what is actually waiting rather than what shipped.
+  const openQuestions = open.reduce(
+    (sum, product) => sum + openQuiz(product).length,
+    0,
+  );
   const longest = useLongestStreak();
   const { dueCount } = useReview();
   const { goToTab } = useNavigation();

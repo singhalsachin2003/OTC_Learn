@@ -473,6 +473,7 @@ describe('the headline on a paywalled home screen', () => {
       categories.filter((c) => c.premium).map((category) => category.id),
     );
     const open = products.filter((p) => !paidIds.has(p.categoryId));
+    // Depth is locked for this reader too, so the headline counts free banks.
     const openQuestions = open.reduce((total, p) => total + p.quiz.length, 0);
     expect(open.length).toBeLessThan(products.length);
 
@@ -487,7 +488,11 @@ describe('the headline on a paywalled home screen', () => {
   });
 
   it('counts the whole catalogue when nothing is locked', async () => {
-    const questions = products.reduce((total, p) => total + p.quiz.length, 0);
+    // Including the depth banks, which an unpaywalled reader can draw from.
+    const questions = products.reduce(
+      (total, p) => total + p.quiz.length + (p.depth?.quiz.length ?? 0),
+      0,
+    );
 
     await renderWithStore(<RootNavigator />);
     await settleRings();

@@ -204,7 +204,11 @@ describe('PaywallScreen as a pitch', () => {
       categories.filter((c) => c.premium).map((category) => category.id),
     );
     const premium = products.filter((p) => paidIds.has(p.categoryId));
-    const questions = premium.reduce((total, p) => total + p.quiz.length, 0);
+    // What the pitch counts: the banks inside the paid classes, plus the depth
+    // banks added to free ones, which is the second thing a subscription buys.
+    const questions =
+      premium.reduce((total, p) => total + p.quiz.length, 0) +
+      products.reduce((total, p) => total + (p.depth?.quiz.length ?? 0), 0);
     const classes =
       paidIds.size === 1
         ? '1 new asset class'

@@ -33,11 +33,14 @@ export function ExamScreen() {
   const { startExam } = useQuiz();
   const results = useAppSelector((state) => state.progress.examResults);
 
-  const { productLocked } = useAccess();
+  const { productLocked, openQuiz } = useAccess();
 
   // Scoped to what the reader can open, so the question counts on screen are
   // the ones a paper would actually be drawn from.
-  const scopes = examScopes((productId) => !productLocked(productId));
+  const scopes = examScopes(
+    (productId) => !productLocked(productId),
+    (product) => openQuiz(product).length,
+  );
   const [scopeId, setScopeId] = useState(scopes[0]?.id ?? '');
   const [length, setLength] = useState<number>(DEFAULT_EXAM_LENGTH);
 

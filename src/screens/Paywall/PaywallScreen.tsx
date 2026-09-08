@@ -19,6 +19,7 @@ import { categories } from '../../data/categories';
 import { TOTAL_PRODUCTS } from '../../data/products';
 import { colors, spacing, typography } from '../../theme';
 import {
+  depthProductCount,
   premiumCategoryCount,
   premiumProductCount,
   premiumQuestionCount,
@@ -136,6 +137,11 @@ export function PaywallScreen() {
               <Point
                 text={`Their full question banks — ${premiumQuestionCount()} questions, drawn fresh each sitting`}
               />
+              {depthProductCount() > 0 && (
+                <Point
+                  text={`Going deeper on ${depthProductCount()} of the free products, with twice the questions in each bank`}
+                />
+              )}
               <Point text="Every asset class added from here on, at no extra cost" />
               <Point text="Still no adverts, and still nothing to sign up for" />
             </>

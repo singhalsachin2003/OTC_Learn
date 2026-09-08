@@ -45,18 +45,21 @@ export interface ReviewSummary {
 export function useReview(): ReviewSummary {
   const queue = useAppSelector((state) => state.review.queue);
   const loading = useAppSelector((state) => state.review.loading);
-  const { productLocked } = useAccess();
+  const { questionLocked } = useAccess();
 
   const visible = useMemo(() => {
     const resolve = (item: ReviewItem): ResolvedReviewItem | null => {
       const found = getQuestionById(item.id);
-      if (found === undefined || productLocked(found.product.id)) {
+      // Question-level, not product-level: a lapsed subscriber keeps the free
+      // half of a product and must not be shown the depth half they queued
+      // while they had it.
+      if (found === undefined || questionLocked(item.id)) {
         return null;
       }
       return { item, question: found.question, product: found.product };
     };
     return queue.flatMap((item) => resolve(item) ?? []);
-  }, [queue, productLocked]);
+  }, [queue, questionLocked]);
 
   const due = useMemo(() => {
     const dueIds = new Set(

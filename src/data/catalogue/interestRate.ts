@@ -261,6 +261,192 @@ export const interestRateProducts: Product[] = [
           'Its mark-to-market value moves with rates, and a negative value has to be collateralised.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Pricing it from the curve',
+          content:
+            'The par swap rate is the fixed rate that makes the two legs worth the same today: the present value of the expected floating payments, divided by the annuity — the sum of the discounted accrual factors. Nothing about that is a forecast. It is arithmetic on a curve, and the curve is built from the most liquid instruments at each maturity: overnight index swaps at the front, futures and forward rate agreements through the middle years, and par swap quotes beyond them. The bootstrap is constrained so that every instrument used reprices exactly to the level it was quoted at.',
+          callout:
+            'The annuity is the same quantity as PV01. That is why a ten-year swap has roughly eight times the risk of a one-year swap on the same notional, and why the hedge ratio between them is not one to one.',
+        },
+        {
+          title: 'Two curves, not one',
+          content:
+            'A collateralised swap is discounted at the rate paid on the collateral — the overnight risk-free rate of the currency the collateral is posted in — while its floating leg is projected off the curve of the index it actually references. Same trade, two curves, doing two different jobs. Before 2008 a single curve did both, because the gap between an interbank rate and an overnight one was small enough to ignore. It stopped being small, and the industry rebuilt its valuation around the distinction.',
+          callout:
+            'The collateral agreement therefore sets the discount rate, which means two otherwise identical swaps under different agreements are worth different amounts. That observation is where CSA discounting, collateral optionality and much of the XVA literature begin.',
+        },
+        {
+          title: 'Carry, roll-down and the swap spread',
+          content:
+            'Holding a swap earns or costs two things beyond any move in rates. Carry is the difference between the fixed rate and the floating rate actually setting over the period. Roll-down is what the position is worth as it ages into a different point on the curve, which on an upward-sloping curve favours the receiver. Separately, the swap spread — the swap rate less the government bond yield of the same maturity — can and does go negative: a swap is a collateralised exposure requiring no balance sheet, while holding the bond requires funding it and carrying it on one.',
+          callout:
+            'Long-dated dollar swap spreads went negative in 2015 and stayed there, which is only a puzzle if you assume a swap and a bond are two ways of holding the same risk.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'irs-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is the par swap rate?',
+          options: [
+            'The forecast of the average floating rate over the swap',
+            'The fixed rate that makes the two legs worth the same today',
+            'The rate at which the swap can be unwound at no cost',
+            'The highest rate a dealer will quote for that maturity',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is arithmetic on a curve, not a forecast: the present value of the expected floating payments divided by the annuity.',
+        },
+        {
+          id: 'irs-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'A curve bootstrap is constrained so that every instrument used reprices to the level it was quoted at.',
+          correctAnswer: true,
+          explanation:
+            'Otherwise the curve would disagree with the market it was built from, and every valuation drawn off it would inherit that disagreement.',
+        },
+        {
+          id: 'irs-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Which instruments typically anchor the front of a modern swap curve?',
+          options: [
+            'Overnight index swaps',
+            'Ten-year par swaps',
+            'Corporate bond yields',
+            'Inflation swaps',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Futures and forward rate agreements carry the middle years, and par swap quotes take over further out.',
+        },
+        {
+          id: 'irs-d4',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A collateralised swap is discounted using the rate paid on its collateral.',
+          correctAnswer: true,
+          explanation:
+            'The collateral is what funds the position, so the rate paid on it is the relevant discount rate.',
+        },
+        {
+          id: 'irs-d5',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Why does a swap need two curves rather than one?',
+          options: [
+            'Because the two legs settle on different dates',
+            'Because projection follows the index referenced and discounting follows the collateral',
+            'Because one curve is used for pricing and one for risk',
+            'Because regulators require a second curve for validation',
+          ],
+          correctIndex: 1,
+          explanation:
+            'One curve did both jobs before 2008, on the assumption that the difference between them was noise. It was not.',
+        },
+        {
+          id: 'irs-d6',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Two identical swaps under different collateral agreements are worth the same amount.',
+          correctAnswer: false,
+          explanation:
+            'The agreement sets the discount rate, so they are not. That is the observation the whole XVA literature is built on.',
+        },
+        {
+          id: 'irs-d7',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What is carry on a swap position?',
+          options: [
+            'The bid-offer paid on entering it',
+            'The difference between the fixed rate and the floating rate setting over the period',
+            'The change in value from the curve shifting',
+            'The collateral posted against it',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It accrues whether or not the curve moves, which is why a position can be right on direction and still lose.',
+        },
+        {
+          id: 'irs-d8',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'On an upward-sloping curve, roll-down favours the receiver of fixed.',
+          correctAnswer: true,
+          explanation:
+            'As the position ages it occupies a shorter, lower point on the curve, and the fixed rate it receives was set higher up.',
+        },
+        {
+          id: 'irs-d9',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'Why can a swap spread be negative?',
+          options: [
+            'Because swaps are riskier than government bonds',
+            'Because a collateralised swap needs no balance sheet while holding the bond does',
+            'Because swap rates are quoted net of fees',
+            'Because government bonds pay no coupon',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is only a puzzle if you assume a swap and a bond are two ways of holding the same risk. They are not.',
+        },
+        {
+          id: 'irs-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Long-dated dollar swap spreads have traded persistently negative.',
+          correctAnswer: true,
+          explanation:
+            'They went negative in 2015 and stayed there, for the funding and balance sheet reasons above.',
+        },
+        {
+          id: 'irs-d11',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'The annuity used to price a swap is the same quantity as which risk measure?',
+          options: ['Gamma', 'PV01', 'Vega', 'Jump to default'],
+          correctIndex: 1,
+          explanation:
+            'Which is why swap risk grows with maturity and why the hedge ratio between two maturities is the ratio of their annuities.',
+        },
+        {
+          id: 'irs-d12',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'Pricing a swap requires forecasting where interest rates will actually go.',
+          correctAnswer: false,
+          explanation:
+            'It requires a curve. The forward rates are read off it, and whether they turn out to be right is a different question entirely.',
+        },
+      ],
+    },
   },
   {
     id: 'swaption',
@@ -521,6 +707,192 @@ export const interestRateProducts: Product[] = [
           'A swaption can lose money even when rates stand still — volatility is a price driver in its own right.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Reading the grid',
+          content:
+            'Swaptions are quoted on a grid with two maturities, and confusing them is the standard beginner’s error. "Five year into ten year" — written 5y10y — means an option expiring in five years on a swap that then runs for ten. The first number is the option; the second is the swap it delivers. Both matter and they matter differently: the expiry drives the option’s time value, and the tenor drives how much interest rate risk arrives if it is exercised. A 1y10y and a 10y1y sit at opposite corners of the same grid and behave nothing alike.',
+          callout:
+            'Vega concentrates in long expiries; the delta that arrives on exercise concentrates in long tenors. A desk reads the grid in both directions for that reason.',
+        },
+        {
+          title: 'Black, and then Bachelier',
+          content:
+            'Rate options were quoted for decades in lognormal volatility, which assumes the underlying rate cannot go below zero — a harmless assumption until several major currencies had negative rates and the formula stopped returning a number. The market moved to normal, or Bachelier, volatility, which describes moves in absolute terms and stays defined through and below zero. It is a change of quoting language rather than of economics, but it changes every number on the screen, and comparing a normal volatility with a lognormal one without converting is a real and expensive mistake.',
+          callout:
+            'Normal volatility is quoted in basis points a year rather than as a percentage. A quote of 80 means roughly 80 basis points of annual standard deviation, not 80%.',
+        },
+        {
+          title: 'Cash settlement and its annuity',
+          content:
+            'A physically settled swaption delivers the actual swap. A cash settled one pays the value of that swap instead — and to do that, the parties must agree what the swap is worth without either of them holding it. The convention discounts the payoff using an annuity computed from the swap rate itself rather than from the full curve, which is simple, unambiguous and slightly wrong. The difference between the two conventions is small, well understood, and has its own adjustment, which is a good example of how a market handles a known approximation: not by fixing it, but by pricing it.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'swaption-d1',
+          kind: 'choice',
+          step: 1,
+          difficulty: 'intermediate',
+          prompt: 'What does a 5y10y swaption mean?',
+          options: [
+            'An option expiring in ten years on a five-year swap',
+            'An option expiring in five years on a ten-year swap',
+            'A five-year option on a swap of any tenor',
+            'A swap with an option to extend by ten years',
+          ],
+          correctIndex: 1,
+          explanation:
+            'First number the option, second the swap it delivers. Reversing them is the standard beginner’s error.',
+        },
+        {
+          id: 'swaption-d2',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'intermediate',
+          prompt: 'A 1y10y and a 10y1y swaption behave similarly.',
+          correctAnswer: false,
+          explanation:
+            'They sit at opposite corners of the grid: one is a short option on a long swap, the other a long option on a short one.',
+        },
+        {
+          id: 'swaption-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Which part of the grid carries the most vega?',
+          options: [
+            'Long expiries',
+            'Long tenors',
+            'Short expiries',
+            'At-the-money strikes only',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Expiry drives time value and therefore volatility exposure; tenor drives the delta that arrives on exercise.',
+        },
+        {
+          id: 'swaption-d4',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'The tenor of the underlying swap determines how much interest rate risk arrives if the option is exercised.',
+          correctAnswer: true,
+          explanation:
+            'A ten-year swap delivered into a book is roughly eight times the DV01 of a one-year one on the same notional.',
+        },
+        {
+          id: 'swaption-d5',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Why did the market move from lognormal to normal volatility?',
+          options: [
+            'Normal volatility produces smaller numbers',
+            'Lognormal volatility assumes rates cannot go below zero, and they did',
+            'Clearing houses require normal volatility',
+            'Normal volatility removes the need for a strike',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The formula stopped returning a number for several major currencies, which is a decisive kind of model failure.',
+        },
+        {
+          id: 'swaption-d6',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Normal volatility is quoted in basis points a year rather than as a percentage.',
+          correctAnswer: true,
+          explanation:
+            'A quote of 80 means roughly 80 basis points of annual standard deviation — not 80 percent.',
+        },
+        {
+          id: 'swaption-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'A normal volatility and a lognormal volatility can be compared directly.',
+          correctAnswer: false,
+          explanation:
+            'They are different quoting languages for the same option, and comparing them unconverted is an expensive mistake.',
+        },
+        {
+          id: 'swaption-d8',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What does a physically settled swaption deliver on exercise?',
+          options: [
+            'The cash value of the swap',
+            'The actual swap',
+            'The underlying bond',
+            'A forward starting swap one period later',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Cash settlement pays the value instead, which requires the parties to agree what that value is.',
+        },
+        {
+          id: 'swaption-d9',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'How does the cash settlement convention compute the payoff?',
+          options: [
+            'Using an annuity derived from the swap rate itself',
+            'Using the full discount curve at the time of exercise',
+            'Using the average of dealer quotes',
+            'Using the notional multiplied by the strike',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Simple and unambiguous, and slightly wrong — which the market handles by pricing the difference rather than fixing it.',
+        },
+        {
+          id: 'swaption-d10',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'The cash and physical settlement conventions give exactly the same value.',
+          correctAnswer: false,
+          explanation:
+            'They differ by a small, well-understood amount that carries its own adjustment.',
+        },
+        {
+          id: 'swaption-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Why does a desk read the swaption grid in both directions?',
+          options: [
+            'Because expiry and tenor carry different risks',
+            'Because the grid is quoted twice, once per counterparty',
+            'Because strikes are only available diagonally',
+            'Because settlement conventions vary by row',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Vega lives in the expiries and delivered delta lives in the tenors.',
+        },
+        {
+          id: 'swaption-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A change of volatility quoting convention changes the economics of the option.',
+          correctAnswer: false,
+          explanation:
+            'It changes every number on the screen and none of the payoffs. The option is the same; the language for it is not.',
+        },
+      ],
+    },
   },
   {
     id: 'fra',
@@ -764,6 +1136,194 @@ export const interestRateProducts: Product[] = [
           'Each FRA covers one period, so consecutive contracts — or a swap — are needed to cover a longer horizon.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Against a futures contract',
+          content:
+            'A short-term interest rate future and a forward rate agreement cover the same exposure and settle differently, and that difference has a price. The future is margined daily, so its profit and loss is realised as the rate moves; the agreement settles once. Daily settlement works in the holder’s favour in a way that is systematic rather than lucky: a short future receives margin as rates rise, and rates rising is exactly when that cash can be reinvested at a better return. The compensation for it is the convexity adjustment, which is why the futures rate sits slightly above the equivalent forward rate.',
+          callout:
+            'Inside a year the adjustment is a fraction of a basis point and can be waved away. By five years it is not, which is why a curve is built from futures at the front and from swaps beyond them.',
+        },
+        {
+          title: 'Settled at the start, discounted',
+          content:
+            'The interest period an agreement covers begins on its settlement date, not on its trade date, so the payment is made before the interest it represents would have accrued. It is therefore discounted: the difference between the reference rate and the contract rate, applied over the period, divided by one plus the reference rate over that same period. The consequence is quiet but real — the payoff is not quite linear in the rate, because the discount factor moves with the very rate that determines the payment.',
+          callout:
+            'Two agreements with equal and opposite rate exposure do not net to exactly zero once discounting is applied. On a large book that residual is a position.',
+        },
+        {
+          title: 'A strip is a curve',
+          content:
+            'Consecutive agreements covering successive periods make a strip, and a strip of rates is the front of a curve stated as instruments. That is how the near years of a curve are built, which makes the marks on those contracts load-bearing: every discount factor beyond that segment is derived through it, so a single badly marked agreement moves the valuation of everything longer, in the same direction, every day.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'fra-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Why does a futures rate sit above the equivalent forward rate?',
+          options: [
+            'Futures carry credit risk that forwards do not',
+            'Daily margin works systematically in the holder’s favour, and the adjustment compensates for it',
+            'Futures are quoted net of exchange fees',
+            'Forwards settle at the end of the interest period',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The convexity adjustment is the price of the difference between settling daily and settling once.',
+        },
+        {
+          id: 'fra-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'The convexity adjustment grows with maturity and with volatility.',
+          correctAnswer: true,
+          explanation:
+            'Which is why it can be ignored inside a year and cannot be at five, and why curves switch instruments as they extend.',
+        },
+        {
+          id: 'fra-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'A short futures position receives margin when rates rise.',
+          correctAnswer: true,
+          explanation:
+            'And that is precisely when the cash received can be reinvested at a higher rate — the systematic advantage the adjustment prices.',
+        },
+        {
+          id: 'fra-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'When is a forward rate agreement settled?',
+          options: [
+            'At the end of the interest period it covers',
+            'At the start of the interest period it covers',
+            'On the trade date',
+            'On the same date as the underlying loan matures',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The payment is made before the interest would have accrued, which is why it is discounted.',
+        },
+        {
+          id: 'fra-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'How is the settlement amount discounted?',
+          options: [
+            'At a fixed rate agreed at trade date',
+            'At the overnight rate on the settlement date',
+            'By dividing by one plus the reference rate over the period',
+            'It is not discounted',
+          ],
+          correctIndex: 2,
+          explanation:
+            'The same rate both determines the payment and discounts it, which is what makes the payoff slightly non-linear.',
+        },
+        {
+          id: 'fra-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Two agreements with equal and opposite rate exposure net to exactly zero.',
+          correctAnswer: false,
+          explanation:
+            'Not once discounting is applied. The residual is small per trade and a position across a book.',
+        },
+        {
+          id: 'fra-d7',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'foundational',
+          prompt:
+            'The payoff of a forward rate agreement is exactly linear in the reference rate.',
+          correctAnswer: false,
+          explanation:
+            'The discount factor moves with the same rate that sets the payment, so there is a small curvature in it.',
+        },
+        {
+          id: 'fra-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What is a strip of forward rate agreements?',
+          options: [
+            'Several agreements on the same period with different counterparties',
+            'Consecutive agreements covering successive periods',
+            'An agreement combined with an option',
+            'A pair of offsetting agreements',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is the front of a curve expressed as instruments, which is how the near years get built.',
+        },
+        {
+          id: 'fra-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A single badly marked agreement in a strip affects the valuation of longer-dated positions.',
+          correctAnswer: true,
+          explanation:
+            'Every discount factor beyond that segment is derived through it, so the error propagates in one direction, daily.',
+        },
+        {
+          id: 'fra-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Why is a curve typically built from futures at the front and swaps further out?',
+          options: [
+            'Futures are cheaper to trade at every maturity',
+            'The convexity adjustment is negligible at the front and material further out',
+            'Swaps do not exist at short maturities',
+            'Regulators require it',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Liquidity and the size of the adjustment point the same way, which is convenient rather than coincidental.',
+        },
+        {
+          id: 'fra-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'A desk hedges an agreement with the equivalent futures position and treats the two as identical. What has it kept?',
+          options: [
+            'The convexity difference between them',
+            'The credit risk of the counterparty',
+            'The full directional exposure',
+            'Nothing — the hedge is exact',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Small on one trade and a real book-level exposure once the maturities are long and the position is large.',
+        },
+        {
+          id: 'fra-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Marks on front-end instruments matter more than their size suggests.',
+          correctAnswer: true,
+          explanation:
+            'They are load-bearing: the rest of the curve is derived through them.',
+        },
+      ],
+    },
   },
   {
     id: 'capfloor',
@@ -1020,6 +1580,194 @@ export const interestRateProducts: Product[] = [
           'The sold floor starts paying away at that point, which is the cost of the cheaper premium.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'A cap is a strip of caplets',
+          content:
+            'A cap is not one option. It is a series of them — one per interest period, each an option on the forward rate for that period, each expiring on its own fixing date. The cap’s price is the sum of those caplet prices, and nothing about the structure requires them to share a volatility. That matters the moment you hedge: the exposure is spread across a series of forward rates, not concentrated on one, so a hedge sized against a single rate covers only the part of the strip that references it.',
+          callout:
+            'The first period is usually excluded, because its rate has already fixed and an option on a known number is not an option.',
+        },
+        {
+          title: 'Flat volatility and stripped volatility',
+          content:
+            'The market quotes a cap with one volatility number — the flat volatility that, applied to every caplet at once, reprices the whole strip. It is a quoting convention, not a description of any single caplet. Extracting the individual caplet volatilities from a sequence of cap quotes is called stripping, and the stripped numbers differ from the flat ones and from each other. A desk pricing a cap can work in flat terms; a desk hedging one period of it cannot.',
+          callout:
+            'Since rates can be negative, these options are normally quoted in normal — Bachelier — volatility rather than lognormal, which stays defined at and below zero.',
+        },
+        {
+          title: 'Cap minus floor is a swap',
+          content:
+            'Buying a cap and selling a floor at the same strike, on the same schedule, gives exactly the payoff of a payer swap struck at that rate: you pay fixed and receive floating in every state of the world. That identity is the arbitrage anchor of the market. It fixes the relationship between three quoted things — the cap, the floor and the swap — so a surface that violates it is wrong, and it gives a desk a way to check a price without a model.',
+          callout:
+            'It also means a collar (long cap, short floor at a lower strike) is a swap with the gap between the two strikes left unhedged.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'capfloor-d1',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'foundational',
+          prompt: 'A cap is a single option on an interest rate.',
+          correctAnswer: false,
+          explanation:
+            'It is a strip of caplets, one per interest period, each expiring on its own fixing date.',
+        },
+        {
+          id: 'capfloor-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is the price of a cap?',
+          options: [
+            'The price of the longest-dated caplet',
+            'The sum of the prices of its caplets',
+            'The average caplet price times the number of periods',
+            'The price of a swaption with the same maturity',
+          ],
+          correctIndex: 1,
+          explanation:
+            'And nothing requires those caplets to share a volatility, which is where flat quoting becomes a convention rather than a fact.',
+        },
+        {
+          id: 'capfloor-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'The first period of a cap is usually excluded from the strip.',
+          correctAnswer: true,
+          explanation:
+            'Its rate has already fixed, and an option on a known number has no optionality left in it.',
+        },
+        {
+          id: 'capfloor-d4',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What is a flat cap volatility?',
+          options: [
+            'The volatility of the underlying swap rate',
+            'The single number that, applied to every caplet, reprices the whole strip',
+            'The average of the caplet volatilities',
+            'The volatility observed over the past year',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is a quoting convention. No individual caplet necessarily trades at it.',
+        },
+        {
+          id: 'capfloor-d5',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Stripped caplet volatilities generally differ from the flat volatility quoted for the cap.',
+          correctAnswer: true,
+          explanation:
+            'They differ from it and from each other, which is why hedging a single period needs the stripped numbers.',
+        },
+        {
+          id: 'capfloor-d6',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Why are rate options commonly quoted in normal volatility?',
+          options: [
+            'It produces smaller numbers',
+            'It remains defined when rates are at or below zero',
+            'It is required by clearing houses',
+            'It removes the need for a strike',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Lognormal volatility assumes a rate cannot go negative, which stopped being a safe assumption.',
+        },
+        {
+          id: 'capfloor-d7',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Long a cap and short a floor at the same strike and schedule is equivalent to what?',
+          options: [
+            'A receiver swap at that strike',
+            'A payer swap at that strike',
+            'A straddle on the swap rate',
+            'A zero-cost collar',
+          ],
+          correctIndex: 1,
+          explanation:
+            'You pay fixed and receive floating in every state of the world — that is a payer swap.',
+        },
+        {
+          id: 'capfloor-d8',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'The cap-floor-swap identity lets a desk check a quote without a model.',
+          correctAnswer: true,
+          explanation:
+            'It ties three quoted instruments together, so a surface that violates it is wrong regardless of what model produced it.',
+        },
+        {
+          id: 'capfloor-d9',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What is a collar, in these terms?',
+          options: [
+            'A swap with the gap between two strikes left unhedged',
+            'A cap and a floor at the same strike',
+            'Two caps at different maturities',
+            'A cap financed by selling a swaption',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Long cap, short floor at a lower strike: a payer swap everywhere except between the strikes.',
+        },
+        {
+          id: 'capfloor-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A hedge sized against a single forward rate covers the whole cap.',
+          correctAnswer: false,
+          explanation:
+            'The exposure is spread across the strip, so such a hedge covers only the period that references that rate.',
+        },
+        {
+          id: 'capfloor-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Two caps with the same flat volatility can imply different caplet volatilities for the same period.',
+          correctAnswer: true,
+          explanation:
+            'Different maturities strip differently, which is exactly why the flat number cannot be used to hedge a single period.',
+        },
+        {
+          id: 'capfloor-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What is the practical use of the strip view of a cap?',
+          options: [
+            'It reduces the premium payable',
+            'It shows where the exposure actually sits, period by period',
+            'It removes the need for a volatility input',
+            'It converts the cap into a swaption',
+          ],
+          correctIndex: 1,
+          explanation:
+            'One number in a quote, a series of exposures underneath it — and the hedge follows the series.',
+        },
+      ],
+    },
   },
   {
     id: 'infswap',
@@ -1281,6 +2029,193 @@ export const interestRateProducts: Product[] = [
           'It is marked to market throughout its life, so a hedge that pays nothing for a decade can still demand cash within months of being struck — as UK schemes found in autumn 2022.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Breakeven and the risk premium',
+          content:
+            'The fixed rate on an inflation swap is the breakeven: the level of inflation at which both sides come out even. It is tempting to read it as the market’s forecast, and it is not quite that. It is the forecast plus what buyers of protection will pay to be rid of the risk, less any premium demanded for holding an instrument that is harder to trade. Those adjustments are not observable separately, which is why breakevens and survey expectations disagree persistently rather than converging.',
+          callout:
+            'A rising breakeven can mean expected inflation has risen, or that the price of insuring against it has. The two have different implications and the quote cannot tell them apart.',
+        },
+        {
+          title: 'Lags and seasonality',
+          content:
+            'Inflation is published with a lag and referenced with one: a swap fixing in March typically settles against an index published for January, and often on an interpolation between two monthly prints. That is why an inflation position has exposure to prints that are already known but not yet referenced — the carry over the next few months is arithmetic, not a view. Seasonality compounds it, because consumer price indices have a repeatable shape within a year, so a short-dated position is dominated by a pattern that says nothing about the trend.',
+          callout:
+            'The lag means the first months of any inflation trade are already determined. Whether the trade is a view or a carry position depends on how much of its life those months represent.',
+        },
+        {
+          title: 'Zero-coupon against year-on-year',
+          content:
+            'A zero-coupon swap exchanges one payment at maturity based on cumulative inflation over the whole term. A year-on-year swap exchanges a payment each year based on that year’s rate. They are not the same instrument with different schedules: the second is a strip of one-year exposures, and the difference between it and the compounding of the first is a convexity term that depends on how volatile inflation is expected to be. Desks quote both, and the spread between them is a position in that volatility.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'infswap-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is the fixed rate on an inflation swap called?',
+          options: [
+            'The breakeven',
+            'The carry rate',
+            'The par rate',
+            'The index ratio',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It is the level of inflation at which both sides come out even.',
+        },
+        {
+          id: 'infswap-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'A breakeven rate is the market’s forecast of inflation.',
+          correctAnswer: false,
+          explanation:
+            'It is the forecast plus an insurance premium and less a liquidity premium, and the three cannot be separated from the quote.',
+        },
+        {
+          id: 'infswap-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'What can a rising breakeven mean?',
+          options: [
+            'Only that expected inflation has risen',
+            'Either that expected inflation has risen or that protection has become more expensive',
+            'That the index methodology has changed',
+            'That real yields have risen',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Two different stories with different implications, and one number that cannot distinguish them.',
+        },
+        {
+          id: 'infswap-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'An inflation swap fixing in March typically references an index published for an earlier month.',
+          correctAnswer: true,
+          explanation:
+            'The publication lag is written into the contract, usually with interpolation between two monthly prints.',
+        },
+        {
+          id: 'infswap-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What follows from the indexation lag?',
+          options: [
+            'The trade has exposure to prints that are already known',
+            'The trade cannot be valued until maturity',
+            'Seasonality is removed from the payoff',
+            'The swap becomes a forward on the index level',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The first months of the position are arithmetic rather than a view, which is carry rather than opinion.',
+        },
+        {
+          id: 'infswap-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'Seasonality dominates short-dated inflation positions.',
+          correctAnswer: true,
+          explanation:
+            'Consumer price indices have a repeatable within-year shape that says nothing about the trend.',
+        },
+        {
+          id: 'infswap-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What does a zero-coupon inflation swap exchange?',
+          options: [
+            'A payment each year based on that year’s inflation',
+            'One payment at maturity based on cumulative inflation',
+            'A payment whenever the index is published',
+            'A floating rate against an inflation-linked bond',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The year-on-year version is the one that pays annually, and it is a different instrument rather than the same one rescheduled.',
+        },
+        {
+          id: 'infswap-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A year-on-year swap is exactly equivalent to the compounding of a zero-coupon swap.',
+          correctAnswer: false,
+          explanation:
+            'The difference is a convexity term that depends on expected inflation volatility, and the spread between them trades on it.',
+        },
+        {
+          id: 'infswap-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'What does the spread between year-on-year and zero-coupon quotes express?',
+          options: [
+            'A view on inflation volatility',
+            'A view on the direction of inflation',
+            'A difference in credit risk',
+            'A difference in day count',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It is the convexity between a strip of annual exposures and one cumulative one.',
+        },
+        {
+          id: 'infswap-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Breakevens and survey measures of expected inflation disagree persistently.',
+          correctAnswer: true,
+          explanation:
+            'Because a breakeven contains risk and liquidity premia that a survey does not.',
+        },
+        {
+          id: 'infswap-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A pension scheme hedging inflation-linked liabilities cares most about which feature?',
+          options: [
+            'That the reference index matches the one its liabilities are linked to',
+            'That the swap is quoted zero-coupon',
+            'That the counterparty is a bank rather than an insurer',
+            'That the trade is short-dated',
+          ],
+          correctIndex: 0,
+          explanation:
+            'A mismatch between the hedge’s index and the liability’s index is basis risk over decades.',
+        },
+        {
+          id: 'infswap-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Whether an inflation trade is a view or a carry position depends partly on its maturity.',
+          correctAnswer: true,
+          explanation:
+            'The lagged prints are already determined, so the shorter the trade, the more of it is arithmetic.',
+        },
+      ],
+    },
   },
   {
     id: 'basisswap',
@@ -1542,5 +2477,193 @@ export const interestRateProducts: Product[] = [
           'Projection follows the index the leg references; discounting follows the collateral agreement. It is the same insight a basis swap trades, written into the valuation.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'What a tenor basis prices',
+          content:
+            'Exchanging three-month payments for six-month payments on the same index and currency should, in a frictionless world, be worth nothing — the two schedules are the same money at different frequencies. It is not worth nothing, and the spread that makes it fair is the tenor basis. What it prices is the difference in what each frequency implies about funding and credit: a six-month exposure to a bank is a longer exposure than a three-month one, and rolling shorter is not free either. Under risk-free rates the credit component largely disappears and the basis narrows, without going away.',
+          callout:
+            'A tenor basis is one of the few places where a spread that "should" be zero is quoted, traded and hedged. Its existence is the market saying that two ways of paying the same interest are not the same claim.',
+        },
+        {
+          title: 'The cross-currency version',
+          content:
+            'Swap floating in one currency for floating in another and the same question appears with a much larger answer. Textbook covered interest parity says the forward exchange rate should make the two legs equivalent; the persistent spread on cross-currency basis swaps says it does not. The reasons are structural: demand for dollar funding outside the United States, the balance sheet cost to banks of supplying it, and regulation that makes that supply more expensive at quarter and year ends, which is visible as a predictable widening at those dates.',
+          callout:
+            'The euro-dollar basis blew out in 2008 and has never returned to zero. Treating covered interest parity as an identity rather than an approximation is how a funding position gets mistaken for an arbitrage.',
+        },
+        {
+          title: 'After LIBOR',
+          content:
+            'The transition to overnight risk-free rates changed the composition of these spreads without removing them. A term rate carried bank credit and a term premium; a compounded overnight rate carries neither, so the basis between a legacy term index and a compounded rate is largely a credit and liquidity spread, and the basis between two currencies’ risk-free rates is almost purely a funding one. The instruments outlived the index they were built on, which is worth noticing: the trade was never really about the index.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'basisswap-d1',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'intermediate',
+          prompt:
+            'Exchanging three-month for six-month payments on the same index trades at a spread rather than flat.',
+          correctAnswer: true,
+          explanation:
+            'That spread is the tenor basis, and it prices the difference in funding and credit between the two frequencies.',
+        },
+        {
+          id: 'basisswap-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'What does a tenor basis principally price?',
+          options: [
+            'The difference in day count conventions',
+            'The credit and funding difference between exposures of different length',
+            'The expected direction of interest rates',
+            'The cost of clearing the trade',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A six-month exposure is a longer claim on a bank than a three-month one, and rolling shorter is not free either.',
+        },
+        {
+          id: 'basisswap-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Moving to risk-free rates removed the tenor basis entirely.',
+          correctAnswer: false,
+          explanation:
+            'It narrowed it by removing most of the credit component. The remainder is liquidity and term preference.',
+        },
+        {
+          id: 'basisswap-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does a persistent cross-currency basis tell you?',
+          options: [
+            'That covered interest parity is an approximation, not an identity',
+            'That one currency is expected to depreciate',
+            'That the two currencies have different inflation rates',
+            'That the swap is mispriced and can be arbitraged',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The gap is structural — funding demand, balance sheet cost and regulation — not a free trade waiting to be taken.',
+        },
+        {
+          id: 'basisswap-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Cross-currency basis tends to widen predictably at quarter and year ends.',
+          correctAnswer: true,
+          explanation:
+            'Balance sheet is measured on those dates, so supplying funding across them costs more.',
+        },
+        {
+          id: 'basisswap-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'foundational',
+          prompt:
+            'The euro-dollar cross-currency basis returned to zero after the 2008 crisis.',
+          correctAnswer: false,
+          explanation:
+            'It has not. Persistent, structural and quoted every day — which is what makes it a market rather than an anomaly.',
+        },
+        {
+          id: 'basisswap-d7',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'Why is dollar funding at the centre of most basis discussion?',
+          options: [
+            'Because the dollar has the highest interest rate',
+            'Because demand for it outside the United States exceeds what local banks can supply cheaply',
+            'Because dollar swaps are cleared and others are not',
+            'Because the dollar is the only reserve currency',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Someone has to intermediate that demand, and the price of doing so is the basis.',
+        },
+        {
+          id: 'basisswap-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'What does the basis between a legacy term index and a compounded overnight rate mostly represent?',
+          options: [
+            'A credit and liquidity spread',
+            'An expectation of central bank policy',
+            'A difference in settlement convention',
+            'A tax adjustment',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The term rate carried bank credit and a term premium; the compounded rate carries neither.',
+        },
+        {
+          id: 'basisswap-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Basis swaps survived the retirement of the index they were originally built around.',
+          correctAnswer: true,
+          explanation:
+            'Which is the clue that the trade was never really about the index — it was about funding.',
+        },
+        {
+          id: 'basisswap-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'A treasury funds in one currency and lends in another, hedged with a cross-currency swap. What has it taken on?',
+          options: [
+            'Outright currency risk',
+            'Exposure to the basis when the hedge is rolled',
+            'Credit risk to the borrower only',
+            'Nothing — the hedge is complete',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The basis at each roll is a real cost, and it moves with conditions that have nothing to do with the loan.',
+        },
+        {
+          id: 'basisswap-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Treating covered interest parity as an identity can turn a funding position into what looks like an arbitrage.',
+          correctAnswer: true,
+          explanation:
+            'The spread is compensation for balance sheet and funding. Reading it as free money is how the position gets sized wrongly.',
+        },
+        {
+          id: 'basisswap-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Why does a basis widen when balance sheet becomes expensive?',
+          options: [
+            'Because clearing houses raise margin',
+            'Because the intermediaries who supply the funding charge more for using their balance sheet',
+            'Because volatility rises',
+            'Because the underlying index changes',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The basis is the price of intermediation, so it moves with the cost of intermediating.',
+        },
+      ],
+    },
   },
 ];

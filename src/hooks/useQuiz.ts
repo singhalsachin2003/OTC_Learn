@@ -16,7 +16,7 @@ import {
   completeReviewSession,
   completeSession,
 } from '../store/thunks/progressThunks';
-import { canOpenProduct } from '../utils/access';
+import { canOpenProduct, canOpenQuestion, openQuizFor } from '../utils/access';
 import { track } from '../utils/analytics';
 import {
   buildExamPaper,
@@ -106,7 +106,7 @@ export function useQuiz(): QuizController {
       if (product === undefined) {
         return;
       }
-      const questions = buildSession(product.quiz, {
+      const questions = buildSession(openQuizFor(product, access), {
         size: settings.sessionSize,
         history: questionHistory,
       });
@@ -119,20 +119,21 @@ export function useQuiz(): QuizController {
         }),
       );
     },
-    [dispatch, questionHistory, settings.sessionSize],
+    [dispatch, questionHistory, settings.sessionSize, access],
   );
 
   const startReview = useCallback(() => {
     const due = dueItems(reviewQueue);
     // Resolve ids back to questions, dropping any whose question no longer
     // exists — a release that removes a question must not strand the queue —
-    // and any inside a product the user can no longer open, which is the same
-    // situation arrived at from the other direction.
+    // and any the user can no longer open, which is the same situation arrived
+    // at from the other direction. Asked per question rather than per product,
+    // because a lapsed subscriber keeps a free product and loses its depth.
     const questions = due
       .map((item) => getQuestionById(item.id))
       .filter(
         (found): found is NonNullable<typeof found> =>
-          found !== undefined && canOpenProduct(found.product, access),
+          found !== undefined && canOpenQuestion(found, access),
       )
       .map((found) => found.question);
 
@@ -170,7 +171,7 @@ export function useQuiz(): QuizController {
       const sources: ExamSource[] = inScope.map((product) => ({
         productId: product.id,
         categoryId: product.categoryId,
-        questions: product.quiz,
+        questions: openQuizFor(product, access),
       }));
 
       // No history argument, deliberately: an exam is a measurement, so the

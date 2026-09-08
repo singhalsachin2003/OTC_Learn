@@ -28,6 +28,7 @@ import { track } from '../../utils/analytics';
 import { masteryBand } from '../../utils/mastery';
 import { productShareMessage, shareText } from '../../utils/share';
 import { KeyTermList } from './components/KeyTermList';
+import { DepthSections } from './components/DepthSections';
 import { LockedProduct } from './components/LockedProduct';
 import { NoteEditor } from './components/NoteEditor';
 import { RelatedProducts } from './components/RelatedProducts';
@@ -49,7 +50,7 @@ export function ProductScreen() {
   const { goToCategory, goToLesson, goToQuiz } = useNavigation();
   const { progressFor, masteryFor } = useProgress();
   const bookmarks = useBookmarks();
-  const { productLocked } = useAccess();
+  const { productLocked, depthLocked, openQuiz } = useAccess();
 
   const product = getProductById(productId);
   const category = getCategoryById(product?.categoryId ?? null);
@@ -75,6 +76,10 @@ export function ProductScreen() {
   // Checked here rather than at the rows that link here, so a deep link into
   // paid content is stopped by the same branch as a tap.
   const locked = productLocked(product.id);
+  // What this reader's next quiz would draw from — twelve for a free reader,
+  // twenty-four where they have the depth bank as well.
+  const bank = openQuiz(product).length;
+  const depthIsLocked = depthLocked(product.id);
 
   const onToggleBookmark = () => {
     void dispatch(toggleProductBookmark(product.id));
@@ -182,7 +187,7 @@ export function ProductScreen() {
             </View>
             <Button
               testID="product-start-quiz"
-              label={`Go straight to the quiz · ${product.quiz.length} in the bank`}
+              label={`Go straight to the quiz · ${bank} in the bank`}
               variant="outline"
               onPress={() => goToQuiz(product.id)}
               style={styles.quizButton}
@@ -203,6 +208,18 @@ export function ProductScreen() {
             <Section title="IN PRACTICE">
               <Text style={styles.body}>{product.inPractice}</Text>
             </Section>
+
+            {product.depth !== undefined && (
+              <Section title="GOING DEEPER">
+                <DepthSections
+                  sections={product.depth.sections}
+                  extraQuestions={product.depth.quiz.length}
+                  locked={depthIsLocked}
+                  accent={accent}
+                  soft={soft}
+                />
+              </Section>
+            )}
 
             <Section title="YOUR NOTE">
               <NoteEditor noteKey={product.id} />

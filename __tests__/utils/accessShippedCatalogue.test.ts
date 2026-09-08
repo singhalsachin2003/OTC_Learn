@@ -3,6 +3,8 @@ import { products } from '../../src/data/products';
 import {
   canOpenCategory,
   canOpenProduct,
+  canOpenQuestion,
+  openQuizFor,
   paywallApplies,
   premiumCategoryCount,
   premiumProductCount,
@@ -87,6 +89,63 @@ describe('the catalogue as shipped', () => {
   });
 });
 
+describe('depth added to a free product', () => {
+  /**
+   * The promise, at the level depth could break it. A subscription may add to a
+   * product that shipped free; it may not take anything out of one. So every
+   * question id in `product.quiz` — the twelve that shipped — has to stay
+   * answerable by a reader the paywall applies to, on all 36 free products,
+   * whatever has since been added beside it.
+   */
+  it('never withholds a question that shipped in a free product', () => {
+    const free = products.filter((product) =>
+      SHIPPED_FREE.includes(product.categoryId),
+    );
+
+    for (const product of free) {
+      const open = openQuizFor(product, NEW_USER_ON_A_SELLING_BUILD);
+      for (const question of product.quiz) {
+        expect(open).toContainEqual(question);
+        expect(
+          canOpenQuestion({ product, depth: false }, NEW_USER_ON_A_SELLING_BUILD),
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('withholds the depth bank from that same reader', () => {
+    const withDepth = products.filter((product) => product.depth !== undefined);
+
+    for (const product of withDepth) {
+      const open = openQuizFor(product, NEW_USER_ON_A_SELLING_BUILD);
+      expect(open).toHaveLength(product.quiz.length);
+      expect(
+        canOpenQuestion({ product, depth: true }, NEW_USER_ON_A_SELLING_BUILD),
+      ).toBe(false);
+    }
+  });
+
+  it('gives a subscriber both banks', () => {
+    const withDepth = products.filter((product) => product.depth !== undefined);
+    const SUBSCRIBER = { ...NEW_USER_ON_A_SELLING_BUILD, premium: true };
+
+    for (const product of withDepth) {
+      expect(openQuizFor(product, SUBSCRIBER)).toHaveLength(
+        product.quiz.length + product.depth!.quiz.length,
+      );
+    }
+  });
+
+  /** The other half of the promise: grandfathered installs get depth too. */
+  it('gives an install that predates the paywall both banks', () => {
+    for (const product of products.filter((p) => p.depth !== undefined)) {
+      expect(openQuizFor(product, GRANDFATHERED)).toHaveLength(
+        product.quiz.length + product.depth!.quiz.length,
+      );
+    }
+  });
+});
+
 describe('the catalogue as sold', () => {
   /**
    * The fourth guard, from the other side: there is now something premium, so
@@ -103,8 +162,13 @@ describe('the catalogue as sold', () => {
       (product) => !SHIPPED_FREE.includes(product.categoryId),
     );
     expect(premiumProductCount()).toBe(premium.length);
+    const depthQuestions = products.reduce(
+      (total, product) => total + (product.depth?.quiz.length ?? 0),
+      0,
+    );
     expect(premiumQuestionCount()).toBe(
-      premium.reduce((total, product) => total + product.quiz.length, 0),
+      premium.reduce((total, product) => total + product.quiz.length, 0) +
+        depthQuestions,
     );
   });
 });

@@ -14,7 +14,7 @@ import { presentCustomerCenter } from '../../utils/purchases';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { StatTile } from '../../components/ui/StatTile';
 import { achievements } from '../../data/achievements';
-import { TOTAL_QUESTIONS } from '../../data/products';
+import { products } from '../../data/products';
 import {
   useAppDispatch,
   useAppSelector,
@@ -26,6 +26,7 @@ import {
 } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
+import { useAccess } from '../../hooks/useAccess';
 import { useReview } from '../../hooks/useReview';
 import { initialsFor } from '../../store/slices/settingsSlice';
 import { resetEverything } from '../../store/thunks/bootstrapThunks';
@@ -94,6 +95,14 @@ export function ProfileScreen() {
   }, [premium, goToPaywall]);
 
   const { queuedCount } = useReview();
+  const { productLocked, openQuiz } = useAccess();
+  // What this reader can actually be asked, not what the catalogue holds: a
+  // free reader is not "0 of 792 seen" when 432 of those are behind a paywall.
+  const openQuestions = products.reduce(
+    (sum, product) =>
+      productLocked(product.id) ? sum : sum + openQuiz(product).length,
+    0,
+  );
   const {
     overallPercent,
     masteredCount,
@@ -224,8 +233,8 @@ export function ProfileScreen() {
         </View>
         <Text style={styles.tilesNote}>
           {questionsAnswered === 0
-            ? `${TOTAL_QUESTIONS} questions in the bank, none answered yet.`
-            : `Best streak ${longest} ${longest === 1 ? 'day' : 'days'} · ${questionsAnswered} of ${TOTAL_QUESTIONS} questions seen`}
+            ? `${openQuestions} questions in the bank, none answered yet.`
+            : `Best streak ${longest} ${longest === 1 ? 'day' : 'days'} · ${questionsAnswered} of ${openQuestions} questions seen`}
         </Text>
 
         <Text style={styles.sectionTitle}>STUDY</Text>

@@ -1,9 +1,13 @@
 import { useCallback, useMemo } from 'react';
 
-import { getProductById } from '../data/products';
+import { getProductById, getQuestionById } from '../data/products';
+import type { Product, Question } from '../data/types';
 import {
   canOpenCategory,
+  canOpenDepth,
   canOpenProduct,
+  canOpenQuestion,
+  openQuizFor,
   paywallApplies,
   premiumCategoryCount,
 } from '../utils/access';
@@ -14,6 +18,12 @@ export interface AppAccess {
   paywalled: boolean;
   categoryLocked: (categoryId: string) => boolean;
   productLocked: (productId: string) => boolean;
+  /** Whether the paid depth on an otherwise free product is out of reach. */
+  depthLocked: (productId: string) => boolean;
+  /** Whether a single question may be shown — asked by the review queue. */
+  questionLocked: (questionId: string) => boolean;
+  /** The questions a quiz on this product may draw from, for this reader. */
+  openQuiz: (product: Product) => Question[];
   /** How many asset classes a subscription would add, for the paywall's copy. */
   premiumCategories: number;
 }
@@ -43,13 +53,39 @@ export function useAccess(): AppAccess {
     [access],
   );
 
+  const depthLocked = useCallback(
+    (productId: string) =>
+      getProductById(productId)?.depth !== undefined && !canOpenDepth(access),
+    [access],
+  );
+
+  const questionLocked = useCallback(
+    (questionId: string) => !canOpenQuestion(getQuestionById(questionId), access),
+    [access],
+  );
+
+  const openQuiz = useCallback(
+    (product: Product) => openQuizFor(product, access),
+    [access],
+  );
+
   return useMemo(
     () => ({
       paywalled,
       categoryLocked,
       productLocked,
+      depthLocked,
+      questionLocked,
+      openQuiz,
       premiumCategories: premiumCategoryCount(),
     }),
-    [paywalled, categoryLocked, productLocked],
+    [
+      paywalled,
+      categoryLocked,
+      productLocked,
+      depthLocked,
+      questionLocked,
+      openQuiz,
+    ],
   );
 }

@@ -103,7 +103,12 @@ the Greeks, on DV01, delta and gamma, vega, CS01 and jump to default, P&L
 attribution and value at risk; twelve Case Studies, from Barings and
 Metallgesellschaft to the gilt LDI crisis and Archegos; and Alternative
 Underlyings, on perpetual swaps, cash and carry basis, freight, power,
-catastrophe bonds and longevity swaps. You can read the app
+catastrophe bonds and longevity swaps.
+
+It also adds depth to the free products themselves — a "Going deeper" section
+and a second question bank, so a quiz draws from twice as many questions. The
+lesson, worked example and twelve questions each free product shipped with stay
+free and always will. You can read the app
 without ever seeing a purchase screen.
 
 TRACK WHAT YOU ACTUALLY KNOW

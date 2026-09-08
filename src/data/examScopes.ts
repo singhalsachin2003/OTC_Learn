@@ -25,8 +25,11 @@ export interface ExamScope {
   locked: boolean;
 }
 
-function questionsIn(pool: typeof products): number {
-  return pool.reduce((sum, product) => sum + product.quiz.length, 0);
+function questionsIn(
+  pool: typeof products,
+  bankSize: (product: (typeof products)[number]) => number,
+): number {
+  return pool.reduce((sum, product) => sum + bankSize(product), 0);
 }
 
 /**
@@ -36,13 +39,20 @@ function questionsIn(pool: typeof products): number {
  */
 export function examScopes(
   canOpen: (productId: string) => boolean = () => true,
+  /**
+   * How many questions this reader may draw from one product. Defaults to the
+   * free bank, because a caller that only wants to *name* a scope should not
+   * have to know about depth.
+   */
+  bankSize: (product: (typeof products)[number]) => number = (product) =>
+    product.quiz.length,
 ): ExamScope[] {
   const open = products.filter((product) => canOpen(product.id));
 
   const all: ExamScope = {
     id: EXAM_SCOPE_ALL,
     name: 'Everything',
-    questionCount: questionsIn(open),
+    questionCount: questionsIn(open, bankSize),
     // Never locked: there is always the free asset class to sit it over.
     locked: false,
   };
@@ -54,7 +64,7 @@ export function examScopes(
     return {
       id: category.id,
       name: category.name,
-      questionCount: questionsIn(openInCategory),
+      questionCount: questionsIn(openInCategory, bankSize),
       locked: openInCategory.length === 0,
     };
   });

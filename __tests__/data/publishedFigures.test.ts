@@ -98,6 +98,28 @@ it('publishes only a teaser for paid products', () => {
   }
 });
 
+/**
+ * Depth is the paid half of a free product, so the site may name it and must
+ * not print it. This is the same guard as the teaser test above, applied to the
+ * other way content can become paid.
+ */
+it('never publishes the body of a paid depth section', () => {
+  const withDepth = products.filter((product) => product.depth !== undefined);
+  expect(withDepth.length).toBeGreaterThan(0);
+
+  for (const product of withDepth) {
+    const page = read(`docs/product/${product.id}.md`);
+    for (const section of product.depth!.sections) {
+      // The titles are named as a list of what a subscription adds.
+      expect(page).toContain(section.title);
+      expect(page).not.toContain(section.content);
+      if (section.callout !== undefined) {
+        expect(page).not.toContain(section.callout);
+      }
+    }
+  }
+});
+
 /** And the free ones must still publish in full, which is what ranks. */
 it('publishes free products in full', () => {
   const product = products.find((p) => !paidIds.has(p.categoryId));

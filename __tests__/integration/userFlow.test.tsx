@@ -327,7 +327,11 @@ describe('Retaking a quiz', () => {
       papers.push(drawnIds(store));
     }
 
-    const bank = irs.quiz.map((question) => question.id);
+    // Both banks: this store has no paywall in force, so the reader can open
+    // the depth questions and the draw is entitled to use them.
+    const bank = [...irs.quiz, ...(irs.depth?.quiz ?? [])].map(
+      (question) => question.id,
+    );
     for (const paper of papers) {
       expect(paper).toHaveLength(paperSize(store));
       expect(new Set(paper).size).toBe(paper.length);

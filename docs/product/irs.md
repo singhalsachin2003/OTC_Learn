@@ -71,6 +71,8 @@ Corporate treasurers use these to turn a floating bank loan into a predictable b
 
 The app adds a twelve-question bank for Interest Rate Swap, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Interest Rate Swap — Pricing it from the curve, Two curves, not one, Carry, roll-down and the swap spread — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

@@ -83,6 +83,40 @@ export interface Category {
   premium: boolean;
 }
 
+/**
+ * One section of a product's paid depth. Deliberately not a `Lesson`: it has no
+ * step number, because the five-step lesson is what the product shipped with
+ * and its numbering is a promise to anyone who already learned it. Depth reads
+ * as further sections on the product page, after the lesson rather than inside
+ * it.
+ */
+export interface DepthSection {
+  title: string;
+  content: string;
+  callout?: string;
+}
+
+/**
+ * The extra material a subscription adds to a product that is otherwise free.
+ *
+ * This is the one place the model needed care. A subscription buys what is
+ * added *after* the paywall — so adding to an existing product is allowed, and
+ * taking anything out of one is not. `Product.lessons` and `Product.quiz` are
+ * exactly what shipped and stay open to everybody;
+ * `__tests__/utils/accessShippedCatalogue.test.ts` asserts every one of those
+ * question ids is still answerable by a user the paywall applies to.
+ */
+export interface ProductDepth {
+  /** Further reading, shown on the product page under "Going deeper". */
+  sections: DepthSection[];
+  /**
+   * A second bank, the same size as the first. A subscriber's quiz draws from
+   * both, so the paper varies more and runs harder; a free reader's draw is
+   * unchanged.
+   */
+  quiz: Question[];
+}
+
 export interface Product {
   id: string;
   categoryId: string;
@@ -104,6 +138,8 @@ export interface Product {
    * deliberately larger than any one sitting.
    */
   quiz: Question[];
+  /** Extra sections and a second bank, sold with the subscription. */
+  depth?: ProductDepth;
 }
 
 /** Narrowing helpers — the quiz UI branches on question kind. */

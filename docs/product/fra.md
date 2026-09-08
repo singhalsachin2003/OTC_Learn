@@ -71,6 +71,8 @@ Bank treasury and asset–liability desks use FRAs to square a known funding gap
 
 The app adds a twelve-question bank for Forward Rate Agreement, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Forward Rate Agreement — Against a futures contract, Settled at the start, discounted, A strip is a curve — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

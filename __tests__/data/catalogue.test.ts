@@ -22,9 +22,12 @@ describe('product catalogue', () => {
   });
 
   it('gives every quiz question a unique id', () => {
-    const ids = products.flatMap((product) =>
-      product.quiz.map((question) => question.id),
-    );
+    // Both banks: a depth question colliding with a free one would silently
+    // overwrite it in the index the review queue resolves ids through.
+    const ids = products.flatMap((product) => [
+      ...product.quiz.map((question) => question.id),
+      ...(product.depth?.quiz ?? []).map((question) => question.id),
+    ]);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
@@ -195,6 +198,79 @@ describe('product catalogue', () => {
         return levels.size < 2;
       });
       expect(flat.map((product) => product.id)).toEqual([]);
+    });
+  });
+
+  /**
+   * The paid depth on an otherwise free product. Held to the same standards as
+   * the bank it sits beside, because a subscriber is paying for this half.
+   */
+  describe('depth banks', () => {
+    const withDepth = products.filter((product) => product.depth !== undefined);
+
+    it('gives every depth bank the same size as the free one', () => {
+      const wrong = withDepth.filter(
+        (product) => product.depth!.quiz.length !== product.quiz.length,
+      );
+      expect(wrong.map((product) => product.id)).toEqual([]);
+    });
+
+    it('gives every depth section a title and a body', () => {
+      const blank = withDepth.filter((product) =>
+        product.depth!.sections.some(
+          (section) =>
+            section.title.trim() === '' ||
+            section.content.trim() === '' ||
+            section.callout?.trim() === '',
+        ),
+      );
+      expect(blank.map((product) => product.id)).toEqual([]);
+    });
+
+    it('gives every depth product at least three sections', () => {
+      const thin = withDepth.filter(
+        (product) => product.depth!.sections.length < 3,
+      );
+      expect(thin.map((product) => product.id)).toEqual([]);
+    });
+
+    it('mixes question kinds, answers and difficulty in every depth bank', () => {
+      const flat = withDepth.filter((product) => {
+        const bank = product.depth!.quiz;
+        const kinds = new Set(bank.map((question) => question.kind));
+        const levels = new Set(bank.map((question) => question.difficulty));
+        const answers = new Set(
+          bank.filter(isBooleanQuestion).map((question) => question.correctAnswer),
+        );
+        return kinds.size < 2 || levels.size < 2 || answers.size < 2;
+      });
+      expect(flat.map((product) => product.id)).toEqual([]);
+    });
+
+    it('gives every depth choice question four distinct options in range', () => {
+      const malformed = withDepth.flatMap((product) =>
+        product
+          .depth!.quiz.filter(isChoiceQuestion)
+          .filter(
+            (question) =>
+              question.options.length !== 4 ||
+              new Set(question.options.map((o) => o.trim())).size !== 4 ||
+              question.correctIndex < 0 ||
+              question.correctIndex >= question.options.length,
+          )
+          .map((question) => question.id),
+      );
+      expect(malformed).toEqual([]);
+    });
+
+    it('does not park every depth answer at the same index', () => {
+      const lazy = withDepth.filter((product) => {
+        const indexes = product
+          .depth!.quiz.filter(isChoiceQuestion)
+          .map((question) => question.correctIndex);
+        return indexes.length > 2 && new Set(indexes).size === 1;
+      });
+      expect(lazy.map((product) => product.id)).toEqual([]);
     });
   });
 
