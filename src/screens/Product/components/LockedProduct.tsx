@@ -13,13 +13,16 @@ export interface LockedProductProps {
 
 /**
  * What stands in for the lesson, quiz and reference sections on a product the
- * user cannot open — which today means nothing, and will mean the asset
- * classes added after the paywall.
+ * user cannot open — since 2026-09-08, the asset classes added after the
+ * paywall.
  *
- * The page above it still shows the product's name, difficulty and summary,
- * which is the honest version of a teaser: enough to know whether it is worth
- * paying for, and none of the teaching. It also means a deep link into paid
- * content lands somewhere that explains itself rather than on a lesson.
+ * The page above it shows the product's name and difficulty and stops there.
+ * It used to keep the hook and the summary as a teaser; they came out on
+ * 2026-09-08 because a one-line description of a structured product is the
+ * part a reader can act on without ever opening the lesson, which made it a
+ * poor way to sell the lesson. The name still has to be shown — a deep link
+ * into paid content has to land somewhere that explains itself, and a row with
+ * no name explains nothing.
  */
 export function LockedProduct({ categoryName }: LockedProductProps) {
   const { goToPaywall } = useNavigation();
@@ -31,9 +34,9 @@ export function LockedProduct({ categoryName }: LockedProductProps) {
         <Text style={styles.title}>{categoryName} needs a subscription</Text>
       </View>
       <Text style={styles.body}>
-        The lesson, the question bank and the worked example for this product are
-        part of the subscription. Everything the app shipped with stays free — this
-        is one of the asset classes added since.
+        The description, the lesson, the question bank and the worked example for
+        this product are part of the subscription. Everything the app shipped with
+        stays free — this is one of the asset classes added since.
       </Text>
       <Button
         testID="product-unlock"

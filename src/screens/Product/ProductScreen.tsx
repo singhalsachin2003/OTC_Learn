@@ -145,7 +145,7 @@ export function ProductScreen() {
             <Text accessibilityRole="header" style={styles.title}>
               {product.name}
             </Text>
-            <Text style={styles.hook}>{product.hook}</Text>
+            {!locked && <Text style={styles.hook}>{product.hook}</Text>}
           </View>
           <Ring
             testID="product-mastery-ring"
@@ -166,7 +166,7 @@ export function ProductScreen() {
           </Text>
         )}
 
-        <Text style={styles.summary}>{product.summary}</Text>
+        {!locked && <Text style={styles.summary}>{product.summary}</Text>}
 
         {locked ? (
           <LockedProduct categoryName={category?.name ?? 'This asset class'} />

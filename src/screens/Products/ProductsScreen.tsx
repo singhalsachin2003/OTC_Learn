@@ -104,14 +104,20 @@ export function ProductsScreen() {
           kind: 'product',
           key: product.id,
           product,
+          // Search results say which asset class a match came from, since the
+          // list is no longer grouped under its headers. A locked product
+          // keeps that context and loses the hook, which is the thing the
+          // subscription is selling.
           subtitle: isSearching
-            ? `${getCategoryById(product.categoryId)?.name ?? ''} · ${product.hook}`
+            ? productLocked(product.id)
+              ? (getCategoryById(product.categoryId)?.name ?? '')
+              : `${getCategoryById(product.categoryId)?.name ?? ''} · ${product.hook}`
             : undefined,
         }),
       );
     });
     return list;
-  }, [showSaved, saved, grouped, isSearching]);
+  }, [showSaved, saved, grouped, isSearching, productLocked]);
 
   // Offset by the two fixed children (title, search bar) that always precede
   // the flattened rows, so a header's position in `rows` maps to its actual

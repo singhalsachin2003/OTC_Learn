@@ -127,9 +127,12 @@ describe('with the paywall in force', () => {
   });
 
   /**
-   * The teaser is the name, difficulty and summary — enough to judge whether
-   * it is worth paying for. The lesson, the bank, the worked example and the
-   * key terms are what is being sold, so none of them renders.
+   * The teaser is the name and the difficulty, and that is all. The lesson,
+   * the bank, the worked example and the key terms are what is being sold —
+   * and so, since 2026-09-08, are the hook and the summary. A one-line
+   * description of a structured product is the part a reader can act on
+   * without ever opening the lesson, which made giving it away a poor way to
+   * sell the lesson.
    */
   it('shows a locked product page instead of its content', async () => {
     const store = paywalled();
@@ -138,11 +141,59 @@ describe('with the paywall in force', () => {
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
+    const product = getProductById(PREMIUM_PRODUCT);
     expect(screen.getByTestId('product-locked')).toBeTruthy();
+    expect(screen.getByText(product!.name)).toBeTruthy();
+    expect(screen.queryByText(product!.hook)).toBeNull();
+    expect(screen.queryByText(product!.summary)).toBeNull();
     expect(screen.queryByTestId('product-start-lesson')).toBeNull();
     expect(screen.queryByTestId('product-start-quiz')).toBeNull();
     expect(screen.queryByText('KEY TERMS')).toBeNull();
     expect(screen.queryByText('WORKED EXAMPLE')).toBeNull();
+  });
+
+  /** The same rule one level up: a locked row is a name and a lock. */
+  it('gives a locked row its name without its hook', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    const product = getProductById(PREMIUM_PRODUCT);
+    expect(screen.getByText(product!.name)).toBeTruthy();
+    expect(screen.queryByText(product!.hook)).toBeNull();
+  });
+
+  /** And the free rows are untouched, which is the half worth checking. */
+  it('leaves a free row showing its hook', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToCategory('ir'));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    const product = getProductById('irs');
+    expect(screen.getByText(product!.name)).toBeTruthy();
+    expect(screen.getByText(product!.hook)).toBeTruthy();
+  });
+
+  /**
+   * Search is the one row that carries a subtitle of its own. It says which
+   * asset class the match came from, because the list is not grouped while
+   * searching — that context stays, and the hook that used to follow it goes.
+   */
+  it('keeps the asset class but not the hook on a locked search result', async () => {
+    const store = paywalled();
+    store.dispatch(navigateToTab('products'));
+    await renderWithStore(<RootNavigator />, { store });
+    await settleRings();
+
+    const product = getProductById(PREMIUM_PRODUCT);
+    await fireEvent.changeText(screen.getByTestId('product-search'), product!.name);
+
+    expect(screen.getByTestId(`product-row-${PREMIUM_PRODUCT}`)).toBeTruthy();
+    // Several exotics match the query, so each carries the same subtitle.
+    expect(screen.getAllByText('Exotics').length).toBeGreaterThan(0);
+    expect(screen.queryByText(`Exotics · ${product!.hook}`)).toBeNull();
   });
 
   it('opens the paywall from a locked product, and comes back to it', async () => {

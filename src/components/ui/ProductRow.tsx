@@ -22,9 +22,17 @@ export interface ProductRowProps {
   onPress: () => void;
   /** Shows a bookmark mark when the user has saved this product. */
   bookmarked?: boolean;
-  /** Shown instead of the hook where the extra context helps — e.g. search. */
+  /**
+   * Shown instead of the hook where the extra context helps — e.g. search.
+   * A locked row hides its own hook but still shows a subtitle, because the
+   * caller chose that text and is responsible for it being safe to show.
+   */
   subtitle?: string;
-  /** Needs a subscription. Shows a lock where the mastery ring would be. */
+  /**
+   * Needs a subscription. Shows a lock where the mastery ring would be, and
+   * hides the hook: the one-line description of a product is part of what the
+   * subscription sells, so a locked row gives the name and nothing else.
+   */
   locked?: boolean;
 }
 
@@ -40,7 +48,8 @@ export function masteryFill(mastery: number): string {
 }
 
 /**
- * One product in a list: name, hook, and a mastery ring.
+ * One product in a list: name, hook, and a mastery ring — or, where the
+ * product needs a subscription, the name and a lock on their own.
  *
  * The ring replaces the old completed-or-not tick for everything below the
  * threshold, because "37%" and "not started" are different states that the tick
@@ -56,12 +65,16 @@ export function ProductRow({
   locked = false,
 }: ProductRowProps) {
   const mastered = mastery >= MASTERY_COMPLETE;
+  // A locked row falls back to nothing rather than to the hook.
+  const description = subtitle ?? (locked ? undefined : product.hook);
 
   return (
     <Card
       testID={`product-row-${product.id}`}
       onPress={onPress}
-      accessibilityLabel={`${product.name}. ${subtitle ?? product.hook}. ${
+      accessibilityLabel={`${product.name}.${
+        description === undefined ? '' : ` ${description}.`
+      } ${
         locked
           ? 'Needs a subscription.'
           : mastered
@@ -92,7 +105,9 @@ export function ProductRow({
             </View>
           )}
         </View>
-        <Text style={styles.hook}>{subtitle ?? product.hook}</Text>
+        {description !== undefined && (
+          <Text style={styles.hook}>{description}</Text>
+        )}
       </View>
 
       {locked ? (
