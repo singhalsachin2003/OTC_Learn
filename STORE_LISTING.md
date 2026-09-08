@@ -95,12 +95,13 @@ anywhere else with no signal.
 
 MORE ASSET CLASSES BY SUBSCRIPTION
 
-Everything above is free and stays free. An optional subscription adds the asset
-classes released after it, and so far brings
-12 products, 60 lesson steps and 144 questions: Exotics, on barriers, digitals,
-range accruals, accumulators, target redemption forwards and cliquets; and Risk
-& the Greeks, on DV01, delta and gamma, vega and the volatility surface, CS01
-and jump to default, P&L attribution and value at risk. You can read the app
+Everything above is free and stays free. An optional subscription adds what is
+released after it, and so far brings
+18 products, 90 lesson steps and 216 questions: Exotics, on barriers, digitals,
+range accruals, accumulators, target redemption forwards and cliquets; Risk &
+the Greeks, on DV01, delta and gamma, vega, CS01 and jump to default, P&L
+attribution and value at risk; and Case Studies, on Archegos, Amaranth, the LME
+nickel squeeze, the London Whale, the gilt LDI crisis and LTCM. You can read the app
 without ever seeing a purchase screen.
 
 TRACK WHAT YOU ACTUALLY KNOW
@@ -314,7 +315,8 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 • 36 OTC derivative products across interest rate, FX, credit, equity,
   commodity and market foundations — all free
 • A five-step lesson, a worked example and a 12-question bank for every product
-• New: Exotics and Risk & the Greeks, twelve products by optional subscription
+• New: Exotics, Risk & the Greeks and Case Studies — eighteen products by
+  optional subscription
 • Mastery that moves with each sitting, and a review queue for what you miss
 • Works fully offline — no account, no ads, no tracking
 ```

@@ -11,11 +11,12 @@ import type { Category } from './types';
  * sells what comes *after* them rather than access to them — flipping one to
  * `true` would take back something people already have.
  *
- * Exotics and Risk & the Greeks are on the other side of that line, and they
- * show the shape a paid class takes: both are built on the free catalogue
- * rather than carved out of it. Exotics assembles the vanilla products into
- * structures; Risk teaches what a desk does with any of them once it is on the
- * book.
+ * Exotics, Risk & the Greeks and Case Studies are on the other side of that
+ * line, and they show the shape a paid class takes: each is built on the free
+ * catalogue rather than carved out of it. Exotics assembles the vanilla
+ * products into structures; Risk teaches what a desk does with any of them once
+ * it is on the book; Case Studies runs the same mechanisms to the point where
+ * they broke a real firm.
  */
 export const categories: Category[] = [
   {
@@ -71,6 +72,15 @@ export const categories: Category[] = [
     accentColor: 'oklch(45% .03 250)',
     icon: 'MF',
     premium: false,
+  },
+  {
+    id: 'cases',
+    name: 'Case Studies',
+    description:
+      'Six failures worth understanding — Archegos, Amaranth, the nickel squeeze, the London Whale, the gilt LDI crisis and LTCM — each one a mechanism from the free catalogue taken to its conclusion.',
+    accentColor: 'oklch(55% .13 120)',
+    icon: 'CS',
+    premium: true,
   },
   {
     id: 'risk',

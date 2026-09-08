@@ -1,8 +1,8 @@
 # OTC Learn
 
 A mobile learning app for OTC derivatives. Six categories and thirty-six
-products are free and stay free; two more — Exotics, and Risk & the Greeks —
-are what a subscription buys. Every product has a product page, a five-step lesson and a
+products are free and stay free; three more — Exotics, Risk & the Greeks, and
+Case Studies — are what a subscription buys. Every product has a product page, a five-step lesson and a
 twelve-question bank that every quiz draws a different paper from. Mastery, day streaks and a
 spaced-repetition review queue persist locally; there is no sign-up, and all
 content is bundled, so the app works offline apart from a launch-time check for
@@ -87,8 +87,9 @@ key terms, risks to watch — and carries, beyond the five lesson steps:
   choice, each tagged with the lesson step it tests and a difficulty.
 
 That is 180 lesson steps, 216 key terms and 432 questions in the free
-catalogue. The subscription adds 12 products, 60 lesson steps and 144 questions
-on top of it, across Exotics and Risk & the Greeks — see "The gating model" in
+catalogue. The subscription adds 18 products, 90 lesson steps and 216 questions
+on top of it, across Exotics, Risk & the Greeks and Case Studies — see "The
+gating model" in
 `PRODUCTION_READINESS.md` for why a subscription buys what comes next rather
 than access to what is already there.
 

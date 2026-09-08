@@ -158,6 +158,12 @@ export const categoryColors = {
    * because at 50% it reaches only 4.38:1 on its own tint and AA wants 4.5.
    */
   risk: { accent: '#008695', soft: '#D2EEF1', text: '#007080' },
+  /**
+   * hue 120 — olive. The last wide gap, between commodity's amber at 80 and
+   * FX's teal at 160. Not the app's success green, which is a semantic colour
+   * and lives at a different chroma.
+   */
+  cases: { accent: '#687C02', soft: '#E5EBD5', text: '#5A6D00' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;

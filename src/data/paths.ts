@@ -83,6 +83,14 @@ export const paths: LearningPath[] = [
     // sends upwards: yesterday explained, and tomorrow estimated.
     productIds: ['dv01', 'delta', 'vega', 'cs01', 'pnlexplain', 'valueatrisk'],
   },
+  {
+    categoryId: 'cases',
+    // Not chronological. The order is how much has to be understood first:
+    // Archegos needs only a total return swap, and LTCM needs convergence,
+    // funding and correlation at once. Difficulty never decreases along a
+    // path, and that rule and the teaching order agree here.
+    productIds: ['archegos', 'amaranth', 'nickel', 'whale', 'ldi', 'ltcm'],
+  },
 ];
 
 const pathsByCategory = new Map(paths.map((p) => [p.categoryId, p]));
