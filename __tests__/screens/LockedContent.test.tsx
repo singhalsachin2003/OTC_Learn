@@ -17,6 +17,7 @@ const PREMIUM_PRODUCT = 'digital';
 import { categories } from '../../src/data/categories';
 import { getProductById, products } from '../../src/data/products';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
+import { GlossaryScreen } from '../../src/screens/Glossary/GlossaryScreen';
 import { createStore, type AppStore } from '../../src/store';
 import {
   setEntitlement,
@@ -386,6 +387,78 @@ describe('what home suggests next', () => {
 
     expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
     expect(screen.queryByTestId('product-locked')).toBeNull();
+  });
+});
+
+describe('the glossary under a paywall', () => {
+  /**
+   * The glossary defined everything for everybody until 2026-09-08, which was
+   * right while nothing was paid. A definition is the teaching; the term is the
+   * index. So the term stays listed — the reference still answers "does this
+   * cover vanna" — and the definition is what a subscription buys.
+   */
+  it('lists a paid term without defining it', async () => {
+    const store = paywalled();
+    await renderWithStore(<GlossaryScreen />, { store });
+
+    const product = getProductById(PREMIUM_PRODUCT);
+    const [term] = product!.keyTerms;
+    await fireEvent.changeText(screen.getByTestId('glossary-search'), term.term);
+
+    expect(screen.getByText(term.term)).toBeTruthy();
+    expect(screen.queryByText(term.definition)).toBeNull();
+    expect(
+      screen.getByTestId(`glossary-locked-${PREMIUM_PRODUCT}-${term.term}`),
+    ).toBeTruthy();
+  });
+
+  /** And there is nothing to annotate on a term you cannot read. */
+  it('offers no note control on a paid term', async () => {
+    const store = paywalled();
+    await renderWithStore(<GlossaryScreen />, { store });
+
+    const product = getProductById(PREMIUM_PRODUCT);
+    const [term] = product!.keyTerms;
+    await fireEvent.changeText(screen.getByTestId('glossary-search'), term.term);
+
+    expect(
+      screen.queryByTestId(`glossary-note-${PREMIUM_PRODUCT}-${term.term}`),
+    ).toBeNull();
+  });
+
+  it('still defines every free term', async () => {
+    const store = paywalled();
+    await renderWithStore(<GlossaryScreen />, { store });
+
+    // "Fixed leg" matches one entry, which matters: the list is virtualised
+    // and a query matching a dozen terms can leave the one being asserted on
+    // below the initial window.
+    const term = getProductById('irs')!.keyTerms.find(
+      (entry) => entry.term === 'Fixed leg',
+    );
+    expect(term).toBeDefined();
+    await fireEvent.changeText(screen.getByTestId('glossary-search'), term!.term);
+
+    expect(screen.getByText(term!.definition)).toBeTruthy();
+  });
+
+  /** A subscriber gets the whole reference back, which is what they bought. */
+  it('defines the paid terms for a subscriber', async () => {
+    const store = paywalled();
+    store.dispatch(
+      setEntitlement({
+        purchasesConfigured: true,
+        hasPurchasableOffer: true,
+        premium: true,
+      }),
+    );
+    await renderWithStore(<GlossaryScreen />, { store });
+
+    const product = getProductById(PREMIUM_PRODUCT);
+    const [term] = product!.keyTerms;
+    await fireEvent.changeText(screen.getByTestId('glossary-search'), term.term);
+
+    expect(screen.getByText(term.definition)).toBeTruthy();
   });
 });
 

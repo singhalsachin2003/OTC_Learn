@@ -57,13 +57,13 @@ import { products } from '../data/products';
  * - **The entire current catalogue** — every product, question bank, exam and
  *   review sitting in all six asset classes. That is the point of the model,
  *   not an omission from it.
- * - **The glossary.** Every key term, defined, stays open — including the six
- *   per product in a paid asset class, which since Exotics means 36 definitions
- *   a non-subscriber can read. That was looked at again when the first premium
- *   class landed and left alone: the terms are the taster, the lesson and the
- *   question bank are the product, and a glossary with holes in it would be a
- *   worse reference for the free catalogue it mostly describes. Tapping one
- *   lands on the product page, which shows the pitch.
+ * - **The glossary's index**, but not all of its definitions. Every term stays
+ *   listed, including those from a paid asset class, so the reference still
+ *   answers "does this app cover vanna" and a search still finds it. The
+ *   *definition* of a paid term is withheld, which reverses the call made when
+ *   Exotics shipped: leaving 72 definitions open was the largest thing the app
+ *   gave away, and a definition is the teaching rather than the index. Every
+ *   free term is defined as it always was.
  * - **Insights, notes and achievements.** They describe the reader's own
  *   record. They were built before the paywall and shipped unlocked, and
  *   closing them now would be the same removal this model exists to avoid.

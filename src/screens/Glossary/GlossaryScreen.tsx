@@ -7,11 +7,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { NotebookPen, X } from 'lucide-react-native';
+import { Lock, NotebookPen, X } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { allKeyTerms } from '../../data/products';
+import { useAccess } from '../../hooks/useAccess';
 import { useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { NoteEditor } from '../Product/components/NoteEditor';
@@ -24,7 +25,7 @@ import {
   typography,
 } from '../../theme';
 
-type Entry = ReturnType<typeof allKeyTerms>[number];
+type Entry = ReturnType<typeof allKeyTerms>[number] & { locked: boolean };
 interface Section {
   letter: string;
   data: Entry[];
@@ -40,29 +41,51 @@ function letterFor(term: string): string {
 /**
  * Every key term in the catalogue, alphabetically.
  *
- * The terms already exist per product; collecting them here turns thirty-six
+ * The terms already exist per product; collecting them here turns dozens of
  * short vocabularies into one reference, which is how someone actually uses
  * them — you meet "basis risk" in a lesson and want the definition later,
  * without remembering which product it belonged to.
+ *
+ * A term from a paid asset class is listed but not defined for someone who has
+ * not subscribed. This screen used to define everything, which was the right
+ * answer while nothing was paid and the wrong one afterwards: a definition is
+ * the teaching, not the index, and thirty-six of them from a class nobody had
+ * bought was the largest thing the app gave away. The term itself stays
+ * visible, so the reference still answers "does this app cover vanna" — and
+ * tapping it lands on the product page, which explains the rest.
  */
 export function GlossaryScreen() {
   const { goToTab, goToProduct } = useNavigation();
+  const { productLocked } = useAccess();
   const [query, setQuery] = useState('');
   // Which term's editor is open. One at a time: a screen of open text boxes is
   // a form, and this is a reference list you occasionally annotate.
   const [openNote, setOpenNote] = useState<string | null>(null);
   const notes = useAppSelector((state) => state.notes.byProduct);
 
-  const terms = useMemo(() => allKeyTerms(), []);
+  const terms = useMemo(
+    () =>
+      allKeyTerms().map((entry) => ({
+        ...entry,
+        locked: productLocked(entry.productId),
+      })),
+    [productLocked],
+  );
+  const lockedCount = useMemo(
+    () => terms.filter((entry) => entry.locked).length,
+    [terms],
+  );
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (needle === '') {
       return terms;
     }
+    // A locked entry matches on its term alone. Matching a hidden definition
+    // would surface a row whose reason for matching is not on the screen.
     return terms.filter(
       (entry) =>
         entry.term.toLowerCase().includes(needle) ||
-        entry.definition.toLowerCase().includes(needle),
+        (!entry.locked && entry.definition.toLowerCase().includes(needle)),
     );
   }, [terms, query]);
   const isSearching = query.trim() !== '';
@@ -100,37 +123,53 @@ export function GlossaryScreen() {
             testID={`glossary-${entry.productId}-${entry.term}`}
             onPress={() => goToProduct(entry.productId)}
             accessibilityRole="button"
-            accessibilityLabel={`${entry.term}. ${entry.definition}. From ${entry.productName}.`}
+            accessibilityLabel={
+              entry.locked
+                ? `${entry.term}. From ${entry.productName}. Needs a subscription.`
+                : `${entry.term}. ${entry.definition}. From ${entry.productName}.`
+            }
             style={({ pressed }) => [styles.row, pressed && styles.pressed]}
           >
             <View style={styles.rowMain}>
               <Text style={styles.term}>{entry.term}</Text>
-              <Text style={styles.definition}>{entry.definition}</Text>
+              {!entry.locked && (
+                <Text style={styles.definition}>{entry.definition}</Text>
+              )}
               <Text style={[styles.source, { color: accent }]}>
                 {entry.productName}
               </Text>
             </View>
             {/* Its own control, not part of the row's tap target: tapping the
                 row means "explain this", and folding a second meaning into it
-                would make one of the two a surprise. */}
-            <Pressable
-              testID={`glossary-note-${entry.productId}-${entry.term}`}
-              onPress={() => setOpenNote(editing ? null : noteKey)}
-              accessibilityRole="button"
-              accessibilityLabel={
-                noted
-                  ? `Edit your note on ${entry.term}`
-                  : `Add a note on ${entry.term}`
-              }
-              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-              style={styles.noteButton}
-            >
-              <NotebookPen
-                size={17}
-                strokeWidth={2}
-                color={noted || editing ? accent : colors.chevron}
-              />
-            </Pressable>
+                would make one of the two a surprise. A locked term shows a lock
+                here instead — there is nothing yet to annotate. */}
+            {entry.locked ? (
+              <View
+                testID={`glossary-locked-${entry.productId}-${entry.term}`}
+                style={styles.noteButton}
+              >
+                <Lock size={15} strokeWidth={2.5} color={colors.text.tertiary} />
+              </View>
+            ) : (
+              <Pressable
+                testID={`glossary-note-${entry.productId}-${entry.term}`}
+                onPress={() => setOpenNote(editing ? null : noteKey)}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  noted
+                    ? `Edit your note on ${entry.term}`
+                    : `Add a note on ${entry.term}`
+                }
+                hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                style={styles.noteButton}
+              >
+                <NotebookPen
+                  size={17}
+                  strokeWidth={2}
+                  color={noted || editing ? accent : colors.chevron}
+                />
+              </Pressable>
+            )}
             <Text style={styles.chevron}>›</Text>
           </Pressable>
 
@@ -170,7 +209,9 @@ export function GlossaryScreen() {
         <Text style={styles.subtitle}>
           {isSearching
             ? `${filtered.length} of ${terms.length} terms match “${query.trim()}”`
-            : `${terms.length} terms from across the catalogue`}
+            : lockedCount > 0
+              ? `${terms.length} terms — ${lockedCount} are defined with a subscription`
+              : `${terms.length} terms from across the catalogue`}
         </Text>
 
         <View style={styles.searchRow}>
