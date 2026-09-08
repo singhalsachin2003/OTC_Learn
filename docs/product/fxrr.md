@@ -71,6 +71,8 @@ Corporate treasuries are the largest natural users, collaring receivables and pa
 
 The app adds a twelve-question bank for Risk Reversal, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Risk Reversal — Building a smile from three numbers, What the skew is telling you, and what it is not, Term structure of the tilt — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

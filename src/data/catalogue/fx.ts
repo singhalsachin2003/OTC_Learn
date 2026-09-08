@@ -257,6 +257,194 @@ export const fxProducts: Product[] = [
           'The hedge no longer offsets anything, so it becomes a speculative position. No premium was ever paid on a forward.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Where forward points come from',
+          content:
+            'A forward rate is not a forecast. It is spot adjusted by the interest rate differential between the two currencies, because any other level would let someone borrow in one, convert, lend in the other and hedge the return at a profit. The adjustment is quoted as forward points added to or subtracted from spot, and its sign follows the differential: the higher-yielding currency trades at a discount forward. A trader who thinks a forward looks cheap is usually looking at a rate differential without realising it.',
+          callout:
+            'The relationship is covered interest parity, and it holds tightly for major currencies because the arbitrage is easy. Where it does not hold, the gap is the cross-currency basis and it is a funding price rather than free money.',
+        },
+        {
+          title: 'Dates, and why they are half the trade',
+          content:
+            'Spot for most pairs settles two business days out, in both currencies’ calendars, which means a holiday in either shifts the date. A forward for a standard tenor runs from that spot date to the same day of the month later; a broken date lands between two standard ones and is priced by interpolating the points. None of this is decorative — a hedge dated a day away from the exposure it covers leaves a day of unhedged spot risk, and on a large corporate flow that is a real number.',
+          callout:
+            'End-end convention: a forward starting on the last business day of a month matures on the last business day of the later month, not on the same numbered day.',
+        },
+        {
+          title: 'Rolling and pre-delivering',
+          content:
+            'Exposures move, and forwards are routinely adjusted rather than left to mature. Extending one is a swap — buy the near date back and sell a later one — priced off the points for that period, so a roll is a funding transaction and not a new view. Taking delivery early works the same way in reverse. The cost of each roll is the differential over the period, which means a hedge repeatedly rolled through a wide differential accumulates a cost nobody decided to take.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'fxfwd-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What determines the forward points on a currency pair?',
+          options: [
+            'The market’s expected future spot rate',
+            'The interest rate differential between the two currencies',
+            'The relative inflation rates of the two economies',
+            'The volatility of the pair',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Any other level would be arbitrageable by borrowing in one currency, lending in the other and hedging the return.',
+        },
+        {
+          id: 'fxfwd-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'The higher-yielding currency of a pair trades at a discount in the forward market.',
+          correctAnswer: true,
+          explanation:
+            'Otherwise the carry could be earned and hedged at the same time, which is the arbitrage the points remove.',
+        },
+        {
+          id: 'fxfwd-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A forward rate is the market’s best forecast of where spot will be.',
+          correctAnswer: false,
+          explanation:
+            'It is spot plus a rate differential. Whether that turns out to resemble the future is a separate — and much argued — question.',
+        },
+        {
+          id: 'fxfwd-d4',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A forward looks mispriced against your view of the currency. What are you most likely looking at?',
+          options: [
+            'A rate differential you have not accounted for',
+            'A dealer error',
+            'An illiquid settlement date',
+            'A change in the spot convention',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The points are arithmetic. A forward that looks cheap is usually a rates view wearing an FX costume.',
+        },
+        {
+          id: 'fxfwd-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'When does spot settle for most major currency pairs?',
+          options: [
+            'Same day',
+            'One business day out',
+            'Two business days out, in both currencies’ calendars',
+            'On the last business day of the month',
+          ],
+          correctIndex: 2,
+          explanation:
+            'A holiday in either currency moves the date, and everything dated off spot moves with it.',
+        },
+        {
+          id: 'fxfwd-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A broken-date forward is priced by interpolating between the standard tenors around it.',
+          correctAnswer: true,
+          explanation:
+            'The points curve is quoted at standard dates; anything between them is interpolated.',
+        },
+        {
+          id: 'fxfwd-d7',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A forward starting on the last business day of a month matures on the same numbered day of the later month.',
+          correctAnswer: false,
+          explanation:
+            'End-end convention takes it to the last business day of the later month instead.',
+        },
+        {
+          id: 'fxfwd-d8',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A hedge is dated one day away from the exposure it covers. What is left?',
+          options: [
+            'Nothing material',
+            'A day of unhedged spot exposure',
+            'A change in the credit terms',
+            'A different settlement currency',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Small per trade, and a real position across a corporate flow book.',
+        },
+        {
+          id: 'fxfwd-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'How is a forward extended to a later date?',
+          options: [
+            'By cancelling it and dealing a new one at market',
+            'With an FX swap: buying the near date back and selling a later one',
+            'By paying a fee to the dealer',
+            'By novating it to another counterparty',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A roll is a funding transaction priced off the points, not a new directional decision.',
+        },
+        {
+          id: 'fxfwd-d10',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Rolling a hedge repeatedly through a wide interest rate differential accumulates a cost.',
+          correctAnswer: true,
+          explanation:
+            'Each roll pays the differential over its period, and nobody explicitly decides to take that cost.',
+        },
+        {
+          id: 'fxfwd-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt: 'Taking delivery of a forward early is also priced with a swap.',
+          correctAnswer: true,
+          explanation:
+            'Pre-delivery is the same mechanism in reverse, and it is priced off the same points.',
+        },
+        {
+          id: 'fxfwd-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'Where covered interest parity does not hold, what is the gap?',
+          options: [
+            'An arbitrage available to anyone',
+            'The cross-currency basis, which is a funding price',
+            'A quoting error',
+            'The expected depreciation of the weaker currency',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is compensation for balance sheet and funding. Reading it as free money is how positions get sized wrongly.',
+        },
+      ],
+    },
   },
   {
     id: 'fxopt',
@@ -506,6 +694,194 @@ export const fxProducts: Product[] = [
           'Touching the barrier cancels the option, so the protection can vanish in exactly the market the hedger bought it for. Barriers make options cheaper, not dearer.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Quoted in deltas, not strikes',
+          content:
+            'FX options are quoted by delta rather than by strike, and in volatility rather than in price. A "25 delta risk reversal" is the difference in implied volatility between the 25-delta call and the 25-delta put; a "25 delta butterfly" is how much the average of those two sits above the at-the-money level. Three numbers — at-the-money, risk reversal, butterfly — describe the smile at each maturity, and a strike is recovered from a delta only once a volatility is chosen, which makes the convention slightly circular and entirely standard.',
+          callout:
+            'The convention travels: a strike quoted in deltas stays meaningful as spot moves, which is why an interdealer market that trades all day prefers it to a fixed number.',
+        },
+        {
+          title: 'Which currency the premium is in',
+          content:
+            'Every FX option has two currencies, so every quantity in it has to say which one it is measured in. Premium can be paid in either, and if it is paid in the currency the delta is measured against, the hedge has to account for the premium itself — the premium-adjusted delta. There are also two defensible answers to what "at the money" means: the forward rate, or the strike at which a straddle is delta-neutral. Neither is wrong, and a desk that assumes the other convention has mispriced the trade before it starts.',
+          callout:
+            'This is the most common source of a genuine disagreement about the price of a vanilla FX option. Not the model — the conventions around it.',
+        },
+        {
+          title: 'Pricing away from the quoted points',
+          content:
+            'The market gives three volatilities per maturity and a trade may need a strike between them. The standard approach, vanna-volga, prices a vanilla at the required strike and then adds the cost of hedging its second-order exposures — vanna and volga — using the three quoted instruments. It is a market-convention construction rather than a model of how the rate behaves, which is exactly what makes it useful for interpolation and unsuitable as a description of anything.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'fxopt-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'How are FX options conventionally quoted?',
+          options: [
+            'By strike, in premium terms',
+            'By delta, in volatility terms',
+            'By moneyness, in basis points',
+            'By notional, in forward points',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A delta-based strike keeps its meaning as spot moves, which suits a market that trades continuously.',
+        },
+        {
+          id: 'fxopt-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does a 25-delta risk reversal measure?',
+          options: [
+            'The average volatility of the call and the put',
+            'The difference in implied volatility between the 25-delta call and put',
+            'The premium difference between two strikes',
+            'The probability of finishing in the money',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is the market’s price of skew, expressed as a volatility difference rather than a price one.',
+        },
+        {
+          id: 'fxopt-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A butterfly quote describes how far the wings sit above the at-the-money volatility.',
+          correctAnswer: true,
+          explanation:
+            'Level, skew and wings: three numbers per maturity, and the smile is reconstructed from them.',
+        },
+        {
+          id: 'fxopt-d4',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A strike can be recovered from a delta without first choosing a volatility.',
+          correctAnswer: false,
+          explanation:
+            'Delta depends on volatility, so the convention is mildly circular — and universally used anyway.',
+        },
+        {
+          id: 'fxopt-d5',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What is a premium-adjusted delta?',
+          options: [
+            'A delta calculated after the option has been exercised',
+            'A delta that accounts for premium paid in the currency the delta is measured against',
+            'A delta adjusted for the forward points',
+            'A delta net of the dealer’s spread',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Every quantity in an FX option has to name its currency, and the premium is no exception.',
+        },
+        {
+          id: 'fxopt-d6',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'There is more than one defensible definition of "at the money" in FX options.',
+          correctAnswer: true,
+          explanation:
+            'The forward, or the delta-neutral straddle strike. Assuming the wrong one misprices the trade before the model runs.',
+        },
+        {
+          id: 'fxopt-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Two desks disagree on the price of a vanilla FX option. What is the most likely cause?',
+          options: [
+            'A convention difference, such as premium currency or the at-the-money definition',
+            'A difference in the pricing model’s numerical method',
+            'A different view on the future spot rate',
+            'One of them is using the wrong spot rate',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Vanilla FX options are among the most standardised instruments there are; the disagreements live in the conventions.',
+        },
+        {
+          id: 'fxopt-d8',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does vanna-volga pricing do?',
+          options: [
+            'Models the dynamics of the exchange rate directly',
+            'Prices a strike between the quoted ones by adding the cost of hedging its vanna and volga',
+            'Removes the need for a volatility surface',
+            'Converts an FX option into a forward',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is an interpolation built from market conventions, useful for exactly that and not a description of the world.',
+        },
+        {
+          id: 'fxopt-d9',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'The three quoted instruments per maturity are the at-the-money, the risk reversal and the butterfly.',
+          correctAnswer: true,
+          explanation:
+            'Everything else at that maturity is interpolated from them.',
+        },
+        {
+          id: 'fxopt-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Vanna-volga is a description of how the exchange rate actually behaves.',
+          correctAnswer: false,
+          explanation:
+            'It is a hedging-cost construction. Treating it as a model of the underlying is a category error.',
+        },
+        {
+          id: 'fxopt-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Why does the delta convention suit the interdealer market?',
+          options: [
+            'It produces smaller premiums',
+            'A delta-based strike keeps its meaning as spot moves',
+            'It removes the need to agree a maturity',
+            'It is required by clearing houses',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A fixed strike quoted this morning describes a different option this afternoon; a delta does not.',
+        },
+        {
+          id: 'fxopt-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'Every quantity in an FX option has to specify which of the two currencies it is measured in.',
+          correctAnswer: true,
+          explanation:
+            'Notional, premium and delta all have two possible answers, and the confirmation says which.',
+        },
+      ],
+    },
   },
   {
     id: 'fxswap',
@@ -762,6 +1138,192 @@ export const fxProducts: Product[] = [
           'The points move with the rate differential, and the far leg is an unsettled obligation until it delivers.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Funding, wearing an FX label',
+          content:
+            'An FX swap exchanges two currencies now and reverses the exchange later at an agreed rate. Strip away the labels and it is a secured loan in two directions: each side has lent one currency and borrowed another, with the other currency as collateral. That is why the pricing is a rate differential rather than a view on the exchange rate, why the instrument is the largest by turnover in the FX market, and why bank treasuries rather than macro traders are its heaviest users.',
+          callout:
+            'Because each leg collateralises the other, the credit exposure is only the change in the exchange rate over the term — far smaller than the notional exchanged, and the reason the instrument is used for funding at all.',
+        },
+        {
+          title: 'Rolling overnight',
+          content:
+            'A position held past its settlement date is rolled with the shortest of these swaps — tom-next, from tomorrow to the next day — which is how an unsettled spot position is carried indefinitely. The cost or gain on each roll is the overnight rate differential, so a leveraged position in a high-yielding currency earns carry every night and one in a low-yielding currency pays it. That daily accrual is the entire economics of the carry trade, and it is quoted in a market most people never look at.',
+        },
+        {
+          title: 'When the funding market tightens',
+          content:
+            'The price of these swaps moves with how badly someone needs a currency, and demand for dollars outside the United States is chronic and uneven. Points widen predictably at quarter and year ends, when balance sheet is measured, and violently in a crisis, when banks stop supplying funding to each other. Central bank swap lines exist precisely to cap that: they let one central bank supply another with its currency for onward lending, which puts a ceiling on how far the market price can run.',
+          callout:
+            'A crisis in funding looks like an FX chart to anyone reading the wrong screen. The dislocation shows up in the points long before it shows up in spot.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'fxswap-d1',
+          kind: 'choice',
+          step: 1,
+          difficulty: 'intermediate',
+          prompt: 'Economically, what is an FX swap?',
+          options: [
+            'A directional bet on the exchange rate',
+            'A secured loan in two directions, each currency collateralising the other',
+            'An option to exchange currencies later',
+            'A forward with the near leg removed',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Which is why it prices off rate differentials and why treasuries, not macro desks, are its main users.',
+        },
+        {
+          id: 'fxswap-d2',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'advanced',
+          prompt:
+            'The credit exposure on an FX swap is much smaller than the notional exchanged.',
+          correctAnswer: true,
+          explanation:
+            'Each leg collateralises the other, so the exposure is the move in the rate over the term.',
+        },
+        {
+          id: 'fxswap-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'FX swaps are among the largest instruments by turnover in the FX market.',
+          correctAnswer: true,
+          explanation:
+            'Because they are the plumbing of short-term currency funding rather than a way of taking a view.',
+        },
+        {
+          id: 'fxswap-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What is a tom-next swap used for?',
+          options: [
+            'Hedging a long-dated exposure',
+            'Rolling an unsettled position from tomorrow to the next day',
+            'Converting a swap into a forward',
+            'Settling an option premium',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is how a spot position is carried indefinitely without ever settling.',
+        },
+        {
+          id: 'fxswap-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does the daily roll cost or earn?',
+          options: [
+            'The overnight interest rate differential',
+            'The change in spot over the day',
+            'The implied volatility of the pair',
+            'A fixed fee set by the broker',
+          ],
+          correctIndex: 0,
+          explanation:
+            'That accrual is the entire economics of the carry trade, quoted in a market most people never see.',
+        },
+        {
+          id: 'fxswap-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A leveraged long position in a high-yielding currency earns carry every night it is held.',
+          correctAnswer: true,
+          explanation:
+            'And the mirror position pays it, which is why the trade is popular until the exchange rate moves.',
+        },
+        {
+          id: 'fxswap-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Swap points widen predictably around quarter and year ends.',
+          correctAnswer: true,
+          explanation:
+            'Balance sheet is measured on those dates, so supplying funding across them costs more.',
+        },
+        {
+          id: 'fxswap-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What do central bank swap lines do?',
+          options: [
+            'Fix the exchange rate between two currencies',
+            'Let one central bank supply another with its currency for onward lending',
+            'Guarantee commercial bank deposits',
+            'Replace the interbank market permanently',
+          ],
+          correctIndex: 1,
+          explanation:
+            'They put a ceiling on how far the market price of funding can run in a crisis.',
+        },
+        {
+          id: 'fxswap-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'foundational',
+          prompt:
+            'Demand for dollar funding outside the United States is a persistent feature of this market.',
+          correctAnswer: true,
+          explanation:
+            'Someone has to intermediate it, and the price of doing so is what the points reflect.',
+        },
+        {
+          id: 'fxswap-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'A funding dislocation typically appears first in which market?',
+          options: [
+            'Spot exchange rates',
+            'Swap points and the basis',
+            'Equity indices',
+            'Government bond yields',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Spot can look calm while the cost of borrowing a currency for three months has doubled.',
+        },
+        {
+          id: 'fxswap-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'An FX swap is priced off a view of where the exchange rate will go.',
+          correctAnswer: false,
+          explanation:
+            'It is priced off the interest rate differential. The exchange rate view lives in an outright forward or a spot position.',
+        },
+        {
+          id: 'fxswap-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Who are the heaviest users of FX swaps?',
+          options: [
+            'Retail traders',
+            'Bank treasuries and other managers of short-term currency funding',
+            'Pension schemes hedging liabilities',
+            'Commodity producers',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is a funding instrument, and its volume reflects the size of the funding problem rather than of the FX view.',
+        },
+      ],
+    },
   },
   {
     id: 'ndf',
@@ -1023,6 +1585,195 @@ export const fxProducts: Product[] = [
           'Disruption provisions in the confirmation take over — postponing valuation or naming an alternative rate — and the result can differ from the onshore rate the firm was hedging.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'The fixing is the contract',
+          content:
+            'A deliverable forward settles by exchanging currencies, so the rate at maturity matters only as a comparison. A non-deliverable forward settles in cash against a published fixing, which makes that fixing the entire payoff. The contract therefore names its source precisely — which page, published by whom, at what time, and what happens if it is not published that day. Disruption fallbacks matter here in a way they never do for a deliverable trade: a fixing that fails to appear is not an inconvenience, it is an unpriceable contract until the fallback resolves it.',
+          callout:
+            'Two otherwise identical trades referencing different fixings for the same currency are different instruments, and the basis between them is real.',
+        },
+        {
+          title: 'Onshore, offshore, and the gap between them',
+          content:
+            'These contracts exist because a currency cannot be freely moved across a border, which means there are effectively two markets: the onshore rate, subject to local rules and access, and the offshore rate implied by these contracts. They usually track each other and they need not. When capital controls tighten or local liquidity dries up, the gap widens — and a hedge referencing the offshore fixing does not protect a business whose costs settle onshore. That divergence is the residual risk of the whole instrument.',
+        },
+        {
+          title: 'Settlement currency and its own exposure',
+          content:
+            'Because settlement is in a hard currency, usually dollars, the payoff is a dollar amount computed from a rate. That introduces a second-order effect: the size of the dollar payment depends on the same rate that determines whether there is a payment at all, so the payoff is not linear in the fixing. Small at ordinary levels and material when a currency moves a long way — which is exactly when these contracts are called on.',
+          callout:
+            'It is the same shape as the FRA’s discounting non-linearity: a payoff divided by the thing that created it is never quite a straight line.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'ndf-d1',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'The published fixing is the entire payoff of a non-deliverable forward.',
+          correctAnswer: true,
+          explanation:
+            'Nothing is exchanged, so the contract turns entirely on the rate the named source publishes.',
+        },
+        {
+          id: 'ndf-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What must the contract specify about the fixing?',
+          options: [
+            'Only the currency pair',
+            'The source, the time, and what happens if it is not published',
+            'The counterparty’s internal rate',
+            'The average of the trading day',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A fixing that fails to appear leaves an unpriceable contract until the fallback resolves it.',
+        },
+        {
+          id: 'ndf-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Two trades on the same currency referencing different fixings are effectively the same instrument.',
+          correctAnswer: false,
+          explanation:
+            'They are different instruments, and the basis between the fixings is a real exposure.',
+        },
+        {
+          id: 'ndf-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Why do non-deliverable forwards exist at all?',
+          options: [
+            'Because the currencies are too volatile to deliver',
+            'Because the currency cannot be freely moved across the border',
+            'Because they are cheaper to clear',
+            'Because they avoid the need for a forward curve',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Restricted convertibility creates an offshore market that settles in cash instead.',
+        },
+        {
+          id: 'ndf-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'The onshore and offshore rates for a restricted currency always track each other closely.',
+          correctAnswer: false,
+          explanation:
+            'They usually do and need not. Tightening controls or thin local liquidity widen the gap.',
+        },
+        {
+          id: 'ndf-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A company’s costs settle onshore and its hedge references the offshore fixing. What has it kept?',
+          options: [
+            'Nothing — the hedge is complete',
+            'The gap between the onshore and offshore rates',
+            'Only counterparty risk',
+            'The interest rate differential',
+          ],
+          correctIndex: 1,
+          explanation:
+            'That divergence is the residual risk of the entire instrument, and it widens precisely under stress.',
+        },
+        {
+          id: 'ndf-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'The payoff of a non-deliverable forward is exactly linear in the fixing rate.',
+          correctAnswer: false,
+          explanation:
+            'The settlement amount is computed in a hard currency using the same rate that decides the payment, which bends it slightly.',
+        },
+        {
+          id: 'ndf-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'When does that non-linearity become material?',
+          options: [
+            'When the currency moves a long way',
+            'When interest rates are negative',
+            'When the contract is cleared',
+            'When settlement is in the restricted currency',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Which is exactly the scenario these contracts are bought for.',
+        },
+        {
+          id: 'ndf-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Settlement is normally made in a freely convertible currency such as the dollar.',
+          correctAnswer: true,
+          explanation:
+            'That is what makes the contract deliverable at all when the referenced currency is not.',
+        },
+        {
+          id: 'ndf-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What is a disruption fallback for?',
+          options: [
+            'Reducing the credit exposure of the trade',
+            'Deciding the rate when the named fixing is not published',
+            'Allowing early termination for convenience',
+            'Converting the trade to a deliverable forward',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It converts an unpriceable contract into a priced one, which is why the clause is negotiated rather than assumed.',
+        },
+        {
+          id: 'ndf-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'A deliverable forward depends on its fixing as much as a non-deliverable one does.',
+          correctAnswer: false,
+          explanation:
+            'It settles by exchanging currencies, so the fixing is a comparison rather than the payoff.',
+        },
+        {
+          id: 'ndf-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What should a treasurer check first when hedging a restricted currency?',
+          options: [
+            'Whether the fixing referenced matches where their exposure actually settles',
+            'Whether the dealer is a local bank',
+            'Whether the contract is quoted in points or outright',
+            'Whether the tenor is standard',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Everything else is priceable. A mismatched fixing is a hedge that can fail exactly when it is needed.',
+        },
+      ],
+    },
   },
   {
     id: 'xccy',
@@ -1288,6 +2039,193 @@ export const fxProducts: Product[] = [
           'Dollar funding through the swap market became extremely expensive exactly when banks needed dollars most, which is why the Federal Reserve opened swap lines with other central banks to supply dollars outside that market.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Notionals really are exchanged',
+          content:
+            'Unlike a single-currency swap, a cross-currency swap usually exchanges principal at the start and returns it at maturity. That changes the risk profile completely: the exposure is not just a stream of interest differences but the full notional at the final exchange, valued at whatever the exchange rate has become. A ten-year swap on a hundred million is a hundred million of currency risk sitting at the end of it, which is why these trades dominate the counterparty exposure of a cross-border funding book.',
+          callout:
+            'The initial exchange is what makes it a funding instrument. The final exchange is what makes it a credit problem.',
+        },
+        {
+          title: 'Resetting the mark to market',
+          content:
+            'To manage that, the market developed a version where one notional is re-fixed periodically to the prevailing exchange rate, with the difference settled in cash. Exposure is reset to near zero at each period rather than accumulating over ten years. The trade-off is operational and it changes who bears what: the resetting leg’s notional now varies, which suits a bank managing counterparty exposure and complicates life for a borrower who wanted a fixed liability in its own currency.',
+        },
+        {
+          title: 'Why a borrower uses one',
+          content:
+            'The typical user is an issuer who can raise debt cheaply in a currency it does not need. It issues where the demand is and swaps the proceeds into the currency it actually spends, matching both the principal and the coupons. The whole trade is a funding arbitrage: raise where you are wanted, spend where you operate, and let the swap carry the currency. The residual is the basis, which is the price of that convenience and the reason the arbitrage is smaller than the headline coupon suggests.',
+          callout:
+            'The "reverse Yankee" pattern — US companies issuing in euros and swapping back — is this trade run at scale, and it moves with the basis rather than with anyone’s currency view.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'xccy-d1',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'foundational',
+          prompt:
+            'A cross-currency swap normally exchanges principal at the start and again at maturity.',
+          correctAnswer: true,
+          explanation:
+            'Which is what distinguishes it from a single-currency swap, where notional is only a reference.',
+        },
+        {
+          id: 'xccy-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does the final exchange of principal create?',
+          options: [
+            'A large currency exposure at maturity',
+            'An interest rate exposure only',
+            'A reduction in counterparty risk',
+            'An obligation to deliver physically',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The full notional, valued at whatever the rate has become — which dominates the counterparty exposure of these books.',
+        },
+        {
+          id: 'xccy-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'The exposure on a cross-currency swap is limited to the interest differences exchanged.',
+          correctAnswer: false,
+          explanation:
+            'The final principal exchange is the larger part, and it grows with how far the rate has travelled.',
+        },
+        {
+          id: 'xccy-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does a mark-to-market cross-currency swap do?',
+          options: [
+            'Fixes both notionals for the whole term',
+            'Re-fixes one notional periodically and settles the difference in cash',
+            'Removes the interest legs entirely',
+            'Converts the trade into two separate loans',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Exposure resets to near zero each period instead of accumulating over the life of the trade.',
+        },
+        {
+          id: 'xccy-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'The resetting version is unambiguously better for both parties.',
+          correctAnswer: false,
+          explanation:
+            'It suits a bank managing counterparty exposure and complicates life for a borrower who wanted a fixed liability.',
+        },
+        {
+          id: 'xccy-d6',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'Why does an issuer typically enter one of these?',
+          options: [
+            'To speculate on the exchange rate',
+            'To raise debt where demand is strongest and convert it into the currency it spends',
+            'To avoid paying a coupon',
+            'To shorten the maturity of its debt',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Issue where you are wanted, spend where you operate, and let the swap carry the currency.',
+        },
+        {
+          id: 'xccy-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The swap is arranged to match both the principal and the coupons of the debt it converts.',
+          correctAnswer: true,
+          explanation:
+            'Otherwise the issuer has converted its funding and kept a currency exposure on the payments.',
+        },
+        {
+          id: 'xccy-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What determines how attractive that funding arbitrage is?',
+          options: [
+            'The cross-currency basis',
+            'The credit rating of the issuer alone',
+            'The volatility of the currency pair',
+            'The maturity of the swap',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The basis is the price of the convenience, and it is why the saving is smaller than the coupon difference suggests.',
+        },
+        {
+          id: 'xccy-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Issuance patterns such as US companies borrowing in euros move with the basis rather than with a currency view.',
+          correctAnswer: true,
+          explanation:
+            'It is a funding decision. When the basis moves, the flow moves with it.',
+        },
+        {
+          id: 'xccy-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Why do these trades dominate counterparty exposure in a cross-border book?',
+          options: [
+            'Because they are rarely collateralised',
+            'Because the final principal exchange is a large, long-dated currency exposure',
+            'Because they cannot be netted',
+            'Because they are always uncleared',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Ten years of drift in an exchange rate applied to a full notional is a much larger number than the coupons.',
+        },
+        {
+          id: 'xccy-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Resetting the notional periodically reduces counterparty exposure.',
+          correctAnswer: true,
+          explanation:
+            'It is settled in cash at each reset instead of being allowed to accumulate.',
+        },
+        {
+          id: 'xccy-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What makes the initial exchange significant?',
+          options: [
+            'It is what turns the trade into a funding instrument',
+            'It removes the need for collateral',
+            'It fixes the exchange rate for the coupons only',
+            'It determines the credit rating of the swap',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Money actually changes hands, which is what the issuer needed in the first place.',
+        },
+      ],
+    },
   },
   {
     id: 'fxrr',
@@ -1551,5 +2489,194 @@ export const fxProducts: Product[] = [
           'The sold call is exercised against it at 1.1200, so it never participates in the move from there up to 1.1500.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Building a smile from three numbers',
+          content:
+            'The market quotes three things per maturity: the at-the-money volatility, the risk reversal and the butterfly. From those, a desk reconstructs volatilities at the 25-delta call and put — the call is the at-the-money plus the butterfly plus half the risk reversal, the put is the at-the-money plus the butterfly minus half of it — and interpolates the rest. That is the entire surface for a currency pair at that maturity: a level, a tilt and a curvature, from which every strike is derived.',
+          callout:
+            'The arithmetic runs both ways. Given three volatilities you can produce the quotes, which is how a desk checks whether a broker’s market is internally consistent.',
+        },
+        {
+          title: 'What the skew is telling you, and what it is not',
+          content:
+            'A risk reversal is commonly read as positioning: a large negative number in a pair means the market is paying up for downside protection. That reading is not wrong and it is incomplete, because the same quote also reflects the cost of hedging the skew, the flow a dealer happens to be carrying, and the structural demand of hedgers who are not expressing a view at all. Currencies with persistent one-way hedging demand carry a persistent skew that says nothing about what anyone expects next week.',
+        },
+        {
+          title: 'Term structure of the tilt',
+          content:
+            'Skew is quoted at each maturity, and the shape across maturities carries its own information. A short-dated risk reversal that spikes while the one-year barely moves is an event being priced — a vote, a decision, a deadline — rather than a change of view about the currency. Desks watch the difference between the two for that reason, and structures are built to sell the part that is expensive and keep the part that is not.',
+          callout:
+            'The 2015 Swiss franc episode is the cautionary tale: a suppressed spot rate kept every one of these numbers small, right up to the morning they meant nothing.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'fxrr-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'Which three quotes describe an FX volatility surface at one maturity?',
+          options: [
+            'Spot, forward and volatility',
+            'At-the-money, risk reversal and butterfly',
+            'Delta, gamma and vega',
+            'Call, put and straddle',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A level, a tilt and a curvature — everything else at that maturity is derived from them.',
+        },
+        {
+          id: 'fxrr-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'The 25-delta call volatility can be reconstructed from the at-the-money, butterfly and risk reversal quotes.',
+          correctAnswer: true,
+          explanation:
+            'At-the-money plus butterfly plus half the risk reversal, with the put taking the other half.',
+        },
+        {
+          id: 'fxrr-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'The arithmetic only runs one way: quotes to volatilities, never back.',
+          correctAnswer: false,
+          explanation:
+            'It runs both ways, which is how a desk checks whether a broker’s market is internally consistent.',
+        },
+        {
+          id: 'fxrr-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'What does a large negative risk reversal indicate most directly?',
+          options: [
+            'That downside protection is expensive relative to upside',
+            'That the currency will fall',
+            'That volatility is about to rise',
+            'That the forward is in backwardation',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It is a price. Reading it as a forecast skips several steps.',
+        },
+        {
+          id: 'fxrr-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A persistent skew in a currency can reflect structural hedging demand rather than a market view.',
+          correctAnswer: true,
+          explanation:
+            'One-way demand from hedgers who are not expressing an opinion still has to be priced by someone.',
+        },
+        {
+          id: 'fxrr-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What else is embedded in a risk reversal besides positioning?',
+          options: [
+            'The cost of hedging the skew and the flow a dealer is carrying',
+            'The interest rate differential',
+            'The spot bid-offer spread',
+            'The settlement convention',
+          ],
+          correctIndex: 0,
+          explanation: 'Which is why it is a useful indicator and a poor forecast.',
+        },
+        {
+          id: 'fxrr-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'A spike in short-dated skew with little change further out usually indicates a dated event being priced.',
+          correctAnswer: true,
+          explanation:
+            'A vote or a decision moves the maturity that spans it and leaves the rest of the curve alone.',
+        },
+        {
+          id: 'fxrr-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Why do desks watch the difference between short and long-dated skew?',
+          options: [
+            'To separate an event from a change of view',
+            'To calculate the forward points',
+            'To determine the premium currency',
+            'To set the delta convention',
+          ],
+          correctIndex: 0,
+          explanation:
+            'And structures are then built to sell the expensive part and keep the rest.',
+        },
+        {
+          id: 'fxrr-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'foundational',
+          prompt: 'Skew is quoted separately at each maturity.',
+          correctAnswer: true,
+          explanation:
+            'And the shape across maturities is itself information a desk trades on.',
+        },
+        {
+          id: 'fxrr-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What did the 2015 Swiss franc episode demonstrate about these measures?',
+          options: [
+            'A suppressed spot rate keeps every volatility measure small until it does not',
+            'Risk reversals are the most reliable predictor of a break',
+            'Butterflies always widen before a policy change',
+            'Skew is irrelevant to pegged currencies',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Every number on the screen described a market that had been managed, not one that was safe.',
+        },
+        {
+          id: 'fxrr-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A risk reversal quote is a forecast of the direction of the currency.',
+          correctAnswer: false,
+          explanation:
+            'It is the relative price of two options. What it says about direction is inference, not content.',
+        },
+        {
+          id: 'fxrr-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What does the butterfly quote add to the surface?',
+          options: [
+            'Curvature — how far the wings sit above the middle',
+            'The level of at-the-money volatility',
+            'The tilt between calls and puts',
+            'The forward rate',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Level from the at-the-money, tilt from the risk reversal, curvature from the butterfly.',
+        },
+      ],
+    },
   },
 ];
