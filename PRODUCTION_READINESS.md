@@ -169,11 +169,12 @@ is no longer entirely unexercised.
    both product lists, the product page, the lesson, and the exam scopes. Two
    things worth knowing about it —
 
-   - **It is still invisible, and neither the key nor the offering will
-     change that now.** `paywallApplies` needs four things true, and as of
-     2026-09-06 the binding one is the fourth: the catalogue has to hold an
-     asset class marked `premium`, and none does. See "The gating model" below
-     — that is the intended state, not an outstanding task.
+   - **What now decides whether anyone sees it is the key and the offering.**
+     `paywallApplies` needs four things true. The fourth — the catalogue holding
+     an asset class marked `premium` — was the binding one from 2026-09-06 and
+     was satisfied by Exotics on 2026-09-08, so a build with the `goog_` key and
+     a live offering locks that class for a new install. See "The gating model"
+     below.
    - **No price is written anywhere in the repo.** They come from Play, per
      country, through `getOfferings`, and the annual saving is computed from
      the two figures the store returns. Setting price points in the Play
@@ -223,7 +224,14 @@ Settled **2026-09-06**, reversing what v1.2 first built.
 **Everything the app has already shipped is free, permanently** — all 36
 products across all six asset classes, plus exams, review, Insights, notes,
 achievements and the glossary. A subscription buys the asset classes added
-*after* the paywall.
+*after* the paywall. The first of them, Exotics, shipped on 8 Sept 2026.
+
+The published pages follow the same line: `scripts/generate-site.js` writes a
+full lesson for a free product and a **teaser** for a paid one — summary, step
+titles and key terms, no lesson body and no worked example. The App Link still
+resolves, which is why the page exists at all. Published figures are quoted as
+free-versus-paid rather than as one total, because "42 products" reads as though
+all of them were free.
 
 The model it replaced held five of six asset classes back and left Interest Rate
 open. It was wrong for a reason worth keeping written down, because it will look
@@ -234,19 +242,26 @@ collapses. Exam mode, Insights and Notes were already built and unlocked; new
 asset classes are the only thing that makes a renewal make sense.
 
 Implementation: `Category.premium` is a **required** field, so a new asset class
-cannot be added without someone deciding which side of the line it falls on. All
-six current categories are `premium: false` and must stay that way — flipping one
-takes back something people already have. `utils/access.ts` holds the rule, and
-gained a fourth guard alongside the existing three: **never sell what does not
-exist.** With nothing marked premium, `paywallApplies` is false for everybody.
+cannot be added without someone deciding which side of the line it falls on. The
+six that shipped before the paywall are `premium: false` and must stay that way —
+flipping one takes back something people already have. `utils/access.ts` holds
+the rule, and gained a fourth guard alongside the existing three: **never sell
+what does not exist.**
+
+**Exotics is the first paid asset class, shipped 8 Sept 2026** — digital,
+barrier, range accrual, accumulator, target redemption forward and cliquet, six
+products and 72 questions built out of the free catalogue rather than carved out
+of it. The fourth guard now passes, so **the paywall is live** on any build that
+has the RevenueCat key and an offering; without either, the first two guards keep
+it inert exactly as before.
 
 Three consequences:
 
-- **There is nothing to sell yet, and that is correct.** The paywall is inert
-  on every build until new content is written.
-  `__tests__/utils/accessShippedCatalogue.test.ts` asserts exactly this and
-  should be changed deliberately, not patched, when the first premium asset
-  class lands.
+- **The paywall is no longer inert, and the tests that said so have changed.**
+  `__tests__/utils/accessShippedCatalogue.test.ts` now guards the promise rather
+  than the emptiness: the six free classes are a literal list, not a filter over
+  `premium`, so a diff there means a shipped class has been moved behind the
+  paywall. Three suites that mocked a fake premium class use the real one now.
 - **₹399 lifetime is now the dangerous tier.** Under a content pipeline it sells
   every future asset class forever for under fourteen months of monthly, and
   Play never revokes a product from someone who has bought it. Monthly and

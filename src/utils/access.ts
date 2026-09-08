@@ -37,9 +37,9 @@ import { products } from '../data/products';
  * one this model needs that the old one did not. Until a category is actually
  * marked `premium`, a subscription would add nothing to what the reader
  * already has, and the honest thing to do with a pitch for nothing is not show
- * it. `premiumCategoryCount()` is zero today, so the paywall is inert on every
- * build until the first new asset class lands — which is the correct state,
- * not a bug to route around.
+ * it. This guard held the paywall inert from 2026-09-06 until Exotics shipped
+ * on 2026-09-08; it now passes, and the other three are what decide whether any
+ * given install sees a lock.
  *
  * **Anyone who was already using the app keeps all of it.** `grandfathered` is
  * set once, for installs that predate the paywall, and never expires. Under
@@ -57,7 +57,13 @@ import { products } from '../data/products';
  * - **The entire current catalogue** — every product, question bank, exam and
  *   review sitting in all six asset classes. That is the point of the model,
  *   not an omission from it.
- * - **The glossary.** Every key term, defined, stays open.
+ * - **The glossary.** Every key term, defined, stays open — including the six
+ *   per product in a paid asset class, which since Exotics means 36 definitions
+ *   a non-subscriber can read. That was looked at again when the first premium
+ *   class landed and left alone: the terms are the taster, the lesson and the
+ *   question bank are the product, and a glossary with holes in it would be a
+ *   worse reference for the free catalogue it mostly describes. Tapping one
+ *   lands on the product page, which shows the pitch.
  * - **Insights, notes and achievements.** They describe the reader's own
  *   record. They were built before the paywall and shipped unlocked, and
  *   closing them now would be the same removal this model exists to avoid.
