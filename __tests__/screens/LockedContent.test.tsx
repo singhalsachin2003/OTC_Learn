@@ -14,6 +14,7 @@ const PREMIUM_CATEGORY = 'exotics';
 /** The first product on the paid path — what a locked tap lands on. */
 const PREMIUM_PRODUCT = 'digital';
 
+import { categories } from '../../src/data/categories';
 import { getProductById, products } from '../../src/data/products';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
 import { createStore, type AppStore } from '../../src/store';
@@ -344,7 +345,10 @@ describe('the headline on a paywalled home screen', () => {
    */
   it('counts what the reader can open, not the catalogue', async () => {
     // Derived, so adding content cannot quietly turn this into a wrong number.
-    const open = products.filter((p) => p.categoryId !== PREMIUM_CATEGORY);
+    const paidIds = new Set(
+      categories.filter((c) => c.premium).map((category) => category.id),
+    );
+    const open = products.filter((p) => !paidIds.has(p.categoryId));
     const openQuestions = open.reduce((total, p) => total + p.quiz.length, 0);
     expect(open.length).toBeLessThan(products.length);
 

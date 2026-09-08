@@ -76,6 +76,13 @@ export const paths: LearningPath[] = [
     // the pieces do.
     productIds: ['digital', 'barrier', 'rangeacc', 'accum', 'tarf', 'cliquet'],
   },
+  {
+    categoryId: 'risk',
+    // One measure, then the option Greeks in the order a desk hedges them,
+    // then credit's pair, and last the two reports a risk function actually
+    // sends upwards: yesterday explained, and tomorrow estimated.
+    productIds: ['dv01', 'delta', 'vega', 'cs01', 'pnlexplain', 'valueatrisk'],
+  },
 ];
 
 const pathsByCategory = new Map(paths.map((p) => [p.categoryId, p]));

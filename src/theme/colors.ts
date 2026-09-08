@@ -152,6 +152,12 @@ export const categoryColors = {
    * the original five.
    */
   exotics: { accent: '#A25089', soft: '#F7E1EE', text: '#92417A' },
+  /**
+   * hue 205 — teal. The other wide gap, between FX at 160 and Interest Rate at
+   * 250. `text` is two lightness steps below the accent rather than one,
+   * because at 50% it reaches only 4.38:1 on its own tint and AA wants 4.5.
+   */
+  risk: { accent: '#008695', soft: '#D2EEF1', text: '#007080' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;

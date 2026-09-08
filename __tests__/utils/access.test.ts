@@ -56,6 +56,9 @@ const NOTHING_ON_SALE = {
 };
 
 const freeIds = catalogueCategories.filter((c) => !c.premium).map((c) => c.id);
+const paidIds = new Set(
+  catalogueCategories.filter((c) => c.premium).map((c) => c.id),
+);
 
 describe('paywallApplies', () => {
   /**
@@ -144,15 +147,15 @@ describe('canOpenProduct', () => {
 
 describe('the counts the paywall sells on', () => {
   it('counts only the premium asset classes', () => {
-    expect(premiumCategoryCount()).toBe(1);
-    expect(premiumCategoryNames()).toEqual([
-      catalogueCategories.find((c) => c.id === PREMIUM_ID)?.name,
-    ]);
+    const paid = catalogueCategories.filter((c) => c.premium);
+    expect(paid.length).toBeGreaterThan(0);
+    expect(premiumCategoryCount()).toBe(paid.length);
+    expect(premiumCategoryNames()).toEqual(paid.map((c) => c.name));
   });
 
   /** Derived from the catalogue, never written down — so this derives too. */
   it('counts their products and questions from the catalogue', () => {
-    const premiumProducts = products.filter((p) => p.categoryId === PREMIUM_ID);
+    const premiumProducts = products.filter((p) => paidIds.has(p.categoryId));
     expect(premiumProducts.length).toBeGreaterThan(0);
     expect(premiumProductCount()).toBe(premiumProducts.length);
     expect(premiumQuestionCount()).toBe(

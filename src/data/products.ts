@@ -5,6 +5,7 @@ import { exoticsProducts } from './catalogue/exotics';
 import { foundationsProducts } from './catalogue/foundations';
 import { fxProducts } from './catalogue/fx';
 import { interestRateProducts } from './catalogue/interestRate';
+import { riskProducts } from './catalogue/risk';
 import type { Product, Question } from './types';
 
 /**
@@ -26,6 +27,7 @@ export const products: Product[] = [
   ...commodityProducts,
   ...foundationsProducts,
   ...exoticsProducts,
+  ...riskProducts,
 ];
 
 /** Total number of products in the catalogue — drives the progress bar. */

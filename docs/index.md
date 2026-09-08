@@ -22,6 +22,8 @@ No account, no ads, no tracking. Progress is stored on your device.
 - [Market Foundations](category/foundations/) — collateral, clearing, documentation
 - [Exotics](category/exotics/) — barriers, digitals, accumulators and target
   redemption forwards, by subscription
+- [Risk & the Greeks](category/risk/) — DV01, delta and gamma, vega, CS01,
+  P&L attribution and value at risk, by subscription
 
 Every free product page carries the full lesson, a worked example with real
 numbers and the key terms. A subscription product's page carries its summary,

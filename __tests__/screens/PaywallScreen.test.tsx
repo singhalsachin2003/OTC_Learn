@@ -3,12 +3,14 @@ import Purchases from 'react-native-purchases';
 import RevenueCatUI from 'react-native-purchases-ui';
 
 /**
- * The pitch renders against Exotics, the real premium class. Credit used to be
- * mocked into that role because the shipped catalogue sold nothing; it sells
- * something now, so the numbers on this screen are the ones a reader sees.
+ * The pitch renders against the real premium classes. Credit used to be mocked
+ * into that role because the shipped catalogue sold nothing; it sells something
+ * now, so the numbers on this screen are the ones a reader sees — and they are
+ * read out of the catalogue here rather than pinned, because the pitch is a
+ * count and counts change with every drop.
  */
-const PREMIUM_CATEGORY = 'exotics';
 
+import { categories } from '../../src/data/categories';
 import { products } from '../../src/data/products';
 import { PaywallScreen } from '../../src/screens/Paywall/PaywallScreen';
 import { createStore, type AppStore } from '../../src/store';
@@ -196,11 +198,19 @@ describe('PaywallScreen as a pitch', () => {
     await renderSelling();
 
     // Derived from the catalogue, exactly as the screen derives it, so adding
-    // content cannot quietly turn the pitch into a wrong number.
-    const premium = products.filter((p) => p.categoryId === PREMIUM_CATEGORY);
+    // content cannot quietly turn the pitch into a wrong number — including the
+    // plural, which changed the first time a second paid class shipped.
+    const paidIds = new Set(
+      categories.filter((c) => c.premium).map((category) => category.id),
+    );
+    const premium = products.filter((p) => paidIds.has(p.categoryId));
     const questions = premium.reduce((total, p) => total + p.quiz.length, 0);
+    const classes =
+      paidIds.size === 1
+        ? '1 new asset class'
+        : `${paidIds.size} new asset classes`;
     expect(
-      screen.getByText(`${premium.length} more products, across 1 new asset class`),
+      screen.getByText(`${premium.length} more products, across ${classes}`),
     ).toBeTruthy();
     expect(screen.getByText(new RegExp(`${questions} questions`))).toBeTruthy();
   });

@@ -11,9 +11,11 @@ import type { Category } from './types';
  * sells what comes *after* them rather than access to them — flipping one to
  * `true` would take back something people already have.
  *
- * Exotics is the first class on the other side of that line, and the shape a
- * paid one takes: it is built on the free catalogue rather than carved out of
- * it, and every lesson in it names the free product it is assembled from.
+ * Exotics and Risk & the Greeks are on the other side of that line, and they
+ * show the shape a paid class takes: both are built on the free catalogue
+ * rather than carved out of it. Exotics assembles the vanilla products into
+ * structures; Risk teaches what a desk does with any of them once it is on the
+ * book.
  */
 export const categories: Category[] = [
   {
@@ -69,6 +71,15 @@ export const categories: Category[] = [
     accentColor: 'oklch(45% .03 250)',
     icon: 'MF',
     premium: false,
+  },
+  {
+    id: 'risk',
+    name: 'Risk & the Greeks',
+    description:
+      'How a desk measures what it is holding — DV01, the option Greeks, spread and default risk, the daily explain and value at risk.',
+    accentColor: 'oklch(55% .13 205)',
+    icon: 'RK',
+    premium: true,
   },
   {
     id: 'exotics',
