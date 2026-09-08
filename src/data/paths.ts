@@ -109,6 +109,14 @@ export const paths: LearningPath[] = [
       'ltcm',
     ],
   },
+  {
+    categoryId: 'alt',
+    // Mechanism first, then the markets that complicate it. A perpetual
+    // introduces funding; the basis trade is what funding pays for; freight
+    // adds averaged settlement; power adds delivery shape; and the last two
+    // stretch the same ideas to a fifty-year horizon and a physical trigger.
+    productIds: ['perp', 'cryptobasis', 'ffa', 'power', 'catbond', 'longevity'],
+  },
 ];
 
 const pathsByCategory = new Map(paths.map((p) => [p.categoryId, p]));

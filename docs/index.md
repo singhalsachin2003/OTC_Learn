@@ -26,6 +26,8 @@ No account, no ads, no tracking. Progress is stored on your device.
   P&L attribution and value at risk, by subscription
 - [Case Studies](category/cases/) — twelve failures, from Barings and Orange
   County to the gilt LDI crisis and Archegos, by subscription
+- [Alternative Underlyings](category/alt/) — perpetual swaps and basis, freight,
+  power, catastrophe bonds and longevity swaps, by subscription
 
 Every free product page carries the full lesson, a worked example with real
 numbers and the key terms. A subscription product's page carries its summary,

@@ -1,3 +1,4 @@
+import { alternativesProducts } from './catalogue/alternatives';
 import { casesProducts } from './catalogue/cases';
 import { commodityProducts } from './catalogue/commodity';
 import { creditProducts } from './catalogue/credit';
@@ -30,6 +31,7 @@ export const products: Product[] = [
   ...exoticsProducts,
   ...riskProducts,
   ...casesProducts,
+  ...alternativesProducts,
 ];
 
 /** Total number of products in the catalogue — drives the progress bar. */

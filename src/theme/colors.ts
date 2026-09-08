@@ -164,6 +164,13 @@ export const categoryColors = {
    * and lives at a different chroma.
    */
   cases: { accent: '#687C02', soft: '#E5EBD5', text: '#5A6D00' },
+  /**
+   * hue 45 — terracotta. The wheel is now full: 20, 45, 80, 120, 160, 205, 250,
+   * 300 and 340 are taken, and the two gaps left are 25° wide. A tenth category
+   * needs a different strategy — a second neutral, as Market Foundations did,
+   * or a change of lightness rather than of hue.
+   */
+  alt: { accent: '#AE5528', soft: '#FAE2D8', text: '#9D4616' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;
