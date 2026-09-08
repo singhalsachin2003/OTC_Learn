@@ -4,7 +4,11 @@ import { useAppDispatch, useSettings } from '../../../hooks/useAppState';
 import { updateSessionSize } from '../../../store/thunks/settingsThunks';
 import { colors, radius, spacing, typography } from '../../../theme';
 
-/** Offered sizes. Every product's bank holds 12, so 12 means "the lot". */
+/**
+ * Offered sizes. Twelve was "the lot" when every bank held exactly twelve; a
+ * product with paid depth carries twenty-four, so the caption below says what
+ * the free bank holds rather than claiming to describe every product.
+ */
 const SIZES = [4, 6, 8, 12] as const;
 
 /**
@@ -23,7 +27,7 @@ export function SessionSizePicker() {
       <View style={styles.text}>
         <Text style={styles.name}>Questions per quiz</Text>
         <Text style={styles.note}>
-          Drawn from a bank of 12, weighted toward what you have missed
+          Weighted toward the questions you have missed
         </Text>
       </View>
       <View style={styles.options}>

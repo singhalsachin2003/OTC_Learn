@@ -139,7 +139,7 @@ Play checks dimensions exactly and rejects anything off by a pixel.
 | --- | --- | --- |
 | App icon | `assets/icon-play-512.png` | 512×512 |
 | Feature graphic | `assets/feature-graphic.png` | 1024×500 |
-| Phone screenshots | `store-assets/screenshots/*.png` | 1080×2400 — **must be re-shot**, the current set predates the tab bar, dashboard and product page |
+| Phone screenshots | `store-assets/screenshots/*.png` | 1080×2400 — **re-shot 2026-09-08**: home, category, product, lesson, quiz, quiz feedback, review, insights |
 | Tablet screenshots | — | Optional; skip for v1.1 |
 | Promo video | — | Optional; skip |
 
