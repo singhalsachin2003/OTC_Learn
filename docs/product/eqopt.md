@@ -71,6 +71,8 @@ Company founders and executives use bespoke puts and collars to protect stock th
 
 The app adds a twelve-question bank for OTC Equity Option, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on OTC Equity Option — Dividends and early exercise, Borrow, and what it does to parity, Corporate actions and the adjustment — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

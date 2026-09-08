@@ -71,6 +71,8 @@ CFDs are mostly used by retail and professional traders at online brokers in the
 
 The app adds a twelve-question bank for Contract for Difference, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Contract for Difference — Financing, day by day, Close-out, and how fast it happens, Dividends, and what a synthetic holder receives — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

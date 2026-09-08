@@ -73,6 +73,8 @@ Hedge funds use equity swaps with a prime broker to run long and short books wit
 
 The app adds a twelve-question bank for Equity Swap, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Equity Swap — The borrow is the constraint, Resetting notionals and what they do to exposure, Dividends and corporate actions — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

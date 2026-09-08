@@ -258,6 +258,194 @@ export const equityProducts: Product[] = [
           'Frequent marking turns a paper loss into a cash demand within days rather than years.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'The borrow is the constraint',
+          content:
+            'A dealer hedging a synthetic short has to find the shares to sell, and that borrow has a price which is not stable. On an easy name it is negligible; on a crowded one it can exceed everything else in the trade, and it can be recalled — the lender wants the stock back, the dealer has to return it, and the position has to be re-established somewhere or closed. The financing spread on a short is therefore a live number rather than a term of the contract, and a short that was cheap in January can be uneconomic by June without the share price doing anything at all.',
+          callout:
+            'A synthetic short does not remove the borrow problem. It moves it to the dealer, who prices it back to the client and reserves the right to reprice it.',
+        },
+        {
+          title: 'Resetting notionals and what they do to exposure',
+          content:
+            'With a resetting notional the period’s performance is paid in cash and the notional is re-struck at the new price, so the equivalent share count is held constant and exposure tracks market value. With a fixed notional it does not: as the price rises the same notional represents fewer shares, so the position quietly de-gears itself into a rally and gears up into a fall. Neither is wrong, and a client who assumed the other one has a different position from the one they think they have.',
+        },
+        {
+          title: 'Dividends and corporate actions',
+          content:
+            'The equity leg pays a proportion of declared dividends, and the proportion is negotiated rather than assumed — it reflects the withholding tax the dealer actually suffers on its hedge in that market, which depends on where the dealer books the position. Corporate actions are handled by a determination clause: a split, a spin-off or a rights issue changes what a share is, and someone has to decide what the swap now references. That someone is the calculation agent, usually the dealer, and the clause matters most in exactly the situations nobody modelled.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'eqswap-d1',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'The cost of borrowing shares can change materially during the life of a synthetic short.',
+          correctAnswer: true,
+          explanation:
+            'It is a live market price, and on a crowded name it can dominate every other term of the trade.',
+        },
+        {
+          id: 'eqswap-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'What happens when a stock lender recalls shares the dealer has borrowed?',
+          options: [
+            'The swap terminates automatically',
+            'The dealer must return them and re-establish or close the hedge',
+            'The client must deliver the shares',
+            'The recall is ignored until maturity',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Which is why a short that was cheap in January can be uneconomic by June with no move in the price.',
+        },
+        {
+          id: 'eqswap-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'Holding a short synthetically removes the borrow problem entirely.',
+          correctAnswer: false,
+          explanation:
+            'It moves it to the dealer, who prices it back and reserves the right to reprice it.',
+        },
+        {
+          id: 'eqswap-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does a resetting notional do?',
+          options: [
+            'Holds the equivalent share count constant so exposure tracks market value',
+            'Fixes the exposure in currency terms for the life of the trade',
+            'Removes the financing leg',
+            'Converts the swap into a forward',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Performance is paid in cash each period and the notional is re-struck at the new price.',
+        },
+        {
+          id: 'eqswap-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'A fixed-notional swap de-gears itself as the share price rises.',
+          correctAnswer: true,
+          explanation:
+            'The same notional represents fewer shares, so the position shrinks into a rally and grows into a fall.',
+        },
+        {
+          id: 'eqswap-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A client assumed a resetting notional and was given a fixed one. What have they got?',
+          options: [
+            'The same position with different documentation',
+            'A different exposure profile from the one they think they hold',
+            'A cheaper trade with identical risk',
+            'A position with no financing leg',
+          ],
+          correctIndex: 1,
+          explanation: 'Neither structure is wrong; assuming the wrong one is.',
+        },
+        {
+          id: 'eqswap-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The proportion of a dividend passed through on the equity leg is negotiated rather than fixed at 100%.',
+          correctAnswer: true,
+          explanation:
+            'It reflects the withholding tax the dealer actually suffers on its hedge, which depends on where it books the position.',
+        },
+        {
+          id: 'eqswap-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Who decides what a swap references after a spin-off or a rights issue?',
+          options: [
+            'The exchange',
+            'The calculation agent, usually the dealer',
+            'The index provider',
+            'The clearing house',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The determination clause matters most in the situations nobody modelled in advance.',
+        },
+        {
+          id: 'eqswap-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A corporate action can change what the underlying of a swap actually is.',
+          correctAnswer: true,
+          explanation:
+            'A split, a spin-off or a rights issue all do, and the contract needs a rule for it.',
+        },
+        {
+          id: 'eqswap-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Why is the financing spread on a synthetic short not a fixed term?',
+          options: [
+            'Because the benchmark rate floats',
+            'Because the borrow cost behind it is a live market price',
+            'Because the client can renegotiate monthly',
+            'Because it is set by the exchange',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The dealer is passing through a cost that moves, and reserving the right to keep passing it through.',
+        },
+        {
+          id: 'eqswap-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A dealer can price the same synthetic short differently for two clients on the same day.',
+          correctAnswer: true,
+          explanation:
+            'Borrow availability, balance sheet and the client’s own risk all feed the spread.',
+        },
+        {
+          id: 'eqswap-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Which detail most often surprises a client after the trade is done?',
+          options: [
+            'That dividends are passed through net rather than gross',
+            'That the swap has a maturity date',
+            'That the equity leg can pay negative amounts',
+            'That the notional is quoted in currency',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The proportion is negotiated, and the number that was assumed is rarely the number in the confirmation.',
+        },
+      ],
+    },
   },
   {
     id: 'eqopt',
@@ -509,6 +697,193 @@ export const equityProducts: Product[] = [
           'The premium is capped; the payout the seller owes is not, which is the asymmetry of the trade.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Dividends and early exercise',
+          content:
+            'A single-stock option lives on top of a share that pays lumpy, discrete dividends, and that changes both its price and when it should be exercised. An American call on a non-dividend-paying stock should never be exercised early; on a dividend payer it can be worth exercising just before the ex-date to capture the payment. Puts run the other way. This is one of the few places in derivatives where the optimal action is a genuine calculation rather than a convention, and it is why single-stock option models carry a dividend schedule rather than a yield.',
+          callout:
+            'Index options are usually European precisely to avoid this. Single-stock options are usually American, and the dividend calendar is part of pricing them.',
+        },
+        {
+          title: 'Borrow, and what it does to parity',
+          content:
+            'Put-call parity is often taught as an identity, and it holds only when the underlying can be freely bought and sold short. Where the stock is hard to borrow, the short leg of the arbitrage costs money, so the relationship shifts by the borrow cost — puts become expensive relative to calls, and the implied "interest rate" backed out of the option prices is not the risk-free rate at all. Anyone reading an implied dividend or an implied rate off a hard-to-borrow name is reading the borrow.',
+        },
+        {
+          title: 'Corporate actions and the adjustment',
+          content:
+            'When a company splits its stock, spins off a division or is acquired, existing options have to be adjusted so that holders are neither enriched nor damaged by an event that has nothing to do with their view. Exchange-listed options follow published rules — strike and contract size adjusted, or the deliverable redefined as a basket. Over-the-counter options rely on a determination by the calculation agent under the documentation. Both aim at the same thing, and the second one is negotiated rather than announced, which is why the clause is read closely on any name with corporate activity.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'eqopt-d1',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'An American call on a stock that pays no dividend should never be exercised early.',
+          correctAnswer: true,
+          explanation:
+            'Selling the option always beats exercising it, because exercising throws away the remaining time value.',
+        },
+        {
+          id: 'eqopt-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'When can early exercise of an American call make sense?',
+          options: [
+            'Just before an ex-dividend date on a dividend-paying stock',
+            'Whenever the option is in the money',
+            'Immediately after a rally',
+            'Never, under any circumstances',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Capturing the dividend can be worth more than the time value given up. It is a calculation, not a rule of thumb.',
+        },
+        {
+          id: 'eqopt-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'Single-stock option models use a discrete dividend schedule rather than a continuous yield.',
+          correctAnswer: true,
+          explanation:
+            'Real dividends arrive as lumps on known dates, and the exercise decision depends on exactly when.',
+        },
+        {
+          id: 'eqopt-d4',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'Why are index options usually European?',
+          options: [
+            'To avoid the early exercise complication entirely',
+            'Because indices pay no dividends',
+            'Because they are cash settled',
+            'Because exchanges prohibit American index options',
+          ],
+          correctIndex: 0,
+          explanation:
+            'A single settlement date removes the question that a dividend calendar otherwise forces.',
+        },
+        {
+          id: 'eqopt-d5',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Put-call parity holds regardless of whether the underlying can be borrowed.',
+          correctAnswer: false,
+          explanation:
+            'The arbitrage needs a short leg. Where borrow is expensive, the relationship shifts by that cost.',
+        },
+        {
+          id: 'eqopt-d6',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'On a hard-to-borrow stock, what does the implied rate backed out of option prices reflect?',
+          options: [
+            'The risk-free rate',
+            'The borrow cost of the stock',
+            'The dividend yield only',
+            'The exchange’s margin rate',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Anyone reading an implied dividend or rate off such a name is mostly reading the borrow.',
+        },
+        {
+          id: 'eqopt-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Puts tend to look expensive relative to calls on a hard-to-borrow name.',
+          correctAnswer: true,
+          explanation:
+            'Because the arbitrage that would otherwise link them requires shorting the stock.',
+        },
+        {
+          id: 'eqopt-d8',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What is the aim of a corporate action adjustment to an option?',
+          options: [
+            'To leave holders neither enriched nor damaged by the event',
+            'To increase the option’s value in line with the company’s',
+            'To convert the option into shares',
+            'To terminate the contract cleanly',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The event has nothing to do with the holder’s view, so the contract is restated rather than repriced.',
+        },
+        {
+          id: 'eqopt-d9',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Over-the-counter options rely on a calculation agent determination rather than a published exchange rule.',
+          correctAnswer: true,
+          explanation:
+            'Same aim, negotiated rather than announced — which is why the clause is read closely on active names.',
+        },
+        {
+          id: 'eqopt-d10',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'How might a listed option be adjusted after a spin-off?',
+          options: [
+            'The strike and contract size are changed, or the deliverable becomes a basket',
+            'The option is cancelled at intrinsic value',
+            'The expiry is extended',
+            'The premium is refunded',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Whatever preserves the holder’s economics across an event they did not choose.',
+        },
+        {
+          id: 'eqopt-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'A dividend cut changes the value of options on the stock even if the share price does not move.',
+          correctAnswer: true,
+          explanation:
+            'The forward changes, and with it the balance between calls and puts.',
+        },
+        {
+          id: 'eqopt-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What should be checked before reading an implied dividend from listed option prices?',
+          options: [
+            'Whether the stock is hard to borrow',
+            'Whether the options are cash settled',
+            'The exchange’s trading hours',
+            'The option’s open interest',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Borrow and dividends enter the same term, and the market cannot tell you which one it is quoting.',
+        },
+      ],
+    },
   },
   {
     id: 'varswap',
@@ -760,6 +1135,192 @@ export const equityProducts: Product[] = [
           'On a strike of 20 with $2,500 of variance notional that is $562,500 against $437,500 — the convexity in action.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Why variance and not volatility',
+          content:
+            'The market settles these on realised variance — the average of squared returns — rather than on volatility, and the reason is replication rather than preference. Variance can be hedged with a static portfolio of options across every strike, weighted inversely to the square of the strike, plus a dynamic position in the underlying. Volatility, the square root, cannot be replicated that cleanly. So the contract that can be hedged is the one that gets quoted, and the volatility number in the quote is a convention laid over a variance payoff.',
+          callout:
+            'This is why the payoff is convex in volatility: a move from 20 to 30 costs the seller more than a move from 20 to 10 gains them. The convexity is a consequence of squaring, not a design feature.',
+        },
+        {
+          title: 'The replicating strip, and where it fails',
+          content:
+            'The static hedge needs options at every strike from zero to infinity. Real markets quote a range, so the replication is truncated: the wings that are not available are exactly the region that matters in a crash. A dealer selling variance is therefore short a payoff it cannot fully hedge, and the gap widens precisely when the underlying gaps. That is the honest version of what happened to variance books in 2008 and again in 2020.',
+        },
+        {
+          title: 'Caps, and what they admit',
+          content:
+            'Most single-stock variance swaps and many index ones carry a cap, typically at two and a half times the strike, converting an unbounded payoff into a bounded one. The cap exists because the uncapped version is unhedgeable in the tail, and it changes the instrument: a capped variance swap is a variance swap minus a far out-of-the-money option, so the seller is no longer short unlimited convexity and the buyer no longer owns it. Reading the two as the same trade is how a hedge is discovered to have a ceiling on the day it is needed.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'varswap-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Why do these contracts settle on variance rather than volatility?',
+          options: [
+            'Variance is easier to observe',
+            'Variance can be replicated with a static portfolio of options; volatility cannot',
+            'Regulators require it',
+            'Variance produces smaller numbers',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The contract that can be hedged is the one that gets quoted. The volatility figure is a convention on top.',
+        },
+        {
+          id: 'varswap-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'The payoff of a variance swap is convex in volatility.',
+          correctAnswer: true,
+          explanation:
+            'Squaring does it: a rise from 20 to 30 costs the seller more than a fall from 20 to 10 earns them.',
+        },
+        {
+          id: 'varswap-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'How are the options in the replicating portfolio weighted?',
+          options: [
+            'Equally across strikes',
+            'Inversely to the square of the strike',
+            'By their delta',
+            'By open interest',
+          ],
+          correctIndex: 1,
+          explanation:
+            'That weighting, plus a dynamic position in the underlying, reproduces the variance payoff.',
+        },
+        {
+          id: 'varswap-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'The replicating strip requires options at every strike from zero to infinity.',
+          correctAnswer: true,
+          explanation:
+            'Which no market quotes, so the hedge is truncated where the traded strikes end.',
+        },
+        {
+          id: 'varswap-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'Where does the truncation of the hedge hurt most?',
+          options: [
+            'In the wings, exactly where a crash lands',
+            'At the money, where liquidity is deepest',
+            'At short maturities',
+            'In the dividend assumption',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The unhedgeable region and the dangerous region are the same region.',
+        },
+        {
+          id: 'varswap-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A dealer short variance is short a payoff it can hedge completely.',
+          correctAnswer: false,
+          explanation:
+            'The static replication is truncated, and the gap widens precisely when the underlying gaps.',
+        },
+        {
+          id: 'varswap-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What is a typical cap on a variance swap?',
+          options: [
+            'Two and a half times the strike',
+            'Ten times the strike',
+            'The previous year’s realised variance',
+            'The at-the-money implied volatility',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It converts an unbounded payoff into a bounded one, which is what makes the tail hedgeable.',
+        },
+        {
+          id: 'varswap-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A capped variance swap is economically a variance swap minus a far out-of-the-money option.',
+          correctAnswer: true,
+          explanation:
+            'The seller is no longer short unlimited convexity, and the buyer no longer owns it.',
+        },
+        {
+          id: 'varswap-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Why do single-stock variance swaps almost always carry a cap?',
+          options: [
+            'Because the uncapped version is unhedgeable in the tail',
+            'Because single stocks are less volatile than indices',
+            'Because exchanges require it',
+            'Because the payoff would otherwise be negative',
+          ],
+          correctIndex: 0,
+          explanation:
+            'A single name can gap in a way a diversified index rarely does.',
+        },
+        {
+          id: 'varswap-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A capped and an uncapped variance swap can be treated as the same hedge.',
+          correctAnswer: false,
+          explanation:
+            'That assumption is discovered to be wrong on the day the hedge is needed most.',
+        },
+        {
+          id: 'varswap-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Variance books were damaged in both 2008 and 2020 for essentially the same reason.',
+          correctAnswer: true,
+          explanation:
+            'A truncated static hedge against a payoff whose worst region is the one the market stops quoting.',
+        },
+        {
+          id: 'varswap-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What does the volatility number in a variance swap quote actually describe?',
+          options: [
+            'A convention laid over a variance payoff',
+            'The expected realised volatility precisely',
+            'The implied volatility of the at-the-money option',
+            'The cap level',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The contract settles on variance. Quoting its square root is for human comprehension.',
+        },
+      ],
+    },
   },
   {
     id: 'cfd',
@@ -1004,6 +1565,191 @@ export const equityProducts: Product[] = [
           'It caps the loss at the funds in the account. Professional clients do not get that protection.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Financing, day by day',
+          content:
+            'The whole cost of holding one of these is a daily financing charge on the full position value, not on the margin posted. A long pays a benchmark rate plus a spread; a short receives a rate less a spread, which at low interest rates means paying on both sides. That charge is small enough to ignore for a day and decisive over months: a position held for a year on ten times leverage can pay a double-digit percentage of the client’s own capital in financing before the price has moved at all.',
+          callout:
+            'The instrument is marketed on the leverage and priced on the financing. Those are the same fact seen from two directions.',
+        },
+        {
+          title: 'Close-out, and how fast it happens',
+          content:
+            'Positions are marked continuously and closed automatically when equity falls below a maintenance level. That is a protection and a hazard: it caps the loss in an orderly market and it guarantees the exit happens at the worst available moment in a disorderly one. Where the underlying gaps, the close-out price can be far beyond the level that triggered it, and the account can end below zero — the mechanism that turned the 2015 Swiss franc move into a solvency problem for brokers rather than only a loss for clients.',
+        },
+        {
+          title: 'Dividends, and what a synthetic holder receives',
+          content:
+            'A long position is credited an amount reflecting the dividend and a short is debited one, so the economics track the shareholder without the shareholding. The amount is usually net of withholding, because the provider’s own hedge suffers that tax, and the adjustment happens on the ex-date rather than the payment date — which is when the price drops and therefore when the position needs compensating. Corporate actions are handled by adjustment rather than by delivery, since there is nothing to deliver.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'cfd-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is the financing charge calculated on?',
+          options: [
+            'The margin posted',
+            'The full value of the position',
+            'The client’s realised profit',
+            'The initial premium',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Which is why leverage and financing cost are the same fact seen from two directions.',
+        },
+        {
+          id: 'cfd-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'At low interest rates a client can end up paying financing on both long and short positions.',
+          correctAnswer: true,
+          explanation:
+            'The long pays a rate plus a spread; the short receives a rate less a spread, which can be negative.',
+        },
+        {
+          id: 'cfd-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A position is held for a year at ten times leverage. What does the financing represent?',
+          options: [
+            'A negligible cost',
+            'Potentially a double-digit percentage of the client’s own capital',
+            'A one-off charge at inception',
+            'A credit, since leverage earns interest',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Charged on the position and measured against the margin, which is a tenth of it.',
+        },
+        {
+          id: 'cfd-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'foundational',
+          prompt:
+            'Positions are closed automatically when account equity falls below a maintenance level.',
+          correctAnswer: true,
+          explanation:
+            'A protection in an orderly market and a guarantee of a bad exit in a disorderly one.',
+        },
+        {
+          id: 'cfd-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What happens to automatic close-out when the underlying gaps?',
+          options: [
+            'It executes at the trigger level',
+            'It executes at the next available price, which can be far beyond the trigger',
+            'It is suspended until the market reopens',
+            'It converts the position to a forward',
+          ],
+          correctIndex: 1,
+          explanation:
+            'And the account can end below zero, which is how a client loss becomes a broker solvency problem.',
+        },
+        {
+          id: 'cfd-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Automatic close-out guarantees the client cannot lose more than they deposited.',
+          correctAnswer: false,
+          explanation:
+            'It guarantees an exit attempt, not a price. The 2015 Swiss franc move demonstrated the difference.',
+        },
+        {
+          id: 'cfd-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'When is a dividend adjustment applied to a synthetic position?',
+          options: [
+            'On the ex-date, when the price drops',
+            'On the payment date',
+            'At the end of the quarter',
+            'When the position is closed',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The adjustment compensates for the price move, so it has to happen when the price moves.',
+        },
+        {
+          id: 'cfd-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The dividend credited to a long position is usually net of withholding tax.',
+          correctAnswer: true,
+          explanation:
+            'The provider’s own hedge suffers that tax, and the adjustment passes through what it actually receives.',
+        },
+        {
+          id: 'cfd-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'A short position is debited an amount reflecting the dividend.',
+          correctAnswer: true,
+          explanation:
+            'It tracks a shareholder’s economics in reverse, which includes paying away the income.',
+        },
+        {
+          id: 'cfd-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'How are corporate actions handled?',
+          options: [
+            'By adjustment, since there is nothing to deliver',
+            'By delivering the new shares',
+            'By terminating the position',
+            'By converting to an option',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The position is synthetic, so the contract is restated rather than settled.',
+        },
+        {
+          id: 'cfd-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Financing cost is the main determinant of whether one of these works as a long-term holding.',
+          correctAnswer: true,
+          explanation:
+            'The daily charge compounds against a small equity base, which is why the instrument suits short horizons.',
+        },
+        {
+          id: 'cfd-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'What is the honest summary of the leverage on offer?',
+          options: [
+            'It multiplies both the exposure and the financing charged against a small deposit',
+            'It reduces the cost of holding a position',
+            'It removes the need for margin',
+            'It caps losses at the deposit',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Everything in the product follows from charging on the position and margining against a fraction of it.',
+        },
+      ],
+    },
   },
   {
     id: 'divswap',
@@ -1266,6 +2012,191 @@ export const equityProducts: Product[] = [
           'Supervisors asked banks to suspend payouts and expectations for the year roughly halved within weeks, while equities were falling.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Three kinds of dividend',
+          content:
+            'Pricing one of these means separating what is announced, what is forecast and what is implied. Dividends declared for the near term are close to known and price accordingly; those a year or two out are a forecast, informed by payout ratios and earnings; and beyond that the market is trading an implied level extracted from index futures and option prices rather than from any company’s intentions. The front of the curve is arithmetic, the middle is analysis, and the back is positioning — and the three behave completely differently in a shock.',
+          callout:
+            'In a crisis the near dates barely move because they are already declared, and the far dates collapse. A single "dividend view" is three different trades.',
+        },
+        {
+          title: 'Where the supply comes from',
+          content:
+            'The natural sellers of long-dated dividends are the banks that issue structured products. An autocallable note leaves the issuer holding a residual long position in future dividends, and hedging it means selling them into the market. That is why the curve is persistently in surplus at the long end and why the level says as much about structured product issuance as about corporate payout policy. Understanding who has to sell is more useful here than any forecast of what companies will pay.',
+        },
+        {
+          title: 'Index points and their arithmetic',
+          content:
+            'Index dividends are quoted in points rather than in currency or percentages: the sum of dividends paid by constituents over a period, converted into the index’s own units by its divisor. That makes them directly comparable with the index level and directly subtractable from a futures price, which is why the futures-implied dividend is the standard reference. It also means an index change — a constituent entering or leaving — moves the expected dividend points without any company changing what it pays.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'divswap-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is the front of the dividend curve mostly made of?',
+          options: [
+            'Dividends already declared',
+            'Analyst forecasts',
+            'Levels implied by option prices',
+            'Historical payout averages',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Near dates are close to arithmetic; the further out you go, the more of the price is opinion.',
+        },
+        {
+          id: 'divswap-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'In a market shock, near-dated dividends fall by less than long-dated ones.',
+          correctAnswer: true,
+          explanation:
+            'They are largely declared. The far end is where the repricing happens.',
+        },
+        {
+          id: 'divswap-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Where do very long-dated dividend levels come from?',
+          options: [
+            'Company guidance',
+            'Levels implied by index futures and option prices',
+            'Rating agency projections',
+            'The index provider',
+          ],
+          correctIndex: 1,
+          explanation:
+            'At that horizon the market is trading positioning rather than any company’s stated intention.',
+        },
+        {
+          id: 'divswap-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Banks issuing structured products are natural sellers of long-dated dividends.',
+          correctAnswer: true,
+          explanation:
+            'An autocallable leaves the issuer long future dividends, and hedging that means selling them.',
+        },
+        {
+          id: 'divswap-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does the long end of the dividend curve mostly reflect?',
+          options: [
+            'Structured product issuance and the hedging it requires',
+            'Corporate payout policy',
+            'Inflation expectations',
+            'Index rebalancing rules',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Knowing who has to sell explains more of the level than any forecast of what companies will pay.',
+        },
+        {
+          id: 'divswap-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'The dividend curve is persistently in surplus at the long end because of hedging flow.',
+          correctAnswer: true,
+          explanation:
+            'Supply from issuers meets limited natural demand, and the price shows it.',
+        },
+        {
+          id: 'divswap-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'How are index dividends conventionally quoted?',
+          options: [
+            'In index points',
+            'As a percentage yield',
+            'In currency per share',
+            'As a ratio to earnings',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Converted into the index’s own units by its divisor, so they subtract directly from a futures price.',
+        },
+        {
+          id: 'divswap-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A change in index constituents can move expected dividend points without any company changing its payout.',
+          correctAnswer: true,
+          explanation:
+            'The measure is a property of the index, and the index membership is not fixed.',
+        },
+        {
+          id: 'divswap-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'Why is the futures-implied dividend the standard reference?',
+          options: [
+            'Because points subtract directly from a futures price',
+            'Because futures are cleared',
+            'Because it includes withholding tax',
+            'Because it is published by the exchange',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The units are chosen precisely so that the arithmetic is a subtraction.',
+        },
+        {
+          id: 'divswap-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'A single view on dividends applies equally across the curve.',
+          correctAnswer: false,
+          explanation:
+            'Near, middle and far are arithmetic, analysis and positioning — three different trades.',
+        },
+        {
+          id: 'divswap-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'A trader is long far-dated dividends. What are they most exposed to?',
+          options: [
+            'Structured product issuance and the hedging flow it generates',
+            'Next quarter’s declarations',
+            'The index divisor',
+            'Withholding tax rates',
+          ],
+          correctIndex: 0,
+          explanation:
+            'At that horizon the flow is the dominant driver, not the fundamentals.',
+        },
+        {
+          id: 'divswap-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'Dividends a year or more out are known with reasonable certainty.',
+          correctAnswer: false,
+          explanation:
+            'They are a forecast, and beyond a couple of years they are barely that.',
+        },
+      ],
+    },
   },
   {
     id: 'autocall',
@@ -1532,5 +2463,191 @@ export const equityProducts: Product[] = [
           'The structure gives the money back exactly when replacing it is expensive, and keeps it when it is not.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'What the issuer is left holding',
+          content:
+            'Selling one of these leaves the bank short a coupon stream, short a barrier put and long a call feature that terminates the trade early. Netted, the issuer is typically short skew and short volatility at exactly the strikes where the market is most sensitive, and long dividends and long correlation. Those exposures cannot be bought back in size, because everyone who issues these structures ends up with the same book at the same time. The hedging flow that results is a recognised feature of European and Asian equity derivatives markets rather than an accident.',
+          callout:
+            'When an entire industry sells the same product, the hedge for it becomes a market of its own — and the price of that hedge is set by how much everyone needs it at once.',
+        },
+        {
+          title: 'The observation date effect',
+          content:
+            'The autocall feature is tested on specific dates, so risk concentrates around them. Just before an observation, with the index near the trigger, the issuer’s delta swings sharply on small moves — the note either terminates or does not, and the two outcomes have very different hedges. That produces mechanical buying or selling into the fixing, in the same direction across every dealer holding similar notes. The effect is well documented and it is a discontinuity in the hedge rather than in the market.',
+        },
+        {
+          title: 'Worst-of, and the correlation inside it',
+          content:
+            'Many of these reference several underlyings and pay on the worst performer. That single word transforms the risk: the buyer is short correlation, because the more independently the underlyings move, the more likely one of them is somewhere unpleasant when it matters. Raising the number of underlyings raises the coupon for the same reason — it is a more dangerous structure, priced accordingly, and the extra yield is compensation rather than a discovery.',
+          callout:
+            'A high coupon on a worst-of basket is not the issuer being generous about one company. It is the price of the chance that any of several things goes wrong.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'autocall-d1',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'After issuing one of these, what is the bank typically short?',
+          options: [
+            'Skew and volatility at the sensitive strikes',
+            'Dividends and correlation',
+            'The underlying index outright',
+            'Interest rate risk only',
+          ],
+          correctIndex: 0,
+          explanation:
+            'And long dividends and correlation — which is why issuers are the natural sellers of long-dated dividends.',
+        },
+        {
+          id: 'autocall-d2',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Issuers can readily buy back the exposures these notes create.',
+          correctAnswer: false,
+          explanation:
+            'Everyone who issues them holds the same book at the same time, so the hedge is scarce exactly when it is wanted.',
+        },
+        {
+          id: 'autocall-d3',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The hedging flow from these structures is a recognised feature of equity derivatives markets.',
+          correctAnswer: true,
+          explanation:
+            'When an industry sells the same product, the hedge for it becomes a market of its own.',
+        },
+        {
+          id: 'autocall-d4',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Why does risk concentrate around observation dates?',
+          options: [
+            'Because coupons are paid on those dates',
+            'Because volatility is always higher then',
+            'Because the note either terminates or does not, and the two outcomes need different hedges',
+            'Because the barrier resets',
+          ],
+          correctIndex: 2,
+          explanation:
+            'The issuer’s delta swings sharply on small moves near the trigger, which is a discontinuity in the hedge.',
+        },
+        {
+          id: 'autocall-d5',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Dealers holding similar notes tend to hedge in the same direction into an observation fixing.',
+          correctAnswer: true,
+          explanation:
+            'Similar books produce similar flow, which is why the effect is visible in the market rather than only on a risk report.',
+        },
+        {
+          id: 'autocall-d6',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'The autocall feature is tested when?',
+          options: [
+            'On specific observation dates',
+            'Continuously through the life of the note',
+            'Only at final maturity',
+            'Whenever the issuer chooses',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Which is what makes the risk lumpy in time as well as in level.',
+        },
+        {
+          id: 'autocall-d7',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What does a worst-of structure pay on?',
+          options: [
+            'The average of the underlyings',
+            'The worst performing underlying',
+            'The best performing underlying',
+            'The first underlying to breach a barrier',
+          ],
+          correctIndex: 1,
+          explanation:
+            'One word in the term sheet, and the entire risk profile changes with it.',
+        },
+        {
+          id: 'autocall-d8',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'A buyer of a worst-of structure is short correlation.',
+          correctAnswer: true,
+          explanation:
+            'The more independently the underlyings move, the more likely one of them is somewhere unpleasant when it matters.',
+        },
+        {
+          id: 'autocall-d9',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Why does adding underlyings raise the coupon?',
+          options: [
+            'More underlyings mean more dividends',
+            'The issuer saves on hedging costs',
+            'It shortens the expected life of the note',
+            'The structure is more dangerous, and the coupon is compensation',
+          ],
+          correctIndex: 3,
+          explanation:
+            'The extra yield is the price of the extra chance that something goes wrong.',
+        },
+        {
+          id: 'autocall-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A high coupon on a worst-of basket reflects generosity about one particular company.',
+          correctAnswer: false,
+          explanation:
+            'It reflects the probability that any one of several underlyings ends up below the barrier.',
+        },
+        {
+          id: 'autocall-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'The issuer’s position and the investor’s are mirror images of each other.',
+          correctAnswer: true,
+          explanation:
+            'Which is why reading the issuer’s hedge is the fastest way to understand what the investor actually owns.',
+        },
+        {
+          id: 'autocall-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What is the most useful question to ask about any structured note?',
+          options: [
+            'What is the issuer short, and where do they have to hedge it?',
+            'What is the headline coupon?',
+            'Who is the calculation agent?',
+            'Is it listed?',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The answer describes the investor’s risk more honestly than the term sheet’s summary does.',
+        },
+      ],
+    },
   },
 ];
