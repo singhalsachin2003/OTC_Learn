@@ -98,8 +98,8 @@ export const riskProducts: Product[] = [
         'The annuity is the sum of the ten discount factors: (1 − 1.04⁻¹⁰) ÷ 0.04 = 8.111.',
         'DV01 ≈ $100m × 8.111 × 0.0001 = $81,110 per basis point.',
         'Rates fall 5bp: the receiver gains roughly 5 × $81,110 = $405,550.',
-        'To hedge, the desk needs an offsetting position with the same $81,110 — about $203m of a five-year swap, whose annuity is 4.452 and whose DV01 is therefore $44,520 per $100m.',
-        'Check: $203m × 4.452 × 0.0001 = $90,376 — too much, so the correct size is $100m × 81,110 ÷ 44,520 = $182m.',
+        'To hedge it with a five-year swap, whose annuity is 4.452 and whose DV01 is therefore $44,520 per $100m, a first guess doubles the notional: ten years is twice five, so $200m.',
+        'Check it: $200m × 4.452 × 0.0001 = $89,040, which is more risk than the position has. The right size is $100m × 81,110 ÷ 44,520 = $182m.',
       ],
       takeaway:
         'The hedge ratio is the ratio of the DV01s, and it is not the ratio of the notionals. Matching notionals here would have left the desk with almost half its risk still on.',
