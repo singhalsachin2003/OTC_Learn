@@ -72,6 +72,8 @@ Hedge funds use total return swaps through their prime brokers to hold bond and 
 
 The app adds a twelve-question bank for Total Return Swap, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Total Return Swap — The financing leg is the product, What the dealer actually holds, Termination, and the value nobody agrees on — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

@@ -73,6 +73,8 @@ Bank treasury and credit portfolios asset-swap most of the fixed-rate paper they
 
 The app adds a twelve-question bank for Asset Swap, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Asset Swap — Par-par, and where the money goes, What the spread measures, The swap survives the bond — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

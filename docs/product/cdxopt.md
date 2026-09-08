@@ -73,6 +73,8 @@ Macro funds and multi-asset managers buy payers on CDX.NA.IG or iTraxx Europe Ma
 
 The app adds a twelve-question bank for Credit Index Option, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Credit Index Option — Exercising into an index position, Front-end protection, A volatility surface for credit — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

@@ -72,6 +72,8 @@ Banks issue credit-linked notes to move the risk of a loan book to investors and
 
 The app adds a twelve-question bank for Credit-Linked Note, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Credit-Linked Note — Funded, and what that changes, Two credits, not one, Settling when it goes wrong — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

@@ -257,6 +257,195 @@ export const creditProducts: Product[] = [
           'The reference entity and its qualifying debt are defined precisely, and the wrong entity leaves the hedge exposed.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Fixed coupons and an upfront',
+          content:
+            'Contracts no longer pay whatever spread the market quotes. They pay a standardised coupon — commonly 100 basis points for investment grade names and 500 for high yield — and the difference between that coupon and the market’s view of fair value is settled as a single upfront payment at the start. The point of the convention is fungibility: two trades on the same name and maturity have identical cash flows whenever they were dealt, so they can be netted and cleared rather than sitting on a book as separate line items.',
+          callout:
+            'This is why a quote in spread terms has to be converted before it means anything in cash. The conversion uses a standard model that everyone agrees to use precisely so that everyone gets the same answer.',
+        },
+        {
+          title: 'Who decides a credit event happened',
+          content:
+            'The determination is not made by the two parties. A regional committee of dealers and buy-side firms rules on whether an event has occurred, publishes the decision, and it binds every contract referencing that entity. The process exists because the alternative — thousands of bilateral disputes about the same corporate news — is unworkable, and because a contract whose trigger is arguable is not a hedge. The committee’s decisions become precedent, and the definitions get amended when a case exposes a gap.',
+        },
+        {
+          title: 'The auction, and what recovery really is',
+          content:
+            'Once an event is determined, an auction sets a single recovery price used to settle every contract in cash. Dealers submit markets, physical settlement requests are netted, and the result is a number that becomes the recovery for everyone — regardless of what any individual bond eventually pays. That is worth stating plainly: the recovery in a credit derivative is an auction outcome, not a realised workout value, and the two can differ for reasons that have nothing to do with the borrower.',
+          callout:
+            'The 40% recovery assumption used in quoting is a convention for the model, not a forecast. The auction is the number that settles the contract.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'cds-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does a standardised coupon plus an upfront achieve?',
+          options: [
+            'A lower cost of protection',
+            'Fungibility: identical cash flows regardless of when the trade was dealt',
+            'Exemption from clearing',
+            'Removal of counterparty risk',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Which is what allows trades on the same name and maturity to be netted rather than kept as separate positions.',
+        },
+        {
+          id: 'cds-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'A single-name contract pays whatever spread the market quotes on the day it is dealt.',
+          correctAnswer: false,
+          explanation:
+            'It pays a standardised coupon, with the difference to fair value settled upfront.',
+        },
+        {
+          id: 'cds-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Why does converting a spread quote into an upfront use a standard model?',
+          options: [
+            'Because regulators specify the model',
+            'So that every participant converting the same quote gets the same cash amount',
+            'Because the model is more accurate than the alternatives',
+            'To account for the counterparty’s credit rating',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Agreement matters more than realism here: the model is a shared language for turning a quote into money.',
+        },
+        {
+          id: 'cds-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Whether a credit event has occurred is decided by the two parties to the trade.',
+          correctAnswer: false,
+          explanation:
+            'A regional committee rules on it, and the decision binds every contract on that entity.',
+        },
+        {
+          id: 'cds-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Why does a committee decide credit events?',
+          options: [
+            'To reduce the cost of protection',
+            'Because thousands of bilateral disputes about the same news would be unworkable',
+            'Because regulators require a vote',
+            'To determine which bonds are deliverable',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A contract whose trigger is arguable is not a hedge, whatever else it is.',
+        },
+        {
+          id: 'cds-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Committee decisions become precedent, and the definitions are amended when a case exposes a gap.',
+          correctAnswer: true,
+          explanation:
+            'The documentation evolves case by case, which is why the definitions have been revised repeatedly.',
+        },
+        {
+          id: 'cds-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What does the settlement auction produce?',
+          options: [
+            'A single recovery price used to settle every contract in cash',
+            'A ranking of deliverable obligations',
+            'The final workout value of the bonds',
+            'A list of which contracts triggered',
+          ],
+          correctIndex: 0,
+          explanation:
+            'One number, applied to everyone, regardless of what any individual bond eventually pays.',
+        },
+        {
+          id: 'cds-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'The recovery used to settle a credit derivative is the realised workout value of the debt.',
+          correctAnswer: false,
+          explanation:
+            'It is an auction outcome. The two can differ for reasons unconnected to the borrower.',
+        },
+        {
+          id: 'cds-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The 40% recovery figure commonly used in quoting is a convention rather than a forecast.',
+          correctAnswer: true,
+          explanation:
+            'It feeds the standard model. The auction is what actually settles the contract.',
+        },
+        {
+          id: 'cds-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'What does the auction net before setting the price?',
+          options: [
+            'Physical settlement requests',
+            'Upfront payments',
+            'Coupon accruals',
+            'Counterparty exposures',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Netting the physical requests is what leaves a manageable residual for the dealers’ markets to clear.',
+        },
+        {
+          id: 'cds-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Standardisation was introduced to make contracts easier to net and clear.',
+          correctAnswer: true,
+          explanation:
+            'Fungible cash flows are a precondition for both, and neither was practical before.',
+        },
+        {
+          id: 'cds-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'A protection buyer wants to know their payout precisely in advance. What can they not know?',
+          options: [
+            'The coupon they will pay',
+            'The notional protected',
+            'The recovery the auction will set',
+            'The maturity of the contract',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Everything except the recovery is contractual. The recovery is decided after the fact, by the market.',
+        },
+      ],
+    },
   },
   {
     id: 'cdx',
@@ -506,6 +695,194 @@ export const creditProducts: Product[] = [
           'Losses hit the lowest layer first, and only reach a senior tranche past its attachment point.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'The roll, and what on-the-run means',
+          content:
+            'A credit index is republished on a fixed schedule with a refreshed constituent list, and the new series immediately becomes where the liquidity sits. The previous one keeps trading, thinner and wider, and a book that does not roll finds itself holding an instrument the market has moved on from. That is a real cost rather than an inconvenience: the bid-offer on an off-the-run series is materially worse, and hedges built on one series and rolled at different times drift apart.',
+          callout:
+            'The London Whale’s positions were concentrated in an off-the-run series, which is part of why they were both large relative to that market and visible to everyone in it.',
+        },
+        {
+          title: 'Index against intrinsic',
+          content:
+            'An index has a price of its own, and the constituents have theirs. The two need not agree, and the gap — the index basis, or skew — is a tradable spread. It moves with flow: an index is the cheapest way to buy or sell broad credit risk in size, so hedging demand lands there first and pushes it away from the sum of its parts before arbitrage pulls it back. Trading the basis means holding the index against all of its single names, which is operationally heavy and is exactly the trade that leaves jump-to-default behind.',
+        },
+        {
+          title: 'What happens when a constituent defaults',
+          content:
+            'The index does not disappear and it is not rewritten. The defaulted name is settled through the same auction as a single-name contract and removed, and the index continues with a reduced factor — a number below one recording how much of the original notional is still referenced. Every position scales by it. That mechanism is why an index hedge covers only the defaulting name’s weight, which is the arithmetic behind the whole CS01-versus-jump-to-default distinction.',
+          callout:
+            'A factor below one is a permanent record that something in the basket failed. It is also the thing people forget when they compare a series across time.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'cdx-d1',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'A credit index is republished periodically with a refreshed list of constituents.',
+          correctAnswer: true,
+          explanation:
+            'And the new series is immediately where the liquidity moves to.',
+        },
+        {
+          id: 'cdx-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What happens to the previous series after a roll?',
+          options: [
+            'It is cancelled and settled',
+            'It keeps trading, thinner and at a wider spread',
+            'It is merged into the new series',
+            'It becomes physically settled only',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A book that does not roll ends up holding an instrument the market has moved on from.',
+        },
+        {
+          id: 'cdx-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Holding an off-the-run series has no cost as long as the position is held to maturity.',
+          correctAnswer: false,
+          explanation:
+            'The bid-offer is materially worse, which matters at every adjustment and at any forced exit.',
+        },
+        {
+          id: 'cdx-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What is the index basis?',
+          options: [
+            'The gap between the index price and the sum of its constituents',
+            'The difference between two series of the same index',
+            'The spread between investment grade and high yield',
+            'The upfront payment on the index',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Also called the skew, and it moves with flow because the index is where size trades first.',
+        },
+        {
+          id: 'cdx-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Hedging demand tends to hit the index before it reaches the single names.',
+          correctAnswer: true,
+          explanation:
+            'It is the cheapest way to move broad credit risk in size, which is what pushes the basis around.',
+        },
+        {
+          id: 'cdx-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does trading the index basis require operationally?',
+          options: [
+            'Holding the index against all of its single names',
+            'A licence from the index provider',
+            'Clearing through a specific venue',
+            'Physical settlement of the constituents',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Heavy, and the trade that leaves jump-to-default behind — which is the London Whale in one sentence.',
+        },
+        {
+          id: 'cdx-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What happens to an index when one constituent defaults?',
+          options: [
+            'The whole index is settled',
+            'The name is settled through the auction and removed, and the index continues with a reduced factor',
+            'The index is republished immediately as a new series',
+            'The remaining names are reweighted upwards',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The factor records how much of the original notional is still referenced, and every position scales by it.',
+        },
+        {
+          id: 'cdx-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A factor below one is a permanent record that a constituent has defaulted.',
+          correctAnswer: true,
+          explanation:
+            'And it is the detail people forget when comparing a series across time.',
+        },
+        {
+          id: 'cdx-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'An index hedge covers the full loss on a single constituent that defaults.',
+          correctAnswer: false,
+          explanation:
+            'It covers that name’s weight only, which is the arithmetic behind CS01 against jump-to-default.',
+        },
+        {
+          id: 'cdx-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Why were the London Whale positions unusually visible to the market?',
+          options: [
+            'They were disclosed in filings',
+            'They were concentrated in an off-the-run series, and were large relative to that market',
+            'The index provider published them',
+            'They were cleared and therefore public',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A large position in a thin instrument announces itself through the price.',
+        },
+        {
+          id: 'cdx-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'The index and the sum of its constituents must trade at the same spread.',
+          correctAnswer: false,
+          explanation:
+            'They frequently do not, and the gap is a tradable spread with its own drivers.',
+        },
+        {
+          id: 'cdx-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Why do desks roll into the new series?',
+          options: [
+            'Because the old series stops trading',
+            'Because liquidity moves and the bid-offer on the old one widens',
+            'Because the index provider requires it',
+            'Because the coupon changes',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Staying put is a decision to trade in a worse market for the rest of the position’s life.',
+        },
+      ],
+    },
   },
   {
     id: 'trs',
@@ -757,6 +1134,189 @@ export const creditProducts: Product[] = [
           'The asset can fall and the payer can fail — two exposures for one position.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'The financing leg is the product',
+          content:
+            'The return leg gets the attention and the financing leg is where the negotiation happens. The spread over the benchmark rate is set by what the asset costs the dealer to hold: its balance sheet weight, the capital against it, whether it can be pledged, and how easily it could be sold if the client walked away. Two clients receiving the same return on the same asset can pay materially different spreads, and the difference is not a discount for loyalty — it is a credit and liquidity assessment expressed as a rate.',
+          callout:
+            'When a dealer widens a financing spread on a name, that is a risk decision. Reading it as pricing noise is how a fund discovers its broker’s view of a position too late.',
+        },
+        {
+          title: 'What the dealer actually holds',
+          content:
+            'A dealer hedges by buying the reference asset, so the trade converts client exposure into inventory. That has consequences on both sides: the client’s position is only as robust as the dealer’s willingness to keep holding it, and the dealer accumulates concentration in whatever its clients happen to want. Both were on display in 2021, when several banks discovered simultaneously that they held the same shares against the same client, and that unwinding meant competing to sell them.',
+        },
+        {
+          title: 'Termination, and the value nobody agrees on',
+          content:
+            'These trades end early more often than they mature. A termination event, a margin failure or a client decision leaves the parties needing a value for the position — and the asset may be illiquid, the position large, and the two sides differently motivated. Documentation therefore specifies who determines the close-out amount and on what basis, which is the single most negotiated clause in the trade and the one that decides the outcome when the relationship has already broken down.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'trs-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What determines the spread on the financing leg?',
+          options: [
+            'The expected return of the reference asset',
+            'What the asset costs the dealer to hold — balance sheet, capital, liquidity',
+            'The volatility of the underlying',
+            'The maturity of the trade alone',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is a credit and liquidity assessment expressed as a rate, not a negotiated discount.',
+        },
+        {
+          id: 'trs-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Two clients on the same asset can be quoted materially different financing spreads.',
+          correctAnswer: true,
+          explanation: 'The dealer is pricing them, not only the asset.',
+        },
+        {
+          id: 'trs-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A dealer widens the financing spread on a position. What is it most likely saying?',
+          options: [
+            'That funding markets have moved slightly',
+            'That its assessment of the risk in that position has changed',
+            'That the client has traded too little',
+            'That the reference asset is about to pay a dividend',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Reading it as noise is how a fund learns its broker’s view of a position later than it should.',
+        },
+        {
+          id: 'trs-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'foundational',
+          prompt:
+            'The dealer typically hedges by holding the reference asset itself.',
+          correctAnswer: true,
+          explanation:
+            'Which turns client exposure into dealer inventory, with consequences for both sides.',
+        },
+        {
+          id: 'trs-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What does that hedging arrangement mean for the client?',
+          options: [
+            'Their position is only as robust as the dealer’s willingness to keep holding it',
+            'They acquire voting rights in the asset',
+            'They can demand physical delivery at any time',
+            'Their exposure is cleared centrally',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Synthetic exposure depends on someone else continuing to carry the real thing.',
+        },
+        {
+          id: 'trs-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A dealer running this business accumulates concentration in whatever its clients want.',
+          correctAnswer: true,
+          explanation:
+            'Several discovered in 2021 that they held the same shares against the same client.',
+        },
+        {
+          id: 'trs-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'Which clause is the most negotiated in one of these trades?',
+          options: [
+            'The one governing who determines the close-out amount and on what basis',
+            'The choice of benchmark rate',
+            'The reset frequency',
+            'The governing law',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It decides the outcome at the point where the relationship has already failed.',
+        },
+        {
+          id: 'trs-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'These trades more often end early than run to maturity.',
+          correctAnswer: true,
+          explanation:
+            'A termination event, a margin failure or a client decision — and then someone has to value the position.',
+        },
+        {
+          id: 'trs-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Valuing a position at termination is straightforward when the asset is liquid and the position is small.',
+          correctAnswer: true,
+          explanation:
+            'The clause matters precisely because those two conditions often fail together.',
+        },
+        {
+          id: 'trs-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Why is the financing leg described as the product?',
+          options: [
+            'Because it is larger than the return leg',
+            'Because it is where the dealer expresses its view of the client and the asset',
+            'Because it settles first',
+            'Because it determines the maturity',
+          ],
+          correctIndex: 1,
+          explanation: 'The return leg is mechanical. The spread is the judgement.',
+        },
+        {
+          id: 'trs-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A client receiving the return on an asset can rely on the trade continuing regardless of the dealer’s position.',
+          correctAnswer: false,
+          explanation:
+            'The dealer’s appetite is a live input, and it changes with its own inventory and capital.',
+        },
+        {
+          id: 'trs-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'What made the 2021 unwind of a large swap client so damaging?',
+          options: [
+            'The contracts were unenforceable',
+            'Several dealers held the same shares against the same client and had to compete to sell',
+            'The reference assets had defaulted',
+            'The financing legs reset simultaneously',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Inventory built from client demand is concentrated in exactly the way nobody plans for.',
+        },
+      ],
+    },
   },
   {
     id: 'cln',
@@ -1012,6 +1572,192 @@ export const creditProducts: Product[] = [
           'The three exposures tend to deteriorate together, which is part of why the coupon looks generous.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Funded, and what that changes',
+          content:
+            'A credit default swap is unfunded: no money moves at the start, and the protection seller’s obligation is a promise backed by collateral arrangements. A credit-linked note is funded — the investor pays cash up front, and that cash is what pays the sponsor if the credit event happens. From the sponsor’s point of view this removes counterparty risk entirely, because the money is already in hand. From the investor’s point of view it converts a contingent obligation into a purchase, which is what makes the instrument available to buyers whose mandates forbid selling protection outright.',
+          callout:
+            'The economics of selling protection and of buying a note referencing the same name are close to identical. What differs is who is exposed to whom, and which mandate permits it.',
+        },
+        {
+          title: 'Two credits, not one',
+          content:
+            'The investor is exposed to the reference entity and to whatever holds the collateral. Where the note is issued by a bank directly, that is the bank’s own credit — so a note referencing one borrower can fail because a different institution did. Where a special purpose vehicle holds the proceeds in segregated collateral, the second exposure is to that collateral rather than to the arranger. The structure decides which, and reading the note as a pure view on the reference name is the most common misunderstanding of the instrument.',
+        },
+        {
+          title: 'Settling when it goes wrong',
+          content:
+            'On a credit event, the note redeems early at a reduced amount determined by the same auction that settles derivative contracts on that name — so the investor’s loss is set by a market process rather than by a workout. Timing matters too: principal is repaid after the auction rather than at the original maturity, which is a reinvestment problem for anyone who bought the note to match a liability. And the coupon stops, which for a buyer treating the note as an income asset is the part that arrives first.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'cln-d1',
+          kind: 'choice',
+          step: 1,
+          difficulty: 'intermediate',
+          prompt: 'What does "funded" mean in this context?',
+          options: [
+            'The issuer has a credit facility behind the note',
+            'The investor pays cash up front, and that cash pays the sponsor on a credit event',
+            'The note is guaranteed by a third party',
+            'The coupon is paid in advance',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The money is in hand before anything happens, which removes the sponsor’s counterparty risk.',
+        },
+        {
+          id: 'cln-d2',
+          kind: 'boolean',
+          step: 1,
+          difficulty: 'foundational',
+          prompt: 'A credit default swap is unfunded at inception.',
+          correctAnswer: true,
+          explanation:
+            'No principal moves; the seller’s obligation is a promise supported by collateral arrangements.',
+        },
+        {
+          id: 'cln-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Why does the funded form open the trade to more buyers?',
+          options: [
+            'It pays a higher coupon',
+            'It is a purchase rather than a contingent obligation, which many mandates require',
+            'It is exempt from credit analysis',
+            'It settles physically',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The economics resemble selling protection; the legal form is what the mandate reads.',
+        },
+        {
+          id: 'cln-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A credit-linked note exposes the investor to more than one credit.',
+          correctAnswer: true,
+          explanation:
+            'The reference entity, and whatever holds the collateral — which may be the issuing bank itself.',
+        },
+        {
+          id: 'cln-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A note is issued directly by a bank rather than through a vehicle. What is the second exposure?',
+          options: [
+            'The bank’s own credit',
+            'The reference entity’s parent',
+            'The clearing house',
+            'There is no second exposure',
+          ],
+          correctIndex: 0,
+          explanation:
+            'A note referencing one borrower can then fail because a different institution did.',
+        },
+        {
+          id: 'cln-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A special purpose vehicle holding segregated collateral removes the second credit exposure entirely.',
+          correctAnswer: false,
+          explanation:
+            'It moves it: the exposure becomes the collateral itself rather than the arranger.',
+        },
+        {
+          id: 'cln-d7',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'Reading the note as a pure view on the reference name is the most common misunderstanding of it.',
+          correctAnswer: true,
+          explanation:
+            'The structure decides what else the investor owns, and the structure varies.',
+        },
+        {
+          id: 'cln-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'How is the investor’s loss determined on a credit event?',
+          options: [
+            'By the eventual workout value of the debt',
+            'By the same auction that settles derivative contracts on that name',
+            'By the issuer’s own valuation',
+            'By a fixed schedule in the terms',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A market process rather than a recovery negotiation, and the two can differ.',
+        },
+        {
+          id: 'cln-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'On a credit event the note redeems early rather than at its original maturity.',
+          correctAnswer: true,
+          explanation:
+            'Which is a reinvestment problem for anyone who bought it to match a liability.',
+        },
+        {
+          id: 'cln-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'What does an income-focused buyer notice first when the credit deteriorates?',
+          options: [
+            'The coupon stopping',
+            'The change in the reference entity’s rating',
+            'The collateral being substituted',
+            'The auction date being announced',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The write-down follows, but the income the note was bought for goes first.',
+        },
+        {
+          id: 'cln-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'The economics of selling protection and of buying a note on the same name are broadly similar.',
+          correctAnswer: true,
+          explanation:
+            'What differs is who is exposed to whom, and which mandate allows it.',
+        },
+        {
+          id: 'cln-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What should an investor establish before treating a note as a view on one borrower?',
+          options: [
+            'Who holds the collateral and what happens to it',
+            'The coupon frequency',
+            'The governing law of the note',
+            'Whether it is listed',
+          ],
+          correctIndex: 0,
+          explanation: 'That answer determines whether they own one credit or two.',
+        },
+      ],
+    },
   },
   {
     id: 'assetswap',
@@ -1266,6 +2012,194 @@ export const creditProducts: Product[] = [
           'Funding cost, the swap that survives a default and the dealer’s own credit all remain, and any of them can outweigh the basis.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Par-par, and where the money goes',
+          content:
+            'The standard structure trades the bond at par regardless of its market price, with the difference settled as an upfront payment, so the investor ends up holding a par-priced floating rate exposure to the issuer. The swap notional is the par amount, not the price paid, which matters when the bond is trading a long way from par — a deeply discounted bond swapped at par leaves the arranger financing the gap, and that financing is inside the spread being quoted. The market value alternative sets the notional to the actual price instead, and prices differently for exactly that reason.',
+          callout:
+            'Two asset swap spreads on the same bond can differ simply because one is par-par and the other is market value. The structure has to be stated before the number means anything.',
+        },
+        {
+          title: 'What the spread measures',
+          content:
+            'An asset swap spread is a funding-adjusted credit measure: it says what this bond yields over the floating benchmark once its fixed coupon has been swapped away. It is not the same as a Z-spread, which discounts the bond’s cash flows on the curve without any swap, nor the same as a credit default swap spread, which references default alone. The three are related and they disagree, and the differences between them are traded — the gap to the default swap is the basis, and it moves with funding and with who is able to hold bonds.',
+        },
+        {
+          title: 'The swap survives the bond',
+          content:
+            'The most important thing about the structure is what happens on default: the bond stops paying and the interest rate swap does not. The investor is left holding a defaulted asset and a live swap obligation, still paying and receiving on the original schedule, with a mark-to-market that has nothing to do with the credit event. Unwinding it costs whatever the curve has done since. That asymmetry is the reason asset swap packages are documented carefully and the reason a "credit trade" here has a rates position bolted to it.',
+          callout:
+            'This is the cleanest illustration in the catalogue of a package being two instruments rather than one, and of the second one outliving the first.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'assetswap-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'In a par-par asset swap, what is the swap notional?',
+          options: [
+            'The price actually paid for the bond',
+            'The par amount of the bond',
+            'The bond’s accrued interest',
+            'The present value of the coupons',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Which is what leaves the arranger financing the gap when the bond trades far from par.',
+        },
+        {
+          id: 'assetswap-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A market value asset swap sets the notional to the price paid rather than to par.',
+          correctAnswer: true,
+          explanation:
+            'And it therefore prices differently, which is why the structure has to be stated with the spread.',
+        },
+        {
+          id: 'assetswap-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'Two quoted asset swap spreads on the same bond are directly comparable.',
+          correctAnswer: false,
+          explanation:
+            'Not unless both are the same structure. Par-par and market value answer different questions.',
+        },
+        {
+          id: 'assetswap-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does an asset swap spread measure?',
+          options: [
+            'The probability of default',
+            'What the bond yields over the floating benchmark once its coupon is swapped away',
+            'The bond’s duration',
+            'The cost of borrowing the bond',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A funding-adjusted credit measure, related to but distinct from a Z-spread or a default swap spread.',
+        },
+        {
+          id: 'assetswap-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'An asset swap spread and a credit default swap spread on the same issuer should be equal.',
+          correctAnswer: false,
+          explanation:
+            'The gap between them is the basis, and it moves with funding and with who can hold bonds.',
+        },
+        {
+          id: 'assetswap-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'How does a Z-spread differ from an asset swap spread?',
+          options: [
+            'It discounts the bond’s cash flows on the curve, with no swap involved',
+            'It applies only to floating rate notes',
+            'It ignores the bond’s coupon',
+            'It is quoted in price rather than in spread',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Three related measures that disagree, and the disagreements are themselves traded.',
+        },
+        {
+          id: 'assetswap-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'foundational',
+          prompt:
+            'When the bond defaults, the interest rate swap terminates automatically.',
+          correctAnswer: false,
+          explanation:
+            'It does not. The investor holds a defaulted asset and a live swap on the original schedule.',
+        },
+        {
+          id: 'assetswap-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What is the investor left with after a default in this package?',
+          options: [
+            'Nothing — both legs settle together',
+            'A defaulted bond and a live swap obligation with its own mark-to-market',
+            'A cash settlement from the swap counterparty',
+            'A claim on the swap counterparty for the bond’s value',
+          ],
+          correctIndex: 1,
+          explanation:
+            'And unwinding the swap costs whatever the curve has done since the trade was put on.',
+        },
+        {
+          id: 'assetswap-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'The swap’s mark-to-market at the point of default is related to the credit event.',
+          correctAnswer: false,
+          explanation:
+            'It reflects interest rates. The two legs of the package have nothing to do with each other once the bond fails.',
+        },
+        {
+          id: 'assetswap-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What does this structure illustrate most clearly?',
+          options: [
+            'That a package is two instruments, and the second can outlive the first',
+            'That credit risk can be removed entirely',
+            'That swaps are safer than bonds',
+            'That par pricing eliminates market risk',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Which is why the documentation of the package matters as much as the spread quoted on it.',
+        },
+        {
+          id: 'assetswap-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A trade described as a credit trade here has an interest rate position attached to it.',
+          correctAnswer: true,
+          explanation:
+            'The swap is a rates instrument, and it does not disappear because the credit did.',
+        },
+        {
+          id: 'assetswap-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'Why does a deeply discounted bond complicate a par-par structure?',
+          options: [
+            'The coupon cannot be swapped',
+            'The swap notional exceeds the money invested, and the gap has to be financed',
+            'The bond cannot be delivered',
+            'The spread becomes negative by construction',
+          ],
+          correctIndex: 1,
+          explanation:
+            'That financing is inside the quoted spread, which is one reason two quotes can differ so much.',
+        },
+      ],
+    },
   },
   {
     id: 'cdxopt',
@@ -1526,5 +2460,190 @@ export const creditProducts: Product[] = [
           'It is the same basis risk that comes with any index hedge, carried through into the option.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Exercising into an index position',
+          content:
+            'A payer option gives the right to buy protection on the index at a strike spread; a receiver gives the right to sell it. Exercise does not settle in cash and walk away — it delivers a position in the index itself, with all of that index’s conventions: the standard coupon, an upfront to reconcile the strike to the market, and the current factor. A buyer who has not thought past the payoff diagram can find themselves holding a live credit position on the Monday after expiry, which is the point of the instrument rather than a surprise in it.',
+          callout:
+            'The strike is quoted in spread and the delivered position pays a fixed coupon, so the difference between them arrives as cash on exercise. That reconciliation is where most of the confusion lives.',
+        },
+        {
+          title: 'Front-end protection',
+          content:
+            'A defaulted constituent between trade and expiry raises a question the payoff diagram cannot answer: does the option holder benefit from a default that happened before they had the position? The convention says yes for a payer — the option includes protection against defaults in that window, so the buyer is compensated as if they had held the index all along. It is a small clause with a large consequence: without it, a payer option would be a hedge with a hole in exactly the period the buyer bought it for.',
+        },
+        {
+          title: 'A volatility surface for credit',
+          content:
+            'These options are quoted in volatility, and the surface behaves like an equity one turned around: payers on wider strikes are bid up, because the demand is for protection against a sell-off, and the skew steepens when credit is stressed. The underlying is a spread rather than a price, and a spread is bounded below by zero and unbounded above, which shapes the distribution the market prices. That asymmetry is why credit volatility is quoted and hedged in its own terms rather than borrowed wholesale from equities.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'cdxopt-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does exercising a payer option deliver?',
+          options: [
+            'A cash settlement only',
+            'A position buying protection on the index, with its coupon, upfront and factor',
+            'The underlying bonds',
+            'A position in the single names',
+          ],
+          correctIndex: 1,
+          explanation:
+            'You are left holding a live credit position, which is the instrument working rather than failing.',
+        },
+        {
+          id: 'cdxopt-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'foundational',
+          prompt:
+            'A receiver option gives the right to sell protection on the index.',
+          correctAnswer: true,
+          explanation:
+            'Payer buys protection, receiver sells it — named for which side of the coupon you end up on.',
+        },
+        {
+          id: 'cdxopt-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Why does an upfront payment arise on exercise?',
+          options: [
+            'The strike is in spread terms while the delivered index pays a fixed coupon',
+            'The clearing house charges a fee',
+            'The factor has changed since the trade',
+            'The option premium is deferred',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Reconciling the two is where most of the confusion about these options lives.',
+        },
+        {
+          id: 'cdxopt-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A payer option conventionally includes protection against defaults occurring before expiry.',
+          correctAnswer: true,
+          explanation:
+            'Front-end protection. Without it, the option would be a hedge with a hole in the exact period it was bought for.',
+        },
+        {
+          id: 'cdxopt-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What problem does front-end protection solve?',
+          options: [
+            'Whether the buyer benefits from a default that happens before they hold the position',
+            'How the strike is set',
+            'Which constituents are in the index',
+            'When the premium is paid',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The payoff diagram cannot answer it, so the documentation does.',
+        },
+        {
+          id: 'cdxopt-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt:
+            'A default between trade date and expiry is irrelevant to an index option.',
+          correctAnswer: false,
+          explanation: 'It is exactly what the front-end clause exists to address.',
+        },
+        {
+          id: 'cdxopt-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'How are these options quoted?',
+          options: [
+            'In volatility',
+            'In upfront cash only',
+            'As a spread over the index',
+            'In recovery terms',
+          ],
+          correctIndex: 0,
+          explanation:
+            'And the surface has its own shape, driven by the fact that the underlying is a spread.',
+        },
+        {
+          id: 'cdxopt-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Demand concentrates in payers at wider strikes, which steepens the skew when credit is stressed.',
+          correctAnswer: true,
+          explanation:
+            'Protection against a sell-off is what people buy, and the price reflects it.',
+        },
+        {
+          id: 'cdxopt-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Why does credit volatility need its own treatment rather than borrowing from equities?',
+          options: [
+            'The underlying is a spread: bounded below by zero and unbounded above',
+            'Credit markets are smaller',
+            'Options on credit cannot be delta hedged',
+            'Credit options are always American',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The asymmetry of the underlying shapes the whole distribution being priced.',
+        },
+        {
+          id: 'cdxopt-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'A buyer of these options should expect to manage a credit position after exercise.',
+          correctAnswer: true,
+          explanation:
+            'The option delivers a position rather than a cheque, and the position has conventions of its own.',
+        },
+        {
+          id: 'cdxopt-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What does the delivered index position carry with it?',
+          options: [
+            'The standard coupon, an upfront and the current factor',
+            'Only the strike spread',
+            'A fresh set of constituents',
+            'A cash-settled cash flow schedule',
+          ],
+          correctIndex: 0,
+          explanation:
+            'All of the index’s conventions arrive with it, including the record of any constituent that has already defaulted.',
+        },
+        {
+          id: 'cdxopt-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'The skew in credit index options tends to flatten when credit is under stress.',
+          correctAnswer: false,
+          explanation:
+            'It steepens, because that is when demand for protection at wider strikes is strongest.',
+        },
+      ],
+    },
   },
 ];
