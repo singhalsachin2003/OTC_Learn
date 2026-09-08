@@ -40,11 +40,17 @@ OTC Learn
 ### Short description (80 max)
 
 ```
-Learn OTC derivatives: 36 products, lessons and quizzes that adapt. Offline.
+Learn OTC derivatives one product at a time. Worked examples, quizzes, offline.
 ```
 
-[76] — this is the line under the icon in search results, so it leads with the
-subject, then breadth and no-account.
+[79] — this is the line under the icon in search results, so it leads with the
+subject, then how the learning works, then what makes it different.
+
+**No count in it, deliberately.** It used to say "36 products", which was the
+free catalogue and became misleading in both directions once a paid half
+existed — understating the app and overstating what is free. A number in a
+short description also has to be maintained forever; a sentence about how the
+learning works does not.
 
 ### Full description (4000 max)
 
