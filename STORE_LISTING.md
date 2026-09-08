@@ -89,8 +89,17 @@ no advertising identifiers, and no analytics following you around.
 
 WORKS OFFLINE
 
-All 180 lesson steps, 216 key terms and 432 quiz questions ship inside the app.
-Use it on the underground, on a plane, or anywhere else with no signal.
+All 180 lesson steps, 216 key terms and 432 quiz questions in the free
+catalogue ship inside the app. Use it on the underground, on a plane, or
+anywhere else with no signal.
+
+MORE ASSET CLASSES BY SUBSCRIPTION
+
+Everything above is free and stays free. An optional subscription adds the asset
+classes released after it — starting with Exotics, which brings
+6 products, 30 lesson steps and 72 questions on barriers, digitals,
+range accruals, accumulators, target redemption forwards and cliquets. You can read the app
+without ever seeing a purchase screen.
 
 TRACK WHAT YOU ACTUALLY KNOW
 
@@ -193,13 +202,12 @@ within minutes.
 Expected result: Everyone / PEGI 3. Declaring purchases does not raise the
 rating; it is a disclosure, not content.
 
-**Why Yes on purchases, even though the app currently shows no purchase path.**
-The subscription `otc_learn_pro` is live in the Console with two active base
-plans, so the store can transact against this app whatever the binary does
-today, and the listing carries the in-app purchases badge accordingly. The
-paywall being inert is a property of one build; the rating describes the app.
-Answering No here is the version that becomes silently false the moment the
-first premium asset class ships.
+**Why Yes on purchases.** The subscription `otc_learn_pro` is live in the
+Console with two active base plans, and since Exotics shipped there is a premium
+asset class for it to sell, so the paywall is live rather than inert. This answer
+was already Yes while the paywall was inert, on the reasoning that the rating
+describes the app rather than one build; that reasoning is now moot, and the
+answer is simply correct.
 
 **Why No on interaction and user-generated content, despite the share action.**
 The share sheet sends a fixed line of text and a store link out to whatever app
@@ -302,8 +310,9 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 
 ```
 • 36 OTC derivative products across interest rate, FX, credit, equity,
-  commodity and market foundations
+  commodity and market foundations — all free
 • A five-step lesson, a worked example and a 12-question bank for every product
+• New: Exotics, six structured products by optional subscription
 • Mastery that moves with each sitting, and a review queue for what you miss
 • Works fully offline — no account, no ads, no tracking
 ```

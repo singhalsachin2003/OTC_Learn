@@ -67,6 +67,15 @@ export const paths: LearningPath[] = [
     // since it prices the consequences of all five.
     productIds: ['isda', 'collateral', 'clearing', 'marking', 'execution', 'xva'],
   },
+  {
+    categoryId: 'exotics',
+    // Construction order, not market order. A digital is the simplest
+    // discontinuous payoff; a barrier bolts a trigger onto a vanilla; a range
+    // accrual is a strip of digitals; and the last three are strips of
+    // forwards and options with a termination rule, which only make sense once
+    // the pieces do.
+    productIds: ['digital', 'barrier', 'rangeacc', 'accum', 'tarf', 'cliquet'],
+  },
 ];
 
 const pathsByCategory = new Map(paths.map((p) => [p.categoryId, p]));

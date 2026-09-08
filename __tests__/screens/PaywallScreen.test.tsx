@@ -1,28 +1,13 @@
-import type { Category } from '../../src/data/types';
 import { fireEvent, screen } from '@testing-library/react-native';
 import Purchases from 'react-native-purchases';
 import RevenueCatUI from 'react-native-purchases-ui';
 
 /**
- * Credit stands in for a premium asset class, as in `LockedContent.test.tsx`.
- * The pitch below only renders where a subscription would add something, and
- * the shipped catalogue adds nothing yet — see `accessShippedCatalogue.test.ts`
- * for the assertion that this is so.
+ * The pitch renders against Exotics, the real premium class. Credit used to be
+ * mocked into that role because the shipped catalogue sold nothing; it sells
+ * something now, so the numbers on this screen are the ones a reader sees.
  */
-const PREMIUM_CATEGORY = 'credit';
-
-jest.mock('../../src/data/categories', () => {
-  // Type-only, so it is erased before the factory is hoisted.
-  const actual = jest.requireActual('../../src/data/categories') as {
-    categories: Category[];
-  };
-  return {
-    ...actual,
-    categories: actual.categories.map((c) =>
-      c.id === 'credit' ? { ...c, premium: true } : c,
-    ),
-  };
-});
+const PREMIUM_CATEGORY = 'exotics';
 
 import { products } from '../../src/data/products';
 import { PaywallScreen } from '../../src/screens/Paywall/PaywallScreen';

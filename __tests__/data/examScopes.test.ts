@@ -1,3 +1,4 @@
+import { categories } from '../../src/data/categories';
 import { examScopes, examScopeName } from '../../src/data/examScopes';
 import { products } from '../../src/data/products';
 import { EXAM_SCOPE_ALL } from '../../src/utils/exam';
@@ -12,7 +13,7 @@ describe('examScopes', () => {
     const scopes = examScopes();
 
     expect(scopes[0]).toMatchObject({ id: EXAM_SCOPE_ALL, locked: false });
-    expect(scopes).toHaveLength(7);
+    expect(scopes).toHaveLength(categories.length + 1);
     expect(scopes[0]?.questionCount).toBe(totalQuestions);
   });
 

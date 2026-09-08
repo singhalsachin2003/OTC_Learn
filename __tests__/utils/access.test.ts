@@ -1,32 +1,17 @@
-import type { Category } from '../../src/data/types';
 import { categories as catalogueCategories } from '../../src/data/categories';
 import { products } from '../../src/data/products';
 
 /**
- * A premium asset class has to be faked, because there is not one yet.
+ * Exercised against the real catalogue, with `exotics` as the premium class.
  *
- * That is the whole point of the model — everything written so far is free,
- * and a subscription buys what comes next — so the locked paths cannot be
- * reached with the real catalogue. Rather than assert nothing about them until
- * the first new asset class lands, the catalogue modules are mocked with
- * Commodity flipped to `premium`, which is exactly the shape a future addition
- * will have. The products themselves are the real ones, so the counts below
- * are real counts of a real asset class.
+ * This file used to mock the catalogue and flip Commodity to `premium`,
+ * because under the inverted model nothing was paid and the locked paths could
+ * not be reached at all. Exotics shipped as the first paid asset class, so the
+ * fake is gone and the counts below are counts of the thing actually being
+ * sold. `accessShippedCatalogue.test.ts` guards the other half — that none of
+ * the six free classes ever joins it.
  */
-const PREMIUM_ID = 'commodity';
-
-jest.mock('../../src/data/categories', () => {
-  // Type-only, so it is erased before the factory is hoisted.
-  const actual = jest.requireActual('../../src/data/categories') as {
-    categories: Category[];
-  };
-  return {
-    ...actual,
-    categories: actual.categories.map((c) =>
-      c.id === 'commodity' ? { ...c, premium: true } : c,
-    ),
-  };
-});
+const PREMIUM_ID = 'exotics';
 
 import {
   canOpenCategory,
@@ -70,9 +55,7 @@ const NOTHING_ON_SALE = {
   grandfathered: false,
 };
 
-const freeIds = catalogueCategories
-  .filter((c) => c.id !== PREMIUM_ID)
-  .map((c) => c.id);
+const freeIds = catalogueCategories.filter((c) => !c.premium).map((c) => c.id);
 
 describe('paywallApplies', () => {
   /**

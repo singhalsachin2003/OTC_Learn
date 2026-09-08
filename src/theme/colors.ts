@@ -143,6 +143,15 @@ export const categoryColors = {
    * (7.40:1).
    */
   foundations: { accent: '#495766', soft: '#E2E9F0', text: '#495766' },
+  /**
+   * hue 340 — plum. The widest gap left on the wheel once the five asset
+   * classes had taken 20, 80, 160, 250 and 300, and far enough from credit's
+   * red to read as a different family rather than a shade of it. `text` is the
+   * darkened variant: the accent itself clears AA on white but only reaches
+   * 4.19:1 on its own tint, which is the mistake the design review caught in
+   * the original five.
+   */
+  exotics: { accent: '#A25089', soft: '#F7E1EE', text: '#92417A' },
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;

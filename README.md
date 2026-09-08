@@ -1,8 +1,9 @@
 # OTC Learn
 
-A mobile learning app for OTC derivatives. Six categories, thirty-six products,
-each with a product page, a five-step lesson and a twelve-question bank that
-every quiz draws a different paper from. Mastery, day streaks and a
+A mobile learning app for OTC derivatives. Six categories and thirty-six
+products are free and stay free; a seventh, Exotics, is what a subscription
+buys. Every product has a product page, a five-step lesson and a
+twelve-question bank that every quiz draws a different paper from. Mastery, day streaks and a
 spaced-repetition review queue persist locally; there is no sign-up, and all
 content is bundled, so the app works offline apart from a launch-time check for
 OTA updates and an optional local daily reminder.
@@ -85,7 +86,11 @@ key terms, risks to watch — and carries, beyond the five lesson steps:
 - a bank of **twelve questions**, mixing true/false and four-option multiple
   choice, each tagged with the lesson step it tests and a difficulty.
 
-That is 180 lesson steps, 216 key terms and 432 questions.
+That is 180 lesson steps, 216 key terms and 432 questions in the free
+catalogue. Exotics adds 6 products, 30 lesson steps and 72 questions on top of
+it, and is the first asset class sold rather than shipped — see "Gating" in
+`PRODUCTION_READINESS.md` for why the subscription buys what comes next rather
+than access to what is already there.
 
 Content lives in `src/data/catalogue/`, one file per asset class, with
 `src/data/products.ts` as the barrel that composes them. **Product and question

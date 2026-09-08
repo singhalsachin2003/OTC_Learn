@@ -1,32 +1,18 @@
-import type { Category } from '../../src/data/types';
 import { act, fireEvent, screen } from '@testing-library/react-native';
 
 /**
- * Credit is stood up as the premium asset class, because there is not a real
- * one yet.
+ * Exercised against Exotics, the first asset class sold rather than shipped.
  *
- * A subscription now sells the asset classes added after the paywall, and none
- * have been added, so with the true catalogue every screen below is simply
- * open and none of these paths exist. Flipping one category to `premium` gives
- * them something to lock that has the exact shape a future addition will —
- * real products, real question banks, real deep links — without inventing
- * content. `accessShippedCatalogue.test.ts` holds the other half of this: that
- * the catalogue as actually shipped locks nothing.
+ * This file used to mock the catalogue and flip Credit to `premium`, because
+ * under the inverted model nothing was paid and none of the locked paths below
+ * existed. They exist now, so the fake is gone: the products, question banks
+ * and deep links being locked here are the ones a subscriber actually buys.
+ * `accessShippedCatalogue.test.ts` holds the other half — that the six classes
+ * the app shipped free lock nothing, for anybody.
  */
-const PREMIUM_CATEGORY = 'credit';
-
-jest.mock('../../src/data/categories', () => {
-  // Type-only, so it is erased before the factory is hoisted.
-  const actual = jest.requireActual('../../src/data/categories') as {
-    categories: Category[];
-  };
-  return {
-    ...actual,
-    categories: actual.categories.map((c) =>
-      c.id === 'credit' ? { ...c, premium: true } : c,
-    ),
-  };
-});
+const PREMIUM_CATEGORY = 'exotics';
+/** The first product on the paid path — what a locked tap lands on. */
+const PREMIUM_PRODUCT = 'digital';
 
 import { getProductById, products } from '../../src/data/products';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
@@ -86,10 +72,10 @@ describe('with no paywall in force', () => {
     await renderWithStore(<RootNavigator />);
     await settleRings();
 
-    expect(screen.queryByTestId('category-locked-credit')).toBeNull();
+    expect(screen.queryByTestId(`category-locked-${PREMIUM_CATEGORY}`)).toBeNull();
 
-    await fireEvent.press(screen.getByTestId('category-card-credit'));
-    await fireEvent.press(screen.getByTestId('product-row-cds'));
+    await fireEvent.press(screen.getByTestId(`category-card-${PREMIUM_CATEGORY}`));
+    await fireEvent.press(screen.getByTestId(`product-row-${PREMIUM_PRODUCT}`));
     await settleRings();
 
     expect(screen.getByTestId('product-start-lesson')).toBeTruthy();
@@ -102,7 +88,7 @@ describe('with the paywall in force', () => {
     await renderWithStore(<RootNavigator />, { store: paywalled() });
     await settleRings();
 
-    expect(screen.getByTestId('category-locked-credit')).toBeTruthy();
+    expect(screen.getByTestId(`category-locked-${PREMIUM_CATEGORY}`)).toBeTruthy();
     expect(screen.queryByTestId('category-locked-ir')).toBeNull();
   });
 
@@ -112,12 +98,12 @@ describe('with the paywall in force', () => {
    */
   it('still opens a locked category, with its rows marked', async () => {
     const store = paywalled();
-    store.dispatch(navigateToCategory('credit'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
     expect(screen.getByTestId('category-screen')).toBeTruthy();
-    expect(screen.getByTestId('product-locked-cds')).toBeTruthy();
+    expect(screen.getByTestId(`product-locked-${PREMIUM_PRODUCT}`)).toBeTruthy();
   });
 
   it('leaves the free asset class alone', async () => {
@@ -135,7 +121,7 @@ describe('with the paywall in force', () => {
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
-    expect(screen.getByTestId('product-locked-cds')).toBeTruthy();
+    expect(screen.getByTestId(`product-locked-${PREMIUM_PRODUCT}`)).toBeTruthy();
     expect(screen.queryByTestId('product-locked-irs')).toBeNull();
   });
 
@@ -146,8 +132,8 @@ describe('with the paywall in force', () => {
    */
   it('shows a locked product page instead of its content', async () => {
     const store = paywalled();
-    store.dispatch(navigateToCategory('credit'));
-    store.dispatch(navigateToProduct('cds'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
+    store.dispatch(navigateToProduct(PREMIUM_PRODUCT));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
@@ -160,8 +146,8 @@ describe('with the paywall in force', () => {
 
   it('opens the paywall from a locked product, and comes back to it', async () => {
     const store = paywalled();
-    store.dispatch(navigateToCategory('credit'));
-    store.dispatch(navigateToProduct('cds'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
+    store.dispatch(navigateToProduct(PREMIUM_PRODUCT));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
@@ -179,7 +165,7 @@ describe('with the paywall in force', () => {
    */
   it('refuses a lesson reached without passing the product page', async () => {
     const store = paywalled();
-    store.dispatch(navigateToLesson('cds'));
+    store.dispatch(navigateToLesson(PREMIUM_PRODUCT));
     await renderWithStore(<RootNavigator />, { store });
 
     expect(screen.getByTestId('lesson-locked')).toBeTruthy();
@@ -203,8 +189,8 @@ describe('for an install that predates the paywall', () => {
   it('locks nothing, even on a build that sells', async () => {
     const store = paywalled();
     store.dispatch(setGrandfathered(true));
-    store.dispatch(navigateToCategory('credit'));
-    store.dispatch(navigateToProduct('cds'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
+    store.dispatch(navigateToProduct(PREMIUM_PRODUCT));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
@@ -242,7 +228,7 @@ describe('exams under a paywall', () => {
     store.dispatch(navigateToExam());
     await renderWithStore(<RootNavigator />, { store });
 
-    expect(screen.getByText('Credit · locked')).toBeTruthy();
+    expect(screen.getByText('Exotics · locked')).toBeTruthy();
     expect(screen.getByText('Interest Rate')).toBeTruthy();
   });
 
@@ -251,7 +237,7 @@ describe('exams under a paywall', () => {
     store.dispatch(navigateToExam());
     await renderWithStore(<RootNavigator />, { store });
 
-    await fireEvent.press(screen.getByTestId('exam-scope-credit'));
+    await fireEvent.press(screen.getByTestId(`exam-scope-${PREMIUM_CATEGORY}`));
 
     expect(screen.getByTestId('paywall-screen')).toBeTruthy();
   });
@@ -299,7 +285,7 @@ describe('a review queue holding content that has since locked', () => {
 
   it('does not count items it could never show', async () => {
     const store = paywalled();
-    queueOf(store, ['cds-q1', 'cds-q2', 'irs-q1']);
+    queueOf(store, [`${PREMIUM_PRODUCT}-q1`, `${PREMIUM_PRODUCT}-q2`, 'irs-q1']);
     store.dispatch(navigateToTab('review'));
     await renderWithStore(<RootNavigator />, { store });
 
@@ -310,7 +296,7 @@ describe('a review queue holding content that has since locked', () => {
 
   it('draws a sitting from the open questions alone', async () => {
     const store = paywalled();
-    queueOf(store, ['cds-q1', 'cds-q2', 'irs-q1']);
+    queueOf(store, [`${PREMIUM_PRODUCT}-q1`, `${PREMIUM_PRODUCT}-q2`, 'irs-q1']);
     store.dispatch(navigateToTab('review'));
     await renderWithStore(<RootNavigator />, { store });
 
@@ -323,7 +309,7 @@ describe('a review queue holding content that has since locked', () => {
   /** Dropped from view, not from storage — access can come back. */
   it('leaves the locked items in the queue', async () => {
     const store = paywalled();
-    queueOf(store, ['cds-q1', 'irs-q1']);
+    queueOf(store, [`${PREMIUM_PRODUCT}-q1`, 'irs-q1']);
     store.dispatch(navigateToTab('review'));
     await renderWithStore(<RootNavigator />, { store });
 
@@ -353,7 +339,7 @@ describe('what home suggests next', () => {
 
 describe('the headline on a paywalled home screen', () => {
   /**
-   * "36 products to learn" and "432 questions are waiting — start anywhere"
+   * "42 products to learn" and "504 questions are waiting — start anywhere"
    * are both promises the app would break on the next tap.
    */
   it('counts what the reader can open, not the catalogue', async () => {
@@ -372,12 +358,16 @@ describe('the headline on a paywalled home screen', () => {
     ).toBeTruthy();
   });
 
-  it('reads exactly as it always did when nothing is locked', async () => {
+  it('counts the whole catalogue when nothing is locked', async () => {
+    const questions = products.reduce((total, p) => total + p.quiz.length, 0);
+
     await renderWithStore(<RootNavigator />);
     await settleRings();
 
-    expect(screen.getByText('36 products to learn')).toBeTruthy();
-    expect(screen.getByText(/^432 questions are waiting/)).toBeTruthy();
+    expect(screen.getByText(`${products.length} products to learn`)).toBeTruthy();
+    expect(
+      screen.getByText(new RegExp(`^${questions} questions are waiting`)),
+    ).toBeTruthy();
   });
 });
 
@@ -385,11 +375,11 @@ describe('the route through a locked category', () => {
   /** "START HERE" is an invitation, and the next tap would refuse it. */
   it('does not invite the reader into a locked first step', async () => {
     const store = paywalled();
-    store.dispatch(navigateToCategory('credit'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 
-    expect(screen.queryByTestId('category-next-cds')).toBeNull();
+    expect(screen.queryByTestId(`category-next-${PREMIUM_PRODUCT}`)).toBeNull();
   });
 
   it('still marks the next step in the free asset class', async () => {
@@ -418,8 +408,8 @@ describe('a key set before the Play product exists', () => {
         premium: false,
       }),
     );
-    store.dispatch(navigateToCategory('credit'));
-    store.dispatch(navigateToProduct('cds'));
+    store.dispatch(navigateToCategory(PREMIUM_CATEGORY));
+    store.dispatch(navigateToProduct(PREMIUM_PRODUCT));
     await renderWithStore(<RootNavigator />, { store });
     await settleRings();
 

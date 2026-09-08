@@ -6,11 +6,14 @@ import type { Category } from './types';
  * handoff; the rendered hex equivalents live in `theme/colors.ts` keyed by
  * the same category id.
  *
- * All six are `premium: false` and must stay that way. They are what the app
- * shipped free to its first users, and a subscription sells what comes *after*
- * them rather than access to them — flipping one to `true` would take back
- * something people already have. A new asset class is where the decision
- * actually lives.
+ * The six that shipped before the paywall are `premium: false` and must stay
+ * that way. They are what the app gave its first users, and a subscription
+ * sells what comes *after* them rather than access to them — flipping one to
+ * `true` would take back something people already have.
+ *
+ * Exotics is the first class on the other side of that line, and the shape a
+ * paid one takes: it is built on the free catalogue rather than carved out of
+ * it, and every lesson in it names the free product it is assembled from.
  */
 export const categories: Category[] = [
   {
@@ -66,6 +69,15 @@ export const categories: Category[] = [
     accentColor: 'oklch(45% .03 250)',
     icon: 'MF',
     premium: false,
+  },
+  {
+    id: 'exotics',
+    name: 'Exotics',
+    description:
+      'Structured payoffs assembled from the vanilla products — barriers, digitals, accruals and the geared strips sold as zero-cost hedges.',
+    accentColor: 'oklch(55% .13 340)',
+    icon: 'EX',
+    premium: true,
   },
 ];
 
