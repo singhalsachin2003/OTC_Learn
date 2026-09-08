@@ -982,10 +982,10 @@ export const casesProducts: Product[] = [
         step: 3,
         difficulty: 'intermediate',
         prompt:
-          'Marking positions at favourable points within the bid-offer spread delayed recognition of the losses.',
-        correctAnswer: true,
+          'Where to mark within the bid-offer spread is a neutral choice with no effect on reported profit.',
+        correctAnswer: false,
         explanation:
-          'The bank later restated its first-quarter results, which is what a mark that is not a price eventually forces.',
+          'Marking favourably delayed recognition of the losses here, and the bank later restated its first-quarter results.',
       },
       {
         id: 'whale-q8',
@@ -1565,6 +1565,1560 @@ export const casesProducts: Product[] = [
         correctAnswer: false,
         explanation:
           'If every position is short liquidity, the instruments differ and the risk does not.',
+      },
+    ],
+  },
+  {
+    id: 'barings',
+    categoryId: 'cases',
+    name: 'Barings, 1995',
+    hook: 'One trader, both sides of his own desk',
+    summary:
+      'A single trader in Singapore ran both the trading and the settlement of his own book, which meant nothing he reported had to be true. What began as concealed errors became a very large bet that the Nikkei would stay in a range, funded by short options and by margin wired from head office against positions nobody had reconciled. The Kobe earthquake broke the range, the losses reached about £827m, and a 233-year-old bank was sold for one pound.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'Barings’ Singapore operation was supposed to be running low-risk arbitrage between Nikkei 225 futures listed in Singapore and in Osaka — buying in one and selling in the other for small, near-riskless differences. Instead the desk built a large one-way position and hid it. On 17 January 1995 an earthquake struck Kobe; the Nikkei fell hard over the following days; the concealed position was doubled rather than closed. By late February the losses exceeded the bank’s entire capital, and Barings was sold to ING for a nominal one pound.',
+        callout:
+          'The arbitrage the desk was believed to be running is genuinely low risk. Its reported profits were the cover story, because a strategy that should earn a little and appeared to earn a lot was never questioned.',
+      },
+      {
+        step: 2,
+        title: 'The position',
+        content:
+          'Two exposures sat underneath. The first was an outright long in Nikkei futures — a directional bet, not an arbitrage. The second was a short straddle: selling both calls and puts on the index, which collects premium and pays out if the market moves far in either direction. Together they were a bet that the index would stay near a level and that volatility would stay low, held at a size the bank did not know existed.',
+        callout:
+          'A short straddle is the purest form of "small gains, unbounded loss". It also produces steady reported profits right up until it does not.',
+      },
+      {
+        step: 3,
+        title: 'Why it broke',
+        content:
+          'The control failure is the whole case. The same person ran the front office and the back office, so the records of what had been traded were produced by the person doing the trading. An error account was used to hold losses out of the reported book. Margin calls on the concealed position were met by requests to head office, funded without anyone reconciling what they were funding — hundreds of millions moved against positions that did not appear in the accounts they were checked against.',
+        callout:
+          'Segregation of duties is the oldest control in finance and the one this case is taught for: whoever books a trade must not be the person who confirms it.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'About £827m — more than the bank had. Barings collapsed in February 1995 and was bought by ING for £1 plus assumption of its liabilities. The Bank of England’s inquiry set out the supervisory and internal failures in detail, and the case became the standard teaching example for operational risk, later shaping how banks structured independent risk and settlement functions.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'Returns that do not match the strategy are the signal, not the reward — a low-risk arbitrage that reports large profits is either not low risk or not an arbitrage. Funding is a control point: money leaving the firm to meet margin is a fact that can be reconciled against positions, and here nobody did. And an unexplained account is not an administrative untidiness; it is where the losses go.',
+        callout:
+          'Every subsequent rogue trading case has some version of the same three facts: an unreconciled record, an unexplained account, and a return nobody could account for.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Segregation of duties',
+        definition:
+          'Keeping trading, confirmation and settlement in separate hands so no one person can both trade and record.',
+      },
+      {
+        term: 'Error account',
+        definition:
+          'An account for correcting mistaken bookings, and here the place concealed losses were parked.',
+      },
+      {
+        term: 'Short straddle',
+        definition:
+          'Selling a call and a put at the same strike: premium now, unbounded loss if the market moves far.',
+      },
+      {
+        term: 'Index arbitrage',
+        definition:
+          'Trading the same index future on two exchanges for a small price difference, with little directional risk.',
+      },
+      {
+        term: 'Reconciliation',
+        definition:
+          'Checking the firm’s records against the exchange’s and the cash actually paid — the control that was absent.',
+      },
+      {
+        term: 'Operational risk',
+        definition:
+          'Loss from failed processes, people or systems, as distinct from market or credit risk.',
+      },
+    ],
+    example: {
+      title: 'What a short straddle earns, and then pays',
+      lines: [
+        'Sell 10,000 Nikkei straddles at a combined premium of 400 index points, on a contract worth ¥500 a point.',
+        'Premium collected: 10,000 × 400 × ¥500 = ¥2bn, booked as profit while the index sits still.',
+        'The index then falls 3,000 points. The puts are 3,000 points in the money.',
+        'Loss on the puts: 10,000 × 3,000 × ¥500 = ¥15bn, against ¥2bn collected.',
+        'The calls expire worthless, which changes nothing: one side of a straddle can only ever return the premium.',
+        'Add a long futures position into the same fall and the two losses compound rather than offset.',
+      ],
+      takeaway:
+        'The strategy pays a fixed amount for accepting an unbounded one. That is a legitimate trade at a size the firm has chosen — and a fatal one at a size the firm cannot see.',
+    },
+    inPractice:
+      'The direct legacy is structural: independent middle and back offices, mandatory leave for traders, position reconciliation against exchange records, and limits monitored by people who do not report to the desk. Every one of those exists because they were all absent in one place at one time.',
+    relatedProductIds: ['eqopt', 'socgen', 'execution'],
+    quiz: [
+      {
+        id: 'barings-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The Singapore desk was believed to be running low-risk arbitrage between two exchanges.',
+        correctAnswer: true,
+        explanation:
+          'The reported strategy was riskless in principle, which is why unusually large reported profits should have been the first question.',
+      },
+      {
+        id: 'barings-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt:
+          'What was the response to the market falling after the Kobe earthquake?',
+        options: [
+          'The position was doubled',
+          'The position was closed at a loss',
+          'The exchange suspended the contracts',
+          'Head office hedged it in London',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Adding to a losing concealed position is what turned a large loss into one bigger than the bank.',
+      },
+      {
+        id: 'barings-q3',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt: 'What does a short straddle pay and what does it risk?',
+        options: [
+          'Unlimited gain for a fixed premium',
+          'A fixed premium, with losses capped at the strike',
+          'A fixed premium, against a loss that grows with any large move either way',
+          'Nothing up front, with gains only if volatility rises',
+        ],
+        correctIndex: 2,
+        explanation:
+          'It is short volatility in the most direct form available, and it reports steady profits while the market is quiet.',
+      },
+      {
+        id: 'barings-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'The concealed book combined a directional futures position with sold options.',
+        correctAnswer: true,
+        explanation:
+          'A long futures position and a short straddle lose together in a fall, which is what happened after January 1995.',
+      },
+      {
+        id: 'barings-q5',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'The trader also controlled the settlement and record-keeping for his own trades.',
+        correctAnswer: true,
+        explanation:
+          'Which meant no report about the book was independent of the person the report was about.',
+      },
+      {
+        id: 'barings-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'What was the error account used for?',
+        options: [
+          'Holding client money separately',
+          'Settling trades across two exchanges',
+          'Recording the firm’s hedging positions',
+          'Parking concealed losses outside the reported book',
+        ],
+        correctIndex: 3,
+        explanation:
+          'An account that exists to correct mistakes is the natural place to hide them, unless someone reconciles it.',
+      },
+      {
+        id: 'barings-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'advanced',
+        prompt: 'Why were the margin payments a missed control point?',
+        options: [
+          'Margin is not a real cash flow',
+          'Cash left the firm against positions nobody checked existed',
+          'Margin was paid by the exchange, not the bank',
+          'The payments were too small to notice',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Funding is a fact that can be reconciled against a position. Here hundreds of millions moved and nothing was.',
+      },
+      {
+        id: 'barings-q8',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'foundational',
+        prompt:
+          'The bank’s capital absorbed the losses, which is why it survived in reduced form.',
+        correctAnswer: false,
+        explanation:
+          'The losses were larger than the whole bank — about £827m — and ended a 233-year-old institution in days.',
+      },
+      {
+        id: 'barings-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'What happened to the bank?',
+        options: [
+          'It was sold to ING for a nominal one pound',
+          'It was recapitalised by the Bank of England',
+          'It was merged with its Singapore subsidiary',
+          'It continued trading under new management',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Plus assumption of its liabilities — the price reflects a balance sheet with a hole in it.',
+      },
+      {
+        id: 'barings-q10',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Unusually high profits from a strategy that should earn very little are a control signal.',
+        correctAnswer: true,
+        explanation:
+          'Either it is not the strategy being reported, or it is not as low risk as it is described. Both are findings.',
+      },
+      {
+        id: 'barings-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'Which control most directly addresses the failure in this case?',
+        options: [
+          'Value at risk reported daily',
+          'Central clearing of index futures',
+          'A limit on the number of contracts per trade',
+          'Segregation of duties between trading and settlement',
+        ],
+        correctIndex: 3,
+        explanation:
+          'Whoever books a trade must not be the person who confirms it — the oldest control in the industry.',
+      },
+      {
+        id: 'barings-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Mandatory leave for traders is a staff benefit with no bearing on control.',
+        correctAnswer: false,
+        explanation:
+          'It is a control. A concealed position usually needs daily maintenance, so a fortnight in someone else’s hands is a test of the book.',
+      },
+    ],
+  },
+  {
+    id: 'socgen',
+    categoryId: 'cases',
+    name: 'Société Générale, 2008',
+    hook: 'Fictitious hedges, and a €4.9bn exit',
+    summary:
+      'A trader on an equity derivatives desk built directional positions of around €50bn in European index futures and concealed them with fictitious offsetting trades entered into the bank’s systems. When the positions were discovered in January 2008 the bank unwound them over three days into a falling market, crystallising a loss of €4.9bn. The case is about how a control that checks net exposure can be defeated by inventing the other side, and about how much of a loss can belong to the exit rather than the position.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'The desk was an arbitrage operation expected to run small, hedged positions. Over 2007 and into January 2008 one trader accumulated very large unhedged long positions in European equity index futures. Each real position was paired in the systems with an invented offsetting trade, so every net exposure report looked normal. The fabrications were discovered on 18 January 2008. The bank unwound the book between 21 and 23 January, days on which European equity markets fell sharply.',
+        callout:
+          'The concealed positions were profitable at one point in 2007. A control failure is not the same as a losing trade, and this one had already been both.',
+      },
+      {
+        step: 2,
+        title: 'How the concealment worked',
+        content:
+          'The fictitious trades were chosen to sit in the gaps of the control framework: counterparties whose confirmations were not chased in the same way, trade types with deferred settlement, positions cancelled and re-entered before the checks that would have caught them. None of it required breaking into a system. It required knowing which reconciliations ran, when they ran, and what they compared — knowledge the trader had from previously working in the middle office.',
+        callout:
+          'A control is only as good as the exception process behind it. Dozens of alerts were raised over the period and each was closed on the trader’s own explanation.',
+      },
+      {
+        step: 3,
+        title: 'The unwind',
+        content:
+          'Once found, a €50bn long position in index futures has to be sold. The bank chose to exit quickly and quietly rather than disclose first, spreading the sales over three sessions and staying within a share of daily volume. Markets fell heavily in those days — for reasons that had nothing to do with this book, though the size of the selling did not help — and a significant part of the €4.9bn was incurred during the exit rather than before it. That decision has been argued about since: disclosing first would have moved the market against the bank just as certainly.',
+        callout:
+          'When the position is a meaningful share of a market, there is no exit that does not cost. The only choice is which cost.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'A loss of €4.9bn, a capital raise to repair the balance sheet, and a €4m fine from the French banking commission for the control failures. Internal and independent reviews found weak supervision of the desk, alerts closed without escalation, and a middle office that reconciled positions but not the trades underlying them. The trader was convicted; the damages awarded against him were substantially reduced on appeal in 2016, on the finding that the bank’s own failings contributed.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'Controls check what they are told to check. A framework built around net exposure is defeated by anything that fabricates the other leg, which is why confirmation with the counterparty — an outside party who either did or did not do this trade — matters more than internal consistency. Alerts that are closed by asking the subject of the alert are not controls. And the cost of an unwind belongs in the risk assessment: a position is only as safe as the market’s ability to absorb it on the day you must leave.',
+        callout:
+          'Read this one against Archegos: different decade, different instrument, same sentence — nobody could see the whole position, and the exit was most of the loss.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Fictitious trade',
+        definition:
+          'An invented offsetting position booked to make a real exposure appear hedged.',
+      },
+      {
+        term: 'Confirmation',
+        definition:
+          'Agreement of a trade’s terms with the counterparty — the check an invented trade cannot survive.',
+      },
+      {
+        term: 'Exception handling',
+        definition:
+          'What happens after an alert fires, and the step that decides whether a control works at all.',
+      },
+      {
+        term: 'Delta One',
+        definition:
+          'Desks trading instruments that track their underlying one-for-one, such as index futures and swaps.',
+      },
+      {
+        term: 'Unwind cost',
+        definition:
+          'The loss incurred while exiting a position, distinct from the loss the position already carried.',
+      },
+      {
+        term: 'Supervision',
+        definition:
+          'The obligation on a desk head to know what the desk holds, which no system replaces.',
+      },
+    ],
+    example: {
+      title: 'How much of the loss was the exit',
+      lines: [
+        'A concealed long position of €50bn in index futures is discovered on a Friday.',
+        'European indices fall about 6% over the following three sessions.',
+        'On €50bn, a 6% fall is €3bn — incurred after the discovery, on a position the bank was trying to leave.',
+        'Selling into that fall as one of the larger sellers adds to it: even 10% of daily volume moves the price against you.',
+        'Whatever the position had already lost is separate, and smaller than most people assume.',
+        'Disclose first instead, and the market prices the forced sale before it happens — a different cost, not an avoided one.',
+      ],
+      takeaway:
+        'The headline number is the position and the exit added together. Any risk framework that measures the first and ignores the second is describing half the loss.',
+    },
+    inPractice:
+      'The direct legacy is confirmation discipline and exception governance: unconfirmed trades chased and escalated regardless of who raised them, alerts closed by someone independent of the desk, and periodic checks that a trader’s system permissions do not still reflect a previous role in operations.',
+    relatedProductIds: ['barings', 'eqswap', 'archegos'],
+    quiz: [
+      {
+        id: 'socgen-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The concealed positions were unhedged directional bets on European equity indices.',
+        correctAnswer: true,
+        explanation:
+          'The desk was meant to run small hedged arbitrage; what it held was roughly €50bn of outright long.',
+      },
+      {
+        id: 'socgen-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'How did the net exposure reports look normal?',
+        options: [
+          'The positions were held at a different subsidiary',
+          'Each real trade was paired with an invented offsetting trade',
+          'The reports were produced only monthly',
+          'The futures were reported at cost rather than market',
+        ],
+        correctIndex: 1,
+        explanation:
+          'A framework that checks the net of two legs is defeated by fabricating one of them.',
+      },
+      {
+        id: 'socgen-q3',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Defeating the controls required breaking into systems the trader had no access to.',
+        correctAnswer: false,
+        explanation:
+          'It required knowing which reconciliations ran and what they compared — knowledge from a previous middle office role.',
+      },
+      {
+        id: 'socgen-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt: 'Which check does a fictitious trade fail?',
+        options: [
+          'Internal net exposure reporting',
+          'Confirmation with the counterparty',
+          'Daily profit and loss reporting',
+          'The firm’s value-at-risk calculation',
+        ],
+        correctIndex: 1,
+        explanation:
+          'An outside party either did or did not do the trade, which is why confirmation beats internal consistency.',
+      },
+      {
+        id: 'socgen-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'Alerts were raised over the period and closed on the trader’s own explanation.',
+        correctAnswer: true,
+        explanation:
+          'A control whose exception process asks the subject of the exception is not a control.',
+      },
+      {
+        id: 'socgen-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'Why did the bank unwind before disclosing?',
+        options: [
+          'Disclosure would have let the market price the forced sale in advance',
+          'Regulation required silence until the positions were closed',
+          'The exchange refused to accept the trades otherwise',
+          'The positions could not be valued until they were sold',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Both routes cost money. The choice was which cost to take, not whether to take one.',
+      },
+      {
+        id: 'socgen-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'A significant part of the €4.9bn was incurred during the three-day exit rather than before discovery.',
+        correctAnswer: true,
+        explanation:
+          'Markets fell sharply in those sessions, and the bank was a large seller into them.',
+      },
+      {
+        id: 'socgen-q8',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'foundational',
+        prompt: 'What was the total loss?',
+        options: ['€490m', '€4.9bn', '€49bn', '€500m'],
+        correctIndex: 1,
+        explanation:
+          'It required a capital raise, and drew a fine from the French banking commission for the control failures.',
+      },
+      {
+        id: 'socgen-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'Reviews found the middle office reconciled positions but not the trades underlying them.',
+        correctAnswer: true,
+        explanation:
+          'Which is exactly the gap a fabricated offsetting leg lives in.',
+      },
+      {
+        id: 'socgen-q10',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'What is the general lesson about internal controls?',
+        options: [
+          'They should be run more frequently',
+          'They check what they are told to check, so an outside confirmation is worth more than internal consistency',
+          'They are unnecessary where positions are cleared',
+          'They should be designed by the trading desk that uses them',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Internal consistency can be manufactured; a counterparty’s agreement cannot.',
+      },
+      {
+        id: 'socgen-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'A position’s risk is fully described by what it has lost before anyone decides to exit.',
+        correctAnswer: false,
+        explanation:
+          'The exit is part of the risk: a position is only as safe as the market’s ability to absorb it on the day you must leave.',
+      },
+      {
+        id: 'socgen-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt: 'What does this case share with Archegos, thirteen years later?',
+        options: [
+          'Both involved commodity derivatives',
+          'Both were losses where nobody could see the whole position and the exit was most of the cost',
+          'Both were caused by a model change',
+          'Both were resolved by a central bank',
+        ],
+        correctIndex: 1,
+        explanation: 'Different decade, different instrument, same two sentences.',
+      },
+    ],
+  },
+  {
+    id: 'orange',
+    categoryId: 'cases',
+    name: 'Orange County, 1994',
+    hook: 'A conservative bond portfolio, borrowed three times over',
+    summary:
+      'A Californian county ran an investment pool for itself and around two hundred local public bodies. The securities in it were high grade — agency notes, not junk — but the pool borrowed against them through repo to hold nearly three times the money deposited, and much of what it bought had leverage built into the coupon as well. When US rates rose through 1994 the pool lost about $1.7bn and the county filed for bankruptcy, at the time the largest municipal failure in US history.',
+    difficulty: 'intermediate',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'By 1994 the county pool held around $20bn of securities against roughly $7.5bn actually deposited with it. The difference was borrowed under repurchase agreements — selling securities for cash with an agreement to buy them back — and reinvested. The portfolio was positioned for interest rates to stay low. The Federal Reserve raised rates through 1994, the securities fell in value, lenders demanded more collateral, and in December the county filed for Chapter 9 bankruptcy.',
+        callout:
+          'Nothing in the pool was speculative in the sense of being low quality. Every security was investment grade, and that is the point of the case.',
+      },
+      {
+        step: 2,
+        title: 'The position',
+        content:
+          'Two kinds of leverage stacked on each other. The first is balance sheet leverage: repo turned $7.5bn into $20bn of holdings, so every percentage move counted nearly three times. The second was inside the instruments. Structured notes such as inverse floaters pay a coupon that falls as short rates rise — 10% minus twice a benchmark, for example — which makes them behave like a bond several times their stated maturity. A portfolio of medium-term notes can carry the interest rate risk of very long ones without saying so anywhere on the ticket.',
+        callout:
+          'An inverse floater paying 10% − 2 × the benchmark yields 4% when the benchmark is 3% and nothing at all when it reaches 5%. The coupon is geared, and so is the price.',
+      },
+      {
+        step: 3,
+        title: 'Why it broke',
+        content:
+          'Rising rates hit both layers at once, and the repo lenders were the mechanism that turned a paper loss into a failure. As the collateral fell in value they called for more, which meant selling securities into the same falling market — the same collateral spiral that would appear in gilts nearly thirty years later. The pool had also been reporting at book value rather than market, so the participants whose money it was had no visible signal until the position had to be liquidated.',
+        callout:
+          'Marking to market is not an accounting preference. It is the difference between finding out early and finding out from a lender.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'About $1.7bn, roughly a fifth of everything deposited, and the bankruptcy of a large and wealthy county. Schools, cities and districts that had placed cash in the pool for safekeeping had it frozen. The investment bank that had sold much of the structure and provided the repo financing later settled for around $400m without admitting liability, and the episode reshaped how US public bodies are permitted to invest — position limits, mark-to-market reporting, and restrictions on leverage in public funds.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'Credit quality and market risk are different questions, and a portfolio can be flawless on the first while failing on the second. Leverage applied to a low-risk asset produces a high-risk position — the arithmetic does not care that the underlying is a government agency note. And where the leverage is embedded in a coupon formula rather than in a borrowing, it will not appear in any measure that counts what was borrowed.',
+        callout:
+          'The question that would have caught it: what does this portfolio lose if rates rise two percent — not, what is it rated?',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Repurchase agreement',
+        definition:
+          'Selling a security for cash with an agreement to buy it back, the standard way to borrow against bonds.',
+      },
+      {
+        term: 'Inverse floater',
+        definition:
+          'A note whose coupon falls as a benchmark rate rises, giving it far more interest rate risk than its maturity suggests.',
+      },
+      {
+        term: 'Effective duration',
+        definition:
+          'The true price sensitivity of a structured note to rates, which can be several times its stated maturity.',
+      },
+      {
+        term: 'Collateral call',
+        definition:
+          'A repo lender’s demand for more security as the collateral falls, met by selling into the same fall.',
+      },
+      {
+        term: 'Book value reporting',
+        definition:
+          'Reporting holdings at cost rather than market, which conceals a loss until it must be realised.',
+      },
+      {
+        term: 'Investment pool',
+        definition:
+          'A shared fund holding cash for several public bodies, whose participants here could not see the risk taken.',
+      },
+    ],
+    example: {
+      title: 'Where $1.7bn comes from without a single default',
+      lines: [
+        'Deposits of $7.5bn are levered through repo into a $20bn portfolio — 2.7 times.',
+        'The holdings are medium-term notes, but the structured ones behave like far longer bonds: call the portfolio’s effective duration 3.5.',
+        'US rates rise about 2.4% over 1994.',
+        'Loss: $20bn × 3.5 × 2.4% = $1.68bn — close to what actually happened.',
+        'Against $7.5bn of deposits that is 22% of the money, on a portfolio of investment grade paper.',
+        'Unlevered, the same securities would have lost $7.5bn × 3.5 × 2.4% = $630m — painful, survivable, and not a bankruptcy.',
+      ],
+      takeaway:
+        'Nothing defaulted. The loss is leverage multiplied by duration multiplied by a rate move — three numbers, none of them about credit quality.',
+    },
+    inPractice:
+      'Public investment pools are now constrained on leverage, on maturity and on the instruments they may hold, and they report at market. The structures themselves are unremarkable: inverse floaters are a legitimate way to take a rates view, priced accordingly, and used by funds that know that is what they are doing.',
+    relatedProductIds: ['irs', 'capfloor', 'ldi'],
+    quiz: [
+      {
+        id: 'orange-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt: 'The pool lost money because the securities it held defaulted.',
+        correctAnswer: false,
+        explanation:
+          'Nothing defaulted. The holdings were investment grade; the loss came from leverage and interest rate risk.',
+      },
+      {
+        id: 'orange-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'How did $7.5bn of deposits become $20bn of holdings?',
+        options: [
+          'Through gains reinvested over many years',
+          'By borrowing against the securities under repurchase agreements',
+          'By issuing municipal bonds to the public',
+          'Through a credit line from the state government',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Repo turns a bond portfolio into a levered one, and the lender can call for more collateral at any time.',
+      },
+      {
+        id: 'orange-q3',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt: 'What does an inverse floater’s coupon do when rates rise?',
+        options: [
+          'It rises with the benchmark',
+          'It stays fixed until maturity',
+          'It falls, by a multiple of the benchmark’s move',
+          'It converts into a floating rate note',
+        ],
+        correctIndex: 2,
+        explanation:
+          'A coupon of 10% minus twice the benchmark falls two points for every one the benchmark rises.',
+      },
+      {
+        id: 'orange-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'A structured note can carry the interest rate risk of a much longer bond than its stated maturity.',
+        correctAnswer: true,
+        explanation:
+          'That is what effective duration measures, and it does not appear anywhere on the description of the security.',
+      },
+      {
+        id: 'orange-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Leverage inside a coupon formula shows up in a measure of how much has been borrowed.',
+        correctAnswer: false,
+        explanation:
+          'It does not. Borrowing and embedded gearing are two separate layers, and only one of them is visible as debt.',
+      },
+      {
+        id: 'orange-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'advanced',
+        prompt: 'What turned a paper loss into a failure?',
+        options: [
+          'Repo lenders calling for more collateral, met by selling into the fall',
+          'A downgrade of the county’s credit rating',
+          'The Federal Reserve refusing to lend to municipalities',
+          'Depositors withdrawing on the same day',
+        ],
+        correctIndex: 0,
+        explanation:
+          'The same collateral spiral as the gilt crisis of 2022, in a different market and thirty years earlier.',
+      },
+      {
+        id: 'orange-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'The pool reported holdings at book value rather than at market.',
+        correctAnswer: true,
+        explanation:
+          'So the participants whose money it was saw nothing until the positions had to be sold.',
+      },
+      {
+        id: 'orange-q8',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'foundational',
+        prompt: 'What did the county do in December 1994?',
+        options: [
+          'Raised taxes to cover the loss',
+          'Filed for bankruptcy',
+          'Sold the pool to a bank',
+          'Borrowed from the state',
+        ],
+        correctIndex: 1,
+        explanation:
+          'At the time the largest municipal bankruptcy in US history, with around $1.7bn lost.',
+      },
+      {
+        id: 'orange-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'Schools and cities that had placed cash in the pool had it frozen.',
+        correctAnswer: true,
+        explanation:
+          'They were participants in a fund they had treated as a deposit account, and could not see what it held.',
+      },
+      {
+        id: 'orange-q10',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'What question would have exposed the risk?',
+        options: [
+          'What is this portfolio rated?',
+          'What does it lose if rates rise two percent?',
+          'Who is the custodian?',
+          'What is the average coupon?',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Credit quality and market risk are different questions, and only the second one had a frightening answer.',
+      },
+      {
+        id: 'orange-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'foundational',
+        prompt:
+          'Leverage applied to a low-risk asset still produces a high-risk position.',
+        correctAnswer: true,
+        explanation: 'The arithmetic does not care what the underlying is rated.',
+      },
+      {
+        id: 'orange-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt: 'What changed for US public investment pools afterwards?',
+        options: [
+          'They were prohibited from holding government agency debt',
+          'Limits on leverage and maturity, and reporting at market value',
+          'They were required to be managed by investment banks',
+          'They were merged into a single federal fund',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The rules attacked the leverage and the reporting, which is where the failure actually was.',
+      },
+    ],
+  },
+  {
+    id: 'ashanti',
+    categoryId: 'cases',
+    name: 'Ashanti Goldfields, 1999',
+    hook: 'Seven years of production, sold forward',
+    summary:
+      'A West African gold producer hedged with forward sales and sold options covering around seven years of its own output. When fifteen European central banks agreed to limit gold sales in September 1999, the price jumped by about a quarter in two weeks. The hedges were deeply out of the money, the margin calls were larger than the company’s cash, and a business whose product had just become far more valuable was forced into a standstill with its banks and eventually out of independence.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'On 26 September 1999 fifteen European central banks announced the Washington Agreement on Gold, capping their sales and lending for five years. Gold had been in a long decline; the announcement reversed it violently, taking the price from around $255 an ounce to roughly $330 within a fortnight. Producers who had sold their output forward faced enormous mark-to-market losses. Ashanti Goldfields, with a hedge book covering about eleven million ounces against annual production near 1.6 million, could not meet the collateral its seventeen counterparty banks called for.',
+        callout:
+          'A rising gold price is unambiguously good news for a gold miner. It nearly ended this one inside three weeks.',
+      },
+      {
+        step: 2,
+        title: 'The position',
+        content:
+          'A producer hedge in its simple form is a forward sale: agree today to deliver metal at a fixed price, and the mine is insulated from a falling market. Ashanti’s book went considerably further. It included sold call options — which earn premium but hand away the upside — and structured variations layered on top, so the book was not only long the fixed price but short volatility. And its size, at roughly seven years of production, meant it was no longer describable as hedging a known output.',
+        callout:
+          'Selling a call is not a hedge. It is income today in exchange for the gain you would have made if the thing you produce becomes more valuable.',
+      },
+      {
+        step: 3,
+        title: 'Why it broke',
+        content:
+          'The hedges were bilateral contracts with margin terms, so a large adverse move produced cash calls — reported at several hundred million dollars — within days. The offsetting benefit was gold in the ground that would be mined and sold over years, and no bank accepts that as collateral. The company had no facility sized for the move. That is the same failure as the LME nickel squeeze and the gilt crisis: the hedge was economically sound and could not be funded.',
+        callout:
+          'The size made it worse in a specific way: hedging seven years of production means seven years of mark-to-market on a position that only unwinds as the metal is dug up.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'The mark-to-market deficit on the book ran to several hundred million dollars. Rather than default, the company negotiated a standstill with its counterparties in October 1999, granting them warrants over its equity and accepting constraints on how it was run — its shareholders paid for the rescue in dilution. Ashanti never fully recovered its independence and merged with AngloGold in 2004. A Canadian producer, Cambior, faced the same problem in the same weeks.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'Hedge the exposure you actually have, over a horizon you can actually see: a book covering years of unmined production is a position, not a hedge. Understand which legs are optional — sold options convert a hedge into a short volatility trade with a cash cost when the market moves your way. And negotiate the collateral terms before you need them, because the moment you need them is the moment your counterparties are least inclined to be generous.',
+        callout:
+          'The pattern across this category: nickel, gilts and gold are three markets and one failure, which is that a hedge settles in cash long before the thing it hedges does.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Producer hedge',
+        definition:
+          'Selling future output forward at a fixed price to insulate a mine or field from a falling market.',
+      },
+      {
+        term: 'Forward sale',
+        definition:
+          'An agreement to deliver a quantity at an agreed price on a future date — the orthodox hedging instrument.',
+      },
+      {
+        term: 'Sold call',
+        definition:
+          'An option written away for premium, which gives up the upside on the very asset the seller produces.',
+      },
+      {
+        term: 'Hedge horizon',
+        definition:
+          'How far ahead output is sold, and so how much unmined production a mark-to-market applies to.',
+      },
+      {
+        term: 'Standstill agreement',
+        definition:
+          'A negotiated pause in counterparties’ rights to call collateral or close out, bought here with equity.',
+      },
+      {
+        term: 'Washington Agreement',
+        definition:
+          'The September 1999 accord in which European central banks capped gold sales, reversing a long price decline.',
+      },
+    ],
+    example: {
+      title: 'What a 26% rally does to a producer that sold forward',
+      lines: [
+        'Gold moves from $255 to $330 an ounce — a rise of $75, or about 26%.',
+        'A book contains forward sales of 9 million ounces at an average of $290.',
+        'Mark-to-market on the forwards: 9,000,000 × ($330 − $290) = $360m against the company.',
+        'It also holds sold calls on 2 million ounces struck at $290, now $40 in the money: another 2,000,000 × $40 = $80m.',
+        'Total deficit around $440m, callable in cash, against annual production of 1.6 million ounces.',
+        'That production, at the new price, is worth about $120m more per year than before — arriving over years, as metal is mined and sold.',
+      ],
+      takeaway:
+        'The company was right about its business and wrong about its funding. $440m due in days against $120m a year of improvement is a liquidity failure wearing the costume of a hedging loss.',
+    },
+    inPractice:
+      'Miners still hedge, and lenders often require it, but books are sized against near-term production, margin terms are negotiated up front and many producers now prefer forwards to sold options for exactly this reason. The industry largely de-hedged through the 2000s as the gold price rose.',
+    relatedProductIds: ['cmfwd', 'cmopt', 'nickel'],
+    quiz: [
+      {
+        id: 'ashanti-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The crisis was triggered by a sharp rise in the gold price, not a fall.',
+        correctAnswer: true,
+        explanation:
+          'A producer that has sold forward loses on the hedge when its own product becomes more valuable.',
+      },
+      {
+        id: 'ashanti-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'What was the Washington Agreement on Gold?',
+        options: [
+          'A cap on gold mining output in West Africa',
+          'An accord among European central banks limiting their gold sales and lending',
+          'A trade agreement fixing the gold price',
+          'A settlement between miners and their hedging banks',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Announced in September 1999, it reversed a long decline and moved the price about a quarter higher in two weeks.',
+      },
+      {
+        id: 'ashanti-q3',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'foundational',
+        prompt:
+          'The hedge book covered roughly seven years of the company’s annual production.',
+        correctAnswer: true,
+        explanation:
+          'About eleven million ounces against production near 1.6 million — well beyond any horizon a mine can see.',
+      },
+      {
+        id: 'ashanti-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt: 'Why is a sold call not a hedge for a producer?',
+        options: [
+          'It cannot be settled physically',
+          'It earns premium but hands away the gain on the asset the producer makes',
+          'It is only available to financial institutions',
+          'It must be exercised early',
+        ],
+        correctIndex: 1,
+        explanation:
+          'It converts the position into a short volatility trade, with a cash cost precisely when the market moves in the producer’s favour.',
+      },
+      {
+        id: 'ashanti-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'A forward sale on its own is a legitimate and orthodox producer hedge.',
+        correctAnswer: true,
+        explanation:
+          'The problem was the horizon and the optionality layered on top, not the instrument.',
+      },
+      {
+        id: 'ashanti-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt:
+          'Why could the company not meet the calls from its gold in the ground?',
+        options: [
+          'The reserves were pledged to another lender',
+          'Unmined production is not collateral, and it converts to cash only as it is mined and sold',
+          'Gold cannot be delivered against a margin call',
+          'The mines had been suspended',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The benefit arrived over years; the cash was owed in days. That is the shape of every case in this category.',
+      },
+      {
+        id: 'ashanti-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'The size of the book made the mark-to-market problem proportionally worse.',
+        correctAnswer: true,
+        explanation:
+          'Seven years of production means seven years of marking on a position that unwinds only as metal is produced.',
+      },
+      {
+        id: 'ashanti-q8',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'How was the immediate crisis resolved?',
+        options: [
+          'A government guarantee from Ghana',
+          'A standstill with counterparties, paid for with warrants over the company’s equity',
+          'A rights issue to existing shareholders',
+          'By closing the hedge book at the peak',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Shareholders funded the rescue in dilution, and the company never regained its independence.',
+      },
+      {
+        id: 'ashanti-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'Ashanti was the only producer caught out by the rally.',
+        correctAnswer: false,
+        explanation:
+          'Cambior, in Canada, had a comparable hedge book and faced comparable calls in the same weeks.',
+      },
+      {
+        id: 'ashanti-q10',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'What is the rule about hedge horizon this case establishes?',
+        options: [
+          'Hedge as far forward as counterparties will allow',
+          'Hedge the production you can actually see, because beyond that it is a position rather than a hedge',
+          'Hedge only after prices have already fallen',
+          'Never hedge production at all',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Selling output you have not mined against a market that can move is a directional trade in everything but name.',
+      },
+      {
+        id: 'ashanti-q11',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Collateral terms are best negotiated when a counterparty is already calling for cash.',
+        correctAnswer: false,
+        explanation:
+          'That is the moment of least leverage. The terms have to be agreed while nobody needs them.',
+      },
+      {
+        id: 'ashanti-q12',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'What do nickel, gilts and gold have in common as cases?',
+        options: [
+          'All three involved fraud',
+          'All three were exchange-traded losses',
+          'In each, a sound hedge settled in cash long before the thing it hedged did',
+          'All three were resolved by a central bank',
+        ],
+        correctIndex: 2,
+        explanation:
+          'Three markets, three decades, one failure — and it is a funding failure, not a hedging one.',
+      },
+    ],
+  },
+  {
+    id: 'metallges',
+    categoryId: 'cases',
+    name: 'Metallgesellschaft, 1993',
+    hook: 'The right hedge, on the wrong clock',
+    summary:
+      'A German industrial group’s US oil subsidiary sold customers fixed-price supply contracts running up to ten years, and hedged them by holding short-dated futures rolled forward month after month. The economics offset almost exactly. The cash flows did not: the futures settled daily in cash while the customer contracts settled over a decade. When oil fell in 1993 the hedge haemorrhaged margin, the roll turned from a source of income into a cost, and the parent liquidated at the bottom for around $1.3bn.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'MG Refining & Marketing had signed contracts to deliver petrol and heating oil at fixed prices over as much as ten years, totalling on the order of 160 million barrels. To hedge, it held long positions in short-dated energy futures and swaps, stacked in the nearby months and rolled forward each month — the "stack and roll". Oil prices fell through 1993. The hedge lost money in cash immediately while the profitable customer contracts remained years from delivery. The supervisory board took control, liquidated the hedge and closed out contracts, realising losses of around $1.3bn and requiring a rescue from the group’s banks.',
+        callout:
+          'The company’s customers had signed up to buy oil above the market for a decade. Those contracts were an asset. They were also unfinanceable.',
+      },
+      {
+        step: 2,
+        title: 'The stack and roll',
+        content:
+          'The ideal hedge for a ten-year delivery obligation is a ten-year strip of futures, one for each delivery. That market does not exist in any size, so the position is stacked in the liquid front months and rolled. The stack matches the total quantity but not the timing, which leaves two exposures: the shape of the forward curve, and the cash. In backwardation, where nearby prices exceed distant ones, rolling a long position costs money each month; in contango it earns. The economics of the roll are what turn a size-matched hedge into a profitable or ruinous one.',
+        callout:
+          'A stack and roll is a bet on the curve as much as a hedge on the level. Matching barrels does not match risk.',
+      },
+      {
+        step: 3,
+        title: 'Why it broke',
+        content:
+          'Two things arrived together. Prices fell, so the long futures produced immediate variation margin calls measured in hundreds of millions, while the gains on the customer contracts sat unrealised for years. And the curve moved against the roll, so maintaining the hedge cost money every month rather than earning it. Neither was fatal alone. Together they turned a hedged book into a funding requirement the parent was unwilling to keep meeting — and the decision to liquidate crystallised the loss at the point of maximum pain.',
+        callout:
+          'Economists have argued about this case for thirty years: whether the hedge was sound and the liquidation was the error, or whether the size and the roll risk were misjudged from the start. Both readings agree it was a funding failure first.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'Around $1.3bn realised, a rescue package from the group’s banks running to billions of Deutsche Marks, and the near-collapse of one of Germany’s largest industrial groups. The management was replaced. The case entered the academic literature almost immediately and stayed there, because two credible groups of economists reached opposite conclusions about whether the position should have been closed at all.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'A hedge that offsets economically can still fail on timing, and the mismatch between a long-dated obligation and a short-dated hedge is a funding position that has to be sized and financed deliberately. Rolling is not free, and its cost depends on a curve shape nobody controls. And the decision to liquidate is itself a risk decision: a hedge that is closed at the worst moment converts an unrealised offset into a realised loss.',
+        callout:
+          'The governance question this case leaves is uncomfortable: who decides that a hedge has become unaffordable, and do they understand it is a trading decision?',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Stack and roll',
+        definition:
+          'Holding the whole hedge in nearby contracts and rolling it forward, because distant months are not liquid enough.',
+      },
+      {
+        term: 'Backwardation',
+        definition:
+          'A curve where nearby prices exceed distant ones, which makes rolling a long position cost money.',
+      },
+      {
+        term: 'Contango',
+        definition:
+          'The opposite shape, where distant prices exceed nearby ones, and a long roll earns rather than costs.',
+      },
+      {
+        term: 'Maturity mismatch',
+        definition:
+          'A hedge whose settlement dates differ from the exposure’s, leaving a funding gap even when the economics offset.',
+      },
+      {
+        term: 'Roll yield',
+        definition:
+          'The gain or loss from replacing an expiring contract with a later one, which accumulates every month.',
+      },
+      {
+        term: 'Liquidation decision',
+        definition:
+          'The choice to close a hedge, which converts an unrealised offset into a realised loss.',
+      },
+    ],
+    example: {
+      title: 'Two ways the same hedge drains cash',
+      lines: [
+        'The obligation is 160 million barrels of forward supply, hedged with an equivalent long position in nearby futures.',
+        'Oil falls $5 a barrel. The futures lose 160,000,000 × $5 = $800m, payable in cash as variation margin.',
+        'The customer contracts gain the same $800m — realised as deliveries are made, over as much as ten years.',
+        'Now the curve: rolling the stack in a $0.30 backwardation costs 160,000,000 × $0.30 = $48m every month.',
+        'Over a year that is around $576m of roll cost, separate from the price move entirely.',
+        'Neither number is a loss on the hedged position. Both are cash out of the door this year.',
+      ],
+      takeaway:
+        'The book was close to flat on price and profoundly short on cash. A hedging programme has to be funded through the worst year it can have, not the average one.',
+    },
+    inPractice:
+      'Long-dated physical supply is still hedged with shorter instruments, because the liquidity is where it is. What changed is that the roll and the funding are modelled explicitly, financed in advance, and governed by people who know that unwinding the hedge is itself a position.',
+    relatedProductIds: ['cmswap', 'cmfwd', 'ldi'],
+    quiz: [
+      {
+        id: 'metallges-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The company had sold customers oil at fixed prices for as long as ten years ahead.',
+        correctAnswer: true,
+        explanation:
+          'Those contracts were the exposure being hedged, and they only turned into cash as deliveries were made.',
+      },
+      {
+        id: 'metallges-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'What ended the position?',
+        options: [
+          'The customers defaulted on their contracts',
+          'The parent liquidated the hedge and closed contracts, realising the loss',
+          'The exchange cancelled the futures',
+          'The oil price recovered before any action was taken',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The liquidation crystallised roughly $1.3bn at what turned out to be close to the worst point.',
+      },
+      {
+        id: 'metallges-q3',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt: 'Why was a stack and roll used rather than a ten-year strip?',
+        options: [
+          'Because a ten-year strip does not trade in that size',
+          'Because regulators prohibited long-dated futures',
+          'Because it required less capital by rule',
+          'Because the customers demanded it',
+        ],
+        correctIndex: 0,
+        explanation:
+          'Liquidity is in the nearby months, so the whole hedge sits there and is rolled forward.',
+      },
+      {
+        id: 'metallges-q4',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'Matching the total barrels of the hedge to the total barrels of the obligation matches the risk.',
+        correctAnswer: false,
+        explanation:
+          'It matches quantity, not timing. What is left is exposure to the curve and to the cash flow schedule.',
+      },
+      {
+        id: 'metallges-q5',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt: 'In backwardation, what does rolling a long futures position do?',
+        options: [
+          'Earns money each month',
+          'Costs money each month',
+          'Has no effect on profit and loss',
+          'Converts the position to a short',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Nearby prices exceed distant ones, so the position is repeatedly sold low and bought higher out the curve.',
+      },
+      {
+        id: 'metallges-q6',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'foundational',
+        prompt:
+          'The futures hedge settled in cash daily while the customer contracts settled over years.',
+        correctAnswer: true,
+        explanation:
+          'That mismatch is the case in one sentence — the economics offset and the cash flows did not.',
+      },
+      {
+        id: 'metallges-q7',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'What two pressures arrived at the same time?',
+        options: [
+          'A credit downgrade and a customer default',
+          'Falling prices producing margin calls, and a curve shape making the roll costly',
+          'A regulatory fine and an exchange suspension',
+          'Rising interest rates and a currency devaluation',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Either alone was survivable. Together they made the hedge unaffordable to carry.',
+      },
+      {
+        id: 'metallges-q8',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'Economists have disagreed publicly about whether the hedge should have been liquidated at all.',
+        correctAnswer: true,
+        explanation:
+          'One reading is that the hedge was sound and closing it was the error; the other is that its size and roll risk were misjudged.',
+      },
+      {
+        id: 'metallges-q9',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'Roughly what was realised on the liquidation?',
+        options: ['$130m', '$1.3bn', '$13bn', 'Nothing — the positions expired'],
+        correctIndex: 1,
+        explanation:
+          'Along with a bank rescue package for the parent group and the replacement of its management.',
+      },
+      {
+        id: 'metallges-q10',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Funding a hedging programme for an average year is sufficient, since extreme years are rare.',
+        correctAnswer: false,
+        explanation:
+          'It has to be funded for the worst year it can have. The average year never produces the call that closes the position.',
+      },
+      {
+        id: 'metallges-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'Why is the decision to close a hedge itself a risk decision?',
+        options: [
+          'Because closing requires regulatory approval',
+          'Because it converts an unrealised offset into a realised loss, at a moment chosen under pressure',
+          'Because hedges cannot legally be reopened',
+          'Because it changes the accounting treatment of the customer contracts',
+        ],
+        correctIndex: 1,
+        explanation:
+          'Whoever makes that call is taking a position, whether or not they think of it that way.',
+      },
+      {
+        id: 'metallges-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Roll cost depends on the shape of the forward curve, which the hedger does not control.',
+        correctAnswer: true,
+        explanation:
+          'It accumulates every month regardless of whether the price view was right.',
+      },
+    ],
+  },
+  {
+    id: 'chffloor',
+    categoryId: 'cases',
+    name: 'The Swiss franc floor, 2015',
+    hook: 'A guarantee withdrawn in a morning',
+    summary:
+      'For three years the Swiss National Bank held EUR/CHF above 1.20 and said it would continue to. On 15 January 2015 it stopped, without warning, and the rate fell by roughly a third within minutes. Stop-loss orders filled tens of figures away from where they were placed, retail clients ended the morning owing their brokers money, a hedge fund closed and several brokers failed. It is the clearest available lesson that a stable price is not a low-risk one.',
+    difficulty: 'advanced',
+    lessons: [
+      {
+        step: 1,
+        title: 'What happened',
+        content:
+          'The SNB had defended a minimum exchange rate of 1.20 francs per euro since September 2011, buying euros in whatever quantity the market offered. On the morning of 15 January 2015 it announced the policy was discontinued, effective immediately. EUR/CHF fell from 1.20 to as low as around 0.85 in minutes before recovering to close near parity. There was almost no tradable liquidity in between: the market did not walk down through those levels, it skipped them.',
+        callout:
+          'Three days earlier the SNB’s vice-chairman had described the floor as a cornerstone of policy. That is not a criticism of the central bank; it is the nature of a commitment that only works while it is believed.',
+      },
+      {
+        step: 2,
+        title: 'Why the floor made things worse',
+        content:
+          'A credible peg suppresses realised volatility to almost nothing, and everything downstream reads that as safety. Value-at-risk models estimated on three years of a rate that barely moved returned tiny numbers. Margin requirements were set accordingly — some brokers required well under one percent. Carry positions and structured products accumulated on the assumption the floor would hold. The floor did not create the risk; it hid it, and then released three years of it in one print.',
+        callout:
+          'A pegged rate is a short volatility position held by everyone who trades it, whether or not they know they hold one.',
+      },
+      {
+        step: 3,
+        title: 'What a gap does to a stop',
+        content:
+          'A stop-loss order is an instruction to trade at the market once a level is reached, not a promise of a price. When the market gaps, the next available price can be far beyond the stop, and the client gets that one. With leverage of fifty or a hundred times, a move of thirty figures does not merely exhaust the margin — it takes the account well below zero, leaving the client owing the broker. Whether those debts were collectable, and whether retail clients should ever have been exposed to them, occupied regulators for years afterwards.',
+        callout:
+          'This is the same discontinuity as a barrier option or a digital, arriving in the most liquid market in the world.',
+      },
+      {
+        step: 4,
+        title: 'What it cost',
+        content:
+          'A US retail broker was left with around $225m of negative client balances and needed an emergency $300m loan to keep operating. A UK broker entered administration the same week, and a New Zealand one closed. A hedge fund with a large short franc position — reportedly around $830m of assets — was wiped out. Swiss exporters faced a currency a third stronger overnight, and holders of target redemption forwards and knock-out structures on the pair discovered what their contracts did in a gap.',
+      },
+      {
+        step: 5,
+        title: 'What it teaches',
+        content:
+          'Low realised volatility is not low risk; it can be the visible sign of risk being suppressed and stored. Any model estimated on a managed price is describing the management, not the market. Leverage set against a suppressed volatility is leverage against nothing. And a stop-loss, a barrier, a knock-out and a margin call all share the same assumption — that prices move continuously through levels — which is exactly the assumption a policy reversal removes.',
+        callout:
+          'The practical version: ask what this position does if the price gaps 20% overnight, and accept that the answer is the risk, whatever the model says.',
+      },
+    ],
+    keyTerms: [
+      {
+        term: 'Currency floor',
+        definition:
+          'A central bank commitment to prevent a rate falling below a level, held by intervening without limit.',
+      },
+      {
+        term: 'Gap risk',
+        definition:
+          'The risk that a price jumps rather than moves through intervening levels, defeating stops and hedges.',
+      },
+      {
+        term: 'Stop-loss order',
+        definition:
+          'An instruction to trade at the market once a level trades — an order, not a guaranteed price.',
+      },
+      {
+        term: 'Negative client balance',
+        definition:
+          'An account whose losses exceed its deposit, leaving the client owing the broker money.',
+      },
+      {
+        term: 'Suppressed volatility',
+        definition:
+          'Realised volatility held artificially low by intervention, which flatters every risk measure built on it.',
+      },
+      {
+        term: 'Carry trade',
+        definition:
+          'Borrowing in a low-yielding currency to invest in a higher one — profitable until the exchange rate moves.',
+      },
+    ],
+    example: {
+      title: 'How a client ends the morning owing money',
+      lines: [
+        'A retail client is long €1,000,000 of EUR/CHF at 1.2010, on 2% margin: CHF 24,000 posted.',
+        'A stop-loss sits at 1.1990, twenty pips below — a loss of CHF 2,000 if it fills where it is placed.',
+        'The floor is removed. There is no bid at 1.1990, nor at 1.15, nor at 1.05. The order fills at 0.9500.',
+        'Realised loss: (1.2010 − 0.9500) × 1,000,000 = CHF 251,000.',
+        'Against CHF 24,000 of margin, the client now owes the broker CHF 227,000.',
+        'Multiply by a client book of thousands, and the broker owes the market money it must collect from people who do not have it.',
+      ],
+      takeaway:
+        'The stop worked exactly as designed and was worth nothing. Leverage decides how far below zero the account lands, and the broker’s solvency then depends on debts owed by its own customers.',
+    },
+    inPractice:
+      'European regulators later capped retail FX leverage and required negative balance protection, which moves the gap risk from the client to the broker and forces brokers to hold capital against it. On the institutional side, the episode is the standard scenario for stress-testing a currency book: not a large move, a discontinuous one.',
+    relatedProductIds: ['fxfwd', 'tarf', 'barrier'],
+    quiz: [
+      {
+        id: 'chffloor-q1',
+        kind: 'boolean',
+        step: 1,
+        difficulty: 'foundational',
+        prompt:
+          'The Swiss National Bank removed its EUR/CHF floor without advance warning.',
+        correctAnswer: true,
+        explanation:
+          'The policy had been reaffirmed publicly days earlier — a commitment of that kind only works while it is believed.',
+      },
+      {
+        id: 'chffloor-q2',
+        kind: 'choice',
+        step: 1,
+        difficulty: 'intermediate',
+        prompt: 'What happened to EUR/CHF that morning?',
+        options: [
+          'It fell gradually over the trading day',
+          'It fell about a third within minutes, with almost no liquidity in between',
+          'It was suspended by the exchange',
+          'It rose sharply as the franc weakened',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The market skipped the intervening levels rather than trading through them.',
+      },
+      {
+        id: 'chffloor-q3',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'intermediate',
+        prompt:
+          'Three years of a nearly motionless rate made standard risk models report very low risk.',
+        correctAnswer: true,
+        explanation:
+          'A model estimated on a managed price is describing the management, not the market.',
+      },
+      {
+        id: 'chffloor-q4',
+        kind: 'choice',
+        step: 2,
+        difficulty: 'advanced',
+        prompt:
+          'What position does everyone trading a credible peg implicitly hold?',
+        options: [
+          'A long volatility position',
+          'A short volatility position',
+          'A pure carry position with no volatility exposure',
+          'A hedged position with no exposure at all',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The peg pays a small, steady return and hands over an enormous loss on the day it breaks.',
+      },
+      {
+        id: 'chffloor-q5',
+        kind: 'boolean',
+        step: 2,
+        difficulty: 'foundational',
+        prompt:
+          'The floor removed risk from the currency pair while it was in place.',
+        correctAnswer: false,
+        explanation:
+          'It suppressed and stored it. Three years of it was released in a single print.',
+      },
+      {
+        id: 'chffloor-q6',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'intermediate',
+        prompt: 'What does a stop-loss order actually guarantee?',
+        options: [
+          'The price at which it is placed',
+          'That the position will be closed at the market once the level trades',
+          'That losses cannot exceed the margin posted',
+          'That the broker will absorb any shortfall',
+        ],
+        correctIndex: 1,
+        explanation:
+          'It is an instruction, not a price. In a gap the next available price can be very far away.',
+      },
+      {
+        id: 'chffloor-q7',
+        kind: 'boolean',
+        step: 3,
+        difficulty: 'advanced',
+        prompt:
+          'Posted margin is the most a leveraged client can lose, whatever the market does.',
+        correctAnswer: false,
+        explanation:
+          'At 2% margin a 25% gap is more than twelve times the deposit, and the balance goes below zero.',
+      },
+      {
+        id: 'chffloor-q8',
+        kind: 'choice',
+        step: 3,
+        difficulty: 'advanced',
+        prompt: 'Which other instruments rest on the same assumption a gap breaks?',
+        options: [
+          'Barriers, digitals and margin calls',
+          'Fixed-rate bonds and deposits',
+          'Cash equities held unlevered',
+          'Physically settled forwards only',
+        ],
+        correctIndex: 0,
+        explanation:
+          'All of them assume prices move continuously through levels, which is exactly what a policy reversal removes.',
+      },
+      {
+        id: 'chffloor-q9',
+        kind: 'boolean',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt:
+          'At least one retail broker required emergency financing to survive the day.',
+        correctAnswer: true,
+        explanation:
+          'A US broker was left with around $225m of negative client balances and took a $300m rescue loan; others failed outright.',
+      },
+      {
+        id: 'chffloor-q10',
+        kind: 'choice',
+        step: 4,
+        difficulty: 'intermediate',
+        prompt: 'Which structured products were caught by the move?',
+        options: [
+          'Target redemption forwards and knock-out structures on the pair',
+          'Fixed-rate mortgages in Switzerland',
+          'Equity index futures in Europe',
+          'Inflation swaps in the euro area',
+        ],
+        correctIndex: 0,
+        explanation:
+          'A geared leg and a barrier both discover in a gap what they really were.',
+      },
+      {
+        id: 'chffloor-q11',
+        kind: 'choice',
+        step: 5,
+        difficulty: 'advanced',
+        prompt: 'What is the practical question this case leaves behind?',
+        options: [
+          'What is the position’s carry?',
+          'What does this position do if the price gaps 20% overnight?',
+          'What is the correlation with equities?',
+          'What is the counterparty’s credit rating?',
+        ],
+        correctIndex: 1,
+        explanation:
+          'The answer to that is the risk, whatever a volatility-based model reports.',
+      },
+      {
+        id: 'chffloor-q12',
+        kind: 'boolean',
+        step: 5,
+        difficulty: 'intermediate',
+        prompt:
+          'Regulators later required negative balance protection for retail clients in some jurisdictions.',
+        correctAnswer: true,
+        explanation:
+          'It moves gap risk from the client to the broker, which then has to hold capital against it.',
       },
     ],
   },

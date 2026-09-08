@@ -89,7 +89,25 @@ export const paths: LearningPath[] = [
     // Archegos needs only a total return swap, and LTCM needs convergence,
     // funding and correlation at once. Difficulty never decreases along a
     // path, and that rule and the teaching order agree here.
-    productIds: ['archegos', 'amaranth', 'nickel', 'whale', 'ldi', 'ltcm'],
+    //
+    // The control failures — Barings and Société Générale — sit early because
+    // they need no instrument knowledge beyond a futures position, and they
+    // set up the question the rest of the category keeps asking: who could see
+    // this, and what did the exit cost?
+    productIds: [
+      'archegos',
+      'barings',
+      'socgen',
+      'amaranth',
+      'nickel',
+      'orange',
+      'whale',
+      'ashanti',
+      'metallges',
+      'ldi',
+      'chffloor',
+      'ltcm',
+    ],
   },
 ];
 

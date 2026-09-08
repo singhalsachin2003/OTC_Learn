@@ -24,8 +24,8 @@ No account, no ads, no tracking. Progress is stored on your device.
   redemption forwards, by subscription
 - [Risk & the Greeks](category/risk/) — DV01, delta and gamma, vega, CS01,
   P&L attribution and value at risk, by subscription
-- [Case Studies](category/cases/) — Archegos, Amaranth, the nickel squeeze, the
-  London Whale, the gilt LDI crisis and LTCM, by subscription
+- [Case Studies](category/cases/) — twelve failures, from Barings and Orange
+  County to the gilt LDI crisis and Archegos, by subscription
 
 Every free product page carries the full lesson, a worked example with real
 numbers and the key terms. A subscription product's page carries its summary,

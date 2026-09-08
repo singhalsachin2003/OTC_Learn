@@ -77,7 +77,7 @@ export const categories: Category[] = [
     id: 'cases',
     name: 'Case Studies',
     description:
-      'Six failures worth understanding — Archegos, Amaranth, the nickel squeeze, the London Whale, the gilt LDI crisis and LTCM — each one a mechanism from the free catalogue taken to its conclusion.',
+      'Twelve failures worth understanding, from Barings to Archegos — each one a mechanism from the free catalogue taken to its conclusion, and most of them a hedge that worked until it had to be funded.',
     accentColor: 'oklch(55% .13 120)',
     icon: 'CS',
     premium: true,

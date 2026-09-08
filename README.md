@@ -87,7 +87,7 @@ key terms, risks to watch — and carries, beyond the five lesson steps:
   choice, each tagged with the lesson step it tests and a difficulty.
 
 That is 180 lesson steps, 216 key terms and 432 questions in the free
-catalogue. The subscription adds 18 products, 90 lesson steps and 216 questions
+catalogue. The subscription adds 24 products, 120 lesson steps and 288 questions
 on top of it, across Exotics, Risk & the Greeks and Case Studies — see "The
 gating model" in
 `PRODUCTION_READINESS.md` for why a subscription buys what comes next rather
