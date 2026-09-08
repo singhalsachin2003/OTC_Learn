@@ -71,6 +71,8 @@ Airlines and hauliers buy calls when they want a budget ceiling without forfeiti
 
 The app adds a twelve-question bank for Commodity Option, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Commodity Option — Average price options are the default, Options on what, exactly, Volatility with a season in it — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
