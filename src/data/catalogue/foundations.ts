@@ -265,6 +265,194 @@ export const foundationsProducts: Product[] = [
           'The phase-in ran from September 2016 to September 2022, working down from the largest dealers to a much wider population of end users.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Thresholds, minimums and the independent amount',
+          content:
+            'Three numbers decide how much collateral actually moves. The threshold is unsecured exposure a party will tolerate before calling for anything — effectively a credit line granted inside the derivatives relationship. The minimum transfer amount stops trivial movements, so exposure below it simply sits there. And an independent amount is collateral posted regardless of mark-to-market, which is initial margin under another name. A zero threshold with a small minimum is a tightly collateralised relationship; a large threshold is a loan, and it should be underwritten as one.',
+          callout:
+            'A threshold is uncollateralised credit exposure with a friendly name. Whether the counterparty has priced it as such is a question worth asking.',
+        },
+        {
+          title: 'What may be posted, and what it is worth',
+          content:
+            'The eligible collateral schedule lists what can be delivered and applies a haircut to each type — cash in the agreement’s currency at full value, government bonds a little less, longer or riskier paper less again. Where more than one asset qualifies, the poster chooses, and they will deliver whichever is cheapest for them to give up. That choice is an option held by the poster and it has a value, which is why a widely drawn eligibility schedule is not the generous gesture it appears to be and why the discount curve for a trade depends on what its collateral can be.',
+        },
+        {
+          title: 'Whose collateral is it',
+          content:
+            'Two arrangements look similar and behave completely differently in a default. Under a transfer of title, the collateral becomes the receiver’s property and the poster has a contractual claim to its return — which is a claim against a failed institution. Under a security interest with segregation, the collateral is held apart and remains the poster’s. Rehypothecation, where the receiver reuses posted collateral, is efficient and it is the mechanism by which a client’s assets end up somewhere they cannot easily be found. Which regime applies is in the documentation, not in the market convention.',
+          callout:
+            'Every large derivatives failure has produced the same discovery: somebody thought their collateral was ring-fenced and it was not.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'collateral-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is a threshold in a collateral agreement?',
+          options: [
+            'The minimum size of any collateral movement',
+            'Unsecured exposure tolerated before any collateral is called',
+            'The maximum collateral that may be posted',
+            'The haircut applied to government bonds',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It is a credit line granted inside the derivatives relationship, and it should be underwritten like one.',
+        },
+        {
+          id: 'collateral-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'The minimum transfer amount means small exposures go uncollateralised until they grow.',
+          correctAnswer: true,
+          explanation:
+            'It exists to stop trivial daily movements, and the residual is accepted deliberately.',
+        },
+        {
+          id: 'collateral-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'What is an independent amount?',
+          options: [
+            'Collateral posted regardless of mark-to-market — initial margin by another name',
+            'The portion of collateral held by a custodian',
+            'A fee paid for the collateral agreement',
+            'The unsecured threshold',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It sits on top of variation margin and is there to cover the move between default and close-out.',
+        },
+        {
+          id: 'collateral-d4',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'foundational',
+          prompt:
+            'A large threshold means the relationship is tightly collateralised.',
+          correctAnswer: false,
+          explanation:
+            'The opposite: it is uncollateralised exposure, and calling it a threshold does not change what it is.',
+        },
+        {
+          id: 'collateral-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Who chooses which eligible asset to post?',
+          options: [
+            'The poster',
+            'The receiver',
+            'The calculation agent',
+            'The clearing house',
+          ],
+          correctIndex: 0,
+          explanation:
+            'And they will choose whatever is cheapest for them to give up, which is an option with a value.',
+        },
+        {
+          id: 'collateral-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A widely drawn eligibility schedule is a concession with a real cost to the receiver.',
+          correctAnswer: true,
+          explanation:
+            'It hands the poster a cheapest-to-deliver option, which is why the discount curve depends on what collateral can be.',
+        },
+        {
+          id: 'collateral-d7',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What is a haircut?',
+          options: [
+            'A reduction in the value credited to posted collateral',
+            'A fee charged on collateral transfers',
+            'The interest paid on cash collateral',
+            'The threshold below which nothing moves',
+          ],
+          correctIndex: 0,
+          explanation:
+            'It covers the risk that the collateral itself falls in value before it can be sold.',
+        },
+        {
+          id: 'collateral-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Under a transfer of title, posted collateral becomes the receiver’s property.',
+          correctAnswer: true,
+          explanation:
+            'And the poster holds a contractual claim to its return, which in a default is a claim against a failed firm.',
+        },
+        {
+          id: 'collateral-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What does rehypothecation mean?',
+          options: [
+            'The receiver reusing collateral it has been posted',
+            'Substituting one collateral type for another',
+            'Returning collateral when exposure falls',
+            'Posting collateral to a clearing house',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Efficient, and the mechanism by which client assets end up somewhere they cannot easily be found.',
+        },
+        {
+          id: 'collateral-d10',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Whether collateral is segregated is determined by market convention rather than the documentation.',
+          correctAnswer: false,
+          explanation:
+            'It is in the agreement, and the two regimes behave completely differently in a default.',
+        },
+        {
+          id: 'collateral-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What has every large derivatives failure tended to reveal about collateral?',
+          options: [
+            'Someone believed theirs was ring-fenced when it was not',
+            'That haircuts were too small',
+            'That cash was the wrong asset to post',
+            'That thresholds were set too low',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The legal regime, not the amount, is what decides who owns what on the day it matters.',
+        },
+        {
+          id: 'collateral-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'The three numbers that decide how much collateral moves are the threshold, the minimum transfer amount and the independent amount.',
+          correctAnswer: true,
+          explanation:
+            'Everything else in the schedule modifies how those three are applied.',
+        },
+      ],
+    },
   },
   {
     id: 'clearing',
@@ -525,6 +713,191 @@ export const foundationsProducts: Product[] = [
           'Mutualisation is the point — and the risk: a large enough default draws on money contributed by firms that had nothing to do with it.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'The waterfall, in order',
+          content:
+            'When a clearing member fails, losses are absorbed in a fixed sequence and the order is the whole design. First the defaulter’s own initial margin, then its contribution to the default fund; then a tranche of the clearing house’s own capital — deliberately placed here, so the house has money at risk before its surviving members do; then the default fund contributions of everyone else; and beyond that, powers to call for more or to allocate remaining losses. Knowing the order tells you who is actually exposed, and the answer changes at every step.',
+          callout:
+            'That slice of the clearing house’s own capital is called skin in the game, and its size is one of the most argued numbers in market infrastructure, precisely because it sets the incentive.',
+        },
+        {
+          title: 'Margin, and the period of risk',
+          content:
+            'Initial margin is sized to cover the move between a member defaulting and its positions being closed out — the margin period of risk, typically assumed to be a few days for cleared derivatives and longer for less liquid products. Every margin model is an answer to one question: how far can this portfolio move before we can be rid of it. Models are procyclical almost by construction, because volatility rises in a crisis and the model reads that as more risk, calling for more cash from members at precisely the moment cash is hardest to find.',
+        },
+        {
+          title: 'Porting and the auction',
+          content:
+            'A defaulting member’s clients are not necessarily in default, so the first attempt is porting: moving their positions and collateral to a surviving member. It works when the receiving member wants the business and the collateral is identifiable, which is why segregation arrangements matter more than they appear to. What cannot be ported is auctioned to surviving members, who are obliged to bid — an obligation they accepted on joining, and one that makes clearing membership a commitment to take on someone else’s book on the worst day of the year.',
+          callout:
+            'The 2018 default of a single member at a European clearing house consumed most of that house’s default fund. Clearing moves counterparty risk; it does not delete it.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'clearing-d1',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What is used first when a clearing member defaults?',
+          options: [
+            'The clearing house’s own capital',
+            'The defaulter’s own initial margin',
+            'Surviving members’ default fund contributions',
+            'An assessment call on all members',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Then its own default fund contribution, before anything belonging to anyone else is touched.',
+        },
+        {
+          id: 'clearing-d2',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A tranche of the clearing house’s own capital sits ahead of surviving members’ contributions.',
+          correctAnswer: true,
+          explanation:
+            'Skin in the game, placed there so the house has money at risk before its members do.',
+        },
+        {
+          id: 'clearing-d3',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Why does the order of the waterfall matter?',
+          options: [
+            'It determines who is actually exposed at each stage',
+            'It sets the level of initial margin',
+            'It decides which products may be cleared',
+            'It fixes the size of the default fund',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The answer to "who bears this loss" changes at every step of the sequence.',
+        },
+        {
+          id: 'clearing-d4',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'What is the margin period of risk?',
+          options: [
+            'The assumed time between a default and closing out the positions',
+            'The interval between margin calls',
+            'The maturity of the cleared contracts',
+            'The time a member has to meet a call',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Every margin model is an answer to how far a portfolio can move before it can be got rid of.',
+        },
+        {
+          id: 'clearing-d5',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Margin models are procyclical almost by construction.',
+          correctAnswer: true,
+          explanation:
+            'Volatility rises in a crisis, the model reads more risk, and it calls for cash when cash is scarcest.',
+        },
+        {
+          id: 'clearing-d6',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'Less liquid products are assumed to take longer to close out, so they attract more initial margin.',
+          correctAnswer: true,
+          explanation:
+            'The horizon is the input, and everything about the number follows from it.',
+        },
+        {
+          id: 'clearing-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What is porting?',
+          options: [
+            'Moving a defaulting member’s clients to a surviving member',
+            'Transferring positions between clearing houses',
+            'Converting bilateral trades into cleared ones',
+            'Substituting one collateral type for another',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The clients are not in default, so the first attempt is to move them rather than close them.',
+        },
+        {
+          id: 'clearing-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Porting works best where client collateral is segregated and identifiable.',
+          correctAnswer: true,
+          explanation:
+            'Which is why segregation arrangements matter far more than they appear to on an ordinary day.',
+        },
+        {
+          id: 'clearing-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What happens to positions that cannot be ported?',
+          options: [
+            'They are auctioned to surviving members, who are obliged to bid',
+            'They are cancelled at the last settlement price',
+            'They are transferred to the regulator',
+            'They are held by the clearing house to maturity',
+          ],
+          correctIndex: 0,
+          explanation:
+            'An obligation accepted on joining — clearing membership includes taking on someone else’s book on the worst day of the year.',
+        },
+        {
+          id: 'clearing-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Clearing removes counterparty risk from the system.',
+          correctAnswer: false,
+          explanation:
+            'It concentrates and mutualises it. A single member default in 2018 consumed most of one European house’s default fund.',
+        },
+        {
+          id: 'clearing-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'Why is the size of skin in the game so heavily argued?',
+          options: [
+            'Because it sets the clearing house’s incentive to margin properly',
+            'Because it determines the clearing fee',
+            'Because it caps member losses',
+            'Because regulators publish it',
+          ],
+          correctIndex: 0,
+          explanation:
+            'A house with little of its own money at risk is a house whose margin model costs it nothing to get wrong.',
+        },
+        {
+          id: 'clearing-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Surviving members can be called on for more than their existing default fund contribution.',
+          correctAnswer: true,
+          explanation:
+            'Assessment powers sit further down the waterfall, and they are part of what membership commits to.',
+        },
+      ],
+    },
   },
   {
     id: 'marking',
@@ -782,6 +1155,193 @@ export const foundationsProducts: Product[] = [
           'The CIO favoured marks that understated losses on a large CDX.NA.IG9 position before roughly $6.2 billion was eventually recognised in full.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Three levels of observability',
+          content:
+            'Accounting standards sort fair values by how much of the input is observable. Level one is a quoted price in an active market for the identical instrument. Level two uses observable inputs — a curve, a quoted volatility — fed into a model. Level three uses inputs that are not observable, which means an assumption someone at the firm chose. The classification is not a comment on quality; it is a disclosure of where judgement enters, and the proportion of a book sitting in level three is one of the more informative numbers in a set of accounts.',
+          callout:
+            'The distinction is about inputs, not instruments. The same swap can be level two on a liquid currency and level three at a maturity nobody quotes.',
+        },
+        {
+          title: 'Mid, and the adjustments away from it',
+          content:
+            'A book marked at mid-market is marked at a price nobody can actually trade at, so several adjustments bring it back to a realistic exit. A bid-offer reserve recognises the cost of closing the position; a concentration adjustment recognises that a large position cannot be closed at the price a normal one could; a model reserve recognises that the model itself may be wrong. These reserves are where prudence lives in a trading book, and they are also where the pressure lands when profit is short of target — which is why they are set independently of the desk.',
+        },
+        {
+          title: 'Independent price verification',
+          content:
+            'The control that makes the rest work is someone outside the desk checking the marks against sources the desk does not control: broker quotes, consensus services, executed trades. Where a mark cannot be verified, it is escalated rather than accepted, and a persistent gap between a desk’s mark and the consensus is a finding regardless of who turns out to be right. The London Whale case is the standard illustration — positions marked at favourable points within the spread, month after month, until a restatement made the question moot.',
+          callout:
+            'A mark is not an opinion about value. It is an assertion that the position could be exited near that level, and that assertion is testable.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'marking-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is a level one fair value?',
+          options: [
+            'A model output using observable inputs',
+            'A value based on unobservable assumptions',
+            'A price agreed with the counterparty',
+            'A quoted price in an active market for the identical instrument',
+          ],
+          correctIndex: 3,
+          explanation:
+            'Level two uses observable inputs in a model; level three uses inputs somebody had to choose.',
+        },
+        {
+          id: 'marking-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'The same instrument can be classified differently depending on its currency or maturity.',
+          correctAnswer: true,
+          explanation:
+            'The classification is about the observability of the inputs, not about the instrument type.',
+        },
+        {
+          id: 'marking-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'A level three classification means the valuation is of poor quality.',
+          correctAnswer: false,
+          explanation:
+            'It discloses where judgement enters. It is information, not a criticism.',
+        },
+        {
+          id: 'marking-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'Why does a book marked at mid need adjustments?',
+          options: [
+            'Because mid ignores interest rates',
+            'Because the counterparty marks at bid',
+            'Because mid is a price at which nothing can actually be traded',
+            'Because accounting standards prohibit mid-market marking',
+          ],
+          correctIndex: 2,
+          explanation:
+            'The adjustments bring the mark back towards a realistic exit rather than a theoretical midpoint.',
+        },
+        {
+          id: 'marking-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What does a concentration adjustment recognise?',
+          options: [
+            'That funding costs money',
+            'That a large position cannot be exited at the price a normal one could',
+            'That the model may be wrong',
+            'That the counterparty may default',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Size changes the achievable price, which is a valuation fact rather than a risk one.',
+        },
+        {
+          id: 'marking-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Valuation reserves are where pressure lands when profit is short of target.',
+          correctAnswer: true,
+          explanation:
+            'Which is exactly why they are set independently of the desk that benefits from releasing them.',
+        },
+        {
+          id: 'marking-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What is independent price verification?',
+          options: [
+            'Someone outside the desk checking marks against sources the desk does not control',
+            'The desk reconciling its own marks daily',
+            'The counterparty confirming the valuation',
+            'An auditor’s year-end review',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Broker quotes, consensus services and executed trades — evidence the desk cannot author.',
+        },
+        {
+          id: 'marking-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'A persistent gap between a desk’s mark and consensus is a finding even before anyone establishes who is right.',
+          correctAnswer: true,
+          explanation:
+            'The pattern is the signal. Being eventually correct does not retrospectively make it a controlled process.',
+        },
+        {
+          id: 'marking-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What should happen to a mark that cannot be verified?',
+          options: [
+            'It is accepted with a note in the file',
+            'It is replaced with the previous month’s value',
+            'It is set to zero',
+            'It is escalated rather than accepted',
+          ],
+          correctIndex: 3,
+          explanation:
+            'An unverifiable mark is a question, and the control is what happens next.',
+        },
+        {
+          id: 'marking-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'The London Whale positions were marked at favourable points within the bid-offer spread.',
+          correctAnswer: true,
+          explanation:
+            'Month after month, until a restatement made the argument moot.',
+        },
+        {
+          id: 'marking-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'What is a mark actually asserting?',
+          options: [
+            'That the counterparty agrees',
+            'That the trade was profitable',
+            'That the position could be exited near that level',
+            'That the model is correct',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Which makes it testable, and is why an independent function exists to test it.',
+        },
+        {
+          id: 'marking-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'The proportion of a book valued with unobservable inputs is disclosed in the accounts.',
+          correctAnswer: true,
+          explanation:
+            'And it is one of the more informative numbers there, precisely because it locates the judgement.',
+        },
+      ],
+    },
   },
   {
     id: 'isda',
@@ -1043,6 +1603,192 @@ export const foundationsProducts: Product[] = [
           '1992 had no clean answer for a market simply becoming unable to operate, as opposed to a law making performance illegal.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'Close-out netting, and why capital depends on it',
+          content:
+            'The single most valuable thing the master agreement does is make every trade between two parties one obligation. On a default, all transactions are terminated, valued, and reduced to a single net amount owed one way. Without that, an insolvency practitioner could enforce the contracts in the counterparty’s favour and disclaim the ones against it — cherry-picking — leaving the surviving party with its losses and none of its gains. Netting is why exposure is measured net, why collateral is calculated on a portfolio, and why regulatory capital recognises the offset at all.',
+          callout:
+            'The enforceability of netting is jurisdiction-specific, which is why firms hold legal opinions country by country. A netting set that is not enforceable is a portfolio of gross exposures wearing a net label.',
+        },
+        {
+          title: 'Default, termination, and the difference',
+          content:
+            'The agreement distinguishes events of default — failure to pay, bankruptcy, breach — from termination events, which are circumstances rather than faults: a change of tax law, an illegality, a merger that changes who you are dealing with. The distinction decides who may terminate and how the resulting amount is calculated, and it is deliberate: not every reason to end a relationship is an accusation, and treating the two identically would make ordinary commercial changes into credit events.',
+        },
+        {
+          title: 'The schedule is where the negotiation lives',
+          content:
+            'The printed master agreement is standard and nobody argues about it. The schedule attached to it is where the parties elect thresholds, choose governing law, define what counts as a specified entity, set cross-default provisions and pick the close-out methodology. The 2002 version moved from a choice between two valuation methods to a single close-out amount standard, giving the determining party more discretion and requiring commercial reasonableness in exchange. Which version and which elections apply decides what happens on the worst day of the relationship, and it is agreed on one of the best.',
+          callout:
+            'Cross-default is the clause that turns someone else’s failure into your termination event. It is negotiated hardest for exactly that reason.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'isda-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does close-out netting achieve?',
+          options: [
+            'It reduces all trades between two parties to a single net amount on default',
+            'It removes the need for collateral',
+            'It transfers trades to a clearing house',
+            'It guarantees payment by a third party',
+          ],
+          correctIndex: 0,
+          explanation:
+            'One obligation instead of hundreds, which is what makes net exposure a meaningful measure.',
+        },
+        {
+          id: 'isda-d2',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'What is cherry-picking, in this context?',
+          options: [
+            'Choosing which collateral to post',
+            'An insolvency practitioner enforcing favourable contracts and disclaiming unfavourable ones',
+            'Selecting which trades to clear',
+            'Novating profitable trades to a third party',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Netting exists to prevent it, and without it a surviving party keeps its losses and loses its gains.',
+        },
+        {
+          id: 'isda-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'Regulatory capital recognises netting only where it is legally enforceable in the relevant jurisdiction.',
+          correctAnswer: true,
+          explanation:
+            'Which is why firms maintain legal opinions country by country rather than assuming the offset.',
+        },
+        {
+          id: 'isda-d4',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'A netting set that is not enforceable still reduces measured exposure.',
+          correctAnswer: false,
+          explanation:
+            'It is a portfolio of gross exposures with a net label on it.',
+        },
+        {
+          id: 'isda-d5',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'How does a termination event differ from an event of default?',
+          options: [
+            'It is a circumstance rather than a fault — a tax change, an illegality, a merger',
+            'It applies only to cleared trades',
+            'It requires regulatory approval',
+            'It cannot lead to termination',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Not every reason to end a relationship is an accusation, and the agreement keeps the two separate.',
+        },
+        {
+          id: 'isda-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'The distinction decides who may terminate and how the amount is calculated.',
+          correctAnswer: true,
+          explanation: 'Which is the practical reason the categories exist at all.',
+        },
+        {
+          id: 'isda-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'Where do the parties record their elections?',
+          options: [
+            'In the schedule to the master agreement',
+            'In the printed master agreement itself',
+            'In each trade confirmation',
+            'In the collateral annex only',
+          ],
+          correctIndex: 0,
+          explanation:
+            'The printed form is standard; the schedule is where thresholds, law and methodology are chosen.',
+        },
+        {
+          id: 'isda-d8',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'The 2002 version replaced a choice of valuation methods with a single close-out amount standard.',
+          correctAnswer: true,
+          explanation:
+            'More discretion for the determining party, balanced by a requirement of commercial reasonableness.',
+        },
+        {
+          id: 'isda-d9',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt: 'What does a cross-default provision do?',
+          options: [
+            'Turns a failure on other obligations into a termination event here',
+            'Nets exposures across two counterparties',
+            'Allows termination for convenience',
+            'Requires collateral to be segregated',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Someone else’s failure becomes your right to terminate, which is why the clause is negotiated hardest.',
+        },
+        {
+          id: 'isda-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'The terms that decide the outcome of a default are agreed long before anything goes wrong.',
+          correctAnswer: true,
+          explanation:
+            'On one of the best days of the relationship, for use on the worst.',
+        },
+        {
+          id: 'isda-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'Which document does nobody spend time arguing about?',
+          options: [
+            'The printed master agreement',
+            'The schedule',
+            'The credit support annex',
+            'The confirmation',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Its standardisation is the point. Everything negotiable was moved out of it deliberately.',
+        },
+        {
+          id: 'isda-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'Collateral is calculated across a portfolio because netting makes the portfolio one obligation.',
+          correctAnswer: true,
+          explanation:
+            'Without enforceable netting, collateralising a portfolio would not reduce the legal exposure.',
+        },
+      ],
+    },
   },
   {
     id: 'xva',
@@ -1295,6 +2041,194 @@ export const foundationsProducts: Product[] = [
           'A credit spread alone says nothing about how exposure and default probability move together for one specific counterparty and one specific trade.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'CVA is a traded exposure, not an accounting entry',
+          content:
+            'The credit valuation adjustment is the expected loss from a counterparty defaulting while the trade is in your favour, and it is a price rather than a provision: it moves with the counterparty’s credit spread and with the value of the underlying trade. That makes it something a desk can hedge — buying protection on the counterparty, or hedging the market factors that drive the exposure — and something whose profit and loss appears every day. Banks run dedicated desks for it because it is a book of derivatives, however it looks in the accounts.',
+          callout:
+            'The exposure is a cross term: it depends on the counterparty’s credit and on the trade’s value moving together. Hedging one without the other leaves the correlation, which is where wrong-way risk lives.',
+        },
+        {
+          title: 'Wrong-way risk',
+          content:
+            'The dangerous case is when exposure to a counterparty grows precisely as that counterparty becomes more likely to fail. Buying protection on a sovereign from a bank domiciled in that sovereign is the textbook example; so is a commodity hedge with a producer whose ability to pay depends on the same price the trade turns on. Ordinary CVA models assume the two are independent, which is comfortable and wrong in exactly the situations that matter. Identifying wrong-way exposures is a judgement about the business, not an output of the model.',
+        },
+        {
+          title: 'The rest of the family, and the argument about it',
+          content:
+            'Funding valuation adjustment prices the cost of funding an uncollateralised position; margin valuation adjustment prices the cost of posting initial margin over the life of a trade; capital valuation adjustment prices the capital held against it. Each is a real cost to somebody. Whether they belong in the value of a trade is genuinely contested — the objection being that funding costs are a property of the firm rather than of the instrument, so including them means two banks assign different values to identical trades. The market resolved it in practice rather than in theory: they are charged, because someone pays them.',
+          callout:
+            'The general shape: a derivative’s price started as a hedging cost, and everything added since is another cost the hedge turned out to have.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'xva-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What does the credit valuation adjustment measure?',
+          options: [
+            'The capital required against the trade',
+            'The cost of funding the position',
+            'The bid-offer on closing the trade',
+            'The expected loss from a counterparty defaulting while the trade is in your favour',
+          ],
+          correctIndex: 3,
+          explanation:
+            'A price that moves with the counterparty’s spread and the trade’s value — which makes it hedgeable.',
+        },
+        {
+          id: 'xva-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'CVA generates daily profit and loss and can be hedged in the market.',
+          correctAnswer: true,
+          explanation:
+            'Which is why banks run dedicated desks for it rather than treating it as a provision.',
+        },
+        {
+          id: 'xva-d3',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'advanced',
+          prompt: 'Why is CVA described as a cross term?',
+          options: [
+            'It is shared between the two counterparties',
+            'It crosses the bid-offer spread',
+            'It depends on the counterparty’s credit and the trade’s value moving together',
+            'It applies across two currencies',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Hedging one leg without the other leaves the correlation, which is where wrong-way risk lives.',
+        },
+        {
+          id: 'xva-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'What is wrong-way risk?',
+          options: [
+            'A hedge that does not offset the underlying',
+            'Exposure that grows precisely as the counterparty becomes more likely to fail',
+            'A trade booked in the wrong direction',
+            'Exposure to a counterparty in another jurisdiction',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The two things a CVA model usually assumes are independent turn out to be the same thing.',
+        },
+        {
+          id: 'xva-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Buying sovereign protection from a bank domiciled in that sovereign is a wrong-way exposure.',
+          correctAnswer: true,
+          explanation:
+            'The protection is worth most exactly when the seller is least able to pay for it.',
+        },
+        {
+          id: 'xva-d6',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'Wrong-way exposures are identified by the model rather than by judgement.',
+          correctAnswer: false,
+          explanation:
+            'Standard models assume independence. Spotting where that assumption fails is a judgement about the business.',
+        },
+        {
+          id: 'xva-d7',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt: 'What does the funding valuation adjustment price?',
+          options: [
+            'The cost of funding an uncollateralised position',
+            'The cost of posting initial margin',
+            'The capital held against the trade',
+            'The counterparty’s probability of default',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Margin and capital adjustments cover the other two, and each is a real cost to somebody.',
+        },
+        {
+          id: 'xva-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'What is the theoretical objection to including funding costs in a price?',
+          options: [
+            'They cannot be measured',
+            'They are already included in CVA',
+            'They apply only to cleared trades',
+            'They are a property of the firm rather than of the instrument',
+          ],
+          correctIndex: 3,
+          explanation:
+            'Which implies two banks assign different values to identical trades — uncomfortable, and how the market actually works.',
+        },
+        {
+          id: 'xva-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'The debate about which adjustments belong in a trade’s value was settled in practice rather than in theory.',
+          correctAnswer: true,
+          explanation:
+            'They are charged because someone pays them, whatever the argument concludes.',
+        },
+        {
+          id: 'xva-d10',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt:
+            'Margin valuation adjustment prices the cost of posting initial margin over a trade’s life.',
+          correctAnswer: true,
+          explanation:
+            'Which became a material number once initial margin requirements were extended to uncleared trades.',
+        },
+        {
+          id: 'xva-d11',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt: 'What is the general pattern across the whole family?',
+          options: [
+            'Each adjustment reduces the value of the trade to zero',
+            'They apply only to long-dated trades',
+            'A derivative’s price started as a hedging cost, and each adjustment is another cost the hedge turned out to have',
+            'Each adjustment is a regulatory requirement',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Every one of them is somebody discovering that replicating the payoff costs more than the model assumed.',
+        },
+        {
+          id: 'xva-d12',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt:
+            'CVA is best understood as an accounting provision rather than a traded position.',
+          correctAnswer: false,
+          explanation:
+            'It is a book of derivatives with daily profit and loss, hedged by a desk, however it is presented in the accounts.',
+        },
+      ],
+    },
   },
   {
     id: 'execution',
@@ -1553,5 +2487,191 @@ export const foundationsProducts: Product[] = [
           'Both sides have historically had to report the same trade separately, and mismatches between the two reports are exactly what the UTI is designed to catch.',
       },
     ],
+    depth: {
+      sections: [
+        {
+          title: 'From agreement to record',
+          content:
+            'A trade is agreed in seconds and becomes a legal record over hours or days. Affirmation is both sides agreeing the economics; confirmation is the exchange of the definitive terms; and only then does the trade exist in a form either party could enforce or a regulator could read. Electronic platforms have compressed that timeline dramatically, and the reason it matters is uncomfortable: a portfolio of unconfirmed trades is a portfolio of disagreements nobody has found yet, and the disagreements surface when the market moves.',
+          callout:
+            'Confirmation backlogs were a named systemic concern in credit derivatives in the mid-2000s, and the industry was pushed into fixing them before the crisis rather than after.',
+        },
+        {
+          title: 'Compression, and why notional shrinks',
+          content:
+            'Dealers accumulate offsetting trades: buy protection from one counterparty, sell it to another, repeat for years. The economics net to little and the gross notional, the operational load and the counterparty exposure all remain. Compression runs a multilateral exercise that terminates redundant trades and replaces them with fewer, economically equivalent ones. It is why headline notional figures in some markets have fallen sharply while activity has not — a fact worth knowing before drawing any conclusion from a notional time series.',
+        },
+        {
+          title: 'Identifiers, and the reason for them',
+          content:
+            'Every reportable trade carries a unique identifier for the transaction and a code identifying the product, and both sides must report the same values or the two reports do not pair. Sorting that out consumed years of industry effort, for a simple reason: a regulator holding two unmatched halves of every trade knows less than one holding whole trades. The identifiers are administrative, and the ability to see aggregate exposure in a market — the thing nobody had in 2008 — depends entirely on the administration working.',
+        },
+      ],
+      quiz: [
+        {
+          id: 'execution-d1',
+          kind: 'choice',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt: 'What is affirmation?',
+          options: [
+            'The exchange of definitive legal terms',
+            'Submission to a clearing house',
+            'Reporting to a trade repository',
+            'Both sides agreeing the economics of the trade',
+          ],
+          correctIndex: 3,
+          explanation:
+            'Confirmation is the step after it, and only then does an enforceable record exist.',
+        },
+        {
+          id: 'execution-d2',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'advanced',
+          prompt:
+            'A portfolio of unconfirmed trades is a portfolio of disagreements nobody has found yet.',
+          correctAnswer: true,
+          explanation:
+            'And they surface when the market moves, which is the least convenient moment available.',
+        },
+        {
+          id: 'execution-d3',
+          kind: 'boolean',
+          step: 2,
+          difficulty: 'intermediate',
+          prompt:
+            'Confirmation backlogs in credit derivatives were a recognised systemic concern before 2008.',
+          correctAnswer: true,
+          explanation:
+            'The industry was pushed into addressing them in advance rather than in the aftermath.',
+        },
+        {
+          id: 'execution-d4',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'advanced',
+          prompt: 'What does portfolio compression do?',
+          options: [
+            'Moves trades to a clearing house',
+            'Nets collateral across counterparties',
+            'Terminates redundant offsetting trades and replaces them with fewer equivalent ones',
+            'Reduces the market risk of a portfolio',
+          ],
+          correctIndex: 2,
+          explanation:
+            'The economics are preserved; the gross notional, operational load and counterparty exposure fall.',
+        },
+        {
+          id: 'execution-d5',
+          kind: 'boolean',
+          step: 3,
+          difficulty: 'advanced',
+          prompt:
+            'A fall in headline notional can reflect compression rather than a fall in activity.',
+          correctAnswer: true,
+          explanation:
+            'Worth knowing before drawing any conclusion from a notional time series.',
+        },
+        {
+          id: 'execution-d6',
+          kind: 'choice',
+          step: 3,
+          difficulty: 'intermediate',
+          prompt: 'Why do offsetting trades accumulate in the first place?',
+          options: [
+            'Because clearing houses require gross positions',
+            'Because each new trade is with a different counterparty rather than a reversal of the old one',
+            'Because compression is prohibited between dealers',
+            'Because trades cannot be terminated early',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Buying from one and selling to another leaves the economics flat and everything else outstanding.',
+        },
+        {
+          id: 'execution-d7',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'intermediate',
+          prompt:
+            'Both sides of a reportable trade must report matching identifiers for the reports to pair.',
+          correctAnswer: true,
+          explanation:
+            'Otherwise the repository holds two unmatched halves and knows less than it appears to.',
+        },
+        {
+          id: 'execution-d8',
+          kind: 'choice',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'Why did identifier standardisation take years of industry effort?',
+          options: [
+            'Because both counterparties must generate and use the same value for the same trade',
+            'Because identifiers were considered confidential',
+            'Because regulators disagreed on their length',
+            'Because clearing houses refused to adopt them',
+          ],
+          correctIndex: 0,
+          explanation:
+            'Administrative, unglamorous, and the difference between seeing a market and seeing half of one.',
+        },
+        {
+          id: 'execution-d9',
+          kind: 'boolean',
+          step: 4,
+          difficulty: 'advanced',
+          prompt:
+            'The ability to measure aggregate exposure in a market depends on the reporting administration working.',
+          correctAnswer: true,
+          explanation:
+            'It is precisely the visibility nobody had in 2008, and it rests on identifiers matching.',
+        },
+        {
+          id: 'execution-d10',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'intermediate',
+          prompt: 'What is the practical lesson of the lifecycle steps?',
+          options: [
+            'Electronic platforms have removed operational risk',
+            'Confirmation is a formality after clearing',
+            'Legal records are produced at maturity',
+            'A trade agreed is not yet a trade recorded, and the gap carries risk',
+          ],
+          correctIndex: 3,
+          explanation:
+            'Everything between agreement and record is exposure to a disagreement that has not surfaced.',
+        },
+        {
+          id: 'execution-d11',
+          kind: 'boolean',
+          step: 5,
+          difficulty: 'foundational',
+          prompt: 'Compression changes the economic position of the participants.',
+          correctAnswer: false,
+          explanation:
+            'It preserves the economics deliberately. What it removes is redundancy.',
+        },
+        {
+          id: 'execution-d12',
+          kind: 'choice',
+          step: 5,
+          difficulty: 'advanced',
+          prompt:
+            'What does a regulator holding unmatched trade reports actually have?',
+          options: [
+            'A view of cleared trades only',
+            'A duplicate of the clearing house’s records',
+            'Less than it appears to, since it cannot reconstruct whole trades',
+            'A complete view of the market',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Two halves that cannot be joined are not a picture of anything.',
+        },
+      ],
+    },
   },
 ];

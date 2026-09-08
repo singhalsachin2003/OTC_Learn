@@ -70,6 +70,8 @@ Every dealer relationship and most buy-side-to-dealer relationships now run on a
 
 The app adds a twelve-question bank for Collateral and the CSA, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Collateral and the CSA — Thresholds, minimums and the independent amount, What may be posted, and what it is worth, Whose collateral is it — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

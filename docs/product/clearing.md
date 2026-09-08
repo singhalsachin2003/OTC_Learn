@@ -69,6 +69,8 @@ Nearly all standardised interest rate swaps and index CDS now clear through CCPs
 
 The app adds a twelve-question bank for Central Clearing, drawn differently every sitting, and a review queue for whatever you miss.
 
+A subscription adds 3 further sections on Central Clearing — The waterfall, in order, Margin, and the period of risk, Porting and the auction — and 12 more questions to its bank.
+
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.

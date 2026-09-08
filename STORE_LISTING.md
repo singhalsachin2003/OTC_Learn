@@ -105,10 +105,11 @@ Metallgesellschaft to the gilt LDI crisis and Archegos; and Alternative
 Underlyings, on perpetual swaps, cash and carry basis, freight, power,
 catastrophe bonds and longevity swaps.
 
-It also adds depth to the free products themselves — a "Going deeper" section
-and a second question bank, so a quiz draws from twice as many questions. The
-lesson, worked example and twelve questions each free product shipped with stay
-free and always will. You can read the app
+It also adds depth to every one of the 36 free products — a "Going deeper"
+section and a second question bank on each, so a quiz draws from twenty-four
+questions instead of twelve. That is 108 further sections and 432 more
+questions. The lesson, worked example and twelve questions each free product
+shipped with stay free and always will. You can read the app
 without ever seeing a purchase screen.
 
 TRACK WHAT YOU ACTUALLY KNOW
