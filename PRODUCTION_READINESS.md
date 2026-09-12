@@ -94,6 +94,29 @@ is no longer entirely unexercised.
 
 ### Before anything can be sold
 
+## versionCode 8 was submitted to production on 2026-09-12
+
+**Full rollout, in review.** Promoted from the internal track rather than
+re-uploaded — Play will not take the same version code twice, so promotion is a
+Console action and not a second `eas submit`. Publishing overview reads "Changes
+in review"; Google quotes up to seven days, usually less, and quick checks run
+first.
+
+The release carries the 464-character notes from `STORE_LISTING.md`, including
+the line that matters most to the 23 existing installs: they keep everything,
+permanently, the four new asset classes included.
+
+**Two warnings were raised and both were read before saving**, neither an error:
+the bundle is significantly larger (36 products became 66, with depth on the
+free ones), and there is no deobfuscation file because R8 is off — which is the
+deferred item below, not a regression.
+
+**What is live the moment it rolls out:** the paywall applies to new installs,
+`OTCLAUNCH` is in the wild as a 60-day free code, and money can actually change
+hands. The only money-side gap left is the payout method.
+
+### The build itself
+
 **versionCode 8 was built on 2026-09-12** from `eede052` — build
 `c9852444-5d52-4cca-8409-826301ee856e`, runtime 1.2.0, EAS-signed. Verified on
 the artifact rather than the build log:
