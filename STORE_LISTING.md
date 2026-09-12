@@ -368,21 +368,35 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 4. **Release notes** (500 max):
 
 ```
-• 36 OTC derivative products across interest rate, FX, credit, equity,
-  commodity and market foundations — all free
-• A five-step lesson, a worked example and a 12-question bank for every product
-• New: Exotics, Risk & the Greeks, twelve Case Studies and Alternative
-  Underlyings — thirty products by optional subscription
-• Mastery that moves with each sitting, and a review queue for what you miss
-• Works fully offline — no account, no ads, no tracking
+• Four new asset classes — Exotics, Risk & the Greeks, twelve Case Studies and Alternative Underlyings: 30 more products
+• Going deeper on all 36 original products — 108 new sections, and a second 12-question bank in each
+• An optional account, so progress survives a reinstall or a new phone
+• Share a product or a result, and open a lesson straight from a link
+• Already using OTC Learn? All of it stays free for you, permanently — the new asset classes included
 ```
 
-[~290]
+[464]
 
-These notes describe the catalogue as it stands, not the first release — that
-shipped in July 2026 with 20 products. Derive the figures from
-`src/data/products.ts` rather than editing them by hand; `README.md` carries
-the same three totals and they have drifted apart before.
+**These describe the change, not the catalogue** — which is the opposite of what
+this section used to hold. Release notes are read by people who already have the
+app and are being offered an update, and the previous version told them what the
+app contains, which they know.
+
+**The last line is the one that must not be dropped.** Every install that
+predates the paywall is grandfathered permanently, the new asset classes
+included — `migrateGrandfathering` in `utils/storage.ts` sets it for any install
+with a stored schema version. Without that line, an update that adds a
+subscription reads as the app going paid, to exactly the people who have been
+using it for free and will say so in a review.
+
+Derive the figures from `src/data/products.ts` rather than editing them by hand:
+66 products, 36 free and 30 paid, 108 depth sections and 432 depth questions,
+all counted from the catalogue on 2026-09-12. `README.md` carries overlapping
+totals and they have drifted apart before.
+
+**Internal track:** Play asks for the same field on an internal release. Use
+these notes there too rather than leaving it blank, so what promotes to
+production is what was reviewed.
 
 5. **Countries and regions:** all, unless you want to limit the first release.
 6. **Rollout:** consider a staged rollout rather than 100%. With no installs yet
