@@ -109,6 +109,25 @@ the artifact rather than the build log:
 - the paid catalogue and both promo codes are in the bundle, and the corrected
   Ashanti figure ("What a 29% rally does") shipped with it.
 
+**`eas submit` cannot upload it yet.** `eas.json` now carries
+`serviceAccountKeyPath` for both submit profiles — pointing at
+`~/.config/otc-learn/play-service-account.json`, which stays outside the repo —
+and that half works: the key resolves and the submission schedules. Play then
+rejects it:
+
+> The service account is missing the necessary permissions to submit the app to
+> Google Play Store.
+
+The account `otc-learn-revenuecat@otc-learn-play.iam.gserviceaccount.com` was
+created for the Play Developer API reads RevenueCat needs, and those are a
+different grant from releasing. **Play Console → Users and permissions → that
+account → App permissions → Releases → "Release to testing tracks"** (add
+"Release to production" too if `eas submit --profile production` is ever wanted).
+Then re-run the submit; nothing needs rebuilding.
+
+Until then the AAB uploads by hand: Testing → Internal testing → Create new
+release.
+
 What remains is uploading it and the two Console declarations below.
 
 **Every Console-side gate in this list is open, and what blocked a sale was the

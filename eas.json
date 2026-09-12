@@ -57,12 +57,14 @@
   "submit": {
     "production": {
       "android": {
-        "track": "production"
+        "track": "production",
+        "serviceAccountKeyPath": "../.config/otc-learn/play-service-account.json"
       }
     },
     "internal": {
       "android": {
-        "track": "internal"
+        "track": "internal",
+        "serviceAccountKeyPath": "../.config/otc-learn/play-service-account.json"
       }
     }
   }
