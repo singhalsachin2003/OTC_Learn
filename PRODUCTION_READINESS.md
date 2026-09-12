@@ -94,8 +94,25 @@ is no longer entirely unexercised.
 
 ### Before anything can be sold
 
-**Where this stands on 2026-09-12: every Console-side gate in this list is now
-open, and what blocks a sale is the binary.** Billing is declared, the products
+**versionCode 8 was built on 2026-09-12** from `eede052` — build
+`c9852444-5d52-4cca-8409-826301ee856e`, runtime 1.2.0, EAS-signed. Verified on
+the artifact rather than the build log:
+
+- `goog_Kqhj…` present in the Hermes bundle and **no `test_` key anywhere**,
+  which is the failure that would ship an app unable to sell anything;
+- permissions exactly as documented — `INTERNET`, `POST_NOTIFICATIONS`,
+  `RECEIVE_BOOT_COMPLETED`, `VIBRATE`, `com.android.vending.BILLING` and the
+  AndroidX receiver permission. **No `AD_ID`**, which is also the evidence for
+  answering the Ads and Advertising ID declarations "No";
+- `ExpoStoreReview` present in `classes5.dex`, so the update already live on the
+  `production` channel is safe for this binary — it was not for versionCode 7;
+- the paid catalogue and both promo codes are in the bundle, and the corrected
+  Ashanti figure ("What a 29% rally does") shipped with it.
+
+What remains is uploading it and the two Console declarations below.
+
+**Every Console-side gate in this list is open, and what blocked a sale was the
+binary.** Billing is declared, the products
 exist and are priced, RevenueCat reports valid credentials, and BillDesk
 merchant verification has completed. The newest build is still **versionCode 7,
 cut 2026-09-01 from `e9b42e0`** — it predates all four premium asset classes, so
