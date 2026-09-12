@@ -184,12 +184,45 @@ update it; never paste policy text straight into the console.
 
 ### App access
 
-**All functionality is available without special access.** No login, no account,
-no region lock, no paywall.
+**This answer changed with the paywall, and the old one is now false.** It used
+to read "all functionality is available without special access — no login, no
+account, no region lock, no paywall". Four asset classes are premium, so some
+functionality *is* restricted and Play has to be told, with a way in for the
+reviewer.
+
+**Answer: some functionality is restricted.** Provide these instructions rather
+than a demo account — there is no account to demo, since buying needs no sign-in:
+
+```
+Exotics, Risk and the Greeks, Case Studies and Alternative Underlyings require a
+subscription, as does the "Going deeper" section on the free products.
+
+To review them without paying: Profile → Subscription → Have a promo code? →
+enter PLAYREVIEW → Redeem. That opens every asset class for 90 days. It takes no
+payment and creates no subscription.
+
+Everything else — 36 products across six asset classes, every quiz, the exam and
+the review queue — is free and needs no account.
+```
+
+The code is `PLAYREVIEW` in `src/data/promoCodes.ts`. Keep the two in step: if
+that entry is ever retired, this declaration stops working and the next
+submission stalls on a reviewer who cannot reach the paid content.
 
 ### Ads
 
 **No, my app does not contain ads.**
+
+**The Console currently says otherwise, and the live store page carries a
+"Contains ads" badge** — read from `play.google.com` on 2026-09-12. It is wrong:
+there is no ad SDK in `package.json`, no ad code in `src/`, no `AD_ID`
+permission in the merged release manifest, and the full description on that same
+page promises "no adverts, no advertising identifiers, and no analytics
+following you around". A listing that contradicts itself is the kind of thing
+that costs a review, and the badge suppresses installs for nothing in return.
+
+**Fix it in App content → Ads → "No, my app does not contain ads".** There is no
+API for this declaration; it is a Console answer.
 
 ### Content ratings
 
@@ -267,6 +300,22 @@ configured, so two data types go live that were previously dark code.
 | **Email address** | **Optional** | App functionality, Account management | Only when the user creates an account; the app is fully usable without one |
 | **App activity** — progress | **Optional** | App functionality | Mastery scores and the review queue, synced only while signed in |
 | **Purchases** | **Optional** | App functionality | Whether this device has paid access |
+
+**Verified live on 2026-09-12** — read back from the public store page's Data
+safety section (`play.google.com/store/apps/datasafety?id=com.otclearn.app`),
+which is what a user actually sees. All four types are declared and the wording
+matches this table:
+
+| Declared live | Play's label |
+| --- | --- |
+| Device or other IDs | Device or other IDs |
+| App activity | Other actions |
+| **Financial info** | **Purchase history** — this is the Purchases row below |
+| Personal info | Email address |
+
+with "no data shared with third parties", "data is encrypted in transit" and
+"you can request that data be deleted". **So the form is done, and done before
+the products went live** — which was the trap this section was written to avoid.
 
 Mark the last three **optional** — an account is genuinely optional, and so is
 buying. Confirm the exact option labels in the Console against this list rather

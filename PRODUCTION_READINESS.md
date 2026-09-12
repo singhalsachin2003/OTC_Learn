@@ -231,6 +231,34 @@ Also read while confirming this: subscription settings are enabled, real-time
 developer notifications are **not** configured (no Pub/Sub topic set), and the
 base64 licensing public key is available in Monetisation setup when it is needed.
 
+### Store declarations, checked live on 2026-09-12
+
+**Data safety is done and correct** — and this was the one genuinely
+time-critical item, because publishing a Play product needs no new binary, so
+nothing would have forced the form to be corrected afterwards. Read back from the
+public Data safety page, it declares Device or other IDs, App activity (Other
+actions), **Financial info (Purchase history)** and Personal info (Email
+address), not shared, encrypted in transit, with a deletion route. That matches
+`STORE_LISTING.md` exactly.
+
+**Two declarations are wrong, and both are Console-only — there is no API for
+either.**
+
+1. **Ads.** The live store page carries a **"Contains ads" badge**. The app has
+   no ad SDK, no ad code, and no `AD_ID` permission, and its own description on
+   that page says "no adverts, no advertising identifiers". Set App content →
+   Ads → **No**. A listing contradicting itself risks a review, and the badge
+   costs installs for nothing.
+
+2. **App access.** Still declares "no paywall". Four asset classes are premium,
+   so some functionality is restricted and Play needs a way in. Use the
+   reviewer instructions now written into `STORE_LISTING.md`, which hand the
+   reviewer the promo code **`PLAYREVIEW`** — 90 days, no payment, no account.
+   That is what the promo code work bought here beyond the promotion itself.
+
+Neither blocks building versionCode 8, but both should be fixed **before** it is
+promoted, because that is the release a reviewer will look at.
+
 ### The gating model
 
 Settled **2026-09-06**, reversing what v1.2 first built.

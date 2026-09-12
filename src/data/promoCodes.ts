@@ -34,4 +34,22 @@ export const promoCodes: readonly PromoCode[] = [
     days: 60,
     redeemableUntil: '2026-12-31',
   },
+  /**
+   * For Play's reviewers, and named in the **App access** declaration rather
+   * than published anywhere.
+   *
+   * Play needs a way past a paywall to review what is behind it, and the
+   * alternative — a demo account — would mean building sign-in the reviewer
+   * could use and keeping credentials in a form field. A code needs neither.
+   *
+   * It outlives a single review deliberately: every future release is reviewed
+   * too, and a code that expired between them would fail a submission at the
+   * worst moment. 90 days is the grant, not the window.
+   */
+  {
+    code: 'PLAYREVIEW',
+    campaign: 'play-review',
+    days: 90,
+    redeemableUntil: '2027-12-31',
+  },
 ];
