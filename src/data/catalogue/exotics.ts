@@ -360,7 +360,7 @@ export const exoticsProducts: Product[] = [
       title: 'An up-and-out call, and the path that kills it',
       lines: [
         'A corporate buys a three-month EUR/USD call on €10m, strike 1.1000, with an up-and-out barrier at 1.1500.',
-        'The vanilla is quoted at 1.45% of notional, or $145,000; the knock-out version costs 0.82%, or $82,000.',
+        'The vanilla is quoted at 1.45% of notional, or €145,000; the knock-out version costs 0.82%, or €82,000.',
         'Spot ends the period at 1.1450: the option is alive and pays (1.1450 − 1.1000) × €10m = $450,000.',
         'Now take a path that reaches 1.1502 in week six before falling back to that same 1.1450 close.',
         'The barrier traded, so the option was extinguished in week six and pays nothing at expiry.',

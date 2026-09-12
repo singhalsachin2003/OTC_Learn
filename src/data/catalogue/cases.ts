@@ -2424,9 +2424,9 @@ export const casesProducts: Product[] = [
       },
     ],
     example: {
-      title: 'What a 26% rally does to a producer that sold forward',
+      title: 'What a 29% rally does to a producer that sold forward',
       lines: [
-        'Gold moves from $255 to $330 an ounce — a rise of $75, or about 26%.',
+        'Gold moves from $255 to $330 an ounce — a rise of $75, or about 29%.',
         'A book contains forward sales of 9 million ounces at an average of $290.',
         'Mark-to-market on the forwards: 9,000,000 × ($330 − $290) = $360m against the company.',
         'It also holds sold calls on 2 million ounces struck at $290, now $40 in the money: another 2,000,000 × $40 = $80m.',

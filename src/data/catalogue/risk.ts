@@ -1138,10 +1138,10 @@ export const riskProducts: Product[] = [
         'Vega: implied volatility fell three points against a long vega position — −$45,000.',
         'Theta: −$12,000. Carry: +$3,000.',
         'Explained: 120 + 18 − 45 − 12 + 3 = +$84,000, against $79,000 actual.',
-        'Unexplained: −$5,000, about 6% of the day’s gross explained P&L — small, and worth a question if it appears with the same sign tomorrow.',
+        'Unexplained: −$5,000, about 6% of the day’s explained total — small, and worth a question if it appears with the same sign tomorrow.',
       ],
       takeaway:
-        'The explain did not produce the $79,000; it tested it. Five thousand pounds of residual on a six-figure day is noise once and a defect if it repeats.',
+        'The explain did not produce the $79,000; it tested it. Five thousand dollars of residual on a six-figure day is noise once and a defect if it repeats.',
     },
     inPractice:
       'Every bank trading desk produces an explain daily, and under the Basel market risk framework the comparison between hypothetical and risk-theoretical P&L decides whether a desk may use its own model for capital at all. It is one of the few places where a risk-management practice and a capital rule are the same exercise.',
