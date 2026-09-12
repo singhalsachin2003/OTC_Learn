@@ -277,23 +277,39 @@ actions), **Financial info (Purchase history)** and Personal info (Email
 address), not shared, encrypted in transit, with a deletion route. That matches
 `STORE_LISTING.md` exactly.
 
-**Two declarations are wrong, and both are Console-only — there is no API for
-either.**
+**Both declarations that were wrong are now set**, and both were Console-only —
+there is no API for either.
 
-1. **Ads.** The live store page carries a **"Contains ads" badge**. The app has
-   no ad SDK, no ad code, and no `AD_ID` permission, and its own description on
-   that page says "no adverts, no advertising identifiers". Set App content →
-   Ads → **No**. A listing contradicting itself risks a review, and the badge
-   costs installs for nothing.
+1. ~~**Ads.**~~ Corrected 2026-09-12; App content → Actioned shows that date.
+   The public store page still showed a "Contains ads" badge afterwards, which is
+   propagation — re-check in a day. The badge was always wrong: no ad SDK, no ad
+   code, no `AD_ID` in the merged manifest, and the description on that same page
+   promises "no adverts, no advertising identifiers".
 
-2. **App access.** Still declares "no paywall". Four asset classes are premium,
-   so some functionality is restricted and Play needs a way in. Use the
-   reviewer instructions now written into `STORE_LISTING.md`, which hand the
-   reviewer the promo code **`PLAYREVIEW`** — 90 days, no payment, no account.
-   That is what the promo code work bought here beyond the promotion itself.
+2. ~~**App access.**~~ **Now called "Sign-in details"** — the Console says so on
+   the page. Set to **Yes, part of the app is restricted** on 2026-09-12, with an
+   entry named "Premium asset classes (promo code, no account)": no username, no
+   password, the full-access box ticked, and 462 characters of instructions
+   handing the reviewer **`PLAYREVIEW`**. That is what the promo code work bought
+   beyond the promotion itself — no demo account to build, no credentials in a
+   form field.
 
-Neither blocks building versionCode 8, but both should be fixed **before** it is
-promoted, because that is the release a reviewer will look at.
+   **Saved, not submitted.** It sits in Publishing overview until "Send for
+   review" is pressed, so it can travel with the production promotion rather than
+   as its own review round.
+
+**The app signing fingerprint is confirmed.** Play App Signing → Classical key →
+SHA-256 reads
+`F4:FB:0F:1D:AC:1B:05:09:5F:5A:8B:89:9A:6B:67:FB:07:94:35:BF:BC:A8:C0:06:A5:E5:A6:FC:21:AC:02:AF`,
+which is exactly what `assetlinks.json` serves. **App Links will verify.** Two
+things noticed while reading it: the signing key was upgraded (a previous key is
+listed, first used 29 Jul 2026, now at **0% install base**, so one fingerprint is
+enough), and the upload key is a different certificate —
+`74:2D:18:9F:…` — which is *not* the one App Links wants.
+
+The page is now **Test and release → App integrity → "Go to Protected with
+Play" → Play Store protection → Protect app signing key → Manage Play app
+signing**. The fingerprints are copy buttons rather than text.
 
 ### The gating model
 

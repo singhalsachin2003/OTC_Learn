@@ -182,47 +182,68 @@ https://singhalsachin2003.github.io/OTC_Learn/privacy/
 Verified live and rendering. Source is `docs/privacy.md` — edit and push to
 update it; never paste policy text straight into the console.
 
-### App access
+### Sign-in details (formerly App access)
 
-**This answer changed with the paywall, and the old one is now false.** It used
-to read "all functionality is available without special access — no login, no
-account, no region lock, no paywall". Four asset classes are premium, so some
-functionality *is* restricted and Play has to be told, with a way in for the
-reviewer.
+**Play renamed this declaration** — the Console says so on the page itself:
+"This declaration was previously called 'App access'." It lives under Monitor
+and improve → Policy and programmes → App content, on the **Actioned** tab once
+it has been answered, not under "Need attention".
 
-**Answer: some functionality is restricted.** Provide these instructions rather
-than a demo account — there is no account to demo, since buying needs no sign-in:
+**Set on 2026-09-12 and saved**, answering **Yes** to "Is any part of your app
+restricted?" — Play's own list of what counts includes "payments, such as
+one-time products, memberships, subscriptions and/or access tiers" and "referral
+codes", so the old answer of No was plainly false once the paywall existed.
+
+The entry is named "Premium asset classes (promo code, no account)". Username and
+password are **deliberately blank** — there is no account to demo, since buying
+needs no sign-in — and the "provide full access to all the features and content,
+including premium or paid content" box is ticked, which `PLAYREVIEW` does.
+
+The free-text field is capped at **500 characters**; what was entered is 462:
 
 ```
-Exotics, Risk and the Greeks, Case Studies and Alternative Underlyings require a
+Exotics, Risk and the Greeks, Case Studies and Alternative Underlyings need a
 subscription, as does the "Going deeper" section on the free products.
 
-To review them without paying: Profile → Subscription → Have a promo code? →
-enter PLAYREVIEW → Redeem. That opens every asset class for 90 days. It takes no
-payment and creates no subscription.
+To review them without paying: open Profile > Subscription > "Have a promo
+code?", enter PLAYREVIEW and tap Redeem. That opens every asset class for 90
+days. No payment is taken and no subscription is created.
 
-Everything else — 36 products across six asset classes, every quiz, the exam and
-the review queue — is free and needs no account.
+Everything else is free and needs no account: 36 products, every quiz, the exam
+and the review queue.
 ```
+
+Plain `>` rather than arrows: the field is typed into, and non-ASCII characters
+are a needless way for a reviewer's copy of the instructions to arrive mangled.
+
+**Saved, not submitted.** Play stages this in Publishing overview — it only
+reaches Google when "Send for review" is pressed there, which is also what makes
+it a sensible thing to bundle with promoting a release rather than a separate
+review round.
 
 The code is `PLAYREVIEW` in `src/data/promoCodes.ts`. Keep the two in step: if
 that entry is ever retired, this declaration stops working and the next
-submission stalls on a reviewer who cannot reach the paid content.
+submission stalls on a reviewer who cannot reach the paid content. It is
+redeemable until 2027-12-31 for exactly this reason — a code that expired between
+two submissions would fail a release at the worst possible moment.
 
 ### Ads
 
 **No, my app does not contain ads.**
 
-**The Console currently says otherwise, and the live store page carries a
-"Contains ads" badge** — read from `play.google.com` on 2026-09-12. It is wrong:
+**Corrected in the Console on 2026-09-12** — the Ads declaration now shows that
+date under App content → Actioned. The public store page still carried the
+"Contains ads" badge afterwards, which is propagation rather than a failed save;
+the badge was wrong because:
 there is no ad SDK in `package.json`, no ad code in `src/`, no `AD_ID`
 permission in the merged release manifest, and the full description on that same
 page promises "no adverts, no advertising identifiers, and no analytics
 following you around". A listing that contradicts itself is the kind of thing
 that costs a review, and the badge suppresses installs for nothing in return.
 
-**Fix it in App content → Ads → "No, my app does not contain ads".** There is no
-API for this declaration; it is a Console answer.
+There is no API for this declaration; it is a Console answer, under
+App content → Ads. **Re-check the public listing in a day** — if the badge is
+still there, the save did not take.
 
 ### Content ratings
 
