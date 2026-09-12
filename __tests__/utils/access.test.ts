@@ -28,24 +28,28 @@ const PAYING = {
   hasPurchasableOffer: true,
   premium: true,
   grandfathered: false,
+  promoUnlocked: false,
 };
 const LOCKED = {
   purchasesConfigured: true,
   hasPurchasableOffer: true,
   premium: false,
   grandfathered: false,
+  promoUnlocked: false,
 };
 const NO_BILLING = {
   purchasesConfigured: false,
   hasPurchasableOffer: false,
   premium: false,
   grandfathered: false,
+  promoUnlocked: false,
 };
 const OLD_HAND = {
   purchasesConfigured: true,
   hasPurchasableOffer: true,
   premium: false,
   grandfathered: true,
+  promoUnlocked: false,
 };
 /** A key in place, but no Play product yet — the order these arrive in. */
 const NOTHING_ON_SALE = {
@@ -53,6 +57,16 @@ const NOTHING_ON_SALE = {
   hasPurchasableOffer: false,
   premium: false,
   grandfathered: false,
+  promoUnlocked: false,
+};
+
+/** A promotional code running. Reads as a temporary `OLD_HAND`. */
+const ON_PROMO = {
+  purchasesConfigured: true,
+  hasPurchasableOffer: true,
+  premium: false,
+  grandfathered: false,
+  promoUnlocked: true,
 };
 
 const freeIds = catalogueCategories.filter((c) => !c.premium).map((c) => c.id);
@@ -95,6 +109,15 @@ describe('paywallApplies', () => {
   it('applies to a new user on a build that can sell', () => {
     expect(paywallApplies(LOCKED)).toBe(true);
   });
+
+  /**
+   * A redeemed code has to reach the same rule the other four inputs do, or it
+   * would open the catalogue screens while leaving the quiz or the depth
+   * sections locked — a half-unlocked app being worse than a locked one.
+   */
+  it('does not apply while a promotional code is running', () => {
+    expect(paywallApplies(ON_PROMO)).toBe(false);
+  });
 });
 
 describe('canOpenCategory', () => {
@@ -115,6 +138,7 @@ describe('canOpenCategory', () => {
       expect(canOpenCategory(category.id, PAYING)).toBe(true);
       expect(canOpenCategory(category.id, OLD_HAND)).toBe(true);
       expect(canOpenCategory(category.id, NO_BILLING)).toBe(true);
+      expect(canOpenCategory(category.id, ON_PROMO)).toBe(true);
     }
   });
 

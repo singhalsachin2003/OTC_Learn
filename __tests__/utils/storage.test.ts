@@ -11,6 +11,7 @@ import {
   loadGrandfathered,
   loadProfile,
   loadProgressMap,
+  loadPromoUnlock,
   loadQuestionHistory,
   loadReviewQueue,
   loadSettings,
@@ -25,6 +26,7 @@ import {
   saveExamResults,
   saveProfile,
   saveProgressMap,
+  savePromoUnlock,
   saveQuestionHistory,
   saveReviewQueue,
   saveSettings,
@@ -741,6 +743,53 @@ describe('storage', () => {
       const migrated = await migrateV1Progress();
 
       expect(Object.keys(migrated ?? {})).toEqual(['irs']);
+    });
+  });
+
+  describe('promotional grants', () => {
+    const unlock = {
+      code: 'OTCLAUNCH',
+      campaign: 'launch',
+      grantedAt: Date.parse('2026-09-12T09:30:00Z'),
+      expiresAt: Date.parse('2026-11-11T09:30:00Z'),
+    };
+
+    it('round-trips a grant', async () => {
+      await savePromoUnlock(unlock);
+      await expect(loadPromoUnlock()).resolves.toEqual(unlock);
+    });
+
+    it('reads no grant when none was ever written', async () => {
+      await expect(loadPromoUnlock()).resolves.toBeNull();
+    });
+
+    /**
+     * A corrupt grant has to read as no grant rather than as an unlock: the
+     * paywall coming back is recoverable, and a truncated write opening the paid
+     * catalogue is not.
+     */
+    it.each([
+      ['a truncated object', '{"code":"OTCLAUNCH","campaign":"launch"'],
+      ['a grant with no expiry', '{"code":"X","campaign":"y","grantedAt":1}'],
+      ['a bare string', '"OTCLAUNCH"'],
+    ])('reads %s as no grant', async (_label, raw) => {
+      await writeRaw(STORAGE_KEYS.promoUnlock, raw);
+      await expect(loadPromoUnlock()).resolves.toBeNull();
+    });
+
+    /**
+     * An entitlement is not study data. It also cannot be re-earned: a code is
+     * redeemable only while its campaign is open, so a grant wiped by "reset my
+     * progress" would be gone for good even for someone still holding the code.
+     */
+    it('survives a progress reset', async () => {
+      await savePromoUnlock(unlock);
+      await saveProgressMap({ 'interest-rate-swap': record });
+
+      await clearAll();
+
+      await expect(loadPromoUnlock()).resolves.toEqual(unlock);
+      await expect(loadProgressMap()).resolves.toEqual({});
     });
   });
 

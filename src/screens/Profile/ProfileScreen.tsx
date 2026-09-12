@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Pencil, User } from 'lucide-react-native';
 
+import { promoDaysRemaining } from '../../utils/promoCode';
 import { presentCustomerCenter } from '../../utils/purchases';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { StatTile } from '../../components/ui/StatTile';
@@ -50,19 +51,25 @@ export function ProfileScreen() {
   );
   const syncEmail = useAppSelector((state) => state.sync.email);
   const signedIn = useAppSelector((state) => state.sync.userId !== null);
-  const { premium, grandfathered, purchasesConfigured } = useAppSelector(
-    (state) => state.access,
-  );
+  const { premium, grandfathered, purchasesConfigured, promoUnlock } =
+    useAppSelector((state) => state.access);
+  const promoDays = promoDaysRemaining(promoUnlock, Date.now());
 
-  // Four states, four different answers — and "Free" is only honest when
+  // Five states, five different answers — and "Free" is only honest when
   // something is actually being withheld.
+  //
+  // A promotional grant is counted in days rather than named, because it is the
+  // only one of these that ends: "Full access" would be true today and a
+  // surprise in a fortnight.
   const subscriptionValue = premium
     ? 'Active'
     : grandfathered
       ? 'Full access'
-      : purchasesConfigured
-        ? 'Free plan'
-        : 'Everything open';
+      : promoDays > 0
+        ? `Promo — ${promoDays} ${promoDays === 1 ? 'day' : 'days'} left`
+        : purchasesConfigured
+          ? 'Free plan'
+          : 'Everything open';
   const {
     goToGlossary,
     goToAchievements,

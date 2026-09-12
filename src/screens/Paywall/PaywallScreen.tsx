@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { Check } from 'lucide-react-native';
 
 import { BackButton } from '../../components/common/BackButton';
@@ -13,17 +20,19 @@ import { useNavigation } from '../../hooks/useNavigation';
 import {
   buyOffer,
   loadPaywallOffers,
+  redeemPromo,
   restoreSubscription,
 } from '../../store/thunks/accessThunks';
 import { categories } from '../../data/categories';
 import { TOTAL_PRODUCTS } from '../../data/products';
-import { colors, spacing, typography } from '../../theme';
+import { colors, radius, spacing, typography } from '../../theme';
 import {
   depthProductCount,
   premiumCategoryCount,
   premiumProductCount,
   premiumQuestionCount,
 } from '../../utils/access';
+import { promoDaysRemaining, type RedeemOutcome } from '../../utils/promoCode';
 import {
   annualSavingPercent,
   hasRenewingOffer,
@@ -46,6 +55,32 @@ const PER_PERIOD: Record<SubscriptionOffer['period'], string> = {
   // read as a value that failed to render.
   lifetime: 'once',
   other: '',
+};
+
+/**
+ * What each *unsuccessful* redemption says to the reader.
+ *
+ * Kept here rather than in `utils/promoCode.ts` because it is copy, not rule:
+ * the module decides what happened and the screen decides how to put it. Two of
+ * these are deliberately not phrased as failures — an expired campaign is not
+ * the reader's mistake, and a code shorter than what they already hold is good
+ * news badly timed.
+ *
+ * There is no entry for `granted`, and the type says so rather than leaving a
+ * string nothing can reach: a successful redemption unlocks the catalogue, which
+ * turns this whole screen into its "Your access" state — headline, days
+ * remaining and all. A confirmation line would be announcing something the
+ * reader is already looking at, and it would be unmounted the instant it
+ * rendered, since the field it sits in only exists while the paywall applies.
+ */
+const REDEEM_MESSAGE: Record<
+  Exclude<RedeemOutcome['result'], 'granted'>,
+  string
+> = {
+  empty: 'Enter a code first.',
+  unknown: 'That code is not one we recognise. Check it and try again.',
+  'campaign-ended': 'That code has expired.',
+  'already-longer': 'You already have longer access than that code would add.',
 };
 
 /**
@@ -78,12 +113,17 @@ export function PaywallScreen() {
     premium,
     grandfathered,
     purchasesConfigured,
+    promoUnlock,
   } = useAppSelector((state) => state.access);
 
   // Annual first when it is there: it is the better deal for the reader as
   // well as for us, and defaulting to the cheaper-looking monthly one buries
   // that.
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [code, setCode] = useState('');
+  const [codeOpen, setCodeOpen] = useState(false);
+  const [codeMessage, setCodeMessage] = useState<string | null>(null);
+  const [redeeming, setRedeeming] = useState(false);
   const selected =
     offers.find((offer) => offer.id === selectedId) ??
     offers.find((offer) => offer.period === 'annual') ??
@@ -95,6 +135,27 @@ export function PaywallScreen() {
 
   const saving = annualSavingPercent(offers);
   const busy = status !== 'idle';
+
+  // Reads the grant rather than the derived flag, because the flag is settled at
+  // launch and a code redeemed a moment ago has not been through one.
+  const promoDays = promoDaysRemaining(promoUnlock, Date.now());
+
+  const onRedeem = async () => {
+    setRedeeming(true);
+    const outcome = (await dispatch(redeemPromo(code))).payload as RedeemOutcome;
+    setRedeeming(false);
+    if (outcome.result === 'granted') {
+      // Nothing to say and nowhere to say it — see `REDEEM_MESSAGE`. The field
+      // is cleared anyway so that a grant that is later spent does not leave a
+      // stale code sitting in it.
+      setCode('');
+      setCodeMessage(null);
+      return;
+    }
+    // A rejected code stays in the field, so a typo can be corrected rather
+    // than retyped from the slide it came off.
+    setCodeMessage(REDEEM_MESSAGE[outcome.result]);
+  };
 
   return (
     <SafeAreaWrapper testID="paywall-screen">
@@ -116,7 +177,13 @@ export function PaywallScreen() {
               ? 'You are subscribed, and every asset class is open.'
               : grandfathered
                 ? 'You were here before this app had a subscription, so all of it stays open to you — permanently, and at no cost.'
-                : 'Every asset class is open to you. There is nothing to buy.'}
+                : promoDays > 0
+                  ? // Says when it ends, because a promotional grant is the one
+                    // kind of access here that stops on its own, and finding
+                    // that out by hitting a locked lesson would feel like
+                    // something being taken away.
+                    `A promotional code has every asset class open to you for ${promoDays} more ${promoDays === 1 ? 'day' : 'days'}.`
+                  : 'Every asset class is open to you. There is nothing to buy.'}
           </Text>
         ) : (
           <Text style={styles.body}>
@@ -269,6 +336,61 @@ export function PaywallScreen() {
           />
         )}
 
+        {/* A code is worth offering only to someone who would otherwise be
+            paying. Showing it to a subscriber invites them to look for one, and
+            showing it to a grandfathered reader offers to unlock what they
+            already hold. */}
+        {paywalled && (
+          <View style={styles.promo}>
+            {!codeOpen ? (
+              // A text link rather than a button: a third full-width control
+              // under Subscribe and Restore would read as a third way to pay.
+              <Pressable
+                testID="paywall-promo-open"
+                accessibilityRole="button"
+                onPress={() => setCodeOpen(true)}
+              >
+                <Text style={styles.promoLink}>Have a promo code?</Text>
+              </Pressable>
+            ) : (
+              <>
+                <TextInput
+                  testID="paywall-promo-input"
+                  value={code}
+                  onChangeText={setCode}
+                  placeholder="Promo code"
+                  placeholderTextColor={colors.text.tertiary}
+                  accessibilityLabel="Promo code"
+                  autoCapitalize="characters"
+                  autoCorrect={false}
+                  autoComplete="off"
+                  editable={!redeeming}
+                  style={styles.promoInput}
+                />
+                <Button
+                  testID="paywall-promo-redeem"
+                  label={redeeming ? 'Checking…' : 'Redeem'}
+                  variant="outline"
+                  disabled={redeeming}
+                  onPress={() => {
+                    void onRedeem();
+                  }}
+                />
+                {codeMessage !== null && (
+                  <Text testID="paywall-promo-message" style={styles.promoMessage}>
+                    {codeMessage}
+                  </Text>
+                )}
+                <Text style={styles.smallPrint}>
+                  A code opens every asset class for a set number of days, at no
+                  cost. It is not a subscription: nothing is charged and nothing
+                  renews.
+                </Text>
+              </>
+            )}
+          </View>
+        )}
+
         {/* Only where something actually renews. "Renewed until you cancel"
             under a lifetime purchase would be untrue of the thing being sold. */}
         {paywalled && hasRenewingOffer(offers) && (
@@ -312,6 +434,31 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
     marginBottom: spacing.md,
     rowGap: spacing.sm,
+  },
+  promo: {
+    marginTop: spacing.lg,
+    gap: spacing.sm,
+  },
+  promoInput: {
+    ...typography.body2,
+    color: colors.text.primary,
+    backgroundColor: colors.card,
+    borderRadius: radius.large,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  promoLink: {
+    ...typography.labelSmall,
+    color: colors.text.secondary,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+    paddingVertical: spacing.sm,
+  },
+  promoMessage: {
+    ...typography.labelSmall,
+    color: colors.text.secondary,
   },
   point: {
     flexDirection: 'row',

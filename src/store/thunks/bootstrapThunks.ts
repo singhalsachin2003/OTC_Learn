@@ -6,6 +6,7 @@ import {
   loadBookmarks,
   loadExamResults,
   loadGrandfathered,
+  loadPromoUnlock,
   loadNotes,
   loadProfile,
   loadProgressMap,
@@ -16,7 +17,7 @@ import {
   loadStudyDays,
   runMigrations,
 } from '../../utils/storage';
-import { setGrandfathered } from '../slices/accessSlice';
+import { setGrandfathered, setPromoUnlock } from '../slices/accessSlice';
 import { clearNotes, setNotes } from '../slices/notesSlice';
 import type { RootState } from '../index';
 import {
@@ -70,6 +71,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         examResults,
         notes,
         grandfathered,
+        promoUnlock,
       ] = await Promise.all([
         loadProgressMap(),
         loadQuestionHistory(),
@@ -83,6 +85,7 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
         loadExamResults(),
         loadNotes(),
         loadGrandfathered(),
+        loadPromoUnlock(),
       ]);
 
       dispatch(setProgress(progress));
@@ -97,6 +100,11 @@ export const hydrateApp = createAsyncThunk<void, void, { state: RootState }>(
       // else persisted, so it is settled before the first frame rather than
       // arriving after it and locking content that was already on screen.
       dispatch(setGrandfathered(grandfathered));
+      // A promotional grant, and the moment its expiry is judged against. Read
+      // at launch rather than watched, so a code that ran out overnight is spent
+      // by the time the first screen renders — and one that runs out while the
+      // app is open lasts until the next launch, which errs towards the reader.
+      dispatch(setPromoUnlock({ unlock: promoUnlock, now: Date.now() }));
       dispatch(setSettings(settings));
       dispatch(setName(profile.name));
 

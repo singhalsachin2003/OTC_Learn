@@ -14,6 +14,10 @@ export type PaywallSource = 'home' | 'category' | 'product' | 'profile';
 /** Which screen a share was sent from. What was shared is not recorded. */
 export type ShareSurface = 'product' | 'results';
 
+/** Why a promotional code was turned down. Mirrors `RedeemOutcome`'s failures. */
+export type PromoRejection =
+  'empty' | 'unknown' | 'campaign-ended' | 'already-longer';
+
 export type AnalyticsEvent =
   | { name: 'category_opened'; categoryId: string }
   | { name: 'product_opened'; productId: string }
@@ -54,6 +58,13 @@ export type AnalyticsEvent =
   | { name: 'purchase_completed'; period: OfferPeriod }
   | { name: 'purchase_restored' }
   | { name: 'purchase_failed' }
+  // A promotional code carries its campaign, never the code itself: the code is
+  // the thing worth knowing whether to keep running, and a sink holding live
+  // codes is a list of ways to get the paid content for nothing. A rejection
+  // carries why, because a campaign generating nothing but `unknown` is usually
+  // a code printed wrong rather than readers guessing.
+  | { name: 'promo_redeemed'; campaign: string }
+  | { name: 'promo_rejected'; reason: PromoRejection }
   | {
       /** A render error caught by `ErrorBoundary`. */
       name: 'app_error';

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { track } from '../../utils/analytics';
+import { redeemPromoCode, type RedeemOutcome } from '../../utils/promoCode';
 import {
   isPremium,
   isPurchasesConfigured,
@@ -9,6 +10,7 @@ import {
   restoreEntitlements,
   PREMIUM_ENTITLEMENT_ID,
 } from '../../utils/purchases';
+import { savePromoUnlock } from '../../utils/storage';
 import type { RootState } from '../index';
 import {
   purchaseFailed,
@@ -16,6 +18,7 @@ import {
   setNotice,
   setOffers,
   setPremium,
+  setPromoUnlock,
   setPurchaseStatus,
 } from '../slices/accessSlice';
 
@@ -136,4 +139,41 @@ export const restoreSubscription = createAsyncThunk<
 
   dispatch(setPremium(false));
   dispatch(setNotice('No subscription found on this Google account.'));
+});
+
+/**
+ * Redeems a promotional code typed by the reader.
+ *
+ * Returns the outcome as well as dispatching, because the screen says something
+ * different for each of them and nothing here should have to encode the wording.
+ *
+ * The grant is written to storage *before* it reaches the store, so an install
+ * that is killed the instant after redeeming still holds what it was given —
+ * the alternative loses the code, and a campaign-limited code cannot be
+ * redeemed twice to recover from that. A failed write is not treated as a failed
+ * redemption: the reader typed a valid code and should get their access, even if
+ * it turns out to last only until they close the app. Storage failures here are
+ * already swallowed by `writeJson`, so there is nothing to report either way.
+ *
+ * No offer, price or Play transaction is involved — see `utils/promoCode.ts`.
+ */
+export const redeemPromo = createAsyncThunk<
+  RedeemOutcome,
+  string,
+  { state: RootState }
+>('access/redeemPromo', async (input, { dispatch, getState }) => {
+  const now = Date.now();
+  const outcome = redeemPromoCode(input, now, getState().access.promoUnlock);
+
+  if (outcome.result === 'granted') {
+    await savePromoUnlock(outcome.unlock);
+    dispatch(setPromoUnlock({ unlock: outcome.unlock, now }));
+    track({ name: 'promo_redeemed', campaign: outcome.unlock.campaign });
+    return outcome;
+  }
+
+  // Every other outcome leaves the stored grant exactly as it was, including
+  // `already-longer`: the reader loses nothing by trying a shorter code.
+  track({ name: 'promo_rejected', reason: outcome.result });
+  return outcome;
 });

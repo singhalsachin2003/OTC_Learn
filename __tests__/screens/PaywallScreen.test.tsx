@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react-native';
+import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 import Purchases from 'react-native-purchases';
 import RevenueCatUI from 'react-native-purchases-ui';
 
@@ -18,6 +18,7 @@ import {
   setEntitlement,
   setGrandfathered,
 } from '../../src/store/slices/accessSlice';
+import { promoCodes } from '../../src/data/promoCodes';
 import { initPurchases, resetPurchases } from '../../src/utils/purchases';
 import { renderWithStore } from '../helpers/renderWithStore';
 
@@ -399,5 +400,133 @@ describe('PaywallScreen with a lifetime purchase on sale', () => {
     expect(screen.getByText(/renew until you cancel/)).toBeTruthy();
     // The saving still compares the two terms, and ignores the one-off.
     expect(screen.getByText('SAVE 37%')).toBeTruthy();
+  });
+});
+
+describe('PaywallScreen redeeming a promotional code', () => {
+  const live = promoCodes[0];
+
+  /**
+   * The clock is pinned inside the first code's window, so the suite says
+   * nothing about what today's date is. Without this the tests would start
+   * failing on their own the day the shipped campaign closes — which is a real
+   * thing to know, but `promoCodes.test.ts` is where the table is judged.
+   */
+  let clock: jest.SpyInstance<number, []>;
+
+  beforeEach(() => {
+    clock = jest
+      .spyOn(Date, 'now')
+      .mockReturnValue(Date.parse(`${live.redeemableUntil}T00:00:00Z`) - 1000);
+  });
+
+  afterEach(() => {
+    clock.mockRestore();
+  });
+
+  async function renderSelling() {
+    getOfferings.mockResolvedValue(bothTerms);
+    const store = sellingTo(createStore());
+    const rendered = await renderWithStore(<PaywallScreen />, { store });
+    return { ...rendered, store };
+  }
+
+  it('offers the field only behind a tap, not beside the price', async () => {
+    await renderSelling();
+
+    expect(screen.getByTestId('paywall-promo-open')).toBeTruthy();
+    expect(screen.queryByTestId('paywall-promo-input')).toBeNull();
+
+    await fireEvent.press(screen.getByTestId('paywall-promo-open'));
+
+    expect(screen.getByTestId('paywall-promo-input')).toBeTruthy();
+  });
+
+  /**
+   * The whole point, end to end: a code typed on this screen has to reach the
+   * access rule, not just this screen's own state. Asserting on the store is
+   * what separates "the message changed" from "the catalogue opened".
+   */
+  it('opens the catalogue on a valid code', async () => {
+    const { store } = await renderSelling();
+    await fireEvent.press(screen.getByTestId('paywall-promo-open'));
+
+    await fireEvent.changeText(
+      screen.getByTestId('paywall-promo-input'),
+      live.code,
+    );
+    await fireEvent.press(screen.getByTestId('paywall-promo-redeem'));
+
+    await waitFor(() => {
+      expect(store.getState().access.promoUnlocked).toBe(true);
+    });
+    expect(store.getState().access.promoUnlock?.campaign).toBe(live.campaign);
+    // The confirmation is the screen changing state, not a line of text: see
+    // `REDEEM_MESSAGE`. The field itself is gone, because the paywall is.
+    expect(screen.getByTestId('paywall-already-open')).toBeTruthy();
+    expect(screen.queryByTestId('paywall-promo-input')).toBeNull();
+  });
+
+  /** Typed off a slide, so the case and spacing it arrives in vary. */
+  it('accepts a code however it was typed', async () => {
+    const { store } = await renderSelling();
+    await fireEvent.press(screen.getByTestId('paywall-promo-open'));
+
+    await fireEvent.changeText(
+      screen.getByTestId('paywall-promo-input'),
+      ` ${live.code.toLowerCase()} `,
+    );
+    await fireEvent.press(screen.getByTestId('paywall-promo-redeem'));
+
+    await waitFor(() => {
+      expect(store.getState().access.promoUnlocked).toBe(true);
+    });
+  });
+
+  it('says so on a code it does not know, and keeps the paywall up', async () => {
+    const { store } = await renderSelling();
+    await fireEvent.press(screen.getByTestId('paywall-promo-open'));
+
+    await fireEvent.changeText(
+      screen.getByTestId('paywall-promo-input'),
+      'NOTACODE',
+    );
+    await fireEvent.press(screen.getByTestId('paywall-promo-redeem'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/not one we recognise/)).toBeTruthy();
+    });
+    expect(store.getState().access.promoUnlocked).toBe(false);
+    expect(screen.getByTestId('paywall-subscribe')).toBeTruthy();
+  });
+
+  /**
+   * A grant is the one kind of access here that stops on its own, so the screen
+   * has to say when — finding out by hitting a locked lesson would read as
+   * something being taken away.
+   */
+  it('tells a reader on a code how long they have', async () => {
+    await renderSelling();
+    await fireEvent.press(screen.getByTestId('paywall-promo-open'));
+
+    await fireEvent.changeText(
+      screen.getByTestId('paywall-promo-input'),
+      live.code,
+    );
+    await fireEvent.press(screen.getByTestId('paywall-promo-redeem'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/open to you for \d+ more days?/)).toBeTruthy();
+    });
+    expect(screen.queryByTestId('paywall-subscribe')).toBeNull();
+  });
+
+  /** Offering a code to someone who already has everything invites a hunt. */
+  it('does not offer the field when nothing is being withheld', async () => {
+    const store = sellingTo(createStore());
+    store.dispatch(setGrandfathered(true));
+    await renderWithStore(<PaywallScreen />, { store });
+
+    expect(screen.queryByTestId('paywall-promo-open')).toBeNull();
   });
 });

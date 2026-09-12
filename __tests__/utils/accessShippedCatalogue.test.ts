@@ -35,6 +35,7 @@ const NEW_USER_ON_A_SELLING_BUILD = {
   hasPurchasableOffer: true,
   premium: false,
   grandfathered: false,
+  promoUnlocked: false,
 };
 
 /** An install that predates the paywall. Promised everything, permanently. */
@@ -43,6 +44,7 @@ const GRANDFATHERED = {
   hasPurchasableOffer: true,
   premium: false,
   grandfathered: true,
+  promoUnlocked: false,
 };
 
 describe('the catalogue as shipped', () => {

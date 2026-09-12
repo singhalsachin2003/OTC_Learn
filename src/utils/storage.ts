@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { examResultId, type ExamResult } from './exam';
 import type { Note } from './notes';
 import { emptyProgress, MASTERY_COMPLETE, type ProductProgress } from './mastery';
+import { parsePromoUnlock, type PromoUnlock } from './promoCode';
 import type { QuestionStat } from './quizSession';
 import type { ReviewItem } from './review';
 
@@ -50,6 +51,11 @@ export const STORAGE_KEYS = {
    * this is the only record that one happened.
    */
   reviewPromptedAt: '@otc-learn/review-prompted-at',
+  /**
+   * A promotional grant, or nothing. See `utils/promoCode.ts` — this is the
+   * only record that a code was redeemed, and it expires on its own.
+   */
+  promoUnlock: '@otc-learn/promo-unlock',
 } as const;
 
 export const SCHEMA_VERSION = 4;
@@ -677,6 +683,26 @@ export async function loadGrandfathered(): Promise<boolean> {
 }
 
 // ---------------------------------------------------------------------------
+// Promotional access
+
+export async function savePromoUnlock(unlock: PromoUnlock): Promise<boolean> {
+  return writeJson(STORAGE_KEYS.promoUnlock, unlock);
+}
+
+/**
+ * The grant this install holds, or null.
+ *
+ * Validated rather than trusted, and an unreadable grant is no grant: the
+ * paywall coming back is a recoverable disappointment, where honouring a
+ * half-written value would open the paid catalogue on the strength of a corrupt
+ * read. Expiry is not checked here — that is `promoUnlockActive`'s job, and it
+ * needs a clock this module has no business having.
+ */
+export async function loadPromoUnlock(): Promise<PromoUnlock | null> {
+  return parsePromoUnlock(await readJson<unknown>(STORAGE_KEYS.promoUnlock));
+}
+
+// ---------------------------------------------------------------------------
 // Review prompt
 
 export async function saveReviewPromptedAt(at: number): Promise<boolean> {
@@ -738,8 +764,8 @@ export async function runMigrations(): Promise<void> {
 
 /** Clears all app-owned keys. Backs the "reset progress" action in Profile. */
 /**
- * Keys `clearAll` leaves alone, because neither is anything the user asked to
- * be rid of.
+ * Keys `clearAll` leaves alone, because none of them is anything the user asked
+ * to be rid of.
  *
  * `grandfathered` is the one that matters: it records that this install
  * predates the paywall, and it is meant to last forever. Wiping it turns
@@ -755,11 +781,17 @@ export async function runMigrations(): Promise<void> {
  * `reviewPromptedAt` stays for a plainer reason: nobody reaches for "reset my
  * progress" meaning "ask me to rate the app again", and clearing it would hand
  * anyone who starts over a second prompt.
+ *
+ * `promoUnlock` stays because it is an entitlement rather than study data, on
+ * the same reasoning as `grandfathered` — and with a sharper edge: a promotional
+ * code can be redeemed only while the campaign is open, so a grant wiped by a
+ * reset could not be re-earned even by someone who still had the code.
  */
 const KEYS_SURVIVING_RESET: readonly string[] = [
   STORAGE_KEYS.grandfathered,
   STORAGE_KEYS.schemaVersion,
   STORAGE_KEYS.reviewPromptedAt,
+  STORAGE_KEYS.promoUnlock,
 ];
 
 export async function clearAll(): Promise<void> {

@@ -278,6 +278,56 @@ in the Play Console; RevenueCat passes through Play's localised, tax-inclusive
 from the two prices at runtime, so it stays correct per country and disappears
 if only one term is on sale.
 
+## Promotional codes
+
+Added 2026-09-12. **Where you specify what a code does: `src/data/promoCodes.ts`.**
+One entry per code:
+
+```ts
+{ code: 'OTCLAUNCH', campaign: 'launch', days: 60, redeemableUntil: '2026-12-31' }
+```
+
+`days` is how long the grant runs from the moment it is redeemed;
+`redeemableUntil` is the last day the code may be used at all, so a campaign
+retires itself without anyone deleting anything. `campaign` is what analytics
+reports — never the code, because a sink holding live codes is a list of ways to
+get the paid content for nothing. The reader enters a code behind "Have a promo
+code?" on the paywall; `utils/promoCode.ts` holds the rules and
+`__tests__/data/promoCodes.test.ts` guards the table.
+
+**This is not Play billing, and it deliberately cannot be.** A code gives the
+paid asset classes away for a fixed number of days. No payment is taken, so no
+Play product, price or offer is involved and nothing renews — which is exactly
+why it is allowed to exist alongside Play billing rather than around it.
+
+**A code can never be a discount, and this is the thing to be clear about before
+promising one to anybody.** A reduced price is still a sale and prices belong to
+Play. The two Play-side mechanisms, for reference:
+
+- **Play promo codes** (Play Console → Monetise with Play → Promo codes) grant
+  **free trials only**, 3–90 days, no percentage off and no fixed price.
+  *Custom* codes — the kind you name yourself — are subscriptions only,
+  redeemable only by users who have **never subscribed**, limited to one code
+  per subscription product and 2,000–99,999 redemptions. They are redeemed
+  inside **Google's** payment sheet (the arrow next to the payment method →
+  Redeem), not in any field this app can offer, and the buyer still needs a card
+  and still auto-renews afterwards.
+- **Subscription offers** with developer-determined eligibility can carry a real
+  discount, but the eligibility is vouched for by a backend passing an offer
+  token. That is a build, not a setting.
+
+**Three consequences of the codes living in the bundle**, which is the honest
+trade this design makes:
+
+1. **Every code is public.** It can be read out of an installed app with
+   `strings` on the Hermes binary. Treat a code as a marketing secret, never a
+   security one.
+2. **Expiry is the only thing limiting a leak**, which is why `days` is capped
+   at a year by a test and why permanent grants cannot be expressed at all.
+3. **Rotating or killing a code is an OTA**, not a store build — this file is
+   JavaScript. What an OTA cannot do is take back a grant already made on a
+   device.
+
 ## What blocks what
 
 1. ~~**A Play product must exist first**, and the Play Console refuses to create

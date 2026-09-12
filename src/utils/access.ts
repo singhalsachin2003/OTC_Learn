@@ -49,6 +49,12 @@ import type { Question } from '../data/types';
  * now means is narrower and more generous: those installs get the new asset
  * classes free as well, permanently. That is a promise the shipped build
  * already made them in as many words, so it is kept.
+ *
+ * A fifth input sits beside those four rather than among them, because it is
+ * not a guard: `promoUnlocked` is a promotional code running, and unlike the
+ * other four it **expires**. It reads as a temporary `grandfathered`, and
+ * `utils/promoCode.ts` carries the reasoning — including why a code can only
+ * ever grant free access for a while and never a discount.
  */
 
 /**
@@ -90,6 +96,8 @@ export interface AccessState {
   premium: boolean;
   /** Whether this install predates the paywall. */
   grandfathered: boolean;
+  /** Whether a promotional code is currently running. See `utils/promoCode.ts`. */
+  promoUnlocked: boolean;
 }
 
 /**
@@ -105,6 +113,7 @@ export function paywallApplies(access: AccessState): boolean {
     access.hasPurchasableOffer &&
     !access.premium &&
     !access.grandfathered &&
+    !access.promoUnlocked &&
     premiumCategoryCount() > 0
   );
 }

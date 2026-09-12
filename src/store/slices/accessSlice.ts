@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import { promoUnlockActive, type PromoUnlock } from '../../utils/promoCode';
 import type { SubscriptionOffer } from '../../utils/purchases';
 
 /** What the paywall screen is doing, so its buttons can say so. */
@@ -22,6 +23,16 @@ export interface AccessSliceState {
   hasPurchasableOffer: boolean;
   premium: boolean;
   grandfathered: boolean;
+  /**
+   * Whether the grant below is running. Derived from it, and held beside it
+   * rather than computed at each call site so that everything reading
+   * `state.access` — `useAccess`, `useQuiz`, Profile — sees one answer. It is
+   * re-derived on every launch and whenever a code is redeemed; see
+   * `setPromoUnlock`.
+   */
+  promoUnlocked: boolean;
+  /** The promotional grant this install holds, or null. Persisted. */
+  promoUnlock: PromoUnlock | null;
   offers: SubscriptionOffer[];
   status: PurchaseStatus;
   /** Why the last attempt failed, or null. */
@@ -37,6 +48,8 @@ export const initialAccessState: AccessSliceState = {
   hasPurchasableOffer: false,
   premium: false,
   grandfathered: false,
+  promoUnlocked: false,
+  promoUnlock: null,
   offers: [],
   status: 'idle',
   error: null,
@@ -79,6 +92,27 @@ const accessSlice = createSlice({
       state.premium = action.payload;
     },
 
+    /**
+     * Records a promotional grant, and works out whether it is still running.
+     *
+     * `now` arrives in the payload rather than being read here because a
+     * reducer that called `Date.now()` would not be pure, and this is the one
+     * piece of access state that changes on its own with no user action behind
+     * it. Dispatched on hydration and on redemption, which is what keeps the
+     * derived flag honest: an app left open across an expiry keeps access until
+     * the next launch, which errs towards the reader rather than against them.
+     */
+    setPromoUnlock(
+      state,
+      action: PayloadAction<{ unlock: PromoUnlock | null; now: number }>,
+    ) {
+      state.promoUnlock = action.payload.unlock;
+      state.promoUnlocked = promoUnlockActive(
+        action.payload.unlock,
+        action.payload.now,
+      );
+    },
+
     setOffers(state, action: PayloadAction<SubscriptionOffer[]>) {
       state.offers = action.payload;
       // The paywall screen refetches on every visit, so this is the freshest
@@ -115,6 +149,7 @@ export const {
   setGrandfathered,
   setEntitlement,
   setPremium,
+  setPromoUnlock,
   setOffers,
   setPurchaseStatus,
   purchaseFailed,
