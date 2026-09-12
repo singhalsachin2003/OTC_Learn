@@ -267,10 +267,10 @@ rather than objections to the plan:
   which is likely below what the same content would sell for elsewhere — worth
   reviewing the auto-converted table rather than accepting it wholesale.
 
-Prices cannot be entered yet: the Play Console will not create a product until
-an uploaded binary declares `BILLING`, and nothing can be sold until BillDesk
-merchant verification completes. Confirmed 2026-09-01 — the subscriptions route
-in the Console still bounces back to the app list.
+Both of the gates that used to sit here are now open: the uploaded binary
+declares `BILLING`, the products were created on 2026-09-02, and **BillDesk
+merchant verification completed — verified in the Console on 2026-09-12**, which
+was the last thing stopping a sale from going through.
 
 **Prices are not set in the app and are not in this repo.** They are set per country
 in the Play Console; RevenueCat passes through Play's localised, tax-inclusive
@@ -280,10 +280,14 @@ if only one term is on sale.
 
 ## What blocks what
 
-1. **A Play product must exist first**, and the Play Console refuses to create
+1. ~~**A Play product must exist first**, and the Play Console refuses to create
    one until an uploaded binary declares `com.android.vending.BILLING` — and
-   nothing can be _sold_ until BillDesk merchant verification completes. See
-   `PRODUCTION_READINESS.md`.
+   nothing can be _sold_ until BillDesk merchant verification completes.~~
+   **Both cleared**: products created 2026-09-02, merchant verification
+   confirmed 2026-09-12. What blocks a sale now is neither of these but the
+   **binary** — see `PRODUCTION_READINESS.md`. The newest build is versionCode 7
+   from 2026-09-01, which predates every premium category, so its paywall is
+   inert whatever the Console and RevenueCat say.
 2. **Linking Play to RevenueCat needs a Google Play service account JSON** with
    access to the Play Developer API. Worth doing once and keeping: `eas submit`
    needs the same credential, which is why the AAB upload is currently manual.

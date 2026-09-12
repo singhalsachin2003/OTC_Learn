@@ -94,6 +94,16 @@ is no longer entirely unexercised.
 
 ### Before anything can be sold
 
+**Where this stands on 2026-09-12: every Console-side gate in this list is now
+open, and what blocks a sale is the binary.** Billing is declared, the products
+exist and are priced, RevenueCat reports valid credentials, and BillDesk
+merchant verification has completed. The newest build is still **versionCode 7,
+cut 2026-09-01 from `e9b42e0`** — it predates all four premium asset classes, so
+its paywall is inert no matter what the Console says, and production is older
+still at versionCode 4. **Cutting versionCode 8 from `main` is the whole
+remaining path to a first sale.** The only money-side unknown left is the payout
+method in item 4, which strands earnings rather than blocking a purchase.
+
 1. ~~Add the billing dependency.~~ **Done, 2026-08-31.** `react-native-purchases`
    is in, `com.android.vending.BILLING` is declared, and the _release_ manifest
    merge was checked rather than assumed — `expo prebuild` cannot show the real
@@ -109,43 +119,47 @@ is no longer entirely unexercised.
    back in. A _debug_ build additionally carries `SYSTEM_ALERT_WINDOW` from
    React Native's dev-overlay source set — expected, and absent from release.
 
-2. **Upload a build to a test track.** Not done: this is native code, so it
-   needs `eas build`, and the upload is the owner's to make. Until an uploaded
-   binary declares `BILLING`, the console still refuses to create products.
+2. ~~**Upload a build to a test track.**~~ **Done, 2026-09-01.** versionCode 7
+   (1.2.0) is on the internal testing track, which is what unblocked creating
+   the products — the Console refuses until an uploaded binary declares
+   `BILLING`. Note what this build is *not*: cut from `e9b42e0`, it predates
+   every premium asset class and `expo-store-review`, so a newer AAB is needed
+   for reasons that have nothing to do with billing.
 
-3. **Finish the merchant verification.** Read from the Console on
-   **2026-09-06**, and it is **still open**. Settings → Developer account →
-   Payments profile shows **two** payments accounts, both flagged _"Issue with
-   account"_:
+3. ~~**Finish the merchant verification.**~~ **Done — verified in the Console on
+   2026-09-12.** Settings → Developer account → Payments profile lists the same
+   two accounts, and **neither carries the _"Issue with account"_ flag any
+   more**:
 
-   | Account | Scope | Status |
-   | --- | --- | --- |
-   | `…0122-7525-9540` | Cross border | Issue with account |
-   | `…7416-6616-5410` | India only | Issue with account |
+   | Account           | Scope        | Status  |
+   | ----------------- | ------------ | ------- |
+   | `…0122-7525-9540` | Cross border | no flag |
+   | `…7416-6616-5410` | India only   | no flag |
 
-   The banner reads: _"Merchant account verification is required to meet Payment
-   Aggregator Cross Border (PA-CB) regulations. Account verification initiated.
-   Follow the instructions sent to the primary contact for your payments profile
-   from `onboarding@billdesk.com` to complete your application."_ Status: **In
-   progress**, with a 90-day clock from when it was begun.
+   Opening the India-only account shows the Console's own confirmation in place
+   of the old BillDesk banner: _"Your recent merchant account verification was
+   successful. Your sales and payouts will continue without interruption."_
 
-   **Two things this makes precise, and both were understated before.**
+   The PA-CB banner that used to sit here — _"Follow the instructions sent to
+   the primary contact … from `onboarding@billdesk.com`"_ — is gone, and with it
+   the 90-day clock. **Selling is no longer gated on the payments profile**, on
+   either the cross-border or the India-only account, so the India-only pricing
+   needs no workaround.
 
-   First, **it is waiting on us, not on them.** The wording is "follow the
-   instructions sent to you", so there is an action sitting in the inbox of the
-   payments profile's primary contact. It is not a queue to wait out.
+4. **A payout method may still be missing, and it is now the only money-side
+   unknown.** As of 2026-09-06 the payments account read _"Add a payment method
+   to receive your earnings"_, with earnings ₹0.00 against a ₹100 threshold and
+   no transactions. This was always independent of BillDesk, so the
+   verification clearing does not settle it, and **it could not be re-read on
+   2026-09-12**: the account detail sheet renders its body lazily and the
+   scraper got the verification banner but never the payout row. Confirm it by
+   eye in Settings → Developer account → Payments profile → the India-only
+   account. Nothing can be paid out until a bank account is there, and entering
+   one is the owner's to do, not something to automate.
 
-   Second, **it is not only cross-border sales.** The India-only account carries
-   its own warning — _"Failure to verify will stop your ability to sell and to
-   receive payouts"_ — so the domestic prices being India-only does not route
-   around it.
-
-4. **No payout method is attached.** Found on the same screen, and independent
-   of BillDesk: the payments account reads _"Add a payment method to receive
-   your earnings"_. Earnings ₹0.00 against a ₹100 threshold, no transactions.
-   Even with verification complete, nothing can be paid out until a bank
-   account is added — and that is the owner's to enter, not something to
-   automate.
+   Worth being precise about what this does and does not block: a missing payout
+   method does **not** stop a user buying. It only strands the money at Google,
+   and only above the ₹100 threshold.
 
 5. ~~**Then** create the products and price them.~~ **Done 2026-09-02.** One
    subscription `otc_learn_pro` with two active base plans, **₹29 monthly and
