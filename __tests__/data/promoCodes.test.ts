@@ -1,5 +1,9 @@
 import { promoCodes } from '../../src/data/promoCodes';
-import { normalisePromoCode, redeemPromoCode } from '../../src/utils/promoCode';
+import {
+  MAX_GRANT_DAYS,
+  normalisePromoCode,
+  redeemPromoCode,
+} from '../../src/utils/promoCode';
 
 /**
  * Structural guards on the shipped code table, in the spirit of
@@ -51,6 +55,31 @@ describe('the promotional code table', () => {
       expect(days).toBeGreaterThan(0);
       expect(days).toBeLessThanOrEqual(365);
     }
+  });
+
+  /**
+   * The table test above is a review-time guard, and an OTA can route around
+   * it — `eas update` ships this file without CI necessarily having run. So the
+   * redeemer clamps too, and this is the case that proves it: a table entry
+   * well past the ceiling must still produce a grant that ends within it.
+   */
+  it('clamps a grant no matter what the table asks for', () => {
+    const now = Date.UTC(2026, 0, 1);
+    const outcome = redeemPromoCode('RUNAWAY', now, null, [
+      {
+        code: 'RUNAWAY',
+        campaign: 'typo',
+        days: 36_500,
+        redeemableUntil: '2030-12-31',
+      },
+    ]);
+
+    expect(outcome.result).toBe('granted');
+    const granted =
+      outcome.result === 'granted'
+        ? (outcome.unlock.expiresAt - now) / (24 * 60 * 60 * 1000)
+        : Number.NaN;
+    expect(granted).toBe(MAX_GRANT_DAYS);
   });
 
   /** Every shipped code has to actually work against the real redeemer. */

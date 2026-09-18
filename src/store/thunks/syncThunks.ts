@@ -95,12 +95,86 @@ function snapshotOf(
     profileName: state.settings.name,
     profileUpdatedAt: meta.profileUpdatedAt,
     bookmarks,
+    lastSyncedAt: state.sync.lastSyncedAt,
   };
 }
 
-/** A message worth showing a user, from whatever the failure turned out to be. */
-function messageFrom(error: unknown): string {
-  return error instanceof Error ? error.message : 'Sync failed';
+/**
+ * A message worth showing a user, from whatever the failure turned out to be.
+ *
+ * The raw text is never shown. Supabase and the fetch layer below it speak in
+ * strings written for whoever is reading a stack trace — "Network request
+ * failed", "Invalid login credentials", "AuthApiError" — and putting those in
+ * front of somebody on a train tells them nothing they can act on. Each branch
+ * below names a thing the user can actually do next.
+ *
+ * The fall-through is deliberately vague rather than inventive: an unfamiliar
+ * failure is one this function does not understand, and guessing at a cause
+ * would be worse than admitting there isn't one to give.
+ */
+export function messageFrom(error: unknown): string {
+  // Supabase hands back plain objects carrying `message`, not Error instances,
+  // so reading only `instanceof Error` silently drops the one useful field and
+  // sends every auth failure down the fall-through. Found by a test that
+  // expected "Invalid login credentials" and got the generic line.
+  const raw =
+    error instanceof Error
+      ? error.message
+      : typeof error === 'object' && error !== null && 'message' in error
+        ? String((error as { message: unknown }).message ?? '')
+        : String(error ?? '');
+  const text = raw.toLowerCase();
+
+  // Offline is by far the most common, and the only one whose fix is obvious.
+  if (
+    text.includes('network request failed') ||
+    text.includes('failed to fetch') ||
+    text.includes('networkerror') ||
+    text.includes('timeout') ||
+    text.includes('unable to resolve host')
+  ) {
+    return 'No connection. Your progress is safe on this device and will sync when you are back online.';
+  }
+
+  if (text.includes('invalid login credentials')) {
+    return 'That email and password do not match an account.';
+  }
+
+  if (
+    text.includes('user already registered') ||
+    text.includes('already been registered')
+  ) {
+    return 'There is already an account with that email. Sign in instead.';
+  }
+
+  if (text.includes('email not confirmed')) {
+    return 'Check your inbox and confirm your email address, then sign in.';
+  }
+
+  if (
+    text.includes('password should be') ||
+    text.includes('password is too short')
+  ) {
+    return 'Passwords need at least six characters.';
+  }
+
+  if (text.includes('invalid email') || text.includes('unable to validate email')) {
+    return 'That does not look like a valid email address.';
+  }
+
+  if (
+    text.includes('jwt expired') ||
+    text.includes('token is expired') ||
+    text.includes('refresh_token')
+  ) {
+    return 'Your session expired. Sign in again to keep syncing.';
+  }
+
+  if (text.includes('rate limit') || text.includes('too many requests')) {
+    return 'Too many attempts. Wait a minute and try again.';
+  }
+
+  return 'Sync could not finish. Your progress is safe on this device.';
 }
 
 /**
@@ -178,7 +252,7 @@ export const signIn = createAsyncThunk<
         : await client.auth.signInWithPassword(credentials);
 
       if (error !== null || data.user === null) {
-        dispatch(syncFailed(error?.message ?? 'Could not sign in.'));
+        dispatch(syncFailed(messageFrom(error)));
         return false;
       }
       userId = data.user.id;
@@ -237,6 +311,65 @@ export const signOutAccount = createAsyncThunk<void, void, { state: RootState }>
         // A failed revoke is not something to trap the user in.
       }
     }
+  },
+);
+
+/**
+ * Deletes the account and everything synced to it.
+ *
+ * Google Play requires an in-app deletion path for any app that lets people
+ * create an account; the published web page satisfies the second half of that
+ * rule and not the first. So this exists, and it is deliberately the bluntest
+ * thing in the file.
+ *
+ * What it deletes is the *server's* copy. Every table cascades from the auth
+ * row, so one `delete_account()` removes progress, review queue, notes,
+ * bookmarks, achievements, exam results and the profile together — see
+ * `supabase/schema.sql`. What it does not touch is this device: the app has
+ * always worked without an account, deleting one should return the reader to
+ * that state rather than punish them for having tried it, and Profile already
+ * has an explicit "Reset all progress" for anyone who wants the rest gone. The
+ * screen says so before asking for confirmation.
+ *
+ * Unlike every other thunk here it reports failure rather than swallowing it.
+ * A deletion that quietly did not happen is the one failure in this file a user
+ * must not be left believing succeeded.
+ */
+export const deleteAccount = createAsyncThunk<boolean, void, { state: RootState }>(
+  'sync/deleteAccount',
+  async (_arg, { dispatch }) => {
+    const client = getSupabaseClient();
+    if (client === null) {
+      dispatch(syncFailed('This build has no sync configured.'));
+      return false;
+    }
+
+    dispatch(setSyncStatus('busy'));
+
+    try {
+      const { error } = await client.rpc('delete_account');
+      if (error !== null) {
+        dispatch(syncFailed(messageFrom(error)));
+        return false;
+      }
+    } catch (error) {
+      dispatch(syncFailed(messageFrom(error)));
+      return false;
+    }
+
+    // The rows are gone, so the session is meaningless whatever the revoke
+    // does. Clearing locally first keeps the same ordering as `signOutAccount`
+    // and for the same reason.
+    dispatch(clearSession());
+    track({ name: 'account_deleted' });
+
+    try {
+      await client.auth.signOut();
+    } catch {
+      // The account no longer exists; a failed revoke cannot matter.
+    }
+
+    return true;
   },
 );
 

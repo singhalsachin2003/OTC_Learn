@@ -207,7 +207,9 @@ describe('syncNow', () => {
       irs: { mastery: 65 },
     });
     expect(store.getState().sync.status).toBe('error');
-    expect(store.getState().sync.error).toBe('network unreachable');
+    expect(store.getState().sync.error).toBe(
+      'Sync could not finish. Your progress is safe on this device.',
+    );
   });
 
   it('reports a failed pull without disturbing local state', async () => {
@@ -228,7 +230,9 @@ describe('syncNow', () => {
 
     expect(result.payload).toBe(false);
     expect(store.getState().notes.byProduct.irs.body).toBe('mine');
-    expect(store.getState().sync.error).toBe('could not reach the server');
+    expect(store.getState().sync.error).toBe(
+      'Sync could not finish. Your progress is safe on this device.',
+    );
   });
 
   /** Sync is retried far more often than it succeeds cleanly. */

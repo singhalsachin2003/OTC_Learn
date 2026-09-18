@@ -66,6 +66,23 @@ export type RedeemOutcome =
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 /**
+ * The longest grant a code may ever make, whatever the table says.
+ *
+ * `__tests__/data/promoCodes.test.ts` already asserts that no shipped code
+ * exceeds this, which catches a `days: 600` typed for `60` at review time. That
+ * guard is not sufficient on its own: this table is JavaScript, so it ships in
+ * an OTA, and `eas update` is not obliged to have passed CI. A clamp here is
+ * what makes the bad case survivable in the one path where the test is not
+ * standing in the way — and an over-long grant is the one mistake that cannot
+ * be undone, because an OTA can retire a code but cannot take back a grant a
+ * device has already written down.
+ *
+ * A year is chosen rather than something tighter because it is well beyond any
+ * campaign worth running, so clamping can only ever be catching an error.
+ */
+export const MAX_GRANT_DAYS = 365;
+
+/**
  * Codes are matched on letters and digits alone.
  *
  * Anything a reader might reasonably add while copying a code off a slide or
@@ -131,7 +148,7 @@ export function redeemPromoCode(
     code: normalised,
     campaign: match.campaign,
     grantedAt: now,
-    expiresAt: now + match.days * MS_PER_DAY,
+    expiresAt: now + Math.min(match.days, MAX_GRANT_DAYS) * MS_PER_DAY,
   };
 
   if (existing !== null && existing.expiresAt >= unlock.expiresAt) {

@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { Button } from '../../components/ui/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
-import { signIn, signOutAccount, syncNow } from '../../store/thunks/syncThunks';
+import {
+  deleteAccount,
+  signIn,
+  signOutAccount,
+  syncNow,
+} from '../../store/thunks/syncThunks';
 import { colors, radius, spacing, typography } from '../../theme';
 import { isSyncConfigured } from '../../utils/supabase';
 
@@ -42,6 +47,42 @@ export function AccountScreen() {
 
   const busy = sync.status === 'busy';
   const canSubmit = email.trim() !== '' && password !== '' && !busy;
+
+  /**
+   * Two taps, and the second one names what it does rather than saying "OK".
+   *
+   * The body is explicit that the device keeps its own copy, because the
+   * alternative reading — that deleting the account wipes the studying too —
+   * is the one a cautious person assumes, and it would stop them using a
+   * control Play requires to be usable.
+   */
+  const confirmDelete = () => {
+    Alert.alert(
+      'Delete your account?',
+      'Your account and everything backed up to it — progress, review queue, notes, bookmarks — are permanently deleted from the server. This cannot be undone.\n\nStudy progress already on this phone is kept, and the app keeps working without an account. Use Reset all progress in Profile if you want that gone too.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete account',
+          style: 'destructive',
+          onPress: () => {
+            void dispatch(deleteAccount())
+              .unwrap()
+              .then((deleted) => {
+                if (deleted) {
+                  goToTab('profile');
+                }
+              })
+              .catch(() => {
+                // The thunk reports failure through sync.error, which this
+                // screen already renders. Nothing to add here.
+              });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  };
 
   return (
     <SafeAreaWrapper testID="account-screen">
@@ -117,6 +158,29 @@ export function AccountScreen() {
             <Text style={styles.meta}>
               Signing out leaves everything on this device untouched.
             </Text>
+
+            {/* Separated by a rule rather than sitting in the row above,
+                because a destructive action next to "Sign out" is a mis-tap
+                waiting to happen and the two are not peers. */}
+            <View style={styles.danger}>
+              <Text accessibilityRole="header" style={styles.dangerTitle}>
+                Delete account
+              </Text>
+              <Text style={styles.body}>
+                Permanently deletes your account and everything backed up to it.
+                Progress already on this phone is kept.
+              </Text>
+              <Button
+                testID="account-delete"
+                label={busy ? 'Working…' : 'Delete account'}
+                variant="outline"
+                disabled={busy}
+                accessibilityHint="Permanently deletes your account and its backed-up data"
+                onPress={confirmDelete}
+                textStyle={styles.dangerLabel}
+                style={styles.dangerButton}
+              />
+            </View>
           </View>
         ) : (
           <View>
@@ -229,5 +293,22 @@ const styles = StyleSheet.create({
   },
   action: {
     marginTop: spacing.md,
+  },
+  danger: {
+    marginTop: spacing.xl,
+    paddingTop: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.line.base,
+  },
+  dangerTitle: {
+    ...typography.h3,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
+  },
+  dangerButton: {
+    borderColor: colors.error.strong,
+  },
+  dangerLabel: {
+    color: colors.error.text,
   },
 });
