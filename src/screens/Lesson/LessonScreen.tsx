@@ -20,6 +20,7 @@ import {
 } from '../../utils/swipe';
 import { LessonStep } from './components/LessonStep';
 import { StepIndicator } from './components/StepIndicator';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 export function LessonScreen() {
   const productId = useSelectedProductId();
@@ -31,6 +32,7 @@ export function LessonScreen() {
   // and every entry point resets it to the first step.
   const [stepIndex, setStepIndex] = useState(0);
   const drag = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     setStepIndex(0);
@@ -42,12 +44,21 @@ export function LessonScreen() {
   const totalSteps = product?.lessons.length ?? 0;
 
   const settle = useCallback(() => {
+    // The card follows the finger either way — that is direct manipulation, and
+    // removing it would remove the gesture rather than the animation. What
+    // reduce-motion drops is the bounce after the finger lifts, which is the
+    // part the setting exists to suppress.
+    if (reducedMotion) {
+      drag.setValue({ x: 0, y: 0 });
+      return;
+    }
+
     Animated.spring(drag, {
       toValue: { x: 0, y: 0 },
       useNativeDriver: true,
       bounciness: 6,
     }).start();
-  }, [drag]);
+  }, [drag, reducedMotion]);
 
   const goToStep = useCallback(
     (next: number) => {

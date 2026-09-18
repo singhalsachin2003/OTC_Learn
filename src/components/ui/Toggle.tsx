@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 
 import { colors, radius } from '../../theme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const TRACK_WIDTH = 46;
 const TRACK_HEIGHT = 28;
@@ -24,18 +25,19 @@ export function Toggle({
   testID,
   accessibilityLabel,
 }: ToggleProps) {
+  const reducedMotion = useReducedMotion();
   const anim = useRef(new Animated.Value(value ? 1 : 0)).current;
 
   useEffect(() => {
     const animation = Animated.timing(anim, {
       toValue: value ? 1 : 0,
-      duration: 180,
+      duration: reducedMotion ? 0 : 180,
       // Interpolating backgroundColor rules out the native driver.
       useNativeDriver: false,
     });
     animation.start();
     return () => animation.stop();
-  }, [value, anim]);
+  }, [value, anim, reducedMotion]);
 
   const translateX = anim.interpolate({
     inputRange: [0, 1],

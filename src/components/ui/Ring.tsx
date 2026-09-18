@@ -10,6 +10,7 @@ import {
 import Svg, { Circle } from 'react-native-svg';
 
 import { colors } from '../../theme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -63,6 +64,7 @@ export function Ring({
 
   // Starts at the target when animation is off, so a list of rings paints in
   // its final state on first frame rather than sweeping twenty times at once.
+  const reducedMotion = useReducedMotion();
   const sweep = useRef(new Animated.Value(animated ? 0 : clamped)).current;
   const target = useRef(animated ? 0 : clamped);
 
@@ -70,7 +72,9 @@ export function Ring({
     // Nothing to sweep between. Worth checking rather than animating anyway:
     // an untouched catalogue is a screen full of rings at zero, and each one
     // would otherwise run a 650ms animation from 0 to 0 on every mount.
-    if (!animated || target.current === clamped) {
+    // Reduce-motion turns the sweep off entirely: a ring that fills itself
+    // is decoration, and the final state carries the same information.
+    if (!animated || reducedMotion || target.current === clamped) {
       sweep.setValue(clamped);
       target.current = clamped;
       return;
@@ -87,7 +91,7 @@ export function Ring({
     });
     animation.start();
     return () => animation.stop();
-  }, [clamped, animated, sweep]);
+  }, [clamped, animated, reducedMotion, sweep]);
 
   const dashoffset = sweep.interpolate({
     inputRange: [0, 100],
