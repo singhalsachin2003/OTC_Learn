@@ -1,49 +1,50 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useAppDispatch, useSettings } from '../../../hooks/useAppState';
-import { updateSessionSize } from '../../../store/thunks/settingsThunks';
-import { radius, spacing, typography } from '../../../theme';
 import { useThemedStyles } from '../../../hooks/useTheme';
+import { updateTheme } from '../../../store/thunks/settingsThunks';
+import { radius, spacing, typography } from '../../../theme';
 import type { Palette } from '../../../theme/colors';
+import { THEME_PREFERENCES, type ThemePreference } from '../../../utils/storage';
+
+const LABELS: Record<ThemePreference, string> = {
+  system: 'System',
+  light: 'Light',
+  dark: 'Dark',
+};
 
 /**
- * Offered sizes. Twelve was "the lot" when every bank held exactly twelve; a
- * product with paid depth carries twenty-four, so the caption below says what
- * the free bank holds rather than claiming to describe every product.
- */
-const SIZES = [4, 6, 8, 12] as const;
-
-/**
- * How many questions a sitting draws.
+ * Light, dark, or whatever the phone is set to.
  *
- * Worth exposing rather than fixing at six: the whole point of a bank larger
- * than a sitting is that different people want different amounts of it, and
- * someone revising before an interview wants all twelve.
+ * System is the default and is listed first, because it is the answer for
+ * almost everyone: a phone that dims itself in the evening should dim this too
+ * without anybody having to come here. The other two exist for the people whose
+ * phone is wrong for the room they are in.
  */
-export function SessionSizePicker() {
+export function ThemePicker() {
   const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
-  const { sessionSize } = useSettings();
+  const { theme } = useSettings();
 
   return (
-    <View testID="session-size" style={styles.container}>
+    <View testID="theme-picker" style={styles.container}>
       <View style={styles.text}>
-        <Text style={styles.name}>Questions per quiz</Text>
+        <Text style={styles.name}>Theme</Text>
         <Text style={styles.note}>
-          Weighted toward the questions you have missed
+          System follows your phone&rsquo;s light or dark setting
         </Text>
       </View>
       <View style={styles.options}>
-        {SIZES.map((size) => {
-          const active = size === sessionSize;
+        {THEME_PREFERENCES.map((preference) => {
+          const active = preference === theme;
           return (
             <Pressable
-              key={size}
-              testID={`session-size-${size}`}
-              onPress={() => void dispatch(updateSessionSize(size))}
+              key={preference}
+              testID={`theme-${preference}`}
+              onPress={() => void dispatch(updateTheme(preference))}
               accessibilityRole="radio"
               accessibilityState={{ selected: active }}
-              accessibilityLabel={`${size} questions per quiz`}
+              accessibilityLabel={`${LABELS[preference]} appearance`}
               style={({ pressed }) => [
                 styles.option,
                 active && styles.optionActive,
@@ -51,7 +52,7 @@ export function SessionSizePicker() {
               ]}
             >
               <Text style={[styles.optionText, active && styles.optionTextActive]}>
-                {size}
+                {LABELS[preference]}
               </Text>
             </Pressable>
           );
@@ -86,9 +87,7 @@ const makeStyles = ({ colors }: Palette) =>
     },
     option: {
       flex: 1,
-      // 16 + 16 + the 17px label line-height clears the app's 48dp touch
-      // target — every other row on this screen (SettingsRows, DisclosureRow,
-      // Toggle's hitSlop) already reaches it; this was the one exception.
+      // The same 16 + 16 + 17 that clears the 48dp target in SessionSizePicker.
       paddingVertical: 16,
       borderRadius: radius.large,
       borderWidth: 1,

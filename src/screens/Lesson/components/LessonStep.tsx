@@ -4,7 +4,9 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Badge } from '../../../components/ui/Badge';
 import { Card } from '../../../components/ui/Card';
 import type { Lesson } from '../../../data/types';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { formatStepLabel } from '../../../utils/formatters';
 
 export interface LessonStepProps {
@@ -23,6 +25,7 @@ export function LessonStep({
   accent,
   accentSoft,
 }: LessonStepProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Card testID="lesson-card" style={styles.card}>
       <Badge
@@ -70,40 +73,41 @@ export function LessonStep({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    borderRadius: radius.xxl,
-    paddingVertical: 26,
-    paddingHorizontal: spacing.xxl - 2,
-  },
-  body: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.sm,
-  },
-  title: {
-    ...typography.h3,
-    lineHeight: 23.4,
-    color: colors.text.primary,
-    marginBottom: spacing.md,
-  },
-  content: {
-    ...typography.body1,
-    color: colors.text.body,
-  },
-  callout: {
-    borderRadius: radius.medium,
-    padding: spacing.md,
-    marginTop: spacing.lg,
-  },
-  calloutLabel: {
-    ...typography.micro,
-    marginBottom: 5,
-  },
-  calloutText: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      flex: 1,
+      borderRadius: radius.xxl,
+      paddingVertical: 26,
+      paddingHorizontal: spacing.xxl - 2,
+    },
+    body: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.sm,
+    },
+    title: {
+      ...typography.h3,
+      lineHeight: 23.4,
+      color: colors.text.primary,
+      marginBottom: spacing.md,
+    },
+    content: {
+      ...typography.body1,
+      color: colors.text.body,
+    },
+    callout: {
+      borderRadius: radius.medium,
+      padding: spacing.md,
+      marginTop: spacing.lg,
+    },
+    calloutLabel: {
+      ...typography.micro,
+      marginBottom: 5,
+    },
+    calloutText: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+  });

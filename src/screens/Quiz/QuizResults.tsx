@@ -21,13 +21,9 @@ import { useReviewPrompt } from '../../hooks/useReviewPrompt';
 import { navigateToQuiz } from '../../store/slices/appSlice';
 import { resetQuiz } from '../../store/slices/quizSlice';
 import { EXAM_PASS_MARK } from '../../utils/exam';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { formatScore } from '../../utils/formatters';
 import { resultShareMessage, shareText } from '../../utils/share';
 import { formatElapsed } from './components/QuizTimer';
@@ -35,6 +31,8 @@ import { ResultsCard } from './components/ResultsCard';
 import { StepBreakdown } from './components/StepBreakdown';
 
 export function QuizResults() {
+  const { colors, getCategoryColors, masteryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const { goToExam, goToProduct, goToTab } = useNavigation();
   const productId = useSelectedProductId();
@@ -128,7 +126,7 @@ export function QuizResults() {
                 size={72}
                 innerSize={54}
                 percent={mastery}
-                fillColor={masteryFill(mastery)}
+                fillColor={masteryFill(mastery, masteryColors)}
                 accessibilityLabel={`Mastery now ${mastery} percent`}
               >
                 <Text style={styles.ringValue}>{mastery}%</Text>
@@ -244,108 +242,109 @@ export function QuizResults() {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-  },
-  content: {
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.lg,
-  },
-  masteryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.lg,
-    backgroundColor: colors.card,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-  },
-  ringValue: {
-    ...typography.label,
-    fontSize: 14,
-    color: colors.text.primary,
-  },
-  masteryText: {
-    flex: 1,
-  },
-  masteryTitle: {
-    ...typography.label,
-    fontSize: 13.5,
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  masteryNote: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-  },
-  share: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    columnGap: 8,
-    alignSelf: 'center',
-    marginTop: spacing.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-  },
-  shareLabel: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-  },
-  time: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-    textAlign: 'center',
-    marginTop: spacing.md,
-  },
-  reviewNote: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md + 2,
-    marginTop: spacing.lg,
-  },
-  reviewTitle: {
-    ...typography.label,
-    fontSize: 13,
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  reviewBody: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-  },
-  badges: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-    marginTop: spacing.lg,
-  },
-  badge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 8,
-    borderRadius: radius.medium,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  badgeGlyph: {
-    ...typography.label,
-    fontSize: 13,
-  },
-  badgeName: {
-    ...typography.labelSmall,
-    color: colors.text.primary,
-  },
-  actions: {
-    marginTop: spacing.xl,
-  },
-  button: {
-    width: '100%',
-    paddingVertical: 15,
-    marginBottom: 10,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    body: {
+      flex: 1,
+    },
+    content: {
+      paddingTop: spacing.xl,
+      paddingBottom: spacing.lg,
+    },
+    masteryRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.lg,
+      backgroundColor: colors.card,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.lg,
+    },
+    ringValue: {
+      ...typography.label,
+      fontSize: 14,
+      color: colors.text.primary,
+    },
+    masteryText: {
+      flex: 1,
+    },
+    masteryTitle: {
+      ...typography.label,
+      fontSize: 13.5,
+      color: colors.text.primary,
+      marginBottom: 4,
+    },
+    masteryNote: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+    },
+    share: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      columnGap: 8,
+      alignSelf: 'center',
+      marginTop: spacing.md,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+    },
+    shareLabel: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+    },
+    time: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+      textAlign: 'center',
+      marginTop: spacing.md,
+    },
+    reviewNote: {
+      backgroundColor: colors.surface,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md + 2,
+      marginTop: spacing.lg,
+    },
+    reviewTitle: {
+      ...typography.label,
+      fontSize: 13,
+      color: colors.text.primary,
+      marginBottom: 4,
+    },
+    reviewBody: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+    },
+    badges: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+      marginTop: spacing.lg,
+    },
+    badge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: 8,
+      borderRadius: radius.medium,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+    },
+    badgeGlyph: {
+      ...typography.label,
+      fontSize: 13,
+    },
+    badgeName: {
+      ...typography.labelSmall,
+      color: colors.text.primary,
+    },
+    actions: {
+      marginTop: spacing.xl,
+    },
+    button: {
+      width: '100%',
+      paddingVertical: 15,
+      marginBottom: 10,
+    },
+  });

@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colors } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useTheme } from '../../hooks/useTheme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -43,17 +43,18 @@ export function Ring({
   size,
   innerSize,
   percent,
-  fillColor = colors.progressFill,
+  fillColor,
   // `colors.track` is oklch(92%) and was picked against a white card; on the
   // oklch(93%) page background it lands at 1.03:1 and the ring disappears,
   // leaving a percentage floating in space. This reads on both grounds.
-  trackColor = colors.line.base,
+  trackColor,
   children,
   animated = true,
   style,
   testID,
   accessibilityLabel,
 }: RingProps) {
+  const { colors } = useTheme();
   const stroke = (size - innerSize) / 2;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -111,7 +112,7 @@ export function Ring({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={trackColor}
+          stroke={trackColor ?? colors.line.base}
           strokeWidth={stroke}
           fill="none"
         />
@@ -120,7 +121,7 @@ export function Ring({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={fillColor}
+            stroke={fillColor ?? colors.progressFill}
             strokeWidth={stroke}
             strokeLinecap="round"
             fill="none"

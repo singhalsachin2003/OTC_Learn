@@ -23,7 +23,9 @@ import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import { setProductQuery } from '../../store/slices/appSlice';
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 /**
  * Searches name, hook, summary and key terms.
@@ -61,6 +63,8 @@ type Row =
   | { kind: 'product'; key: string; product: Product; subtitle?: string };
 
 export function ProductsScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const query = useProductQuery();
   const bookmarks = useBookmarks();
@@ -200,51 +204,52 @@ export function ProductsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginBottom: spacing.md,
-  },
-  searchRow: {
-    marginBottom: spacing.lg,
-    justifyContent: 'center',
-  },
-  search: {
-    ...typography.body2,
-    color: colors.text.primary,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-  },
-  searchWithClear: {
-    paddingRight: spacing.xl + spacing.md,
-  },
-  searchClear: {
-    position: 'absolute',
-    right: spacing.md,
-  },
-  // Sticky headers need an opaque background — once pinned, the rows behind
-  // them scroll up underneath and would otherwise show through.
-  sectionHeader: {
-    backgroundColor: colors.background,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.sm,
-  },
-  sectionTitle: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-  },
-  empty: {
-    ...typography.body2,
-    color: colors.text.muted,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.xl,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginBottom: spacing.md,
+    },
+    searchRow: {
+      marginBottom: spacing.lg,
+      justifyContent: 'center',
+    },
+    search: {
+      ...typography.body2,
+      color: colors.text.primary,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+    },
+    searchWithClear: {
+      paddingRight: spacing.xl + spacing.md,
+    },
+    searchClear: {
+      position: 'absolute',
+      right: spacing.md,
+    },
+    // Sticky headers need an opaque background — once pinned, the rows behind
+    // them scroll up underneath and would otherwise show through.
+    sectionHeader: {
+      backgroundColor: colors.background,
+      paddingTop: spacing.sm,
+      paddingBottom: spacing.sm,
+    },
+    sectionTitle: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+    },
+    empty: {
+      ...typography.body2,
+      color: colors.text.muted,
+      marginTop: spacing.lg,
+    },
+  });

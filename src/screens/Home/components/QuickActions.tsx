@@ -2,11 +2,14 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useReview } from '../../../hooks/useReview';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { toDateKey } from '../../../utils/formatters';
 
 /** Two half-width shortcuts: the review queue and the full product list. */
 export function QuickActions() {
+  const styles = useThemedStyles(makeStyles);
   const { goToTab } = useNavigation();
   const { dueCount, queuedCount, nextDueOn } = useReview();
 
@@ -57,6 +60,7 @@ function Action({
   highlighted?: boolean;
   testID?: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       testID={testID}
@@ -79,41 +83,42 @@ function Action({
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    columnGap: spacing.md,
-    marginTop: spacing.md,
-  },
-  action: {
-    flex: 1,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md + 2,
-  },
-  highlighted: {
-    backgroundColor: colors.success.bgSoft,
-    borderColor: colors.success.strong,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  title: {
-    ...typography.label,
-    fontSize: 13.5,
-    color: colors.text.primary,
-  },
-  titleHighlighted: {
-    color: colors.success.text,
-  },
-  subtitle: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  subtitleHighlighted: {
-    color: colors.success.text,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      columnGap: spacing.md,
+      marginTop: spacing.md,
+    },
+    action: {
+      flex: 1,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md + 2,
+    },
+    highlighted: {
+      backgroundColor: colors.success.bgSoft,
+      borderColor: colors.success.strong,
+    },
+    pressed: {
+      opacity: 0.85,
+    },
+    title: {
+      ...typography.label,
+      fontSize: 13.5,
+      color: colors.text.primary,
+    },
+    titleHighlighted: {
+      color: colors.success.text,
+    },
+    subtitle: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    subtitleHighlighted: {
+      color: colors.success.text,
+    },
+  });

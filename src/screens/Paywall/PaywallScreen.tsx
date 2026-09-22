@@ -25,7 +25,9 @@ import {
 } from '../../store/thunks/accessThunks';
 import { categories } from '../../data/categories';
 import { TOTAL_PRODUCTS } from '../../data/products';
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import {
   depthProductCount,
   premiumCategoryCount,
@@ -102,6 +104,8 @@ const REDEEM_MESSAGE: Record<
  * figures rather than stated — see `annualSavingPercent`.
  */
 export function PaywallScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const { leavePaywall } = useNavigation();
   const { paywalled } = useAccess();
@@ -263,7 +267,11 @@ export function PaywallScreen() {
                     }
                   >
                     {isSelected && (
-                      <Check size={13} strokeWidth={3} color={colors.text.onDark} />
+                      <Check
+                        size={13}
+                        strokeWidth={3}
+                        color={colors.text.onPrimary}
+                      />
                     )}
                   </View>
                 </Card>
@@ -407,6 +415,8 @@ export function PaywallScreen() {
 }
 
 function Point({ text }: { text: string }) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.point}>
       <Check size={15} strokeWidth={3} color={colors.success.text} />
@@ -415,122 +425,123 @@ function Point({ text }: { text: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  body: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  list: {
-    marginTop: spacing.lg,
-    marginBottom: spacing.md,
-    rowGap: spacing.sm,
-  },
-  promo: {
-    marginTop: spacing.lg,
-    gap: spacing.sm,
-  },
-  promoInput: {
-    ...typography.body2,
-    color: colors.text.primary,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-  },
-  promoLink: {
-    ...typography.labelSmall,
-    color: colors.text.secondary,
-    textDecorationLine: 'underline',
-    textAlign: 'center',
-    paddingVertical: spacing.sm,
-  },
-  promoMessage: {
-    ...typography.labelSmall,
-    color: colors.text.secondary,
-  },
-  point: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    columnGap: spacing.sm,
-  },
-  pointText: {
-    ...typography.body2,
-    color: colors.text.body,
-    flex: 1,
-  },
-  offer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    marginTop: spacing.sm,
-  },
-  offerSelected: {
-    borderColor: colors.dark,
-  },
-  offerText: {
-    flex: 1,
-  },
-  offerHeading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-    marginBottom: 3,
-  },
-  offerTerm: {
-    ...typography.label,
-    fontSize: 14.5,
-    color: colors.text.primary,
-  },
-  offerPrice: {
-    ...typography.labelSmall,
-    color: colors.text.secondary,
-  },
-  tick: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: colors.border,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tickSelected: {
-    borderColor: colors.dark,
-    backgroundColor: colors.dark,
-  },
-  meta: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: spacing.md,
-  },
-  error: {
-    ...typography.labelSmall,
-    color: colors.error.text,
-    marginTop: spacing.md,
-  },
-  action: {
-    marginTop: spacing.md,
-  },
-  smallPrint: {
-    ...typography.micro,
-    fontSize: 11,
-    letterSpacing: 0,
-    lineHeight: 16,
-    color: colors.text.muted,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.lg,
+      marginBottom: spacing.sm,
+    },
+    body: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    list: {
+      marginTop: spacing.lg,
+      marginBottom: spacing.md,
+      rowGap: spacing.sm,
+    },
+    promo: {
+      marginTop: spacing.lg,
+      gap: spacing.sm,
+    },
+    promoInput: {
+      ...typography.body2,
+      color: colors.text.primary,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+    },
+    promoLink: {
+      ...typography.labelSmall,
+      color: colors.text.secondary,
+      textDecorationLine: 'underline',
+      textAlign: 'center',
+      paddingVertical: spacing.sm,
+    },
+    promoMessage: {
+      ...typography.labelSmall,
+      color: colors.text.secondary,
+    },
+    point: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      columnGap: spacing.sm,
+    },
+    pointText: {
+      ...typography.body2,
+      color: colors.text.body,
+      flex: 1,
+    },
+    offer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      borderWidth: 2,
+      borderColor: 'transparent',
+      marginTop: spacing.sm,
+    },
+    offerSelected: {
+      borderColor: colors.dark,
+    },
+    offerText: {
+      flex: 1,
+    },
+    offerHeading: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+      marginBottom: 3,
+    },
+    offerTerm: {
+      ...typography.label,
+      fontSize: 14.5,
+      color: colors.text.primary,
+    },
+    offerPrice: {
+      ...typography.labelSmall,
+      color: colors.text.secondary,
+    },
+    tick: {
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      borderWidth: 2,
+      borderColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    tickSelected: {
+      borderColor: colors.primaryFill,
+      backgroundColor: colors.primaryFill,
+    },
+    meta: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: spacing.md,
+    },
+    error: {
+      ...typography.labelSmall,
+      color: colors.error.text,
+      marginTop: spacing.md,
+    },
+    action: {
+      marginTop: spacing.md,
+    },
+    smallPrint: {
+      ...typography.micro,
+      fontSize: 11,
+      letterSpacing: 0,
+      lineHeight: 16,
+      color: colors.text.muted,
+      marginTop: spacing.lg,
+    },
+  });

@@ -2,14 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Lock, Star } from 'lucide-react-native';
 
 import type { Product } from '../../data/types';
-import {
-  colors,
-  masteryColors,
-  radius,
-  spacing,
-  tabularNumbers,
-  typography,
-} from '../../theme';
+import { radius, spacing, tabularNumbers, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { MasteryColors, Palette } from '../../theme/colors';
 import { masteryBand, MASTERY_COMPLETE } from '../../utils/mastery';
 import { CompletedBadge } from './Badge';
 import { Card } from './Card';
@@ -36,7 +31,12 @@ export interface ProductRowProps {
   locked?: boolean;
 }
 
-export function masteryFill(mastery: number): string {
+/**
+ * The bands are an argument rather than a module lookup, and a required one: a
+ * default would be the light palette, and a light-palette band drawn on a dark
+ * screen is exactly the bug that nothing catches by reading the diff.
+ */
+export function masteryFill(mastery: number, masteryColors: MasteryColors): string {
   const band = masteryBand(mastery);
   if (band === 'strong') {
     return masteryColors.strong;
@@ -64,6 +64,8 @@ export function ProductRow({
   subtitle,
   locked = false,
 }: ProductRowProps) {
+  const { colors, masteryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const mastered = mastery >= MASTERY_COMPLETE;
   // A locked row falls back to nothing rather than to the hook.
   const description = subtitle ?? (locked ? undefined : product.hook);
@@ -125,7 +127,7 @@ export function ProductRow({
           size={34}
           innerSize={26}
           percent={mastery}
-          fillColor={masteryFill(mastery)}
+          fillColor={masteryFill(mastery, masteryColors)}
           animated={false}
         >
           {/* Nothing inside an untouched ring. The "·" that used to sit here
@@ -139,43 +141,44 @@ export function ProductRow({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    borderRadius: radius.large,
-    marginBottom: 10,
-  },
-  text: {
-    flex: 1,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 6,
-    marginBottom: 3,
-  },
-  name: {
-    ...typography.label,
-    fontSize: 14.5,
-    color: colors.text.primary,
-    flexShrink: 1,
-  },
-  hook: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-  },
-  lock: {
-    width: 34,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ringLabel: {
-    ...typography.micro,
-    ...tabularNumbers,
-    fontSize: 10,
-    letterSpacing: 0,
-    color: colors.text.secondary,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      borderRadius: radius.large,
+      marginBottom: 10,
+    },
+    text: {
+      flex: 1,
+    },
+    nameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: 6,
+      marginBottom: 3,
+    },
+    name: {
+      ...typography.label,
+      fontSize: 14.5,
+      color: colors.text.primary,
+      flexShrink: 1,
+    },
+    hook: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+    },
+    lock: {
+      width: 34,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    ringLabel: {
+      ...typography.micro,
+      ...tabularNumbers,
+      fontSize: 10,
+      letterSpacing: 0,
+      color: colors.text.secondary,
+    },
+  });

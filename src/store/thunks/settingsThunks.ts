@@ -5,11 +5,13 @@ import {
   saveSettings,
   saveSyncMeta,
   type StoredSettings,
+  type ThemePreference,
 } from '../../utils/storage';
 import type { RootState } from '../index';
 import {
   setName,
   setSessionSize,
+  setTheme,
   toggleSetting,
   type ToggleableSetting,
 } from '../slices/settingsSlice';
@@ -43,6 +45,26 @@ export const updateSessionSize = createAsyncThunk<
     saveSettings(updated),
     saveSyncMeta({ settingsUpdatedAt: Date.now() }),
   ]);
+  return updated;
+});
+
+/**
+ * The theme, saved but **not** stamped.
+ *
+ * Every other setting stamps `settingsUpdatedAt`, because settings merge as a
+ * whole row and the row carries no time of its own. The theme is deliberately
+ * outside that row — it is a property of the device, not the account — so
+ * stamping here would let "I prefer dark on my phone" win the whole settings
+ * row against a genuinely newer change made on another device.
+ */
+export const updateTheme = createAsyncThunk<
+  StoredSettings,
+  ThemePreference,
+  { state: RootState }
+>('settings/updateTheme', async (preference, { dispatch, getState }) => {
+  dispatch(setTheme(preference));
+  const updated = getState().settings.settings;
+  await saveSettings(updated);
   return updated;
 });
 

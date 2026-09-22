@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-
-import { colors } from '../../../theme';
+import { useTheme } from '../../../hooks/useTheme';
 
 export interface StepIndicatorProps {
   totalSteps: number;
@@ -18,6 +17,7 @@ export function StepIndicator({
   color,
   testID,
 }: StepIndicatorProps) {
+  const { colors } = useTheme();
   return (
     <View
       testID={testID}

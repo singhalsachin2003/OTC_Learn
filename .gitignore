@@ -1,5 +1,7 @@
 node_modules/
 .expo/
+# Web export, staged only to drive `npm run check:contrast`
+.expo-web/
 dist/
 web-build/
 coverage/

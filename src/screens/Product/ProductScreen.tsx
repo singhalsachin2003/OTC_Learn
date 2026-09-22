@@ -17,13 +17,9 @@ import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import { toggleProductBookmark } from '../../store/thunks/progressThunks';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { track } from '../../utils/analytics';
 import { masteryBand } from '../../utils/mastery';
 import { productShareMessage, shareText } from '../../utils/share';
@@ -45,6 +41,8 @@ import { WorkedExample } from './components/WorkedExample';
  * reference material rather than teaching.
  */
 export function ProductScreen() {
+  const { colors, getCategoryColors, masteryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const productId = useSelectedProductId();
   const { goToCategory, goToLesson, goToQuiz } = useNavigation();
@@ -157,7 +155,7 @@ export function ProductScreen() {
             size={62}
             innerSize={46}
             percent={mastery}
-            fillColor={masteryFill(mastery)}
+            fillColor={masteryFill(mastery, masteryColors)}
             accessibilityLabel={`${mastery} percent mastery`}
           >
             <Text style={styles.ringValue}>{mastery}%</Text>
@@ -242,6 +240,7 @@ function Section({
   title: string;
   children: React.ReactNode;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.section}>
       <Text accessibilityRole="header" style={styles.sectionTitle}>
@@ -252,89 +251,90 @@ function Section({
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  topActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-  },
-  topAction: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    marginTop: spacing.lg,
-  },
-  headerText: {
-    flex: 1,
-  },
-  tag: {
-    ...typography.micro,
-    alignSelf: 'flex-start',
-    overflow: 'hidden',
-    borderRadius: radius.small,
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    marginBottom: 8,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-  },
-  hook: {
-    ...typography.body2,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  ringValue: {
-    ...typography.micro,
-    fontSize: 12,
-    color: colors.text.primary,
-  },
-  stats: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-    marginTop: spacing.md,
-  },
-  summary: {
-    ...typography.body1,
-    color: colors.text.body,
-    marginTop: spacing.md,
-  },
-  actions: {
-    flexDirection: 'row',
-    marginTop: spacing.lg,
-  },
-  quizButton: {
-    marginTop: spacing.sm,
-  },
-  section: {
-    marginTop: spacing.xxl,
-  },
-  sectionTitle: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginBottom: spacing.md,
-  },
-  body: {
-    ...typography.body1,
-    color: colors.text.body,
-  },
-  empty: {
-    ...typography.body1,
-    color: colors.text.body,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    topRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    topActions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+    },
+    topAction: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      marginTop: spacing.lg,
+    },
+    headerText: {
+      flex: 1,
+    },
+    tag: {
+      ...typography.micro,
+      alignSelf: 'flex-start',
+      overflow: 'hidden',
+      borderRadius: radius.small,
+      paddingHorizontal: 7,
+      paddingVertical: 3,
+      marginBottom: 8,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+    },
+    hook: {
+      ...typography.body2,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    ringValue: {
+      ...typography.micro,
+      fontSize: 12,
+      color: colors.text.primary,
+    },
+    stats: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+      marginTop: spacing.md,
+    },
+    summary: {
+      ...typography.body1,
+      color: colors.text.body,
+      marginTop: spacing.md,
+    },
+    actions: {
+      flexDirection: 'row',
+      marginTop: spacing.lg,
+    },
+    quizButton: {
+      marginTop: spacing.sm,
+    },
+    section: {
+      marginTop: spacing.xxl,
+    },
+    sectionTitle: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginBottom: spacing.md,
+    },
+    body: {
+      ...typography.body1,
+      color: colors.text.body,
+    },
+    empty: {
+      ...typography.body1,
+      color: colors.text.body,
+      marginTop: spacing.lg,
+    },
+  });

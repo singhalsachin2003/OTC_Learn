@@ -2,7 +2,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ExternalLink, GraduationCap } from 'lucide-react-native';
 
 import { CORNERSTONE_PLAY_URL } from '../../../data/links';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { openExternal } from '../../../utils/openExternal';
 
 /**
@@ -19,6 +21,8 @@ import { openExternal } from '../../../utils/openExternal';
  * listing follows.
  */
 export function MoreFromUs() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       testID="profile-cornerstone"
@@ -42,39 +46,40 @@ export function MoreFromUs() {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    backgroundColor: colors.card,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md + 2,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  glyph: {
-    width: 40,
-    height: 40,
-    borderRadius: radius.medium,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.surface,
-  },
-  text: {
-    flex: 1,
-  },
-  title: {
-    ...typography.label,
-    fontSize: 13.5,
-    color: colors.text.primary,
-    marginBottom: 3,
-  },
-  body: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      backgroundColor: colors.card,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md + 2,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    glyph: {
+      width: 40,
+      height: 40,
+      borderRadius: radius.medium,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.surface,
+    },
+    text: {
+      flex: 1,
+    },
+    title: {
+      ...typography.label,
+      fontSize: 13.5,
+      color: colors.text.primary,
+      marginBottom: 3,
+    },
+    body: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+    },
+  });

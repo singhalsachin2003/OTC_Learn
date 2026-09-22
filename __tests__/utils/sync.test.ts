@@ -459,6 +459,7 @@ describe('mergeSettings', () => {
     haptics: true,
     dailyReminder: false,
     sessionSize: 6,
+    theme: 'dark' as const,
   };
   const row = {
     spaced_repetition: false,
@@ -480,7 +481,13 @@ describe('mergeSettings', () => {
       haptics: false,
       dailyReminder: true,
       sessionSize: 10,
+      theme: 'dark',
     });
+  });
+
+  /** The theme is a property of the device, and the row has no column for it. */
+  it('keeps the local theme when it takes the remote row', () => {
+    expect(mergeSettings(local, OLD, row).theme).toBe('dark');
   });
 
   /**

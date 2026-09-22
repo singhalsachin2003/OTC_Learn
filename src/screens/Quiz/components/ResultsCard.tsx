@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Check, Star } from 'lucide-react-native';
 
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface ResultsCardProps {
   /** True when every question was answered correctly. */
@@ -20,6 +22,7 @@ export function ResultsCard({
   title,
   subtitle,
 }: ResultsCardProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.container}>
       <View
@@ -45,30 +48,31 @@ export function ResultsCard({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
-  badge: {
-    width: 72,
-    height: 72,
-    borderRadius: radius.xxxl,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 18,
-  },
-  title: {
-    ...typography.h1,
-    fontSize: 21,
-    color: colors.text.primary,
-    marginBottom: 6,
-    textAlign: 'center',
-  },
-  subtitle: {
-    ...typography.bodyStrong,
-    color: colors.text.secondary,
-    marginBottom: 28,
-    textAlign: 'center',
-    paddingHorizontal: spacing.md,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+    },
+    badge: {
+      width: 72,
+      height: 72,
+      borderRadius: radius.xxxl,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 18,
+    },
+    title: {
+      ...typography.h1,
+      fontSize: 21,
+      color: colors.text.primary,
+      marginBottom: 6,
+      textAlign: 'center',
+    },
+    subtitle: {
+      ...typography.bodyStrong,
+      color: colors.text.secondary,
+      marginBottom: 28,
+      textAlign: 'center',
+      paddingHorizontal: spacing.md,
+    },
+  });

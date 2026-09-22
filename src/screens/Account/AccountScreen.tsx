@@ -12,7 +12,9 @@ import {
   signOutAccount,
   syncNow,
 } from '../../store/thunks/syncThunks';
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { isSyncConfigured } from '../../utils/supabase';
 
 /**
@@ -24,6 +26,8 @@ import { isSyncConfigured } from '../../utils/supabase';
  * with no credentials configured does not show the sign-in form at all.
  */
 export function AccountScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const { goToTab } = useNavigation();
   const sync = useAppSelector((state) => state.sync);
@@ -249,66 +253,67 @@ export function AccountScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  body: {
-    ...typography.body2,
-    color: colors.text.body,
-    marginBottom: spacing.lg,
-  },
-  email: {
-    ...typography.body2,
-    color: colors.text.primary,
-  },
-  meta: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: spacing.sm,
-  },
-  input: {
-    ...typography.body2,
-    color: colors.text.primary,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  error: {
-    ...typography.labelSmall,
-    color: colors.error.text,
-    marginTop: spacing.xs,
-    marginBottom: spacing.sm,
-  },
-  action: {
-    marginTop: spacing.md,
-  },
-  danger: {
-    marginTop: spacing.xl,
-    paddingTop: spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: colors.line.base,
-  },
-  dangerTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-    marginBottom: spacing.sm,
-  },
-  dangerButton: {
-    borderColor: colors.error.strong,
-  },
-  dangerLabel: {
-    color: colors.error.text,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.lg,
+      marginBottom: spacing.md,
+    },
+    body: {
+      ...typography.body2,
+      color: colors.text.body,
+      marginBottom: spacing.lg,
+    },
+    email: {
+      ...typography.body2,
+      color: colors.text.primary,
+    },
+    meta: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: spacing.sm,
+    },
+    input: {
+      ...typography.body2,
+      color: colors.text.primary,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      marginBottom: spacing.sm,
+    },
+    error: {
+      ...typography.labelSmall,
+      color: colors.error.text,
+      marginTop: spacing.xs,
+      marginBottom: spacing.sm,
+    },
+    action: {
+      marginTop: spacing.md,
+    },
+    danger: {
+      marginTop: spacing.xl,
+      paddingTop: spacing.lg,
+      borderTopWidth: 1,
+      borderTopColor: colors.line.base,
+    },
+    dangerTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+      marginBottom: spacing.sm,
+    },
+    dangerButton: {
+      borderColor: colors.error.strong,
+    },
+    dangerLabel: {
+      color: colors.error.text,
+    },
+  });

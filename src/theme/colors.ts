@@ -40,6 +40,11 @@ export const colors = {
     onDarkMuted: '#C0BDB7',
     /** Text on dark fills */
     onDark: '#FFFFFF',
+    /**
+     * Text on `primaryFill` — the one fill that inverts with the theme. Equal
+     * to `onDark` here; see the dark palette for why they have to be separate.
+     */
+    onPrimary: '#FFFFFF',
   },
 
   /** oklch(70% .01 90) — the "›" chevron on product rows */
@@ -70,6 +75,15 @@ export const colors = {
   secondaryButtonText: '#302E28',
   /** oklch(20% .01 90) — primary (dark) button fill */
   dark: '#181611',
+  /**
+   * The "on" state: the primary button, a selected chip, an earned badge.
+   *
+   * The same value as `dark` in this theme, and a separate token only because
+   * the two part company in the other one — a selected thing should be the
+   * highest-contrast surface on the screen, and on a dark ground that means
+   * pale, while `dark` stays dark because it also fills whole cards.
+   */
+  primaryFill: '#181611',
   /** oklch(60% .12 250) — home progress bar fill */
   progressFill: '#4284C5',
   /**
@@ -107,6 +121,17 @@ export const colors = {
     bgFeedback: '#FFEAE9',
   },
 } as const;
+
+/**
+ * The shape both palettes have to satisfy, derived from the light one so the
+ * dark one cannot drift: adding a token to `colors` without adding it to
+ * `darkColors` is a type error rather than a screen that renders `undefined`.
+ */
+type Themed<T> = {
+  readonly [K in keyof T]: T[K] extends string ? string : Themed<T[K]>;
+};
+
+export type Colors = Themed<typeof colors>;
 
 /**
  * Per-category accent pairs. `accent` is oklch(55% .13 hue) and `soft` is
@@ -174,6 +199,8 @@ export const categoryColors = {
 } as const;
 
 export type CategoryColorKey = keyof typeof categoryColors;
+export type CategoryAccent = { accent: string; soft: string; text: string };
+export type CategoryColors = Themed<typeof categoryColors>;
 
 /**
  * Mastery bands. The same three thresholds drive the ring fill, the percentage
@@ -191,6 +218,8 @@ export const masteryColors = {
   none: colors.text.tertiary,
 } as const;
 
+export type MasteryColors = Themed<typeof masteryColors>;
+
 /** Bottom tab bar. */
 export const tabColors = {
   background: colors.surface,
@@ -199,17 +228,250 @@ export const tabColors = {
   inactive: colors.text.tertiary,
 } as const;
 
-const FALLBACK_ACCENT = {
-  accent: colors.text.primary,
-  soft: colors.track,
-  text: colors.text.primary,
+export type TabColors = Themed<typeof tabColors>;
+
+/**
+ * Look up a category's accent pair, falling back to neutral for unknown ids.
+ *
+ * Curried over the palette rather than reading a module singleton, so the
+ * lookup a screen calls is the one belonging to the theme it is rendering in.
+ * `getCategoryColors` stays exported as the light-theme binding, for tests and
+ * for the generated site scripts, which have no theme to read.
+ */
+export function makeCategoryLookup(
+  set: CategoryColors,
+  neutral: Colors,
+): (categoryId: string) => CategoryAccent {
+  const fallback: CategoryAccent = {
+    accent: neutral.text.primary,
+    soft: neutral.track,
+    text: neutral.text.primary,
+  };
+  return (categoryId) => set[categoryId as CategoryColorKey] ?? fallback;
+}
+
+export const getCategoryColors = makeCategoryLookup(categoryColors, colors);
+
+// ---------------------------------------------------------------------------
+// Dark
+
+/**
+ * The dark palette.
+ *
+ * Derived the same way the light one was — every token below is the sRGB
+ * conversion of an OKLCH value, with the source kept in the comment beside it —
+ * and, like the light palette, contrast-checked rather than eyeballed. The
+ * ratios quoted are against `background`; where a token also has to work on
+ * `surface` and `card` the lowest of the three is the one quoted.
+ *
+ * Two decisions worth knowing, because they are not what an inversion would do:
+ *
+ *  1. **It is warm, not black.** The light theme's ground is oklch(93% .01 90),
+ *     a warm cream, and the identity is that warmth. The dark ground is the same
+ *     hue and chroma at 18% rather than a neutral charcoal, which is why
+ *     `background` is `#14110C` and not `#111111`.
+ *  2. **`dark` stays dark.** It is the primary-button and resume-card fill, and
+ *     `text.onDark` is what sits on it — but `text.onDark` also sits on the
+ *     success, error and category-accent fills, which stay coloured in either
+ *     theme. Inverting `dark` to a light fill would therefore need white text in
+ *     one place and near-black in another from the same token. It becomes a
+ *     *raised* warm fill instead, at oklch(34%) against the 18% ground: white on
+ *     it reads 11.73:1, and a large pale slab never appears
+ *     where the eye lands first.
+ */
+export const darkColors: Colors = {
+  /** Screen background — oklch(18% .012 90) */
+  background: '#14110C',
+  /** Card / elevated surface — oklch(23% .012 90) */
+  surface: '#1F1D17',
+  /** The counterpart of the light theme's pure white card — oklch(26% .012 90) */
+  card: '#26241D',
+
+  text: {
+    /** oklch(96.5% .006 90) — 14.01:1 on a card */
+    primary: '#F5F3EF',
+    /** oklch(90% .008 90) — long-form lesson body copy, 11.54:1 on a card */
+    body: '#E0DED8',
+    /** oklch(82% .008 90) — 8.90:1 on a card */
+    secondary: '#C6C4BE',
+    /** oklch(78% .01 90) — category blurb, 7.75:1 on a card */
+    blurb: '#BAB7B0',
+    /** oklch(76% .01 90) — list subtext, 7.24:1 on a card */
+    muted: '#B3B1AA',
+    /**
+     * oklch(74% .01 90) — captions, eyebrows and every `typography.micro` label.
+     *
+     * The light palette's note applies here in reverse: this carries the
+     * smallest type in the app, so it is lifted further from the ground than
+     * body copy rather than less. 8.19 on background,
+     * 7.33 on surface, 6.76 on card.
+     */
+    tertiary: '#ADABA4',
+    /** oklch(80% .01 90) — muted text on the dark streak pill */
+    onDarkMuted: '#C0BDB7',
+    /** Text on dark fills. Unchanged: the fills it sits on are dark in both themes. */
+    onDark: '#FFFFFF',
+    /** oklch(20% .01 90) — near-black, because `primaryFill` inverts here. 14.3:1 on it. */
+    onPrimary: '#181611',
+  },
+
+  /** oklch(66% .012 90) — the "›" chevron on product rows, 5.0:1 on a card */
+  chevron: '#95928A',
+  /** oklch(36% .012 90) — outline buttons */
+  border: '#3F3D36',
+
+  /**
+   * The same three-way split as the light palette, for the same reason: a
+   * hairline tuned against one ground disappears on another. On dark the
+   * lightness runs the other way — a rule is *lighter* than what it sits on.
+   */
+  line: {
+    /** oklch(32% .01 90) — on a card */
+    soft: '#35332D',
+    /** oklch(35% .012 90) — on the page background */
+    base: '#3D3A34',
+    /** oklch(42% .014 90) — when the ring is the point of the component */
+    strong: '#504D45',
+  },
+  /** oklch(33% .01 90) — unfilled lesson step dots */
+  trackDot: '#373530',
+  /** oklch(35% .01 90) — progress bar track / secondary button fill */
+  track: '#3C3A35',
+  /** oklch(93% .008 90) — secondary button label */
+  secondaryButtonText: '#EAE8E2',
+  /** oklch(34% .012 90) — the resume card and the profile avatar; see the note above */
+  dark: '#3A3831',
+  /**
+   * oklch(92% .012 90) — the half of `dark` that *does* invert: a
+   * selected chip, an earned badge, the primary button. They are the one thing
+   * on the screen that should be impossible to miss, which on a dark ground
+   * means pale: 14.9:1 against the background, with near-black text on it.
+   */
+  primaryFill: '#E8E4DC',
+  /** oklch(68% .12 250) — home progress bar fill, 6.58:1 */
+  progressFill: '#5B9DDF',
+  /** oklch(76% .11 250) — the same blue where it is used as small text, 7.25:1 on a card */
+  progressFillText: '#79B6F4',
+
+  success: {
+    /** oklch(70% .12 160) — 7.43:1 */
+    base: '#50B584',
+    /** oklch(60% .13 160) — completed checkmark badge; white on it is 3.72:1, a graphical element at 3:1 */
+    strong: '#179765',
+    /** oklch(86% .1 160) — feedback text, 10.75:1 on its own feedback box */
+    text: '#95E6BB',
+    /** oklch(27% .05 160) — True button fill */
+    bgSoft: '#0B2E1E',
+    /** oklch(25% .045 160) — correct feedback box */
+    bgFeedback: '#0A281A',
+  },
+
+  error: {
+    /** oklch(70% .12 20) — 6.66:1 */
+    base: '#DF7E7F',
+    /** oklch(62% .13 20) — False button border */
+    strong: '#C86265',
+    /** oklch(86% .09 20) — feedback text, 10.05:1 on its own feedback box */
+    text: '#FFBAB9',
+    /** oklch(27% .05 20) — False button fill */
+    bgSoft: '#3B1C1C',
+    /** oklch(25% .045 20) — incorrect feedback box */
+    bgFeedback: '#341819',
+  },
 };
 
-/** Look up a category's accent pair, falling back to neutral for unknown ids. */
-export function getCategoryColors(categoryId: string): {
-  accent: string;
-  soft: string;
-  text: string;
-} {
-  return categoryColors[categoryId as CategoryColorKey] ?? FALLBACK_ACCENT;
+/**
+ * Per-category accent pairs for the dark theme.
+ *
+ * The light set runs accent oklch(55% .13 h) with a 93% tint; this one runs
+ * accent oklch(72% .13 h) with a 29% tint, so the relationship between the two
+ * halves is preserved and the wheel positions are untouched — the hues are the
+ * catalogue's identity and do not change with the theme.
+ *
+ * `text` is still a separate variant for small text, but it runs the other way:
+ * *lighter* than the accent rather than darker, because on dark the direction of
+ * safety is up. Every one of them clears WCAG AA on its own tint and on all
+ * three dark grounds.
+ */
+export const darkCategoryColors: CategoryColors = {
+  /** hue 250 — blue. `text` is 7.48:1 on its own tint, 10.0:1 on the ground. */
+  ir: { accent: '#60AAF3', soft: '#172D43', text: '#80C3FF' },
+  /** hue 160 — teal. `text` is 7.79:1 on its own tint, 10.6:1 on the ground. */
+  fx: { accent: '#4CBD88', soft: '#113323', text: '#71D6A3' },
+  /** hue 20 — red. `text` is 7.22:1 on its own tint, 9.5:1 on the ground. */
+  credit: { accent: '#EB8182', soft: '#412121', text: '#FF9D9E' },
+  /** hue 300 — purple. `text` is 7.44:1 on its own tint, 9.7:1 on the ground. */
+  equity: { accent: '#B191EA', soft: '#2F2540', text: '#CAACFF' },
+  /** hue 80 — amber. `text` is 7.54:1 on its own tint, 10.0:1 on the ground. */
+  commodity: { accent: '#CF9A35', soft: '#38280A', text: '#E6B55D' },
+  /**
+   * Slate — the same "different in kind, not a sixth market" decision as the
+   * light palette, lifted to oklch(74% .03 250) on an oklch(29% .02 250) tint.
+   * As in light, the accent needs no separate text variant: 6.16:1 on its
+   * own tint and 6.77:1 on a card.
+   */
+  foundations: { accent: '#9DADBE', soft: '#242C35', text: '#9DADBE' },
+  /** hue 340 — plum. `text` is 7.32:1 on its own tint, 9.6:1 on the ground. */
+  exotics: { accent: '#DA83BE', soft: '#3C2133', text: '#F19FD6' },
+  /** hue 205 — teal. `text` is 7.78:1 on its own tint, 10.5:1 on the ground. */
+  risk: { accent: '#00BBCB', soft: '#003237', text: '#44D4E2' },
+  /** hue 120 — olive. `text` is 7.66:1 on its own tint, 10.3:1 on the ground. */
+  cases: { accent: '#9AB04B', soft: '#282F10', text: '#B4C96D' },
+  /** hue 45 — terracotta. `text` is 7.36:1 on its own tint, 9.7:1 on the ground. */
+  alt: { accent: '#E7885D', soft: '#402315', text: '#FEA47C' },
+};
+
+/** Mastery bands, dark. Same thresholds, same meaning, lifted hues. */
+export const darkMasteryColors: MasteryColors = {
+  /** oklch(70% .12 160) — 70% and above */
+  strong: darkColors.success.base,
+  /** oklch(68% .12 250) — 35% to 70% */
+  building: darkColors.progressFill,
+  /** oklch(74% .1 60) — below 35% but started */
+  shaky: '#D99C68',
+  /** Nothing attempted yet */
+  none: darkColors.text.tertiary,
+};
+
+/** Bottom tab bar, dark. */
+export const darkTabColors: TabColors = {
+  background: darkColors.surface,
+  border: darkColors.border,
+  active: darkColors.text.primary,
+  inactive: darkColors.text.tertiary,
+};
+
+// ---------------------------------------------------------------------------
+// Palettes
+
+/**
+ * Everything a screen needs to paint itself in one theme. Screens take this,
+ * never a module-level colour object, so the same `StyleSheet` factory produces
+ * a light sheet or a dark one depending only on what it is handed.
+ */
+export interface Palette {
+  scheme: 'light' | 'dark';
+  colors: Colors;
+  categoryColors: CategoryColors;
+  masteryColors: MasteryColors;
+  tabColors: TabColors;
+  getCategoryColors: (categoryId: string) => CategoryAccent;
 }
+
+export const lightPalette: Palette = {
+  scheme: 'light',
+  colors,
+  categoryColors,
+  masteryColors,
+  tabColors,
+  getCategoryColors,
+};
+
+export const darkPalette: Palette = {
+  scheme: 'dark',
+  colors: darkColors,
+  categoryColors: darkCategoryColors,
+  masteryColors: darkMasteryColors,
+  tabColors: darkTabColors,
+  getCategoryColors: makeCategoryLookup(darkCategoryColors, darkColors),
+};

@@ -17,7 +17,9 @@ import {
   SECONDS_PER_QUESTION,
   sortResults,
 } from '../../utils/exam';
-import { colors, radius, spacing, tabularNumbers, typography } from '../../theme';
+import { radius, spacing, tabularNumbers, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 /**
  * Sitting a practice exam.
@@ -29,6 +31,8 @@ import { colors, radius, spacing, tabularNumbers, typography } from '../../theme
  * hard exam reads as losing progress.
  */
 export function ExamScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToTab, goToExamQuiz, goToPaywall } = useNavigation();
   const { startExam } = useQuiz();
   const results = useAppSelector((state) => state.progress.examResults);
@@ -200,6 +204,7 @@ function Chip({
   onPress: () => void;
   testID?: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       testID={testID}
@@ -216,101 +221,102 @@ function Chip({
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    padding: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.sm,
-  },
-  subtitle: {
-    ...typography.body2,
-    color: colors.text.body,
-    marginTop: spacing.xs,
-    marginBottom: spacing.lg,
-  },
-  sectionTitle: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginBottom: spacing.sm,
-  },
-  chips: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-    marginBottom: spacing.lg,
-  },
-  chip: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-    borderRadius: radius.pill,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-  },
-  chipSelected: {
-    backgroundColor: colors.dark,
-    borderColor: colors.dark,
-  },
-  chipLabel: {
-    ...typography.body2,
-    color: colors.text.primary,
-  },
-  chipLabelSelected: {
-    color: colors.text.onDark,
-  },
-  summary: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  summaryLine: {
-    ...typography.bodyStrong,
-    ...tabularNumbers,
-    color: colors.text.primary,
-  },
-  summaryNote: {
-    ...typography.body2,
-    color: colors.text.secondary,
-    marginTop: spacing.xs,
-  },
-  begin: {
-    marginBottom: spacing.xl,
-  },
-  history: {
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    overflow: 'hidden',
-  },
-  historyRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.line.soft,
-  },
-  historyText: {
-    flexShrink: 1,
-  },
-  historyScope: {
-    ...typography.bodyStrong,
-    color: colors.text.primary,
-  },
-  historyMeta: {
-    ...typography.body2,
-    color: colors.text.tertiary,
-  },
-  historyScore: {
-    ...typography.h3,
-    ...tabularNumbers,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      padding: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.sm,
+    },
+    subtitle: {
+      ...typography.body2,
+      color: colors.text.body,
+      marginTop: spacing.xs,
+      marginBottom: spacing.lg,
+    },
+    sectionTitle: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginBottom: spacing.sm,
+    },
+    chips: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+      marginBottom: spacing.lg,
+    },
+    chip: {
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+      borderRadius: radius.pill,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+    },
+    chipSelected: {
+      backgroundColor: colors.primaryFill,
+      borderColor: colors.primaryFill,
+    },
+    chipLabel: {
+      ...typography.body2,
+      color: colors.text.primary,
+    },
+    chipLabelSelected: {
+      color: colors.text.onPrimary,
+    },
+    summary: {
+      backgroundColor: colors.card,
+      borderRadius: radius.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    summaryLine: {
+      ...typography.bodyStrong,
+      ...tabularNumbers,
+      color: colors.text.primary,
+    },
+    summaryNote: {
+      ...typography.body2,
+      color: colors.text.secondary,
+      marginTop: spacing.xs,
+    },
+    begin: {
+      marginBottom: spacing.xl,
+    },
+    history: {
+      borderRadius: radius.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      overflow: 'hidden',
+    },
+    historyRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: spacing.md,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.line.soft,
+    },
+    historyText: {
+      flexShrink: 1,
+    },
+    historyScope: {
+      ...typography.bodyStrong,
+      color: colors.text.primary,
+    },
+    historyMeta: {
+      ...typography.body2,
+      color: colors.text.tertiary,
+    },
+    historyScore: {
+      ...typography.h3,
+      ...tabularNumbers,
+    },
+  });

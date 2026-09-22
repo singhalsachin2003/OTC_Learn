@@ -6,14 +6,9 @@ import { useLongestStreak, useStreak } from '../../../hooks/useAppState';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
 import { useReview } from '../../../hooks/useReview';
-import {
-  colors,
-  masteryColors,
-  radius,
-  spacing,
-  tabularNumbers,
-  typography,
-} from '../../../theme';
+import { radius, spacing, tabularNumbers, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { masteryBand } from '../../../utils/mastery';
 import { useAccess } from '../../../hooks/useAccess';
 
@@ -23,6 +18,8 @@ import { useAccess } from '../../../hooks/useAccess';
  * waiting for them.
  */
 export function DashboardCard() {
+  const { colors, masteryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { overallPercent, totalCount, questionsAnswered, isProductMastered } =
     useProgress();
   const { productLocked, openQuiz } = useAccess();
@@ -117,18 +114,22 @@ export function DashboardCard() {
 function Stat({
   value,
   label,
-  tint = colors.text.primary,
+  tint,
 }: {
   value: string;
   label: string;
   tint?: string;
 }) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     // Shrinkable, so the label wraps instead of the row running off the card.
     // At the largest text sizes "DUE NOW" was rendering as "DUE NO", which
     // reads as a different phrase rather than as a cut-off one.
     <View style={styles.stat}>
-      <Text style={[styles.statValue, { color: tint }]}>{value}</Text>
+      <Text style={[styles.statValue, { color: tint ?? colors.text.primary }]}>
+        {value}
+      </Text>
       <Text style={styles.statLabel}>{label}</Text>
     </View>
   );
@@ -174,70 +175,71 @@ function pacingLine(
   return 'Early days — one product a day adds up quickly.';
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.lg,
-    backgroundColor: colors.card,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  chevron: {
-    ...typography.h3,
-    color: colors.chevron,
-  },
-  ringValue: {
-    ...typography.h3,
-    ...tabularNumbers,
-    fontSize: 18,
-    color: colors.text.primary,
-  },
-  ringLabel: {
-    ...typography.micro,
-    fontSize: 8,
-    color: colors.text.tertiary,
-    marginTop: 2,
-  },
-  detail: {
-    flex: 1,
-  },
-  lead: {
-    ...typography.bodyStrong,
-    color: colors.text.primary,
-  },
-  secondary: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  stats: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    marginTop: spacing.md,
-  },
-  divider: {
-    width: 1,
-    alignSelf: 'stretch',
-    backgroundColor: colors.border,
-  },
-  stat: {
-    flexShrink: 1,
-  },
-  statValue: {
-    ...typography.h3,
-    ...tabularNumbers,
-    fontSize: 17,
-  },
-  statLabel: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: 3,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.lg,
+      backgroundColor: colors.card,
+      borderRadius: radius.xl,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.lg,
+    },
+    pressed: {
+      opacity: 0.85,
+    },
+    chevron: {
+      ...typography.h3,
+      color: colors.chevron,
+    },
+    ringValue: {
+      ...typography.h3,
+      ...tabularNumbers,
+      fontSize: 18,
+      color: colors.text.primary,
+    },
+    ringLabel: {
+      ...typography.micro,
+      fontSize: 8,
+      color: colors.text.tertiary,
+      marginTop: 2,
+    },
+    detail: {
+      flex: 1,
+    },
+    lead: {
+      ...typography.bodyStrong,
+      color: colors.text.primary,
+    },
+    secondary: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    stats: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      marginTop: spacing.md,
+    },
+    divider: {
+      width: 1,
+      alignSelf: 'stretch',
+      backgroundColor: colors.border,
+    },
+    stat: {
+      flexShrink: 1,
+    },
+    statValue: {
+      ...typography.h3,
+      ...tabularNumbers,
+      fontSize: 17,
+    },
+    statLabel: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: 3,
+    },
+  });

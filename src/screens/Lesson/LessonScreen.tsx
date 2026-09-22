@@ -9,7 +9,9 @@ import { getProductById } from '../../data/products';
 import { useHapticsEnabled, useSelectedProductId } from '../../hooks/useAppState';
 import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
-import { colors, getCategoryColors, spacing, typography } from '../../theme';
+import { spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { track } from '../../utils/analytics';
 import { hapticSelection } from '../../utils/haptics';
 import {
@@ -23,6 +25,8 @@ import { StepIndicator } from './components/StepIndicator';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 export function LessonScreen() {
+  const { getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const productId = useSelectedProductId();
   const { goToProduct, goToQuiz } = useNavigation();
   const haptics = useHapticsEnabled();
@@ -220,30 +224,31 @@ export function LessonScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.md,
-  },
-  productName: {
-    ...typography.h2,
-    color: colors.text.primary,
-    marginTop: spacing.md,
-    marginBottom: 14,
-  },
-  card: {
-    flex: 1,
-  },
-  hint: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-  },
-  actions: {
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 14,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    body: {
+      flex: 1,
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    productName: {
+      ...typography.h2,
+      color: colors.text.primary,
+      marginTop: spacing.md,
+      marginBottom: 14,
+    },
+    card: {
+      flex: 1,
+    },
+    hint: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
+    actions: {
+      flexDirection: 'row',
+      columnGap: 10,
+      marginTop: 14,
+    },
+  });

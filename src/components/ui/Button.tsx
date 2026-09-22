@@ -7,7 +7,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, layout, radius, typography } from '../../theme';
+import { layout, radius, typography } from '../../theme';
+import { useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export type ButtonVariant =
   'primary' | 'secondary' | 'outline' | 'success' | 'danger';
@@ -36,7 +38,8 @@ export function Button({
   testID,
   accessibilityHint,
 }: ButtonProps) {
-  const variantStyle = VARIANTS[variant];
+  const styles = useThemedStyles(makeStyles);
+  const variantStyle = useThemedStyles(makeVariants)[variant];
 
   return (
     <Pressable
@@ -61,11 +64,18 @@ export function Button({
   );
 }
 
-const VARIANTS: Record<ButtonVariant, { container: ViewStyle; label: TextStyle }> =
-  {
+/**
+ * Built per palette like the stylesheet below it, and cached the same way — the
+ * five variants are colour and nothing else, so they cannot be a module
+ * constant once there are two palettes.
+ */
+const makeVariants = ({
+  colors,
+}: Palette): Record<ButtonVariant, { container: ViewStyle; label: TextStyle }> =>
+  ({
     primary: {
-      container: { backgroundColor: colors.dark },
-      label: { color: colors.text.onDark },
+      container: { backgroundColor: colors.primaryFill },
+      label: { color: colors.text.onPrimary },
     },
     secondary: {
       container: { backgroundColor: colors.track },
@@ -103,26 +113,27 @@ const VARIANTS: Record<ButtonVariant, { container: ViewStyle; label: TextStyle }
         fontSize: 14,
       },
     },
-  };
+  }) as const;
 
-const styles = StyleSheet.create({
-  base: {
-    minHeight: layout.minTouchTarget,
-    paddingVertical: 14,
-    paddingHorizontal: layout.cardPadding,
-    borderRadius: radius.large,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    ...typography.label,
-    fontSize: 13.5,
-    textAlign: 'center',
-  },
-  disabled: {
-    opacity: 0.4,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-});
+const makeStyles = (_: Palette) =>
+  StyleSheet.create({
+    base: {
+      minHeight: layout.minTouchTarget,
+      paddingVertical: 14,
+      paddingHorizontal: layout.cardPadding,
+      borderRadius: radius.large,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    label: {
+      ...typography.label,
+      fontSize: 13.5,
+      textAlign: 'center',
+    },
+    disabled: {
+      opacity: 0.4,
+    },
+    pressed: {
+      opacity: 0.85,
+    },
+  });

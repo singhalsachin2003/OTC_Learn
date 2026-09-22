@@ -5,7 +5,9 @@ import { Toggle } from '../../../components/ui/Toggle';
 import { useAppDispatch, useSettings } from '../../../hooks/useAppState';
 import type { ToggleableSetting } from '../../../store/slices/settingsSlice';
 import { updateSetting } from '../../../store/thunks/settingsThunks';
-import { colors, spacing, typography } from '../../../theme';
+import { spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { track } from '../../../utils/analytics';
 import {
   cancelDailyReminder,
@@ -44,6 +46,7 @@ const ROWS: Row[] = [
 ];
 
 export function SettingsRows() {
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const settings = useSettings();
 
@@ -132,30 +135,31 @@ export function SettingsRows() {
   );
 }
 
-const styles = StyleSheet.create({
-  group: {
-    borderTopWidth: StyleSheet.hairlineWidth * 2,
-    borderTopColor: colors.border,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    paddingVertical: 14,
-    minHeight: 48,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  text: {
-    flex: 1,
-  },
-  name: {
-    ...typography.body2,
-    color: colors.text.primary,
-  },
-  note: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    group: {
+      borderTopWidth: StyleSheet.hairlineWidth * 2,
+      borderTopColor: colors.border,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      paddingVertical: 14,
+      minHeight: 48,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    text: {
+      flex: 1,
+    },
+    name: {
+      ...typography.body2,
+      color: colors.text.primary,
+    },
+    note: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+  });

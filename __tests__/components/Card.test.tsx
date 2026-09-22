@@ -1,11 +1,12 @@
 import { Text } from 'react-native';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 
 import { Card } from '../../src/components/ui/Card';
+import { renderWithStore } from '../helpers/renderWithStore';
 
 describe('Card', () => {
   it('renders its children', async () => {
-    await render(
+    await renderWithStore(
       <Card testID="card">
         <Text>Your progress</Text>
       </Card>,
@@ -15,7 +16,7 @@ describe('Card', () => {
   });
 
   it('applies the shared surface styling', async () => {
-    await render(
+    await renderWithStore(
       <Card testID="card">
         <Text>Body</Text>
       </Card>,
@@ -33,7 +34,7 @@ describe('Card', () => {
 
   it('becomes a button when given onPress', async () => {
     const onPress = jest.fn();
-    await render(
+    await renderWithStore(
       <Card testID="card" onPress={onPress} accessibilityLabel="Interest Rate">
         <Text>Interest Rate</Text>
       </Card>,
@@ -47,7 +48,7 @@ describe('Card', () => {
   });
 
   it('is not a button without onPress', async () => {
-    await render(
+    await renderWithStore(
       <Card testID="card">
         <Text>Static</Text>
       </Card>,

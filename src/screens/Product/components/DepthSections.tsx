@@ -5,7 +5,9 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import type { DepthSection } from '../../../data/types';
 import { useNavigation } from '../../../hooks/useNavigation';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface DepthSectionsProps {
   sections: DepthSection[];
@@ -38,6 +40,8 @@ export function DepthSections({
   accent,
   soft,
 }: DepthSectionsProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToPaywall } = useNavigation();
 
   if (locked) {
@@ -85,55 +89,56 @@ export function DepthSections({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    padding: spacing.lg,
-    rowGap: spacing.sm,
-  },
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-  },
-  title: {
-    ...typography.label,
-    fontSize: 14.5,
-    color: colors.text.primary,
-    flexShrink: 1,
-  },
-  body: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  list: {
-    ...typography.body2,
-    color: colors.text.secondary,
-  },
-  action: {
-    marginTop: spacing.sm,
-  },
-  section: {
-    marginBottom: spacing.lg,
-    rowGap: spacing.sm,
-  },
-  sectionTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-  },
-  sectionBody: {
-    ...typography.body1,
-    color: colors.text.body,
-  },
-  callout: {
-    padding: spacing.md,
-    borderRadius: radius.md,
-    rowGap: spacing.xs,
-  },
-  calloutLabel: {
-    ...typography.micro,
-  },
-  calloutBody: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      padding: spacing.lg,
+      rowGap: spacing.sm,
+    },
+    heading: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+    },
+    title: {
+      ...typography.label,
+      fontSize: 14.5,
+      color: colors.text.primary,
+      flexShrink: 1,
+    },
+    body: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    list: {
+      ...typography.body2,
+      color: colors.text.secondary,
+    },
+    action: {
+      marginTop: spacing.sm,
+    },
+    section: {
+      marginBottom: spacing.lg,
+      rowGap: spacing.sm,
+    },
+    sectionTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+    },
+    sectionBody: {
+      ...typography.body1,
+      color: colors.text.body,
+    },
+    callout: {
+      padding: spacing.md,
+      borderRadius: radius.md,
+      rowGap: spacing.xs,
+    },
+    calloutLabel: {
+      ...typography.micro,
+    },
+    calloutBody: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+  });

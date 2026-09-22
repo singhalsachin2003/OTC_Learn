@@ -1,7 +1,9 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '../../theme';
+import { spacing, typography } from '../../theme';
+import { useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { track } from '../../utils/analytics';
 import { Button } from '../ui/Button';
 import { SafeAreaWrapper } from './SafeAreaWrapper';
@@ -59,49 +61,61 @@ export class ErrorBoundary extends Component<
       return this.props.children;
     }
 
-    return (
-      <SafeAreaWrapper testID="error-boundary">
-        <View style={styles.body}>
-          <Text accessibilityRole="header" style={styles.title}>
-            Something went wrong
-          </Text>
-          <Text style={styles.blurb}>
-            The app hit an unexpected problem. Your progress is saved — going back
-            to the home screen should put things right.
-          </Text>
-          <Button
-            testID="error-reset"
-            label="Back to home"
-            onPress={this.handleReset}
-            style={styles.button}
-          />
-        </View>
-      </SafeAreaWrapper>
-    );
+    return <ErrorScreen onReset={this.handleReset} />;
   }
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    ...typography.h2,
-    color: colors.text.primary,
-    marginBottom: spacing.sm,
-    textAlign: 'center',
-  },
-  blurb: {
-    ...typography.label,
-    fontFamily: typography.body1.fontFamily,
-    lineHeight: 19.5,
-    color: colors.text.blurb,
-    marginBottom: spacing.xl,
-    textAlign: 'center',
-  },
-  button: {
-    width: '100%',
-  },
-});
+/**
+ * The fallback is its own component because the boundary has to be a class —
+ * `getDerivedStateFromError` has no hook equivalent — and a class cannot read
+ * the theme.
+ */
+function ErrorScreen({ onReset }: { onReset: () => void }) {
+  const styles = useThemedStyles(makeStyles);
+
+  return (
+    <SafeAreaWrapper testID="error-boundary">
+      <View style={styles.body}>
+        <Text accessibilityRole="header" style={styles.title}>
+          Something went wrong
+        </Text>
+        <Text style={styles.blurb}>
+          The app hit an unexpected problem. Your progress is saved — going back to
+          the home screen should put things right.
+        </Text>
+        <Button
+          testID="error-reset"
+          label="Back to home"
+          onPress={onReset}
+          style={styles.button}
+        />
+      </View>
+    </SafeAreaWrapper>
+  );
+}
+
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    body: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    title: {
+      ...typography.h2,
+      color: colors.text.primary,
+      marginBottom: spacing.sm,
+      textAlign: 'center',
+    },
+    blurb: {
+      ...typography.label,
+      fontFamily: typography.body1.fontFamily,
+      lineHeight: 19.5,
+      color: colors.text.blurb,
+      marginBottom: spacing.xl,
+      textAlign: 'center',
+    },
+    button: {
+      width: '100%',
+    },
+  });

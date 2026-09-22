@@ -519,6 +519,10 @@ export function settingsToRow(
  * `dailyReminder` is carried like the rest, but see the note in
  * `utils/notifications.ts` — the OS is the source of truth for whether a
  * notification can actually be shown, and `syncReminder` reconciles on launch.
+ *
+ * `theme` is the exception to whole-row: it has no column, and it is a property
+ * of the device rather than of the account. A phone in dark mode and a tablet in
+ * light is the ordinary case, so accepting a remote row keeps the local choice.
  */
 export function mergeSettings(
   local: StoredSettings,
@@ -534,6 +538,7 @@ export function mergeSettings(
     haptics: remote.haptics,
     dailyReminder: remote.daily_reminder,
     sessionSize: clampSessionSize(remote.session_size),
+    theme: local.theme,
   };
 }
 

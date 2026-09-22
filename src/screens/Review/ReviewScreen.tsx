@@ -7,17 +7,15 @@ import { useNavigation } from '../../hooks/useNavigation';
 import { useQuiz } from '../../hooks/useQuiz';
 import { useReview } from '../../hooks/useReview';
 import { useSettings } from '../../hooks/useAppState';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { daysBetween, toDateKey } from '../../utils/formatters';
 import { BASE_INTERVALS } from '../../utils/review';
 
 export function ReviewScreen() {
+  const { colors, getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { due, dueCount, queuedCount, nextDueOn, upcoming } = useReview();
   const { startReview } = useQuiz();
   const { goToReviewQuiz, goToTab } = useNavigation();
@@ -169,94 +167,95 @@ function whenLabel(dateKey: string): string {
   return days === 1 ? 'Tomorrow' : `In ${days} days`;
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-  },
-  intro: {
-    ...typography.body2,
-    color: colors.text.muted,
-    marginTop: 6,
-    marginBottom: spacing.lg,
-  },
-  notice: {
-    backgroundColor: colors.error.bgSoft,
-    borderRadius: radius.large,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  noticeText: {
-    ...typography.labelSmall,
-    color: colors.error.text,
-  },
-  tiles: {
-    flexDirection: 'row',
-    columnGap: spacing.sm,
-  },
-  start: {
-    marginTop: spacing.lg,
-  },
-  empty: {
-    alignItems: 'center',
-    marginTop: spacing.xxl,
-    paddingHorizontal: spacing.md,
-  },
-  emptyTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-    marginBottom: 6,
-  },
-  emptyBody: {
-    ...typography.body2,
-    color: colors.text.muted,
-    textAlign: 'center',
-  },
-  browse: {
-    marginTop: spacing.lg,
-    alignSelf: 'stretch',
-  },
-  list: {
-    marginTop: spacing.xxl,
-  },
-  sectionTitle: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginBottom: spacing.md,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    paddingVertical: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  lapses: {
-    width: 34,
-    height: 34,
-    borderRadius: radius.medium,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  lapsesText: {
-    ...typography.micro,
-    fontSize: 11,
-  },
-  rowText: {
-    flex: 1,
-  },
-  prompt: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  rowMeta: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-    marginTop: 3,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.xl,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+    },
+    intro: {
+      ...typography.body2,
+      color: colors.text.muted,
+      marginTop: 6,
+      marginBottom: spacing.lg,
+    },
+    notice: {
+      backgroundColor: colors.error.bgSoft,
+      borderRadius: radius.large,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    noticeText: {
+      ...typography.labelSmall,
+      color: colors.error.text,
+    },
+    tiles: {
+      flexDirection: 'row',
+      columnGap: spacing.sm,
+    },
+    start: {
+      marginTop: spacing.lg,
+    },
+    empty: {
+      alignItems: 'center',
+      marginTop: spacing.xxl,
+      paddingHorizontal: spacing.md,
+    },
+    emptyTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+      marginBottom: 6,
+    },
+    emptyBody: {
+      ...typography.body2,
+      color: colors.text.muted,
+      textAlign: 'center',
+    },
+    browse: {
+      marginTop: spacing.lg,
+      alignSelf: 'stretch',
+    },
+    list: {
+      marginTop: spacing.xxl,
+    },
+    sectionTitle: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginBottom: spacing.md,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      paddingVertical: spacing.md,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    lapses: {
+      width: 34,
+      height: 34,
+      borderRadius: radius.medium,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    lapsesText: {
+      ...typography.micro,
+      fontSize: 11,
+    },
+    rowText: {
+      flex: 1,
+    },
+    prompt: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    rowMeta: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+      marginTop: 3,
+    },
+  });

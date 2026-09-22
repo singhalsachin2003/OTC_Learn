@@ -14,13 +14,9 @@ import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { getProductById } from '../../data/products';
 import { useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { notePreview, sortedNotes, type NoteEntry } from '../../utils/notes';
 
 interface Row {
@@ -45,6 +41,8 @@ interface Row {
  * no row.
  */
 export function NotesScreen() {
+  const { colors, getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToTab, goToProduct } = useNavigation();
   const notes = useAppSelector((state) => state.notes.byProduct);
   const [query, setQuery] = useState('');
@@ -177,77 +175,78 @@ export function NotesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.lg,
-  },
-  subtitle: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  searchRow: {
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-    justifyContent: 'center',
-  },
-  search: {
-    ...typography.body2,
-    color: colors.text.primary,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-  },
-  searchWithClear: {
-    paddingRight: spacing.xl + spacing.md,
-  },
-  searchClear: {
-    position: 'absolute',
-    right: spacing.md,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-    paddingVertical: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  rowMain: {
-    flex: 1,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  product: {
-    ...typography.micro,
-    marginBottom: 4,
-  },
-  preview: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  edited: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: 5,
-  },
-  chevron: {
-    ...typography.h3,
-    color: colors.chevron,
-  },
-  empty: {
-    ...typography.body2,
-    color: colors.text.muted,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.lg,
+    },
+    subtitle: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    searchRow: {
+      marginTop: spacing.lg,
+      marginBottom: spacing.sm,
+      justifyContent: 'center',
+    },
+    search: {
+      ...typography.body2,
+      color: colors.text.primary,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+    },
+    searchWithClear: {
+      paddingRight: spacing.xl + spacing.md,
+    },
+    searchClear: {
+      position: 'absolute',
+      right: spacing.md,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+      paddingVertical: spacing.md,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    rowMain: {
+      flex: 1,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    product: {
+      ...typography.micro,
+      marginBottom: 4,
+    },
+    preview: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    edited: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: 5,
+    },
+    chevron: {
+      ...typography.h3,
+      color: colors.chevron,
+    },
+    empty: {
+      ...typography.body2,
+      color: colors.text.muted,
+      marginTop: spacing.lg,
+    },
+  });

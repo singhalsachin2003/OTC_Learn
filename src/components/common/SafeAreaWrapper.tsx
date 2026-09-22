@@ -2,7 +2,9 @@ import { type ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, layout } from '../../theme';
+import { layout } from '../../theme';
+import { useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface SafeAreaWrapperProps {
   children: ReactNode;
@@ -19,6 +21,7 @@ export function SafeAreaWrapper({
   style,
   testID,
 }: SafeAreaWrapperProps) {
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
 
   return (
@@ -40,9 +43,10 @@ export function SafeAreaWrapper({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+  });

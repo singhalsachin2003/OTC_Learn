@@ -7,7 +7,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, layout, radius, shadows } from '../../theme';
+import { layout, radius, shadows } from '../../theme';
+import { useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface CardProps {
   children: ReactNode;
@@ -28,6 +30,7 @@ export function Card({
   accessibilityLabel,
   accessibilityHint,
 }: CardProps) {
+  const styles = useThemedStyles(makeStyles);
   if (onPress === undefined) {
     return (
       <View testID={testID} style={[styles.card, style]}>
@@ -50,14 +53,15 @@ export function Card({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: radius.xl,
-    padding: layout.cardPadding,
-    ...shadows.card,
-  },
-  pressed: {
-    opacity: 0.9,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: radius.xl,
+      padding: layout.cardPadding,
+      ...shadows.card,
+    },
+    pressed: {
+      opacity: 0.9,
+    },
+  });
