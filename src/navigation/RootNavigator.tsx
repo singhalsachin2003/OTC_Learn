@@ -23,7 +23,8 @@ import { QuizResults } from '../screens/Quiz/QuizResults';
 import { QuizScreen } from '../screens/Quiz/QuizScreen';
 import { ReviewScreen } from '../screens/Review/ReviewScreen';
 import { showsTabBar } from '../store/slices/appSlice';
-import { colors } from '../theme';
+import { useThemedStyles } from '../hooks/useTheme';
+import type { Palette } from '../theme/colors';
 
 /**
  * Renders the screen named by `app.currentScreen`, with the tab bar beneath it.
@@ -40,6 +41,7 @@ import { colors } from '../theme';
  * here instead.
  */
 export function RootNavigator() {
+  const styles = useThemedStyles(makeStyles);
   const screen = useCurrentScreen();
   const tab = useCurrentTab();
   const { goToTab } = useNavigation();
@@ -105,12 +107,13 @@ function Screen() {
   }
 }
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  content: {
-    flex: 1,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    content: {
+      flex: 1,
+    },
+  });

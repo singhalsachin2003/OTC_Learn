@@ -3,13 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { getCategoryById } from '../../../data/categories';
 import { getProductById } from '../../../data/products';
 import { useNavigation } from '../../../hooks/useNavigation';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface RelatedProductsProps {
   ids: readonly string[];
@@ -17,6 +13,8 @@ export interface RelatedProductsProps {
 
 /** Chips linking to sibling products. Unresolvable ids are skipped silently. */
 export function RelatedProducts({ ids }: RelatedProductsProps) {
+  const { getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToProduct } = useNavigation();
   const related = ids.flatMap((id) => {
     const product = getProductById(id);
@@ -30,7 +28,7 @@ export function RelatedProducts({ ids }: RelatedProductsProps) {
   return (
     <View testID="related-products" style={styles.row}>
       {related.map((product) => {
-        const { accent, soft } = getCategoryColors(product.categoryId);
+        const { soft, text: accentText } = getCategoryColors(product.categoryId);
         const category = getCategoryById(product.categoryId);
 
         return (
@@ -46,7 +44,7 @@ export function RelatedProducts({ ids }: RelatedProductsProps) {
               pressed && styles.pressed,
             ]}
           >
-            <Text style={[styles.name, { color: accent }]}>{product.name}</Text>
+            <Text style={[styles.name, { color: accentText }]}>{product.name}</Text>
             <Text style={styles.category}>{category?.name}</Text>
           </Pressable>
         );
@@ -55,27 +53,28 @@ export function RelatedProducts({ ids }: RelatedProductsProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  chip: {
-    borderRadius: radius.medium,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 2,
-  },
-  pressed: {
-    opacity: 0.75,
-  },
-  name: {
-    ...typography.label,
-    fontSize: 13,
-  },
-  category: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: 2,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    chip: {
+      borderRadius: radius.medium,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm + 2,
+    },
+    pressed: {
+      opacity: 0.75,
+    },
+    name: {
+      ...typography.label,
+      fontSize: 13,
+    },
+    category: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: 2,
+    },
+  });

@@ -144,9 +144,9 @@ describe('ProductRow', () => {
 
 describe('masteryFill', () => {
   it('colours the ring by band rather than by a gradient', () => {
-    expect(masteryFill(0)).toBe(masteryColors.none);
-    expect(masteryFill(12)).toBe(masteryColors.shaky);
-    expect(masteryFill(35)).toBe(masteryColors.building);
-    expect(masteryFill(MASTERY_COMPLETE)).toBe(masteryColors.strong);
+    expect(masteryFill(0, masteryColors)).toBe(masteryColors.none);
+    expect(masteryFill(12, masteryColors)).toBe(masteryColors.shaky);
+    expect(masteryFill(35, masteryColors)).toBe(masteryColors.building);
+    expect(masteryFill(MASTERY_COMPLETE, masteryColors)).toBe(masteryColors.strong);
   });
 });

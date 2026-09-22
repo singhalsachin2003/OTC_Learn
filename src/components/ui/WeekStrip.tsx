@@ -6,7 +6,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { toDateKey } from '../../utils/formatters';
 
 const DAY_INITIALS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'] as const;
@@ -70,6 +72,7 @@ export interface WeekStripProps {
 
 /** Seven columns: filled where the user studied, outlined where they did not. */
 export function WeekStrip({ studyDays, style, testID }: WeekStripProps) {
+  const styles = useThemedStyles(makeStyles);
   const week = buildWeek(studyDays);
   const studiedCount = week.filter((day) => day.studied).length;
   const elapsed = week.filter((day) => !day.isFuture).length;
@@ -105,51 +108,52 @@ export function WeekStrip({ studyDays, style, testID }: WeekStripProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    columnGap: 6,
-  },
-  column: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  /**
-   * A filled track, not an outlined box.
-   *
-   * Seven tall empty rectangles with 1px borders read as skeleton loaders —
-   * content that has not arrived rather than days that were not studied. A
-   * shorter filled bar states the same absence without looking unfinished.
-   */
-  bar: {
-    alignSelf: 'stretch',
-    height: 24,
-    borderRadius: radius.xs,
-    backgroundColor: colors.line.base,
-  },
-  barStudied: {
-    backgroundColor: colors.progressFill,
-  },
-  /** Today, not yet studied: a step darker so it reads as "in play". */
-  barToday: {
-    backgroundColor: colors.line.strong,
-  },
-  /**
-   * Days that have not happened yet.
-   *
-   * A step *lighter* than an unstudied day, not darker. On a Monday six of the
-   * seven columns are still to come, and at the same weight as a missed day the
-   * strip would open the week by reporting six failures.
-   */
-  barFuture: {
-    backgroundColor: colors.line.soft,
-  },
-  labelFuture: {
-    color: colors.line.strong,
-  },
-  label: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: spacing.xs,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      columnGap: 6,
+    },
+    column: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    /**
+     * A filled track, not an outlined box.
+     *
+     * Seven tall empty rectangles with 1px borders read as skeleton loaders —
+     * content that has not arrived rather than days that were not studied. A
+     * shorter filled bar states the same absence without looking unfinished.
+     */
+    bar: {
+      alignSelf: 'stretch',
+      height: 24,
+      borderRadius: radius.xs,
+      backgroundColor: colors.line.base,
+    },
+    barStudied: {
+      backgroundColor: colors.progressFill,
+    },
+    /** Today, not yet studied: a step darker so it reads as "in play". */
+    barToday: {
+      backgroundColor: colors.line.strong,
+    },
+    /**
+     * Days that have not happened yet.
+     *
+     * A step *lighter* than an unstudied day, not darker. On a Monday six of the
+     * seven columns are still to come, and at the same weight as a missed day the
+     * strip would open the week by reporting six failures.
+     */
+    barFuture: {
+      backgroundColor: colors.line.soft,
+    },
+    labelFuture: {
+      color: colors.line.strong,
+    },
+    label: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: spacing.xs,
+    },
+  });

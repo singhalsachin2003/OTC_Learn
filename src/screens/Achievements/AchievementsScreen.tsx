@@ -6,7 +6,9 @@ import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
 import { achievements } from '../../data/achievements';
 import { useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 /**
  * Badges, earned and unearned.
@@ -16,6 +18,8 @@ import { colors, radius, spacing, typography } from '../../theme';
  * what anyone does today.
  */
 export function AchievementsScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToTab } = useNavigation();
   const unlocked = useAppSelector((state) => state.progress.unlockedAchievementIds);
 
@@ -81,71 +85,72 @@ export function AchievementsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.lg,
-  },
-  subtitle: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  list: {
-    marginTop: spacing.lg,
-    rowGap: spacing.sm,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-  },
-  rowLocked: {
-    backgroundColor: 'transparent',
-  },
-  glyphBox: {
-    width: 42,
-    height: 42,
-    borderRadius: radius.medium,
-    backgroundColor: colors.track,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  glyphBoxEarned: {
-    backgroundColor: colors.dark,
-  },
-  glyph: {
-    ...typography.label,
-    fontSize: 13,
-    color: colors.text.tertiary,
-  },
-  glyphEarned: {
-    color: colors.text.onDark,
-  },
-  text: {
-    flex: 1,
-  },
-  name: {
-    ...typography.label,
-    fontSize: 13.5,
-    color: colors.text.primary,
-  },
-  nameLocked: {
-    color: colors.text.secondary,
-  },
-  description: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.lg,
+    },
+    subtitle: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    list: {
+      marginTop: spacing.lg,
+      rowGap: spacing.sm,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+    },
+    rowLocked: {
+      backgroundColor: 'transparent',
+    },
+    glyphBox: {
+      width: 42,
+      height: 42,
+      borderRadius: radius.medium,
+      backgroundColor: colors.track,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    glyphBoxEarned: {
+      backgroundColor: colors.primaryFill,
+    },
+    glyph: {
+      ...typography.label,
+      fontSize: 13,
+      color: colors.text.tertiary,
+    },
+    glyphEarned: {
+      color: colors.text.onPrimary,
+    },
+    text: {
+      flex: 1,
+    },
+    name: {
+      ...typography.label,
+      fontSize: 13.5,
+      color: colors.text.primary,
+    },
+    nameLocked: {
+      color: colors.text.secondary,
+    },
+    description: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+  });

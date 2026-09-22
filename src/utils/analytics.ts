@@ -50,6 +50,7 @@ export type AnalyticsEvent =
   | { name: 'account_created' }
   | { name: 'signed_in' }
   | { name: 'signed_out' }
+  | { name: 'account_deleted' }
   | { name: 'sync_completed' }
   // Purchase events carry the term and nothing else. What someone bought is a
   // product question; who they are is not one this sink should be able to ask.

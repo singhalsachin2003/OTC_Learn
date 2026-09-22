@@ -32,13 +32,18 @@ import { useReview } from '../../hooks/useReview';
 import { initialsFor } from '../../store/slices/settingsSlice';
 import { resetEverything } from '../../store/thunks/bootstrapThunks';
 import { updateName } from '../../store/thunks/settingsThunks';
-import { colors, spacing, typography } from '../../theme';
+import { spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { track } from '../../utils/analytics';
 import { SessionSizePicker } from './components/SessionSizePicker';
+import { ThemePicker } from './components/ThemePicker';
 import { MoreFromUs } from './components/MoreFromUs';
 import { SettingsRows } from './components/SettingsRows';
 
 export function ProfileScreen() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const name = useUserName();
   const settings = useSettings();
@@ -248,6 +253,9 @@ export function ProfileScreen() {
         <SettingsRows />
         <SessionSizePicker />
 
+        <Text style={styles.sectionTitle}>APPEARANCE</Text>
+        <ThemePicker />
+
         <Text style={styles.sectionTitle}>LIBRARY</Text>
         <View style={styles.rows}>
           <DisclosureRow
@@ -354,6 +362,7 @@ function DisclosureRow({
   onPress?: () => void;
   testID?: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       testID={testID}
@@ -372,122 +381,123 @@ function DisclosureRow({
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginBottom: spacing.lg,
-  },
-  identity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-  },
-  avatar: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
-    backgroundColor: colors.dark,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  initials: {
-    ...typography.h3,
-    fontSize: 17,
-    color: colors.text.onDark,
-  },
-  identityText: {
-    flex: 1,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    columnGap: 6,
-  },
-  name: {
-    ...typography.h2,
-    color: colors.text.primary,
-  },
-  namePlaceholder: {
-    color: colors.text.tertiary,
-  },
-  nameInput: {
-    ...typography.h2,
-    color: colors.text.primary,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.progressFill,
-    paddingVertical: 2,
-    paddingHorizontal: 0,
-  },
-  identityMeta: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 4,
-  },
-  tiles: {
-    flexDirection: 'row',
-    columnGap: spacing.sm,
-    marginTop: spacing.lg,
-  },
-  tilesNote: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-    marginTop: spacing.sm,
-  },
-  sectionTitle: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: spacing.xxl,
-    marginBottom: spacing.sm,
-  },
-  rows: {
-    borderTopWidth: StyleSheet.hairlineWidth * 2,
-    borderTopColor: colors.border,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    minHeight: 48,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  rowLabel: {
-    ...typography.body2,
-    color: colors.text.primary,
-  },
-  rowValue: {
-    ...typography.body2,
-    color: colors.text.muted,
-  },
-  dataNote: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    paddingVertical: spacing.md,
-  },
-  reset: {
-    paddingVertical: 14,
-    minHeight: 48,
-    justifyContent: 'center',
-  },
-  resetText: {
-    ...typography.label,
-    fontSize: 13.5,
-    color: colors.error.text,
-  },
-  disclaimer: {
-    ...typography.micro,
-    color: colors.text.secondary,
-    textAlign: 'center',
-    marginTop: spacing.xxl,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: spacing.xl,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginBottom: spacing.lg,
+    },
+    identity: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+    },
+    avatar: {
+      width: 54,
+      height: 54,
+      borderRadius: 27,
+      backgroundColor: colors.dark,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    initials: {
+      ...typography.h3,
+      fontSize: 17,
+      color: colors.text.onDark,
+    },
+    identityText: {
+      flex: 1,
+    },
+    nameRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'flex-start',
+      columnGap: 6,
+    },
+    name: {
+      ...typography.h2,
+      color: colors.text.primary,
+    },
+    namePlaceholder: {
+      color: colors.text.tertiary,
+    },
+    nameInput: {
+      ...typography.h2,
+      color: colors.text.primary,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.progressFill,
+      paddingVertical: 2,
+      paddingHorizontal: 0,
+    },
+    identityMeta: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 4,
+    },
+    tiles: {
+      flexDirection: 'row',
+      columnGap: spacing.sm,
+      marginTop: spacing.lg,
+    },
+    tilesNote: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+      marginTop: spacing.sm,
+    },
+    sectionTitle: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: spacing.xxl,
+      marginBottom: spacing.sm,
+    },
+    rows: {
+      borderTopWidth: StyleSheet.hairlineWidth * 2,
+      borderTopColor: colors.border,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 14,
+      minHeight: 48,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    rowLabel: {
+      ...typography.body2,
+      color: colors.text.primary,
+    },
+    rowValue: {
+      ...typography.body2,
+      color: colors.text.muted,
+    },
+    dataNote: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      paddingVertical: spacing.md,
+    },
+    reset: {
+      paddingVertical: 14,
+      minHeight: 48,
+      justifyContent: 'center',
+    },
+    resetText: {
+      ...typography.label,
+      fontSize: 13.5,
+      color: colors.error.text,
+    },
+    disclaimer: {
+      ...typography.micro,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: spacing.xxl,
+    },
+  });

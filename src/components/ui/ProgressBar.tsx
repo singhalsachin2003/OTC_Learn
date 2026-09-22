@@ -1,6 +1,8 @@
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { colors, radius } from '../../theme';
+import { radius } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface ProgressBarProps {
   /** Completion ratio; values outside 0–1 are clamped. */
@@ -15,12 +17,14 @@ export interface ProgressBarProps {
 
 export function ProgressBar({
   progress,
-  color = colors.progressFill,
+  color,
   height = 8,
   style,
   testID,
   accessibilityLabel,
 }: ProgressBarProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const clamped = Math.min(
     1,
     Math.max(0, Number.isFinite(progress) ? progress : 0),
@@ -40,7 +44,7 @@ export function ProgressBar({
           styles.fill,
           {
             width: `${clamped * 100}%`,
-            backgroundColor: color,
+            backgroundColor: color ?? colors.progressFill,
             borderRadius: height / 2,
           },
         ]}
@@ -49,14 +53,15 @@ export function ProgressBar({
   );
 }
 
-const styles = StyleSheet.create({
-  track: {
-    backgroundColor: colors.track,
-    borderRadius: radius.small,
-    overflow: 'hidden',
-    width: '100%',
-  },
-  fill: {
-    height: '100%',
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    track: {
+      backgroundColor: colors.track,
+      borderRadius: radius.small,
+      overflow: 'hidden',
+      width: '100%',
+    },
+    fill: {
+      height: '100%',
+    },
+  });

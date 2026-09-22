@@ -8,14 +8,9 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 
-import {
-  colors,
-  layout,
-  radius,
-  spacing,
-  tabColors,
-  typography,
-} from '../../theme';
+import { layout, radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import type { TabName } from '../../store/slices/appSlice';
 
 interface TabDefinition {
@@ -53,6 +48,8 @@ export function TabBar({
   reviewBadge = 0,
   testID,
 }: TabBarProps) {
+  const { tabColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
 
   return (
@@ -118,47 +115,48 @@ export function TabBar({
   );
 }
 
-const styles = StyleSheet.create({
-  bar: {
-    flexDirection: 'row',
-    backgroundColor: tabColors.background,
-    borderTopWidth: StyleSheet.hairlineWidth * 2,
-    borderTopColor: tabColors.border,
-    paddingTop: spacing.sm,
-  },
-  item: {
-    flex: 1,
-    alignItems: 'center',
-    rowGap: 5,
-    minHeight: layout.minTouchTarget,
-    paddingHorizontal: spacing.xs,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  label: {
-    ...typography.micro,
-    fontSize: 10,
-    color: tabColors.inactive,
-  },
-  labelFocused: {
-    color: tabColors.active,
-  },
-  badge: {
-    position: 'absolute',
-    top: -6,
-    right: -12,
-    minWidth: 17,
-    height: 17,
-    paddingHorizontal: 4,
-    borderRadius: radius.pill,
-    backgroundColor: colors.error.strong,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  badgeText: {
-    ...typography.micro,
-    fontSize: 9,
-    color: colors.text.onDark,
-  },
-});
+const makeStyles = ({ colors, tabColors }: Palette) =>
+  StyleSheet.create({
+    bar: {
+      flexDirection: 'row',
+      backgroundColor: tabColors.background,
+      borderTopWidth: StyleSheet.hairlineWidth * 2,
+      borderTopColor: tabColors.border,
+      paddingTop: spacing.sm,
+    },
+    item: {
+      flex: 1,
+      alignItems: 'center',
+      rowGap: 5,
+      minHeight: layout.minTouchTarget,
+      paddingHorizontal: spacing.xs,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    label: {
+      ...typography.micro,
+      fontSize: 10,
+      color: tabColors.inactive,
+    },
+    labelFocused: {
+      color: tabColors.active,
+    },
+    badge: {
+      position: 'absolute',
+      top: -6,
+      right: -12,
+      minWidth: 17,
+      height: 17,
+      paddingHorizontal: 4,
+      borderRadius: radius.pill,
+      backgroundColor: colors.error.strong,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    badgeText: {
+      ...typography.micro,
+      fontSize: 9,
+      color: colors.text.onDark,
+    },
+  });

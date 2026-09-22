@@ -7,7 +7,9 @@ import {
 } from 'react-native';
 import { Check } from 'lucide-react-native';
 
-import { colors, radius, spacing, typography } from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface BadgeProps {
   label: string;
@@ -21,20 +23,33 @@ export interface BadgeProps {
 /** Small tinted pill — used for the "STEP 1 OF 3" tag on lesson cards. */
 export function Badge({
   label,
-  color = colors.text.primary,
-  backgroundColor = colors.track,
+  color,
+  backgroundColor,
   style,
   testID,
 }: BadgeProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
-    <View testID={testID} style={[styles.badge, { backgroundColor }, style]}>
-      <Text style={[styles.label, { color }]}>{label}</Text>
+    <View
+      testID={testID}
+      style={[
+        styles.badge,
+        { backgroundColor: backgroundColor ?? colors.track },
+        style,
+      ]}
+    >
+      <Text style={[styles.label, { color: color ?? colors.text.primary }]}>
+        {label}
+      </Text>
     </View>
   );
 }
 
 /** Green circular checkmark shown on completed products. */
 export function CompletedBadge({ testID }: { testID?: string }) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View
       testID={testID}
@@ -49,24 +64,25 @@ export function CompletedBadge({ testID }: { testID?: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  badge: {
-    alignSelf: 'flex-start',
-    paddingVertical: spacing.xs,
-    paddingHorizontal: 10,
-    borderRadius: radius.small,
-  },
-  label: {
-    ...typography.label,
-    fontSize: 11,
-    letterSpacing: 0.33,
-  },
-  completed: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: colors.success.strong,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    badge: {
+      alignSelf: 'flex-start',
+      paddingVertical: spacing.xs,
+      paddingHorizontal: 10,
+      borderRadius: radius.small,
+    },
+    label: {
+      ...typography.label,
+      fontSize: 11,
+      letterSpacing: 0.33,
+    },
+    completed: {
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      backgroundColor: colors.success.strong,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });

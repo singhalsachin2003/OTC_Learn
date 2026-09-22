@@ -2,7 +2,9 @@ import { type ReactNode } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { Card } from '../../../components/ui/Card';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface QuizQuestionProps {
   question: string;
@@ -12,6 +14,7 @@ export interface QuizQuestionProps {
 
 /** Vertically-centred card holding the question and, later, its feedback. */
 export function QuizQuestion({ question, children }: QuizQuestionProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Card testID="quiz-card" style={styles.card}>
       <Text accessibilityRole="header" style={styles.question}>
@@ -22,19 +25,20 @@ export function QuizQuestion({ question, children }: QuizQuestionProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    // Sized to its content, not stretched: the scroll container centres it
-    // vertically. A true/false question is two lines, and a card stretched to
-    // the full height around it is mostly empty white.
-    justifyContent: 'center',
-    borderRadius: radius.xxl,
-    paddingVertical: 28,
-    paddingHorizontal: spacing.xxl - 2,
-  },
-  question: {
-    ...typography.question,
-    color: colors.text.primary,
-    marginBottom: spacing.xl,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      // Sized to its content, not stretched: the scroll container centres it
+      // vertically. A true/false question is two lines, and a card stretched to
+      // the full height around it is mostly empty white.
+      justifyContent: 'center',
+      borderRadius: radius.xxl,
+      paddingVertical: 28,
+      paddingHorizontal: spacing.xxl - 2,
+    },
+    question: {
+      ...typography.question,
+      color: colors.text.primary,
+      marginBottom: spacing.xl,
+    },
+  });

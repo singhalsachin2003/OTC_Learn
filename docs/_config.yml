@@ -9,3 +9,15 @@
 title: OTC Learn
 description: Learn OTC derivatives — 36 products, short lessons and quizzes.
 theme: jekyll-theme-minimal
+
+# Needed for absolute URLs in the generated sitemap. The site is served from a
+# project path, not the user root, so both halves have to be here.
+url: https://singhalsachin2003.github.io
+baseurl: /OTC_Learn
+
+# jekyll-sitemap writes /sitemap.xml on every build — 70-odd pages, one per
+# product and category, which is what Search Console and Bing are given. It is
+# on GitHub Pages' supported-plugins list, so it runs on their build without a
+# Gemfile.
+plugins:
+  - jekyll-sitemap

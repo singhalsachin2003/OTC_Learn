@@ -1,6 +1,6 @@
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { colors } from '../../theme';
+import type { Palette } from '../../theme/colors';
 
 export interface SegmentedBarProps {
   /** How many segments to draw — one per question in the sitting. */
@@ -60,10 +60,15 @@ const styles = StyleSheet.create({
   },
 });
 
-/** Shared segment palette, so the quiz bar and the results bar agree. */
-export const segmentColors = {
-  correct: colors.success.strong,
-  incorrect: colors.error.strong,
-  current: colors.text.tertiary,
-  pending: colors.trackDot,
-} as const;
+/**
+ * Shared segment palette, so the quiz bar and the results bar agree. Built from
+ * the palette the caller is rendering in — `useThemedStyles` caches it per
+ * palette like a stylesheet, because that is exactly what it is.
+ */
+export const makeSegmentColors = ({ colors }: Palette) =>
+  ({
+    correct: colors.success.strong,
+    incorrect: colors.error.strong,
+    current: colors.text.tertiary,
+    pending: colors.trackDot,
+  }) as const;

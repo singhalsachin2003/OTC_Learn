@@ -5,7 +5,9 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import type { DepthSection } from '../../../data/types';
 import { useNavigation } from '../../../hooks/useNavigation';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface DepthSectionsProps {
   sections: DepthSection[];
@@ -13,7 +15,8 @@ export interface DepthSectionsProps {
   extraQuestions: number;
   /** Whether the reader has to subscribe first. */
   locked: boolean;
-  accent: string;
+  /** The category accent in its small-text variant; see `theme/colors.ts`. */
+  accentText: string;
   soft: string;
 }
 
@@ -35,9 +38,11 @@ export function DepthSections({
   sections,
   extraQuestions,
   locked,
-  accent,
+  accentText,
   soft,
 }: DepthSectionsProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToPaywall } = useNavigation();
 
   if (locked) {
@@ -73,7 +78,7 @@ export function DepthSections({
           <Text style={styles.sectionBody}>{section.content}</Text>
           {section.callout !== undefined && (
             <View style={[styles.callout, { backgroundColor: soft }]}>
-              <Text style={[styles.calloutLabel, { color: accent }]}>
+              <Text style={[styles.calloutLabel, { color: accentText }]}>
                 WORTH KNOWING
               </Text>
               <Text style={styles.calloutBody}>{section.callout}</Text>
@@ -85,55 +90,56 @@ export function DepthSections({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    padding: spacing.lg,
-    rowGap: spacing.sm,
-  },
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-  },
-  title: {
-    ...typography.label,
-    fontSize: 14.5,
-    color: colors.text.primary,
-    flexShrink: 1,
-  },
-  body: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  list: {
-    ...typography.body2,
-    color: colors.text.secondary,
-  },
-  action: {
-    marginTop: spacing.sm,
-  },
-  section: {
-    marginBottom: spacing.lg,
-    rowGap: spacing.sm,
-  },
-  sectionTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-  },
-  sectionBody: {
-    ...typography.body1,
-    color: colors.text.body,
-  },
-  callout: {
-    padding: spacing.md,
-    borderRadius: radius.md,
-    rowGap: spacing.xs,
-  },
-  calloutLabel: {
-    ...typography.micro,
-  },
-  calloutBody: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      padding: spacing.lg,
+      rowGap: spacing.sm,
+    },
+    heading: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+    },
+    title: {
+      ...typography.label,
+      fontSize: 14.5,
+      color: colors.text.primary,
+      flexShrink: 1,
+    },
+    body: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    list: {
+      ...typography.body2,
+      color: colors.text.secondary,
+    },
+    action: {
+      marginTop: spacing.sm,
+    },
+    section: {
+      marginBottom: spacing.lg,
+      rowGap: spacing.sm,
+    },
+    sectionTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+    },
+    sectionBody: {
+      ...typography.body1,
+      color: colors.text.body,
+    },
+    callout: {
+      padding: spacing.md,
+      borderRadius: radius.md,
+      rowGap: spacing.xs,
+    },
+    calloutLabel: {
+      ...typography.micro,
+    },
+    calloutBody: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+  });

@@ -15,7 +15,8 @@ import { refreshEntitlement } from './store/thunks/accessThunks';
 import { hydrateApp } from './store/thunks/bootstrapThunks';
 import { recordActivity } from './store/thunks/streakThunks';
 import { restoreSession, syncNow } from './store/thunks/syncThunks';
-import { colors } from './theme';
+import { useTheme, useThemedStyles } from './hooks/useTheme';
+import type { Palette } from './theme/colors';
 import { initErrorReporting } from './utils/errorReporting';
 import { initPurchases } from './utils/purchases';
 import { syncReminder } from './utils/notifications';
@@ -31,6 +32,8 @@ initErrorReporting();
 initPurchases();
 
 function AppContent() {
+  const { scheme } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const [fontsLoaded, fontError] = useAppFonts();
   const hydrated = useAppSelector((state) => state.settings.hydrated);
   const { goHome } = useNavigation();
@@ -96,7 +99,7 @@ function AppContent() {
 
   return (
     <View style={styles.root}>
-      <StatusBar style="dark" />
+      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       {/* Sends the user home on recovery: the screen that threw is still the
           selected one, so remounting it alone would loop straight back. */}
       <ErrorBoundary onReset={goHome}>
@@ -116,9 +119,10 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+  });

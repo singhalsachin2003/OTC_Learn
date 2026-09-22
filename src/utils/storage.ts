@@ -70,6 +70,19 @@ export interface StoredProfile {
   name: string | null;
 }
 
+/**
+ * Light, dark, or whatever the phone is set to. Stored on the device and
+ * deliberately not synced: a phone in dark mode and a tablet in light is the
+ * ordinary case, not a conflict to resolve.
+ */
+export type ThemePreference = 'system' | 'light' | 'dark';
+
+export const THEME_PREFERENCES: readonly ThemePreference[] = [
+  'system',
+  'light',
+  'dark',
+];
+
 export interface StoredSettings {
   spacedRepetition: boolean;
   timedQuizzes: boolean;
@@ -77,6 +90,7 @@ export interface StoredSettings {
   dailyReminder: boolean;
   /** Questions drawn per quiz session. */
   sessionSize: number;
+  theme: ThemePreference;
 }
 
 /**
@@ -100,6 +114,7 @@ export const defaultSettings: StoredSettings = {
   // reminders, rather than ambushing them on first launch.
   dailyReminder: false,
   sessionSize: 6,
+  theme: 'system',
 };
 
 // ---------------------------------------------------------------------------
@@ -350,6 +365,12 @@ export async function loadSettings(): Promise<StoredSettings> {
       stored.sessionSize > 0
         ? clampSessionSize(stored.sessionSize)
         : defaultSettings.sessionSize,
+    // Validated against the list rather than merely defaulted: this one is
+    // read straight into a palette lookup, and an unrecognised string would
+    // resolve to the light palette silently rather than to the OS setting.
+    theme: THEME_PREFERENCES.includes(stored.theme as ThemePreference)
+      ? (stored.theme as ThemePreference)
+      : defaultSettings.theme,
   };
 }
 

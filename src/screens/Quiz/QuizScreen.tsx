@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BackButton } from '../../components/common/BackButton';
 import { SafeAreaWrapper } from '../../components/common/SafeAreaWrapper';
-import { SegmentedBar, segmentColors } from '../../components/ui/SegmentedBar';
+import { SegmentedBar, makeSegmentColors } from '../../components/ui/SegmentedBar';
 import { getCategoryById } from '../../data/categories';
 import { getProductById, getQuestionById } from '../../data/products';
 import { isChoiceQuestion } from '../../data/types';
@@ -14,7 +14,9 @@ import {
 } from '../../hooks/useAppState';
 import { useQuiz } from '../../hooks/useQuiz';
 import { useQuizExit } from '../../hooks/useQuizExit';
-import { colors, getCategoryColors, spacing, typography } from '../../theme';
+import { spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { formatStepLabel } from '../../utils/formatters';
 import { ChoiceOptions } from './components/ChoiceOptions';
 import { QuizButtons } from './components/QuizButtons';
@@ -23,6 +25,9 @@ import { QuizQuestion } from './components/QuizQuestion';
 import { QuizTimer } from './components/QuizTimer';
 
 export function QuizScreen() {
+  const { getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const segmentColors = useThemedStyles(makeSegmentColors);
   const productId = useSelectedProductId();
   const categoryId = useSelectedCategoryId();
   const settings = useSettings();
@@ -175,48 +180,49 @@ export function QuizScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.md,
-  },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  meta: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    marginTop: 14,
-    marginBottom: spacing.sm,
-  },
-  counter: {
-    ...typography.label,
-    fontSize: 12,
-    color: colors.text.secondary,
-  },
-  source: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-  },
-  progress: {
-    marginBottom: spacing.lg,
-  },
-  /**
-   * Top-aligned, not centred.
-   *
-   * Centring looked balanced on a two-line true/false question and wrong
-   * everywhere else: revealing the feedback grows the card, and a centred card
-   * grows in both directions, so the question the user is still reading slides
-   * up the screen at the moment they most need it to hold still. Anchoring to
-   * the top means the question never moves and the feedback arrives beneath it.
-   */
-  scroll: {
-    flexGrow: 1,
-    justifyContent: 'flex-start',
-    paddingBottom: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    body: {
+      flex: 1,
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    topRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    meta: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      marginTop: 14,
+      marginBottom: spacing.sm,
+    },
+    counter: {
+      ...typography.label,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
+    source: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+    },
+    progress: {
+      marginBottom: spacing.lg,
+    },
+    /**
+     * Top-aligned, not centred.
+     *
+     * Centring looked balanced on a two-line true/false question and wrong
+     * everywhere else: revealing the feedback grows the card, and a centred card
+     * grows in both directions, so the question the user is still reading slides
+     * up the screen at the moment they most need it to hold still. Anchoring to
+     * the top means the question never moves and the feedback arrives beneath it.
+     */
+    scroll: {
+      flexGrow: 1,
+      justifyContent: 'flex-start',
+      paddingBottom: spacing.lg,
+    },
+  });

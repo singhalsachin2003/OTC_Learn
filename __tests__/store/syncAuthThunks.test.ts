@@ -1,6 +1,10 @@
 import { createStore } from '../../src/store';
 import { setSession } from '../../src/store/slices/syncSlice';
-import { signIn, signOutAccount } from '../../src/store/thunks/syncThunks';
+import {
+  deleteAccount,
+  signIn,
+  signOutAccount,
+} from '../../src/store/thunks/syncThunks';
 import { getSupabaseClient } from '../../src/utils/supabase';
 
 jest.mock('../../src/utils/supabase', () => ({
@@ -122,7 +126,9 @@ describe('signIn', () => {
 
     expect(result.payload).toBe(false);
     expect(store.getState().sync.status).toBe('error');
-    expect(store.getState().sync.error).toBe('Network request failed');
+    expect(store.getState().sync.error).toBe(
+      'No connection. Your progress is safe on this device and will sync when you are back online.',
+    );
   });
 
   it('reports a returned error the same way', async () => {
@@ -136,7 +142,9 @@ describe('signIn', () => {
     const store = createStore();
     await store.dispatch(signIn({ email: 'a@example.com', password: 'wrong' }));
 
-    expect(store.getState().sync.error).toBe('Invalid login credentials');
+    expect(store.getState().sync.error).toBe(
+      'That email and password do not match an account.',
+    );
     expect(store.getState().sync.userId).toBeNull();
   });
 
@@ -191,7 +199,10 @@ describe('signIn', () => {
     );
 
     expect(store.getState().sync.status).toBe('error');
-    expect(store.getState().sync.error).toBe('JWT issued at future');
+    // An unfamiliar failure gets the honest generic line rather than a guess.
+    expect(store.getState().sync.error).toBe(
+      'Sync could not finish. Your progress is safe on this device.',
+    );
   });
 
   it('creates an account when asked to sign up instead', async () => {
@@ -216,5 +227,85 @@ describe('signIn', () => {
 
     expect(signUp).toHaveBeenCalled();
     expect(store.getState().sync.userId).toBe('u2');
+  });
+});
+
+describe('deleteAccount', () => {
+  /**
+   * Google Play requires this path to exist and to work. These tests are what
+   * stop it rotting into a button that clears the session and leaves the rows
+   * on the server — which would look identical to the user and satisfy nothing.
+   */
+  function clientWithRpc(
+    rpc: jest.Mock,
+    signOut = jest.fn().mockResolvedValue({}),
+  ) {
+    mockedClient.mockReturnValue({ auth: { signOut }, rpc });
+    return signOut;
+  }
+
+  it('calls the deletion function and then clears the session', async () => {
+    const rpc = jest.fn().mockResolvedValue({ error: null });
+    const signOut = clientWithRpc(rpc);
+
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'a@example.com' }));
+
+    const result = await store.dispatch(deleteAccount());
+
+    expect(rpc).toHaveBeenCalledWith('delete_account');
+    expect(result.payload).toBe(true);
+    expect(store.getState().sync.userId).toBeNull();
+    expect(signOut).toHaveBeenCalled();
+  });
+
+  /**
+   * The one failure in this file a user must not be left believing succeeded.
+   * If the rows are still there, the session stays — telling them it worked
+   * would be the worst possible outcome of a compliance control.
+   */
+  it('keeps the session and reports the failure when the server refuses', async () => {
+    const rpc = jest
+      .fn()
+      .mockResolvedValue({ error: { message: 'permission denied' } });
+    clientWithRpc(rpc);
+
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'a@example.com' }));
+
+    const result = await store.dispatch(deleteAccount());
+
+    expect(result.payload).toBe(false);
+    expect(store.getState().sync.userId).toBe('u1');
+    expect(store.getState().sync.status).toBe('error');
+    expect(store.getState().sync.error).not.toBeNull();
+  });
+
+  it('reports a thrown failure rather than pretending to have deleted', async () => {
+    const rpc = jest.fn().mockRejectedValue(new Error('Network request failed'));
+    clientWithRpc(rpc);
+
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'a@example.com' }));
+
+    const result = await store.dispatch(deleteAccount());
+
+    expect(result.payload).toBe(false);
+    expect(store.getState().sync.userId).toBe('u1');
+    expect(store.getState().sync.error).toContain('No connection');
+  });
+
+  /** The rows are already gone; a failed revoke cannot make that untrue. */
+  it('still reports success when the token revoke fails', async () => {
+    const rpc = jest.fn().mockResolvedValue({ error: null });
+    clientWithRpc(rpc, jest.fn().mockRejectedValue(new Error('offline')));
+
+    const store = createStore();
+    store.dispatch(setSession({ userId: 'u1', email: 'a@example.com' }));
+
+    const result = await store.dispatch(deleteAccount());
+
+    expect(result.payload).toBe(true);
+    expect(store.getState().sync.userId).toBeNull();
   });
 });

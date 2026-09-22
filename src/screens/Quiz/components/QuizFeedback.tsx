@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Check, X } from 'lucide-react-native';
 
-import { colors, spacing, typography } from '../../../theme';
+import { spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface QuizFeedbackProps {
   correct: boolean;
@@ -19,6 +21,8 @@ export function QuizFeedback({
   explanation,
   correctLabel,
 }: QuizFeedbackProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View
       testID="quiz-feedback"
@@ -52,39 +56,40 @@ export function QuizFeedback({
   );
 }
 
-const styles = StyleSheet.create({
-  box: {
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    marginTop: spacing.lg,
-  },
-  correct: {
-    backgroundColor: colors.success.bgFeedback,
-  },
-  incorrect: {
-    backgroundColor: colors.error.bgFeedback,
-  },
-  headline: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    columnGap: 7,
-  },
-  text: {
-    ...typography.label,
-    fontSize: 13.5,
-    lineHeight: 20,
-    flex: 1,
-  },
-  textCorrect: {
-    color: colors.success.text,
-  },
-  textIncorrect: {
-    color: colors.error.text,
-  },
-  answer: {
-    ...typography.bodyStrong,
-    fontSize: 13,
-    marginTop: spacing.sm,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    box: {
+      borderRadius: 12,
+      paddingVertical: 12,
+      paddingHorizontal: 14,
+      marginTop: spacing.lg,
+    },
+    correct: {
+      backgroundColor: colors.success.bgFeedback,
+    },
+    incorrect: {
+      backgroundColor: colors.error.bgFeedback,
+    },
+    headline: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      columnGap: 7,
+    },
+    text: {
+      ...typography.label,
+      fontSize: 13.5,
+      lineHeight: 20,
+      flex: 1,
+    },
+    textCorrect: {
+      color: colors.success.text,
+    },
+    textIncorrect: {
+      color: colors.error.text,
+    },
+    answer: {
+      ...typography.bodyStrong,
+      fontSize: 13,
+      marginTop: spacing.sm,
+    },
+  });

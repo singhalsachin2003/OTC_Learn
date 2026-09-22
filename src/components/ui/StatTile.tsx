@@ -6,7 +6,9 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { colors, radius, spacing, tabularNumbers, typography } from '../../theme';
+import { radius, spacing, tabularNumbers, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface StatTileProps {
   value: string;
@@ -18,13 +20,9 @@ export interface StatTileProps {
 }
 
 /** A boxed figure with a caption. Three across is the standard row. */
-export function StatTile({
-  value,
-  label,
-  tint = colors.text.primary,
-  style,
-  testID,
-}: StatTileProps) {
+export function StatTile({ value, label, tint, style, testID }: StatTileProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View
       testID={testID}
@@ -33,7 +31,7 @@ export function StatTile({
       style={[styles.tile, style]}
     >
       <Text
-        style={[styles.value, { color: tint }]}
+        style={[styles.value, { color: tint ?? colors.text.primary }]}
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.7}
@@ -45,24 +43,25 @@ export function StatTile({
   );
 }
 
-const styles = StyleSheet.create({
-  tile: {
-    flex: 1,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-  },
-  value: {
-    ...typography.h2,
-    ...tabularNumbers,
-    fontSize: 20,
-  },
-  label: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: spacing.xs,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    tile: {
+      flex: 1,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+    },
+    value: {
+      ...typography.h2,
+      ...tabularNumbers,
+      fontSize: 20,
+    },
+    label: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: spacing.xs,
+    },
+  });

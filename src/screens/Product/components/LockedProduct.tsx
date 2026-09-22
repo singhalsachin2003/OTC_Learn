@@ -4,7 +4,9 @@ import { Lock } from 'lucide-react-native';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import { useNavigation } from '../../../hooks/useNavigation';
-import { colors, spacing, typography } from '../../../theme';
+import { spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface LockedProductProps {
   /** The asset class this product belongs to, named rather than coded. */
@@ -25,6 +27,8 @@ export interface LockedProductProps {
  * no name explains nothing.
  */
 export function LockedProduct({ categoryName }: LockedProductProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToPaywall } = useNavigation();
 
   return (
@@ -48,27 +52,28 @@ export function LockedProduct({ categoryName }: LockedProductProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    marginTop: spacing.lg,
-  },
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-    marginBottom: spacing.sm,
-  },
-  title: {
-    ...typography.label,
-    fontSize: 14.5,
-    color: colors.text.primary,
-    flexShrink: 1,
-  },
-  body: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  action: {
-    marginTop: spacing.md,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      marginTop: spacing.lg,
+    },
+    heading: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+      marginBottom: spacing.sm,
+    },
+    title: {
+      ...typography.label,
+      fontSize: 14.5,
+      color: colors.text.primary,
+      flexShrink: 1,
+    },
+    body: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    action: {
+      marginTop: spacing.md,
+    },
+  });

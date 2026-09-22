@@ -53,11 +53,19 @@ it('quotes the real figures in the README', () => {
   expect(readme).toContain(PAID_SENTENCE);
 });
 
+/**
+ * The third assertion tracks the free product count, which is the number most
+ * likely to drift and the one the other two sentences do not carry. It used to
+ * match the release notes, which recited the catalogue; those were rewritten to
+ * describe the update instead, so it now matches the full description's own
+ * account of what a subscription adds to the free products. Anchor it to prose
+ * that earns its place, not to whichever sentence happens to hold a number.
+ */
 it('quotes the real figures in the store listing', () => {
   const listing = read('STORE_LISTING.md');
   expect(listing).toContain(FREE_SENTENCE);
   expect(listing).toContain(PAID_SENTENCE);
-  expect(listing).toContain(`${free.products} OTC derivative products`);
+  expect(listing).toContain(`${free.products} free products`);
 });
 
 /**

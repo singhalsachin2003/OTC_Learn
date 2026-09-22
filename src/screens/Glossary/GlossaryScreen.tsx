@@ -17,13 +17,9 @@ import { useAppSelector } from '../../hooks/useAppState';
 import { useNavigation } from '../../hooks/useNavigation';
 import { NoteEditor } from '../Product/components/NoteEditor';
 import { noteKeyFor } from '../../utils/notes';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 type Entry = ReturnType<typeof allKeyTerms>[number] & { locked: boolean };
 interface Section {
@@ -55,6 +51,8 @@ function letterFor(term: string): string {
  * tapping it lands on the product page, which explains the rest.
  */
 export function GlossaryScreen() {
+  const { colors, getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToTab, goToProduct } = useNavigation();
   const { productLocked } = useAccess();
   const [query, setQuery] = useState('');
@@ -185,7 +183,10 @@ export function GlossaryScreen() {
         </View>
       );
     },
-    [goToProduct, notes, openNote],
+    // `styles`, `colors` and `getCategoryColors` are stable per palette — the
+    // theme hands out the same objects for the life of the process — so listing
+    // them satisfies the rule without costing a rebuild per render.
+    [colors, getCategoryColors, goToProduct, notes, openNote, styles],
   );
 
   return (
@@ -267,100 +268,101 @@ export function GlossaryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  // The fixed block above the list. `SafeAreaWrapper` supplies the horizontal
-  // padding the ScrollView used to; the list needs its own so rows can still
-  // draw their separators edge to edge.
-  header: {
-    paddingTop: spacing.lg,
-  },
-  content: {
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.lg,
-  },
-  subtitle: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  searchRow: {
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-    justifyContent: 'center',
-  },
-  search: {
-    ...typography.body2,
-    color: colors.text.primary,
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-  },
-  searchWithClear: {
-    paddingRight: spacing.xl + spacing.md,
-  },
-  searchClear: {
-    position: 'absolute',
-    right: spacing.md,
-  },
-  // Sticky headers need an opaque background — once pinned, rows behind them
-  // scroll up underneath and would otherwise show through.
-  letterHeader: {
-    backgroundColor: colors.background,
-    paddingTop: spacing.sm,
-    paddingBottom: 4,
-  },
-  letterText: {
-    ...typography.label,
-    color: colors.text.tertiary,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.sm,
-    paddingVertical: spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  rowMain: {
-    flex: 1,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  term: {
-    ...typography.label,
-    fontSize: 14,
-    color: colors.text.primary,
-    marginBottom: 3,
-  },
-  definition: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  source: {
-    ...typography.micro,
-    marginTop: 5,
-  },
-  chevron: {
-    ...typography.h3,
-    color: colors.chevron,
-  },
-  noteButton: {
-    paddingHorizontal: spacing.xs,
-  },
-  noteEditor: {
-    paddingBottom: spacing.md,
-  },
-  empty: {
-    ...typography.body2,
-    color: colors.text.muted,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    // The fixed block above the list. `SafeAreaWrapper` supplies the horizontal
+    // padding the ScrollView used to; the list needs its own so rows can still
+    // draw their separators edge to edge.
+    header: {
+      paddingTop: spacing.lg,
+    },
+    content: {
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.lg,
+    },
+    subtitle: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    searchRow: {
+      marginTop: spacing.lg,
+      marginBottom: spacing.sm,
+      justifyContent: 'center',
+    },
+    search: {
+      ...typography.body2,
+      color: colors.text.primary,
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+    },
+    searchWithClear: {
+      paddingRight: spacing.xl + spacing.md,
+    },
+    searchClear: {
+      position: 'absolute',
+      right: spacing.md,
+    },
+    // Sticky headers need an opaque background — once pinned, rows behind them
+    // scroll up underneath and would otherwise show through.
+    letterHeader: {
+      backgroundColor: colors.background,
+      paddingTop: spacing.sm,
+      paddingBottom: 4,
+    },
+    letterText: {
+      ...typography.label,
+      color: colors.text.tertiary,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.sm,
+      paddingVertical: spacing.md,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    rowMain: {
+      flex: 1,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    term: {
+      ...typography.label,
+      fontSize: 14,
+      color: colors.text.primary,
+      marginBottom: 3,
+    },
+    definition: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    source: {
+      ...typography.micro,
+      marginTop: 5,
+    },
+    chevron: {
+      ...typography.h3,
+      color: colors.chevron,
+    },
+    noteButton: {
+      paddingHorizontal: spacing.xs,
+    },
+    noteEditor: {
+      paddingBottom: spacing.md,
+    },
+    empty: {
+      ...typography.body2,
+      color: colors.text.muted,
+      marginTop: spacing.lg,
+    },
+  });

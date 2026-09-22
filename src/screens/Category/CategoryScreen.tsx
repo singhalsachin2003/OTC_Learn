@@ -14,15 +14,13 @@ import { useBookmarks, useSelectedCategoryId } from '../../hooks/useAppState';
 import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
-import {
-  colors,
-  getCategoryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export function CategoryScreen() {
+  const { colors, getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const categoryId = useSelectedCategoryId();
   const { goHome, goToProduct } = useNavigation();
   const { masteryFor, categoryPercent, masteredInCategory } = useProgress();
@@ -44,7 +42,7 @@ export function CategoryScreen() {
     );
   }
 
-  const { accent, soft } = getCategoryColors(category.id);
+  const { accent, soft, text: accentText } = getCategoryColors(category.id);
   const percent = categoryPercent(category.id);
   const mastered = masteredInCategory(category.id);
 
@@ -58,7 +56,7 @@ export function CategoryScreen() {
 
         <View style={[styles.header, { backgroundColor: soft }]}>
           <Ring size={54} innerSize={40} percent={percent} fillColor={accent}>
-            <Text style={[styles.headerIcon, { color: accent }]}>
+            <Text style={[styles.headerIcon, { color: accentText }]}>
               {category.icon}
             </Text>
           </Ring>
@@ -98,7 +96,7 @@ export function CategoryScreen() {
                     <Text
                       style={[
                         styles.markerText,
-                        step.state === 'current' && { color: accent },
+                        step.state === 'current' && { color: accentText },
                       ]}
                     >
                       {step.position}
@@ -117,7 +115,7 @@ export function CategoryScreen() {
                 {step.state === 'current' && !productLocked(product.id) && (
                   <Text
                     testID={`category-next-${step.productId}`}
-                    style={[styles.upNext, { color: accent }]}
+                    style={[styles.upNext, { color: accentText }]}
                   >
                     {steps.some((s) => s.state === 'done') ? 'NEXT' : 'START HERE'}
                   </Text>
@@ -138,87 +136,88 @@ export function CategoryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  // The route down the left: a numbered marker per product, joined by a line,
-  // so the order reads as a sequence rather than as a list that happens to be
-  // in some order.
-  step: {
-    flexDirection: 'row',
-    columnGap: spacing.md,
-  },
-  rail: {
-    alignItems: 'center',
-    paddingTop: spacing.md,
-  },
-  marker: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    borderWidth: 2,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  markerText: {
-    ...typography.micro,
-    fontSize: 12,
-    color: colors.text.tertiary,
-  },
-  railLine: {
-    flex: 1,
-    width: 2,
-    backgroundColor: colors.border,
-    marginVertical: 4,
-  },
-  stepBody: {
-    flex: 1,
-  },
-  upNext: {
-    ...typography.micro,
-    // No negative bottom margin to tuck this against the card below it: the
-    // card is drawn after, so it covers the label's descenders and "NEXT"
-    // renders as "NFXT". Worth the extra few pixels.
-    marginTop: spacing.md,
-    marginBottom: 2,
-  },
-  content: {
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    borderRadius: radius.xl,
-    padding: spacing.lg,
-    marginTop: spacing.md,
-  },
-  headerIcon: {
-    ...typography.micro,
-    fontSize: 12,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    ...typography.h2,
-    color: colors.text.primary,
-  },
-  meta: {
-    ...typography.labelSmall,
-    color: colors.text.secondary,
-    marginTop: 3,
-  },
-  blurb: {
-    ...typography.body2,
-    color: colors.text.blurb,
-    marginTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  empty: {
-    ...typography.body1,
-    color: colors.text.body,
-    marginTop: spacing.lg,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    // The route down the left: a numbered marker per product, joined by a line,
+    // so the order reads as a sequence rather than as a list that happens to be
+    // in some order.
+    step: {
+      flexDirection: 'row',
+      columnGap: spacing.md,
+    },
+    rail: {
+      alignItems: 'center',
+      paddingTop: spacing.md,
+    },
+    marker: {
+      width: 26,
+      height: 26,
+      borderRadius: 13,
+      borderWidth: 2,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    markerText: {
+      ...typography.micro,
+      fontSize: 12,
+      color: colors.text.tertiary,
+    },
+    railLine: {
+      flex: 1,
+      width: 2,
+      backgroundColor: colors.border,
+      marginVertical: 4,
+    },
+    stepBody: {
+      flex: 1,
+    },
+    upNext: {
+      ...typography.micro,
+      // No negative bottom margin to tuck this against the card below it: the
+      // card is drawn after, so it covers the label's descenders and "NEXT"
+      // renders as "NFXT". Worth the extra few pixels.
+      marginTop: spacing.md,
+      marginBottom: 2,
+    },
+    content: {
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      borderRadius: radius.xl,
+      padding: spacing.lg,
+      marginTop: spacing.md,
+    },
+    headerIcon: {
+      ...typography.micro,
+      fontSize: 12,
+    },
+    headerText: {
+      flex: 1,
+    },
+    title: {
+      ...typography.h2,
+      color: colors.text.primary,
+    },
+    meta: {
+      ...typography.labelSmall,
+      color: colors.text.secondary,
+      marginTop: 3,
+    },
+    blurb: {
+      ...typography.body2,
+      color: colors.text.blurb,
+      marginTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    empty: {
+      ...typography.body1,
+      color: colors.text.body,
+      marginTop: spacing.lg,
+    },
+  });

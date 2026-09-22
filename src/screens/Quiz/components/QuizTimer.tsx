@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { colors, typography } from '../../../theme';
+import { typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface QuizTimerProps {
   /** Epoch ms the sitting began, or null when there is nothing to time. */
@@ -36,6 +38,7 @@ export function formatElapsed(ms: number): string {
  * rather than leaving it ticking behind the results.
  */
 export function QuizTimer({ startedAt, limitMs = null, onExpire }: QuizTimerProps) {
+  const styles = useThemedStyles(makeStyles);
   const [now, setNow] = useState(() => Date.now());
   // Guards the callback rather than the render: `onExpire` tears down this
   // component, but a re-render landing before that must not fire it twice and
@@ -81,17 +84,18 @@ export function QuizTimer({ startedAt, limitMs = null, onExpire }: QuizTimerProp
   );
 }
 
-const styles = StyleSheet.create({
-  timer: {
-    ...typography.label,
-    fontSize: 12,
-    color: colors.text.tertiary,
-    // Tabular-ish alignment: a fixed width stops the row jittering as digits
-    // change width each second.
-    minWidth: 42,
-    textAlign: 'right',
-  },
-  countdown: {
-    color: colors.text.primary,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    timer: {
+      ...typography.label,
+      fontSize: 12,
+      color: colors.text.tertiary,
+      // Tabular-ish alignment: a fixed width stops the row jittering as digits
+      // change width each second.
+      minWidth: 42,
+      textAlign: 'right',
+    },
+    countdown: {
+      color: colors.text.primary,
+    },
+  });

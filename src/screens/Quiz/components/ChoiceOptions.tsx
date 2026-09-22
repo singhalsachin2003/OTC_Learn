@@ -1,7 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Check, X } from 'lucide-react-native';
 
-import { colors, layout, radius, spacing, typography } from '../../../theme';
+import { layout, radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface ChoiceOptionsProps {
   options: readonly string[];
@@ -30,6 +32,8 @@ export function ChoiceOptions({
   correctIndex,
   onSelect,
 }: ChoiceOptionsProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View testID="quiz-options" style={styles.list}>
       {options.map((option, index) => {
@@ -87,67 +91,68 @@ export function ChoiceOptions({
   );
 }
 
-const styles = StyleSheet.create({
-  list: {
-    rowGap: spacing.sm,
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: spacing.md,
-    minHeight: layout.minTouchTarget,
-    paddingVertical: 12,
-    paddingHorizontal: spacing.md,
-    borderRadius: radius.large,
-    borderWidth: 2,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-  },
-  pressed: {
-    opacity: 0.8,
-  },
-  correct: {
-    borderColor: colors.success.strong,
-    backgroundColor: colors.success.bgSoft,
-  },
-  incorrect: {
-    borderColor: colors.error.strong,
-    backgroundColor: colors.error.bgSoft,
-  },
-  letter: {
-    ...typography.label,
-    fontSize: 12,
-    width: 22,
-    height: 22,
-    lineHeight: 22,
-    textAlign: 'center',
-    borderRadius: 11,
-    overflow: 'hidden',
-    color: colors.text.secondary,
-    backgroundColor: colors.track,
-  },
-  /** The same disc, laid out to centre an icon rather than a letter. */
-  letterMark: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  letterCorrect: {
-    color: colors.text.onDark,
-    backgroundColor: colors.success.strong,
-  },
-  letterIncorrect: {
-    color: colors.text.onDark,
-    backgroundColor: colors.error.strong,
-  },
-  label: {
-    ...typography.body2,
-    color: colors.text.primary,
-    flex: 1,
-  },
-  labelCorrect: {
-    color: colors.success.text,
-  },
-  labelIncorrect: {
-    color: colors.error.text,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    list: {
+      rowGap: spacing.sm,
+    },
+    option: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: spacing.md,
+      minHeight: layout.minTouchTarget,
+      paddingVertical: 12,
+      paddingHorizontal: spacing.md,
+      borderRadius: radius.large,
+      borderWidth: 2,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+    },
+    pressed: {
+      opacity: 0.8,
+    },
+    correct: {
+      borderColor: colors.success.strong,
+      backgroundColor: colors.success.bgSoft,
+    },
+    incorrect: {
+      borderColor: colors.error.strong,
+      backgroundColor: colors.error.bgSoft,
+    },
+    letter: {
+      ...typography.label,
+      fontSize: 12,
+      width: 22,
+      height: 22,
+      lineHeight: 22,
+      textAlign: 'center',
+      borderRadius: 11,
+      overflow: 'hidden',
+      color: colors.text.secondary,
+      backgroundColor: colors.track,
+    },
+    /** The same disc, laid out to centre an icon rather than a letter. */
+    letterMark: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    letterCorrect: {
+      color: colors.text.onDark,
+      backgroundColor: colors.success.strong,
+    },
+    letterIncorrect: {
+      color: colors.text.onDark,
+      backgroundColor: colors.error.strong,
+    },
+    label: {
+      ...typography.body2,
+      color: colors.text.primary,
+      flex: 1,
+    },
+    labelCorrect: {
+      color: colors.success.text,
+    },
+    labelIncorrect: {
+      color: colors.error.text,
+    },
+  });

@@ -4,14 +4,17 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Badge } from '../../../components/ui/Badge';
 import { Card } from '../../../components/ui/Card';
 import type { Lesson } from '../../../data/types';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { formatStepLabel } from '../../../utils/formatters';
 
 export interface LessonStepProps {
   lesson: Lesson;
   stepIndex: number;
   totalSteps: number;
-  accent: string;
+  /** The category accent in its small-text variant; see `theme/colors.ts`. */
+  accentText: string;
   accentSoft: string;
 }
 
@@ -20,15 +23,16 @@ export function LessonStep({
   lesson,
   stepIndex,
   totalSteps,
-  accent,
+  accentText,
   accentSoft,
 }: LessonStepProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Card testID="lesson-card" style={styles.card}>
       <Badge
         testID="lesson-step-tag"
         label={`STEP ${formatStepLabel(stepIndex, totalSteps).toUpperCase()}`}
-        color={accent}
+        color={accentText}
         backgroundColor={accentSoft}
       />
       <ScrollView
@@ -58,7 +62,7 @@ export function LessonStep({
               testID="lesson-callout"
               style={[styles.callout, { backgroundColor: accentSoft }]}
             >
-              <Text style={[styles.calloutLabel, { color: accent }]}>
+              <Text style={[styles.calloutLabel, { color: accentText }]}>
                 WORTH KNOWING
               </Text>
               <Text style={styles.calloutText}>{lesson.callout}</Text>
@@ -70,40 +74,41 @@ export function LessonStep({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    borderRadius: radius.xxl,
-    paddingVertical: 26,
-    paddingHorizontal: spacing.xxl - 2,
-  },
-  body: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.sm,
-  },
-  title: {
-    ...typography.h3,
-    lineHeight: 23.4,
-    color: colors.text.primary,
-    marginBottom: spacing.md,
-  },
-  content: {
-    ...typography.body1,
-    color: colors.text.body,
-  },
-  callout: {
-    borderRadius: radius.medium,
-    padding: spacing.md,
-    marginTop: spacing.lg,
-  },
-  calloutLabel: {
-    ...typography.micro,
-    marginBottom: 5,
-  },
-  calloutText: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      flex: 1,
+      borderRadius: radius.xxl,
+      paddingVertical: 26,
+      paddingHorizontal: spacing.xxl - 2,
+    },
+    body: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.sm,
+    },
+    title: {
+      ...typography.h3,
+      lineHeight: 23.4,
+      color: colors.text.primary,
+      marginBottom: spacing.md,
+    },
+    content: {
+      ...typography.body1,
+      color: colors.text.body,
+    },
+    callout: {
+      borderRadius: radius.medium,
+      padding: spacing.md,
+      marginTop: spacing.lg,
+    },
+    calloutLabel: {
+      ...typography.micro,
+      marginBottom: 5,
+    },
+    calloutText: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+  });

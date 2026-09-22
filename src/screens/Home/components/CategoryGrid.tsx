@@ -9,12 +9,15 @@ import type { Category } from '../../../data/types';
 import { useAccess } from '../../../hooks/useAccess';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
-import { colors, getCategoryColors, spacing, typography } from '../../../theme';
+import { spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 const GUTTER = spacing.md;
 
 /** Two-column grid of every category, each with a mastery ring. */
 export function CategoryGrid() {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.grid}>
       {categories.map((category) => (
@@ -27,10 +30,12 @@ export function CategoryGrid() {
 }
 
 function CategoryCard({ category }: { category: Category }) {
+  const { colors, getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToCategory } = useNavigation();
   const { categoryPercent, masteredInCategory } = useProgress();
   const { categoryLocked } = useAccess();
-  const { accent } = getCategoryColors(category.id);
+  const { accent, text: accentText } = getCategoryColors(category.id);
 
   const locked = categoryLocked(category.id);
   const total = getProductsByCategory(category.id).length;
@@ -61,7 +66,7 @@ function CategoryCard({ category }: { category: Category }) {
           fillColor={accent}
           animated={false}
         >
-          <Text style={[styles.icon, { color: accent }]}>{category.icon}</Text>
+          <Text style={[styles.icon, { color: accentText }]}>{category.icon}</Text>
         </Ring>
         {/* The card still opens: seeing the route through an asset class is
             the case for paying for it, and a card that refuses to open says
@@ -78,39 +83,40 @@ function CategoryCard({ category }: { category: Category }) {
   );
 }
 
-const styles = StyleSheet.create({
-  // Half-gutter cells inside a negatively-inset row give an even 12px gap on
-  // both axes without relying on `gap` percentage resolution.
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: -GUTTER / 2,
-  },
-  cell: {
-    width: '50%',
-    paddingHorizontal: GUTTER / 2,
-    paddingBottom: GUTTER,
-  },
-  card: {
-    flex: 1,
-    rowGap: 10,
-  },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-  icon: {
-    ...typography.micro,
-    fontSize: 11,
-  },
-  name: {
-    ...typography.label,
-    fontSize: 14,
-    color: colors.text.primary,
-  },
-  subtext: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    // Half-gutter cells inside a negatively-inset row give an even 12px gap on
+    // both axes without relying on `gap` percentage resolution.
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -GUTTER / 2,
+    },
+    cell: {
+      width: '50%',
+      paddingHorizontal: GUTTER / 2,
+      paddingBottom: GUTTER,
+    },
+    card: {
+      flex: 1,
+      rowGap: 10,
+    },
+    topRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+    },
+    icon: {
+      ...typography.micro,
+      fontSize: 11,
+    },
+    name: {
+      ...typography.label,
+      fontSize: 14,
+      color: colors.text.primary,
+    },
+    subtext: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+    },
+  });

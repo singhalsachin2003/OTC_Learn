@@ -303,9 +303,50 @@ export function noteToRow(productId: string, note: Note): NoteRow {
  * deliberately deleted, and must never drop one they are still editing on
  * another device. A tombstone does both, where an absent row could do neither.
  */
+/**
+ * The separator a kept-both note carries between the two versions.
+ *
+ * Exported so the notes UI and its tests can recognise one rather than
+ * pattern-matching a string literal in three places.
+ */
+export const NOTE_CONFLICT_MARKER = '--- also edited elsewhere ---';
+
+/** The distinct versions a note body holds, one if it has never conflicted. */
+function noteSegments(body: string): string[] {
+  return body.split(NOTE_CONFLICT_MARKER).map((part) => part.trim());
+}
+
+/**
+ * Notes are the one thing here that last-write-wins must not be allowed to
+ * decide alone.
+ *
+ * Every other rule in this file merges *derived* state: a counter that both
+ * devices computed from the same history, a set that only grows, a mastery
+ * figure that can be recalculated by answering more questions. Losing the
+ * wrong side of any of those costs the user nothing they cannot earn back.
+ *
+ * A note is the only thing in the app the user wrote. Edit one on a phone
+ * while offline, edit the same one on a tablet, sync, and plain last-write-wins
+ * destroys a paragraph that exists nowhere else — silently, because sync
+ * reports success. So when both sides have changed and neither is a deletion,
+ * this keeps both and lets the reader delete the half they do not want. It is
+ * uglier than picking a winner, and it is the only version that cannot lose
+ * something irreplaceable.
+ *
+ * "Both sides changed" is judged against `lastSyncedAt` — the watermark of the
+ * last agreed state. An edit older than that watermark is one this device has
+ * already seen and reconciled, so it is not a conflict and still loses
+ * normally. Passing `null` (no successful sync yet) treats every disagreement
+ * as a conflict, which is the safe direction on a first sync.
+ *
+ * Deletions still win outright in both directions. A tombstone is an explicit
+ * instruction rather than a competing draft, and resurrecting a note somebody
+ * deliberately deleted — every time they sync — is its own kind of broken.
+ */
 export function mergeNotes(
   local: Readonly<Record<string, Note | undefined>>,
   remote: readonly NoteRow[],
+  lastSyncedAt: number | null = null,
 ): Record<string, Note> {
   const merged: Record<string, Note> = {};
   for (const [id, note] of Object.entries(local)) {
@@ -314,16 +355,71 @@ export function mergeNotes(
     }
   }
 
+  const watermark = lastSyncedAt ?? 0;
+
   for (const row of remote) {
     const mine = merged[row.product_id];
     const theirUpdatedAt = msFrom(row.updated_at);
 
-    if (mine !== undefined && mine.updatedAt >= theirUpdatedAt) {
+    // A tombstone: they deleted it. Deletion wins whichever side is newer,
+    // because it is an instruction and not a draft.
+    if (row.body === null) {
+      if (mine === undefined || theirUpdatedAt >= mine.updatedAt) {
+        delete merged[row.product_id];
+      }
       continue;
     }
 
-    if (row.body === null) {
-      delete merged[row.product_id];
+    if (mine === undefined) {
+      merged[row.product_id] = {
+        body: row.body,
+        updatedOn: row.updated_on,
+        updatedAt: theirUpdatedAt,
+      };
+      continue;
+    }
+
+    // Identical text is not a conflict however the timestamps fell out.
+    if (mine.body === row.body) {
+      if (theirUpdatedAt > mine.updatedAt) {
+        merged[row.product_id] = {
+          body: row.body,
+          updatedOn: row.updated_on,
+          updatedAt: theirUpdatedAt,
+        };
+      }
+      continue;
+    }
+
+    // A body this rule has already merged once contains their side as one of
+    // its segments. Without this, every subsequent sync sees two bodies that
+    // differ, calls it a fresh conflict, and appends their side again — a note
+    // that grows a copy of itself every time the user opens the app. Stability
+    // under repeat is the property that matters most in this file, and it is
+    // the one a kept-both rule is most likely to break.
+    if (noteSegments(mine.body).includes(row.body)) {
+      continue;
+    }
+
+    const bothMoved = mine.updatedAt > watermark && theirUpdatedAt > watermark;
+
+    if (bothMoved) {
+      // Newer first, so the reader sees their most recent thinking at the top.
+      const [first, second] =
+        mine.updatedAt >= theirUpdatedAt
+          ? [mine.body, row.body]
+          : [row.body, mine.body];
+
+      merged[row.product_id] = {
+        body: `${first}\n\n${NOTE_CONFLICT_MARKER}\n\n${second}`,
+        updatedOn:
+          mine.updatedAt >= theirUpdatedAt ? mine.updatedOn : row.updated_on,
+        updatedAt: Math.max(mine.updatedAt, theirUpdatedAt),
+      };
+      continue;
+    }
+
+    if (mine.updatedAt >= theirUpdatedAt) {
       continue;
     }
 
@@ -423,6 +519,10 @@ export function settingsToRow(
  * `dailyReminder` is carried like the rest, but see the note in
  * `utils/notifications.ts` — the OS is the source of truth for whether a
  * notification can actually be shown, and `syncReminder` reconciles on launch.
+ *
+ * `theme` is the exception to whole-row: it has no column, and it is a property
+ * of the device rather than of the account. A phone in dark mode and a tablet in
+ * light is the ordinary case, so accepting a remote row keeps the local choice.
  */
 export function mergeSettings(
   local: StoredSettings,
@@ -438,6 +538,7 @@ export function mergeSettings(
     haptics: remote.haptics,
     dailyReminder: remote.daily_reminder,
     sessionSize: clampSessionSize(remote.session_size),
+    theme: local.theme,
   };
 }
 
@@ -558,6 +659,14 @@ export interface LocalSnapshot {
   profileName: string | null;
   profileUpdatedAt: number;
   bookmarks: BookmarkMap;
+  /**
+   * When this device last completed a sync, or null if it never has.
+   *
+   * Only `mergeNotes` reads it, and only to tell a genuine two-sided edit from
+   * an old edit the other device has already seen. Everything else here merges
+   * without needing to know when agreement last held.
+   */
+  lastSyncedAt: number | null;
 }
 
 /**
@@ -568,7 +677,7 @@ export interface LocalSnapshot {
  * snapshot has resolved every one of those, and saying so in the type stops
  * each caller from re-proving it.
  */
-export interface SyncedSnapshot extends LocalSnapshot {
+export interface SyncedSnapshot extends Omit<LocalSnapshot, 'lastSyncedAt'> {
   questionHistory: Record<string, QuestionStat>;
   notes: Record<string, Note>;
 }
@@ -621,7 +730,7 @@ export function mergeSnapshot(
       remote.questionHistory,
     ),
     reviewQueue: mergeReviewQueue(local.reviewQueue, remote.reviewQueue),
-    notes: mergeNotes(local.notes, remote.notes),
+    notes: mergeNotes(local.notes, remote.notes, local.lastSyncedAt),
     studyDays: mergeStringSet(local.studyDays, remote.studyDays),
     achievements: mergeStringSet(local.achievements, remote.achievements),
     examResults: mergeExamResults(local.examResults, remote.examResults),

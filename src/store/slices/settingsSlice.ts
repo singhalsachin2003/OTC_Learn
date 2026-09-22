@@ -4,6 +4,7 @@ import {
   clampSessionSize,
   defaultSettings,
   type StoredSettings,
+  type ThemePreference,
 } from '../../utils/storage';
 
 export interface SettingsState {
@@ -22,7 +23,10 @@ export const initialSettingsState: SettingsState = {
   hydrated: false,
 };
 
-export type ToggleableSetting = Exclude<keyof StoredSettings, 'sessionSize'>;
+export type ToggleableSetting = Exclude<
+  keyof StoredSettings,
+  'sessionSize' | 'theme'
+>;
 
 /** See the note in `progressSlice` — slices never import thunks. */
 const settingsSlice = createSlice({
@@ -35,6 +39,10 @@ const settingsSlice = createSlice({
 
     setSessionSize(state, action: PayloadAction<number>) {
       state.settings.sessionSize = clampSessionSize(action.payload);
+    },
+
+    setTheme(state, action: PayloadAction<ThemePreference>) {
+      state.settings.theme = action.payload;
     },
 
     /** An empty or blank name clears back to the unnamed state. */
@@ -60,6 +68,7 @@ const settingsSlice = createSlice({
 export const {
   toggleSetting,
   setSessionSize,
+  setTheme,
   setName,
   setSettings,
   setHydrated,

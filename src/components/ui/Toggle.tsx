@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 
-import { colors, radius } from '../../theme';
+import { radius } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const TRACK_WIDTH = 46;
 const TRACK_HEIGHT = 28;
@@ -24,18 +27,21 @@ export function Toggle({
   testID,
   accessibilityLabel,
 }: ToggleProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const reducedMotion = useReducedMotion();
   const anim = useRef(new Animated.Value(value ? 1 : 0)).current;
 
   useEffect(() => {
     const animation = Animated.timing(anim, {
       toValue: value ? 1 : 0,
-      duration: 180,
+      duration: reducedMotion ? 0 : 180,
       // Interpolating backgroundColor rules out the native driver.
       useNativeDriver: false,
     });
     animation.start();
     return () => animation.stop();
-  }, [value, anim]);
+  }, [value, anim, reducedMotion]);
 
   const translateX = anim.interpolate({
     inputRange: [0, 1],
@@ -65,25 +71,26 @@ export function Toggle({
   );
 }
 
-const styles = StyleSheet.create({
-  track: {
-    width: TRACK_WIDTH,
-    height: TRACK_HEIGHT,
-    borderRadius: radius.pill,
-    justifyContent: 'center',
-  },
-  knob: {
-    width: KNOB,
-    height: KNOB,
-    borderRadius: KNOB / 2,
-    backgroundColor: colors.card,
-    shadowColor: colors.text.primary,
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 2,
-  },
-  disabled: {
-    opacity: 0.4,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    track: {
+      width: TRACK_WIDTH,
+      height: TRACK_HEIGHT,
+      borderRadius: radius.pill,
+      justifyContent: 'center',
+    },
+    knob: {
+      width: KNOB,
+      height: KNOB,
+      borderRadius: KNOB / 2,
+      backgroundColor: colors.card,
+      shadowColor: colors.text.primary,
+      shadowOpacity: 0.25,
+      shadowRadius: 3,
+      shadowOffset: { width: 0, height: 1 },
+      elevation: 2,
+    },
+    disabled: {
+      opacity: 0.4,
+    },
+  });

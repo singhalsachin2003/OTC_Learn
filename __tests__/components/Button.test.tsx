@@ -1,11 +1,12 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, screen } from '@testing-library/react-native';
 
 import { Button } from '../../src/components/ui/Button';
+import { renderWithStore } from '../helpers/renderWithStore';
 
 describe('Button', () => {
   it('renders its label and fires onPress', async () => {
     const onPress = jest.fn();
-    await render(<Button label="Next" onPress={onPress} testID="next" />);
+    await renderWithStore(<Button label="Next" onPress={onPress} testID="next" />);
 
     expect(screen.getByText('Next')).toBeTruthy();
 
@@ -16,7 +17,9 @@ describe('Button', () => {
 
   it('does not fire onPress while disabled', async () => {
     const onPress = jest.fn();
-    await render(<Button label="Back" onPress={onPress} disabled testID="back" />);
+    await renderWithStore(
+      <Button label="Back" onPress={onPress} disabled testID="back" />,
+    );
 
     await fireEvent.press(screen.getByTestId('back'));
 
@@ -24,7 +27,7 @@ describe('Button', () => {
   });
 
   it('exposes its disabled state to assistive tech', async () => {
-    await render(
+    await renderWithStore(
       <Button label="Back" onPress={jest.fn()} disabled testID="back" />,
     );
 
@@ -32,13 +35,13 @@ describe('Button', () => {
   });
 
   it('meets the 48dp minimum touch target', async () => {
-    await render(<Button label="Tap" onPress={jest.fn()} testID="tap" />);
+    await renderWithStore(<Button label="Tap" onPress={jest.fn()} testID="tap" />);
 
     expect(screen.getByTestId('tap')).toHaveStyle({ minHeight: 48 });
   });
 
   it('applies the flex weight used in button rows', async () => {
-    await render(
+    await renderWithStore(
       <Button label="Wide" onPress={jest.fn()} flex={2} testID="wide" />,
     );
 
@@ -46,7 +49,7 @@ describe('Button', () => {
   });
 
   it('renders the success and danger variants used by the quiz', async () => {
-    const { rerender } = await render(
+    const { rerender } = await renderWithStore(
       <Button label="True" variant="success" onPress={jest.fn()} testID="v" />,
     );
     const successStyle = screen.getByTestId('v').props.style;

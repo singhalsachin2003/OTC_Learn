@@ -6,7 +6,9 @@ import { getProductById } from '../../../data/products';
 import { useAccess } from '../../../hooks/useAccess';
 import { useNavigation } from '../../../hooks/useNavigation';
 import { useProgress } from '../../../hooks/useProgress';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 import { MASTERY_COMPLETE } from '../../../utils/mastery';
 
 /**
@@ -23,6 +25,8 @@ import { MASTERY_COMPLETE } from '../../../utils/mastery';
  * the app, purely because it was authored second.
  */
 export function ResumeCard() {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToProduct } = useNavigation();
   const { progressFor, masteryFor } = useProgress();
   const { productLocked } = useAccess();
@@ -77,48 +81,49 @@ export function ResumeCard() {
   );
 }
 
-const styles = StyleSheet.create({
-  eyebrow: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: spacing.xxl,
-    marginBottom: spacing.sm,
-  },
-  card: {
-    backgroundColor: colors.dark,
-    borderRadius: radius.xl,
-    padding: spacing.lg,
-  },
-  pressed: {
-    opacity: 0.9,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-  },
-  status: {
-    ...typography.micro,
-    color: colors.text.onDarkMuted,
-  },
-  percent: {
-    ...typography.micro,
-    fontSize: 11,
-    color: colors.text.onDarkMuted,
-  },
-  name: {
-    ...typography.h3,
-    color: colors.text.onDark,
-    marginTop: spacing.sm,
-  },
-  hook: {
-    ...typography.labelSmall,
-    color: colors.text.onDarkMuted,
-    marginTop: 4,
-  },
-  bar: {
-    marginTop: spacing.md,
-    // The dark card needs a lighter track than the default page background.
-    backgroundColor: 'rgba(255,255,255,0.22)',
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    eyebrow: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: spacing.xxl,
+      marginBottom: spacing.sm,
+    },
+    card: {
+      backgroundColor: colors.dark,
+      borderRadius: radius.xl,
+      padding: spacing.lg,
+    },
+    pressed: {
+      opacity: 0.9,
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+    },
+    status: {
+      ...typography.micro,
+      color: colors.text.onDarkMuted,
+    },
+    percent: {
+      ...typography.micro,
+      fontSize: 11,
+      color: colors.text.onDarkMuted,
+    },
+    name: {
+      ...typography.h3,
+      color: colors.text.onDark,
+      marginTop: spacing.sm,
+    },
+    hook: {
+      ...typography.labelSmall,
+      color: colors.text.onDarkMuted,
+      marginTop: 4,
+    },
+    bar: {
+      marginTop: spacing.md,
+      // The dark card needs a lighter track than the default page background.
+      backgroundColor: 'rgba(255,255,255,0.22)',
+    },
+  });

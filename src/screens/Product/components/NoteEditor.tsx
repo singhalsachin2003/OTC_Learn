@@ -9,7 +9,9 @@ import {
   NOTE_MAX_LENGTH,
   remainingLength,
 } from '../../../utils/notes';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface NoteEditorProps {
   /** `productId`, or `productId#term` for a note on a key term. */
@@ -31,6 +33,8 @@ export function NoteEditor({
   placeholder = 'What do you want to remember about this one?',
   testID = 'note-editor',
 }: NoteEditorProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const saved = useAppSelector((state) => state.notes.byProduct[noteKey]);
   const [draft, setDraft] = useState(saved?.body ?? '');
@@ -80,27 +84,28 @@ export function NoteEditor({
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    ...typography.body2,
-    color: colors.text.body,
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    minHeight: 96,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: spacing.sm,
-    columnGap: spacing.sm,
-  },
-  counter: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    flexShrink: 1,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    input: {
+      ...typography.body2,
+      color: colors.text.body,
+      backgroundColor: colors.card,
+      borderRadius: radius.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      minHeight: 96,
+    },
+    footer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: spacing.sm,
+      columnGap: spacing.sm,
+    },
+    counter: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      flexShrink: 1,
+    },
+  });

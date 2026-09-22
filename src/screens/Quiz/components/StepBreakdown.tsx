@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { QuizAnswerRecord } from '../../../store/slices/quizSlice';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 /** Lesson step titles, in order. Every product uses the same five-step arc. */
 const STEP_NAMES = [
@@ -27,6 +29,8 @@ export interface StepBreakdownProps {
  * zero, which would read as a failure the user never had a chance at.
  */
 export function StepBreakdown({ answers, accent }: StepBreakdownProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   if (answers.length === 0) {
     return null;
   }
@@ -76,47 +80,48 @@ export function StepBreakdown({ answers, accent }: StepBreakdownProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-    marginTop: spacing.lg,
-  },
-  title: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginBottom: spacing.md,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    columnGap: spacing.md,
-    paddingVertical: 7,
-  },
-  name: {
-    ...typography.body2,
-    color: colors.text.body,
-    flexShrink: 1,
-  },
-  marks: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 5,
-  },
-  pip: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-  },
-  score: {
-    ...typography.labelSmall,
-    color: colors.text.tertiary,
-    marginLeft: 4,
-    minWidth: 26,
-    textAlign: 'right',
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    card: {
+      backgroundColor: colors.card,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.lg,
+      marginTop: spacing.lg,
+    },
+    title: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginBottom: spacing.md,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      columnGap: spacing.md,
+      paddingVertical: 7,
+    },
+    name: {
+      ...typography.body2,
+      color: colors.text.body,
+      flexShrink: 1,
+    },
+    marks: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: 5,
+    },
+    pip: {
+      width: 7,
+      height: 7,
+      borderRadius: 4,
+    },
+    score: {
+      ...typography.labelSmall,
+      color: colors.text.tertiary,
+      marginLeft: 4,
+      minWidth: 26,
+      textAlign: 'right',
+    },
+  });

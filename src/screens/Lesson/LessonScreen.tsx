@@ -9,7 +9,9 @@ import { getProductById } from '../../data/products';
 import { useHapticsEnabled, useSelectedProductId } from '../../hooks/useAppState';
 import { useAccess } from '../../hooks/useAccess';
 import { useNavigation } from '../../hooks/useNavigation';
-import { colors, getCategoryColors, spacing, typography } from '../../theme';
+import { spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { track } from '../../utils/analytics';
 import { hapticSelection } from '../../utils/haptics';
 import {
@@ -20,8 +22,11 @@ import {
 } from '../../utils/swipe';
 import { LessonStep } from './components/LessonStep';
 import { StepIndicator } from './components/StepIndicator';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 export function LessonScreen() {
+  const { getCategoryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const productId = useSelectedProductId();
   const { goToProduct, goToQuiz } = useNavigation();
   const haptics = useHapticsEnabled();
@@ -31,6 +36,7 @@ export function LessonScreen() {
   // and every entry point resets it to the first step.
   const [stepIndex, setStepIndex] = useState(0);
   const drag = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     setStepIndex(0);
@@ -38,16 +44,25 @@ export function LessonScreen() {
 
   const product = getProductById(productId);
   const category = getCategoryById(product?.categoryId ?? null);
-  const { accent, soft } = getCategoryColors(category?.id ?? '');
+  const { accent, soft, text: accentText } = getCategoryColors(category?.id ?? '');
   const totalSteps = product?.lessons.length ?? 0;
 
   const settle = useCallback(() => {
+    // The card follows the finger either way — that is direct manipulation, and
+    // removing it would remove the gesture rather than the animation. What
+    // reduce-motion drops is the bounce after the finger lifts, which is the
+    // part the setting exists to suppress.
+    if (reducedMotion) {
+      drag.setValue({ x: 0, y: 0 });
+      return;
+    }
+
     Animated.spring(drag, {
       toValue: { x: 0, y: 0 },
       useNativeDriver: true,
       bounciness: 6,
     }).start();
-  }, [drag]);
+  }, [drag, reducedMotion]);
 
   const goToStep = useCallback(
     (next: number) => {
@@ -172,7 +187,7 @@ export function LessonScreen() {
             lesson={lesson}
             stepIndex={stepIndex}
             totalSteps={totalSteps}
-            accent={accent}
+            accentText={accentText}
             accentSoft={soft}
           />
         </Animated.View>
@@ -209,30 +224,31 @@ export function LessonScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.md,
-  },
-  productName: {
-    ...typography.h2,
-    color: colors.text.primary,
-    marginTop: spacing.md,
-    marginBottom: 14,
-  },
-  card: {
-    flex: 1,
-  },
-  hint: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-  },
-  actions: {
-    flexDirection: 'row',
-    columnGap: 10,
-    marginTop: 14,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    body: {
+      flex: 1,
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    productName: {
+      ...typography.h2,
+      color: colors.text.primary,
+      marginTop: spacing.md,
+      marginBottom: 14,
+    },
+    card: {
+      flex: 1,
+    },
+    hint: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
+    actions: {
+      flexDirection: 'row',
+      columnGap: 10,
+      marginTop: 14,
+    },
+  });

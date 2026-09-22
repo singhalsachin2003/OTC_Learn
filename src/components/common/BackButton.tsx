@@ -1,7 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
 
-import { colors, layout, spacing, typography } from '../../theme';
+import { layout, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 
 export interface BackButtonProps {
   /** Destination name, rendered after the arrow — e.g. "Home", "Exit quiz". */
@@ -21,6 +23,8 @@ export function BackButton({
   onPress,
   testID,
 }: BackButtonProps) {
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       testID={testID}
@@ -52,23 +56,24 @@ export function BackButton({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
-    minHeight: layout.minTouchTarget / 2,
-    paddingVertical: spacing.xs,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 3,
-  },
-  label: {
-    ...typography.label,
-    color: colors.text.secondary,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    container: {
+      alignSelf: 'flex-start',
+      justifyContent: 'center',
+      minHeight: layout.minTouchTarget / 2,
+      paddingVertical: spacing.xs,
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      columnGap: 3,
+    },
+    label: {
+      ...typography.label,
+      color: colors.text.secondary,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+  });

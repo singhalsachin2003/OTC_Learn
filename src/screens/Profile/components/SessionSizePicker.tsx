@@ -2,7 +2,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useAppDispatch, useSettings } from '../../../hooks/useAppState';
 import { updateSessionSize } from '../../../store/thunks/settingsThunks';
-import { colors, radius, spacing, typography } from '../../../theme';
+import { radius, spacing, typography } from '../../../theme';
+import { useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 /**
  * Offered sizes. Twelve was "the lot" when every bank held exactly twelve; a
@@ -19,6 +21,7 @@ const SIZES = [4, 6, 8, 12] as const;
  * someone revising before an interview wants all twelve.
  */
 export function SessionSizePicker() {
+  const styles = useThemedStyles(makeStyles);
   const dispatch = useAppDispatch();
   const { sessionSize } = useSettings();
 
@@ -58,53 +61,54 @@ export function SessionSizePicker() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
-    borderBottomColor: colors.border,
-  },
-  text: {
-    marginBottom: spacing.md,
-  },
-  name: {
-    ...typography.body2,
-    color: colors.text.primary,
-  },
-  note: {
-    ...typography.labelSmall,
-    color: colors.text.muted,
-    marginTop: 3,
-  },
-  options: {
-    flexDirection: 'row',
-    columnGap: spacing.sm,
-  },
-  option: {
-    flex: 1,
-    // 16 + 16 + the 17px label line-height clears the app's 48dp touch
-    // target — every other row on this screen (SettingsRows, DisclosureRow,
-    // Toggle's hitSlop) already reaches it; this was the one exception.
-    paddingVertical: 16,
-    borderRadius: radius.large,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    alignItems: 'center',
-  },
-  optionActive: {
-    backgroundColor: colors.dark,
-    borderColor: colors.dark,
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  optionText: {
-    ...typography.label,
-    fontSize: 13,
-    color: colors.text.primary,
-  },
-  optionTextActive: {
-    color: colors.text.onDark,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: 14,
+      borderBottomWidth: StyleSheet.hairlineWidth * 2,
+      borderBottomColor: colors.border,
+    },
+    text: {
+      marginBottom: spacing.md,
+    },
+    name: {
+      ...typography.body2,
+      color: colors.text.primary,
+    },
+    note: {
+      ...typography.labelSmall,
+      color: colors.text.muted,
+      marginTop: 3,
+    },
+    options: {
+      flexDirection: 'row',
+      columnGap: spacing.sm,
+    },
+    option: {
+      flex: 1,
+      // 16 + 16 + the 17px label line-height clears the app's 48dp touch
+      // target — every other row on this screen (SettingsRows, DisclosureRow,
+      // Toggle's hitSlop) already reaches it; this was the one exception.
+      paddingVertical: 16,
+      borderRadius: radius.large,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
+      alignItems: 'center',
+    },
+    optionActive: {
+      backgroundColor: colors.primaryFill,
+      borderColor: colors.primaryFill,
+    },
+    pressed: {
+      opacity: 0.7,
+    },
+    optionText: {
+      ...typography.label,
+      fontSize: 13,
+      color: colors.text.primary,
+    },
+    optionTextActive: {
+      color: colors.text.onPrimary,
+    },
+  });

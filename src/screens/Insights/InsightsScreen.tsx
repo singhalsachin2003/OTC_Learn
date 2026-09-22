@@ -10,14 +10,9 @@ import { useNavigation } from '../../hooks/useNavigation';
 import { useProgress } from '../../hooks/useProgress';
 import type { LessonStepNumber } from '../../data/types';
 import type { RecommendationReason } from '../../utils/insights';
-import {
-  colors,
-  getCategoryColors,
-  masteryColors,
-  radius,
-  spacing,
-  typography,
-} from '../../theme';
+import { radius, spacing, typography } from '../../theme';
+import { useTheme, useThemedStyles } from '../../hooks/useTheme';
+import type { Palette } from '../../theme/colors';
 import { AccuracyRow } from './components/AccuracyRow';
 
 /**
@@ -54,6 +49,8 @@ const REASON_LABELS: Record<RecommendationReason, string> = {
 };
 
 export function InsightsScreen() {
+  const { colors, getCategoryColors, masteryColors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { goToTab, goToProduct } = useNavigation();
   const { accuracyPercent, questionsAnswered } = useProgress();
   const {
@@ -226,6 +223,7 @@ function Section({
   blurb: string;
   children: React.ReactNode;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.section}>
       <Text accessibilityRole="header" style={styles.sectionTitle}>
@@ -246,6 +244,7 @@ function Band({
   count: number;
   tint: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View
       style={styles.band}
@@ -259,95 +258,96 @@ function Band({
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    padding: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  title: {
-    ...typography.h1,
-    color: colors.text.primary,
-    marginTop: spacing.sm,
-  },
-  subtitle: {
-    ...typography.body2,
-    color: colors.text.secondary,
-    marginTop: spacing.xs,
-    marginBottom: spacing.lg,
-  },
-  statRow: {
-    flexDirection: 'row',
-    columnGap: spacing.sm,
-    marginBottom: spacing.xl,
-  },
-  section: {
-    marginBottom: spacing.xl,
-  },
-  sectionTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-  },
-  sectionBlurb: {
-    ...typography.body2,
-    color: colors.text.secondary,
-    marginTop: spacing.xs,
-    marginBottom: spacing.md,
-  },
-  empty: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-    marginBottom: spacing.xl,
-  },
-  emptyTitle: {
-    ...typography.h3,
-    color: colors.text.primary,
-    marginBottom: spacing.xs,
-  },
-  emptyBody: {
-    ...typography.body2,
-    color: colors.text.body,
-  },
-  recommendation: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  recommendationName: {
-    ...typography.bodyStrong,
-    color: colors.text.primary,
-  },
-  recommendationReason: {
-    ...typography.body2,
-    color: colors.text.secondary,
-  },
-  bands: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: spacing.sm,
-  },
-  band: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '50%',
-    columnGap: spacing.xs,
-  },
-  bandDot: {
-    width: 8,
-    height: 8,
-    borderRadius: radius.pill,
-  },
-  bandCount: {
-    ...typography.bodyStrong,
-    color: colors.text.primary,
-  },
-  bandLabel: {
-    ...typography.body2,
-    color: colors.text.secondary,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    content: {
+      padding: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    title: {
+      ...typography.h1,
+      color: colors.text.primary,
+      marginTop: spacing.sm,
+    },
+    subtitle: {
+      ...typography.body2,
+      color: colors.text.secondary,
+      marginTop: spacing.xs,
+      marginBottom: spacing.lg,
+    },
+    statRow: {
+      flexDirection: 'row',
+      columnGap: spacing.sm,
+      marginBottom: spacing.xl,
+    },
+    section: {
+      marginBottom: spacing.xl,
+    },
+    sectionTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+    },
+    sectionBlurb: {
+      ...typography.body2,
+      color: colors.text.secondary,
+      marginTop: spacing.xs,
+      marginBottom: spacing.md,
+    },
+    empty: {
+      backgroundColor: colors.card,
+      borderRadius: radius.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.lg,
+      marginBottom: spacing.xl,
+    },
+    emptyTitle: {
+      ...typography.h3,
+      color: colors.text.primary,
+      marginBottom: spacing.xs,
+    },
+    emptyBody: {
+      ...typography.body2,
+      color: colors.text.body,
+    },
+    recommendation: {
+      backgroundColor: colors.card,
+      borderRadius: radius.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.sm,
+    },
+    recommendationName: {
+      ...typography.bodyStrong,
+      color: colors.text.primary,
+    },
+    recommendationReason: {
+      ...typography.body2,
+      color: colors.text.secondary,
+    },
+    bands: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      rowGap: spacing.sm,
+    },
+    band: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '50%',
+      columnGap: spacing.xs,
+    },
+    bandDot: {
+      width: 8,
+      height: 8,
+      borderRadius: radius.pill,
+    },
+    bandCount: {
+      ...typography.bodyStrong,
+      color: colors.text.primary,
+    },
+    bandLabel: {
+      ...typography.body2,
+      color: colors.text.secondary,
+    },
+  });

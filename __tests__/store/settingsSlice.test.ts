@@ -120,6 +120,7 @@ describe('settingsSlice hydration', () => {
       haptics: false,
       dailyReminder: true,
       sessionSize: 10,
+      theme: 'dark' as const,
     };
 
     expect(reducer(initialSettingsState, setSettings(stored)).settings).toEqual(

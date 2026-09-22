@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colors } from '../../theme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useTheme } from '../../hooks/useTheme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -42,17 +43,18 @@ export function Ring({
   size,
   innerSize,
   percent,
-  fillColor = colors.progressFill,
+  fillColor,
   // `colors.track` is oklch(92%) and was picked against a white card; on the
   // oklch(93%) page background it lands at 1.03:1 and the ring disappears,
   // leaving a percentage floating in space. This reads on both grounds.
-  trackColor = colors.line.base,
+  trackColor,
   children,
   animated = true,
   style,
   testID,
   accessibilityLabel,
 }: RingProps) {
+  const { colors } = useTheme();
   const stroke = (size - innerSize) / 2;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -63,6 +65,7 @@ export function Ring({
 
   // Starts at the target when animation is off, so a list of rings paints in
   // its final state on first frame rather than sweeping twenty times at once.
+  const reducedMotion = useReducedMotion();
   const sweep = useRef(new Animated.Value(animated ? 0 : clamped)).current;
   const target = useRef(animated ? 0 : clamped);
 
@@ -70,7 +73,9 @@ export function Ring({
     // Nothing to sweep between. Worth checking rather than animating anyway:
     // an untouched catalogue is a screen full of rings at zero, and each one
     // would otherwise run a 650ms animation from 0 to 0 on every mount.
-    if (!animated || target.current === clamped) {
+    // Reduce-motion turns the sweep off entirely: a ring that fills itself
+    // is decoration, and the final state carries the same information.
+    if (!animated || reducedMotion || target.current === clamped) {
       sweep.setValue(clamped);
       target.current = clamped;
       return;
@@ -87,7 +92,7 @@ export function Ring({
     });
     animation.start();
     return () => animation.stop();
-  }, [clamped, animated, sweep]);
+  }, [clamped, animated, reducedMotion, sweep]);
 
   const dashoffset = sweep.interpolate({
     inputRange: [0, 100],
@@ -107,7 +112,7 @@ export function Ring({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={trackColor}
+          stroke={trackColor ?? colors.line.base}
           strokeWidth={stroke}
           fill="none"
         />
@@ -116,7 +121,7 @@ export function Ring({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={fillColor}
+            stroke={fillColor ?? colors.progressFill}
             strokeWidth={stroke}
             strokeLinecap="round"
             fill="none"

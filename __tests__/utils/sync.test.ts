@@ -1,4 +1,5 @@
 import {
+  NOTE_CONFLICT_MARKER,
   bookmarkedIds,
   bookmarksToRows,
   examResultToRow,
@@ -278,16 +279,87 @@ describe('mergeNotes', () => {
     updated_at: isoFrom(NEW),
   };
 
+  /**
+   * The watermark is what separates "the other device has moved on since we
+   * last agreed" from "both of us wrote while out of contact". These first two
+   * pass OLD, meaning the local note is exactly what the last sync left behind
+   * and only one side has changed since — the ordinary case, decided by time.
+   */
   it('takes the later edit', () => {
-    expect(mergeNotes({ irs: mine }, [theirs]).irs.body).toBe('theirs');
+    expect(mergeNotes({ irs: mine }, [theirs], OLD).irs.body).toBe('theirs');
   });
 
   it('keeps the local note when it is the later edit', () => {
-    const merged = mergeNotes({ irs: { ...mine, updatedAt: NEW } }, [
-      { ...theirs, updated_at: isoFrom(OLD) },
-    ]);
+    const merged = mergeNotes(
+      { irs: { ...mine, updatedAt: NEW } },
+      [{ ...theirs, updated_at: isoFrom(OLD) }],
+      OLD,
+    );
 
     expect(merged.irs.body).toBe('mine');
+  });
+
+  /**
+   * The case this rule exists for: both sides wrote after the last agreement,
+   * so neither is a stale copy of the other and picking a winner destroys a
+   * paragraph that exists nowhere else.
+   */
+  it('keeps both sides when each was edited since the last sync', () => {
+    const merged = mergeNotes(
+      { irs: { ...mine, updatedAt: NEW } },
+      [{ ...theirs, updated_at: isoFrom(NEW + 1000) }],
+      OLD,
+    );
+
+    expect(merged.irs.body).toContain('mine');
+    expect(merged.irs.body).toContain('theirs');
+    expect(merged.irs.body).toContain(NOTE_CONFLICT_MARKER);
+  });
+
+  /** Newer first, so the most recent thinking is what the reader sees. */
+  it('puts the newer side of a conflict first', () => {
+    const merged = mergeNotes(
+      { irs: { ...mine, updatedAt: NEW + 1000 } },
+      [{ ...theirs, updated_at: isoFrom(NEW) }],
+      OLD,
+    );
+
+    expect(merged.irs.body.indexOf('mine')).toBeLessThan(
+      merged.irs.body.indexOf('theirs'),
+    );
+  });
+
+  /** Same text on both sides is agreement, however the clocks fell out. */
+  it('does not manufacture a conflict out of identical text', () => {
+    const merged = mergeNotes(
+      { irs: { body: 'same', updatedOn: '2026-08-01', updatedAt: NEW } },
+      [{ ...theirs, body: 'same', updated_at: isoFrom(NEW + 1000) }],
+      OLD,
+    );
+
+    expect(merged.irs.body).toBe('same');
+  });
+
+  /**
+   * A tombstone is an instruction, not a competing draft. Resurrecting a note
+   * somebody deleted — on every sync, forever — is its own kind of broken, so
+   * deletion still wins outright even against an edit made in the same window.
+   */
+  it('lets a deletion win over a conflicting edit', () => {
+    const merged = mergeNotes(
+      { irs: { ...mine, updatedAt: NEW } },
+      [{ ...theirs, body: null, updated_at: isoFrom(NEW + 1000) }],
+      OLD,
+    );
+
+    expect(merged.irs).toBeUndefined();
+  });
+
+  /** No watermark means nothing has ever been reconciled, so both are kept. */
+  it('treats a first sync as a conflict rather than picking a winner', () => {
+    const merged = mergeNotes({ irs: mine }, [theirs], null);
+
+    expect(merged.irs.body).toContain(NOTE_CONFLICT_MARKER);
   });
 
   /** Someone's own writing is the one thing a merge must never resurrect. */
@@ -304,9 +376,21 @@ describe('mergeNotes', () => {
   });
 
   it('is stable when the same rows arrive twice', () => {
-    const once = mergeNotes({ irs: mine }, [theirs]);
+    const once = mergeNotes({ irs: mine }, [theirs], OLD);
 
-    expect(mergeNotes(once, [theirs])).toEqual(once);
+    expect(mergeNotes(once, [theirs], OLD)).toEqual(once);
+  });
+
+  /**
+   * And stable through a conflict too, which is the harder case: a second pass
+   * must recognise the kept-both body as already containing their side rather
+   * than appending it again on every sync.
+   */
+  it('does not re-append the same conflict on a second pass', () => {
+    const once = mergeNotes({ irs: { ...mine, updatedAt: NEW } }, [theirs], OLD);
+    const twice = mergeNotes(once, [theirs], OLD);
+
+    expect(twice.irs.body.split(NOTE_CONFLICT_MARKER)).toHaveLength(2);
   });
 
   it('round-trips a note through its row shape', () => {
@@ -375,6 +459,7 @@ describe('mergeSettings', () => {
     haptics: true,
     dailyReminder: false,
     sessionSize: 6,
+    theme: 'dark' as const,
   };
   const row = {
     spaced_repetition: false,
@@ -396,7 +481,13 @@ describe('mergeSettings', () => {
       haptics: false,
       dailyReminder: true,
       sessionSize: 10,
+      theme: 'dark',
     });
+  });
+
+  /** The theme is a property of the device, and the row has no column for it. */
+  it('keeps the local theme when it takes the remote row', () => {
+    expect(mergeSettings(local, OLD, row).theme).toBe('dark');
   });
 
   /**

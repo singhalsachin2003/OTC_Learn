@@ -1,12 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import {
-  colors,
-  radius,
-  spacing,
-  tabularNumbers,
-  typography,
-} from '../../../theme';
+import { radius, spacing, tabularNumbers, typography } from '../../../theme';
+import { useTheme, useThemedStyles } from '../../../hooks/useTheme';
+import type { Palette } from '../../../theme/colors';
 
 export interface AccuracyRowProps {
   label: string;
@@ -31,10 +27,12 @@ export function AccuracyRow({
   accuracyPercent,
   answered,
   confident,
-  tint = colors.progressFill,
+  tint,
   testID,
 }: AccuracyRowProps) {
-  const fill = confident ? tint : colors.line.strong;
+  const { colors } = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const fill = confident ? (tint ?? colors.progressFill) : colors.line.strong;
 
   return (
     <View
@@ -81,43 +79,44 @@ export function AccuracyRow({
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    marginBottom: spacing.md,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    marginBottom: spacing.xs,
-  },
-  label: {
-    ...typography.body2,
-    color: colors.text.primary,
-    flexShrink: 1,
-    paddingRight: spacing.sm,
-  },
-  percent: {
-    ...typography.bodyStrong,
-    ...tabularNumbers,
-    color: colors.text.primary,
-  },
-  percentMuted: {
-    color: colors.text.tertiary,
-  },
-  track: {
-    height: 6,
-    borderRadius: radius.pill,
-    backgroundColor: colors.line.soft,
-    overflow: 'hidden',
-  },
-  fill: {
-    height: '100%',
-    borderRadius: radius.pill,
-  },
-  caption: {
-    ...typography.micro,
-    color: colors.text.tertiary,
-    marginTop: spacing.xs,
-  },
-});
+const makeStyles = ({ colors }: Palette) =>
+  StyleSheet.create({
+    row: {
+      marginBottom: spacing.md,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      marginBottom: spacing.xs,
+    },
+    label: {
+      ...typography.body2,
+      color: colors.text.primary,
+      flexShrink: 1,
+      paddingRight: spacing.sm,
+    },
+    percent: {
+      ...typography.bodyStrong,
+      ...tabularNumbers,
+      color: colors.text.primary,
+    },
+    percentMuted: {
+      color: colors.text.tertiary,
+    },
+    track: {
+      height: 6,
+      borderRadius: radius.pill,
+      backgroundColor: colors.line.soft,
+      overflow: 'hidden',
+    },
+    fill: {
+      height: '100%',
+      borderRadius: radius.pill,
+    },
+    caption: {
+      ...typography.micro,
+      color: colors.text.tertiary,
+      marginTop: spacing.xs,
+    },
+  });

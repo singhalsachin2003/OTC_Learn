@@ -278,3 +278,42 @@ begin
   end loop;
 end
 $$;
+
+-- ---------------------------------------------------------------------------
+-- Account deletion
+--
+-- Google Play requires an *in-app* path to delete an account and its data, in
+-- addition to the web page at /OTC_Learn/account-deletion/. Email alone does
+-- not satisfy it.
+--
+-- Every table above has `references auth.users (id) on delete cascade`, so
+-- removing the auth row removes all of it. That is deliberately the only
+-- statement here: enumerating the tables would mean this function silently
+-- missing whichever table is added next, and the cascade cannot.
+--
+-- `security definer` is required because `auth.users` is not writable by the
+-- `authenticated` role. The function is therefore written to be impossible to
+-- misuse: it takes no arguments, reads the caller from `auth.uid()` and can
+-- only ever delete the caller. `set search_path` is what stops a caller
+-- shadowing `auth.users` with a table of their own.
+create or replace function public.delete_account()
+returns void
+language plpgsql
+security definer
+set search_path = public, auth, pg_temp
+as $$
+declare
+  uid uuid := auth.uid();
+begin
+  if uid is null then
+    raise exception 'delete_account requires an authenticated caller'
+      using errcode = '28000';
+  end if;
+
+  delete from auth.users where id = uid;
+end;
+$$;
+
+-- Not callable by anonymous sessions, and never with arguments.
+revoke all on function public.delete_account() from public, anon;
+grant execute on function public.delete_account() to authenticated;
