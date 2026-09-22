@@ -49,3 +49,7 @@ yarn-error.*
 # releases and read financial data.
 *service-account*.json
 play-service-account*.json
+
+# Where downloads from a chat session land. The posters that matter live in
+# marketing/social-v2/; this is the unpacked copy they arrived in.
+Claude outputs/
