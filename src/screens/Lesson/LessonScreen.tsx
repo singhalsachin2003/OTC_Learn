@@ -44,7 +44,7 @@ export function LessonScreen() {
 
   const product = getProductById(productId);
   const category = getCategoryById(product?.categoryId ?? null);
-  const { accent, soft } = getCategoryColors(category?.id ?? '');
+  const { accent, soft, text: accentText } = getCategoryColors(category?.id ?? '');
   const totalSteps = product?.lessons.length ?? 0;
 
   const settle = useCallback(() => {
@@ -187,7 +187,7 @@ export function LessonScreen() {
             lesson={lesson}
             stepIndex={stepIndex}
             totalSteps={totalSteps}
-            accent={accent}
+            accentText={accentText}
             accentSoft={soft}
           />
         </Animated.View>

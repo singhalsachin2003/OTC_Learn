@@ -28,7 +28,7 @@ export function RelatedProducts({ ids }: RelatedProductsProps) {
   return (
     <View testID="related-products" style={styles.row}>
       {related.map((product) => {
-        const { accent, soft } = getCategoryColors(product.categoryId);
+        const { soft, text: accentText } = getCategoryColors(product.categoryId);
         const category = getCategoryById(product.categoryId);
 
         return (
@@ -44,7 +44,7 @@ export function RelatedProducts({ ids }: RelatedProductsProps) {
               pressed && styles.pressed,
             ]}
           >
-            <Text style={[styles.name, { color: accent }]}>{product.name}</Text>
+            <Text style={[styles.name, { color: accentText }]}>{product.name}</Text>
             <Text style={styles.category}>{category?.name}</Text>
           </Pressable>
         );

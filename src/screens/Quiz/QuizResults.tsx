@@ -53,7 +53,7 @@ export function QuizResults() {
   const examScope = examScopeName(quiz.scopeId);
   const product = getProductById(productId);
   const category = getCategoryById(categoryId ?? product?.categoryId ?? null);
-  const { accent, soft } = getCategoryColors(category?.id ?? '');
+  const { accent, soft, text: accentText } = getCategoryColors(category?.id ?? '');
 
   const total = quiz.questions.length;
   const score = quiz.score;
@@ -194,7 +194,7 @@ export function QuizResults() {
                   key={badge.id}
                   style={[styles.badge, { backgroundColor: soft }]}
                 >
-                  <Text style={[styles.badgeGlyph, { color: accent }]}>
+                  <Text style={[styles.badgeGlyph, { color: accentText }]}>
                     {badge.glyph}
                   </Text>
                   <Text style={styles.badgeName}>{badge.name}</Text>

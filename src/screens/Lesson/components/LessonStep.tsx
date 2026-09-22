@@ -13,7 +13,8 @@ export interface LessonStepProps {
   lesson: Lesson;
   stepIndex: number;
   totalSteps: number;
-  accent: string;
+  /** The category accent in its small-text variant; see `theme/colors.ts`. */
+  accentText: string;
   accentSoft: string;
 }
 
@@ -22,7 +23,7 @@ export function LessonStep({
   lesson,
   stepIndex,
   totalSteps,
-  accent,
+  accentText,
   accentSoft,
 }: LessonStepProps) {
   const styles = useThemedStyles(makeStyles);
@@ -31,7 +32,7 @@ export function LessonStep({
       <Badge
         testID="lesson-step-tag"
         label={`STEP ${formatStepLabel(stepIndex, totalSteps).toUpperCase()}`}
-        color={accent}
+        color={accentText}
         backgroundColor={accentSoft}
       />
       <ScrollView
@@ -61,7 +62,7 @@ export function LessonStep({
               testID="lesson-callout"
               style={[styles.callout, { backgroundColor: accentSoft }]}
             >
-              <Text style={[styles.calloutLabel, { color: accent }]}>
+              <Text style={[styles.calloutLabel, { color: accentText }]}>
                 WORTH KNOWING
               </Text>
               <Text style={styles.calloutText}>{lesson.callout}</Text>

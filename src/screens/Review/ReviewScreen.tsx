@@ -101,11 +101,13 @@ export function ReviewScreen() {
           <View style={styles.list}>
             <Text style={styles.sectionTitle}>WAITING FOR YOU</Text>
             {due.map(({ item, question, product }) => {
-              const { accent, soft } = getCategoryColors(product.categoryId);
+              const { soft, text: accentText } = getCategoryColors(
+                product.categoryId,
+              );
               return (
                 <View key={item.id} style={styles.row}>
                   <View style={[styles.lapses, { backgroundColor: soft }]}>
-                    <Text style={[styles.lapsesText, { color: accent }]}>
+                    <Text style={[styles.lapsesText, { color: accentText }]}>
                       {item.lapses}×
                     </Text>
                   </View>
@@ -129,11 +131,13 @@ export function ReviewScreen() {
           <View testID="review-upcoming" style={styles.list}>
             <Text style={styles.sectionTitle}>COMING UP</Text>
             {upcoming.map(({ item, question, product }) => {
-              const { accent, soft } = getCategoryColors(product.categoryId);
+              const { soft, text: accentText } = getCategoryColors(
+                product.categoryId,
+              );
               return (
                 <View key={item.id} style={styles.row}>
                   <View style={[styles.lapses, { backgroundColor: soft }]}>
-                    <Text style={[styles.lapsesText, { color: accent }]}>
+                    <Text style={[styles.lapsesText, { color: accentText }]}>
                       {item.lapses}×
                     </Text>
                   </View>

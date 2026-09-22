@@ -33,9 +33,11 @@ export const colors = {
      * 3.22:1 on the app background and so failed WCAG AA's 4.5:1 for small
      * text — and it was carrying the *smallest* type in the app, which needs
      * more contrast than body copy, not less. This value clears AA on all
-     * three surfaces: 4.61 on background, 5.66 on card, 5.33 on surface.
+     * four surfaces: 4.67 on background, 5.73 on card, 5.40 on surface and 4.52
+     * on `track`, which the first pass did not include — the achievements grid
+     * draws this on exactly that fill and landed at 4.45.
      */
-    tertiary: '#696761',
+    tertiary: '#686661',
     /** oklch(80% .01 90) — muted text on the dark streak pill */
     onDarkMuted: '#C0BDB7',
     /** Text on dark fills */
@@ -47,8 +49,17 @@ export const colors = {
     onPrimary: '#FFFFFF',
   },
 
-  /** oklch(70% .01 90) — the "›" chevron on product rows */
-  chevron: '#A19E98',
+  /**
+   * The "›" chevron on product rows — oklch(62% .011 90).
+   *
+   * Darkened from the handoff's oklch(70%) / #A19E98, which measured 2.18:1 on
+   * the app background. It is an affordance rather than prose — it says the row
+   * is tappable and nothing else — so the bar that applies is WCAG's 3:1 for
+   * non-text contrast, not 4.5:1, and it stays deliberately lighter than
+   * `text.tertiary` so it reads as a marker beside a label rather than as
+   * another word in it. 3.00:1 on background, 3.69 on a white card.
+   */
+  chevron: '#88857D',
   /** oklch(85% .01 90) — outline buttons */
   border: '#D0CEC7',
 

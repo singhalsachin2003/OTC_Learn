@@ -8,6 +8,8 @@ import type { Palette } from '../../../theme/colors';
 export interface WorkedExampleProps {
   example: WorkedExampleData;
   accent: string;
+  /** The same hue in its small-text variant; the border can take the fill. */
+  accentText: string;
   soft: string;
 }
 
@@ -18,7 +20,12 @@ export interface WorkedExampleProps {
  * bulleted — the order is the argument, and a reader who loses their place in
  * the middle of a cash-flow walkthrough has lost the point of it.
  */
-export function WorkedExample({ example, accent, soft }: WorkedExampleProps) {
+export function WorkedExample({
+  example,
+  accent,
+  accentText,
+  soft,
+}: WorkedExampleProps) {
   const styles = useThemedStyles(makeStyles);
   return (
     <View testID="worked-example" style={[styles.card, { borderColor: accent }]}>
@@ -26,7 +33,9 @@ export function WorkedExample({ example, accent, soft }: WorkedExampleProps) {
 
       {example.lines.map((line, index) => (
         <View key={line} style={styles.line}>
-          <Text style={[styles.number, { backgroundColor: soft, color: accent }]}>
+          <Text
+            style={[styles.number, { backgroundColor: soft, color: accentText }]}
+          >
             {index + 1}
           </Text>
           <Text style={styles.lineText}>{line}</Text>
@@ -34,7 +43,7 @@ export function WorkedExample({ example, accent, soft }: WorkedExampleProps) {
       ))}
 
       <View style={[styles.takeaway, { backgroundColor: soft }]}>
-        <Text style={[styles.takeawayLabel, { color: accent }]}>SO WHAT</Text>
+        <Text style={[styles.takeawayLabel, { color: accentText }]}>SO WHAT</Text>
         <Text style={styles.takeawayText}>{example.takeaway}</Text>
       </View>
     </View>

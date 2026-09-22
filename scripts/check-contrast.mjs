@@ -47,34 +47,19 @@ if (!existsSync(WEB_DIR)) {
  * all three dark grounds and clear AA, so this list exists to stop the light
  * inheritance from masking a new dark failure, not to bless it.
  *
- *  - `#A19E98` (chevron) draws the "›" on every row at 2.18:1. It is an
- *    affordance rather than prose, so 3:1 is the applicable bar — and it misses
- *    that too. The dark chevron was set at 5.0:1 on a card.
- *  - `#2A75BA` and its siblings are `categoryColors.<id>.accent` used as small
- *    text. `colors.ts` already documents this exact mistake and already carries
- *    a `.text` variant for it; these are the call sites that never moved over.
- *  - `#696761` (text.tertiary) reaches 4.45:1 on `track` — the one surface the
- *    original check did not include, and a 0.05 miss.
+ *  - `#88857D` (chevron) draws the "›" on every row at 3.00:1. It is an
+ *    affordance rather than prose — it says the row is tappable and nothing
+ *    else — so the bar that applies is WCAG's 3:1 for non-text contrast, which
+ *    it clears; this walker measures everything against the 4.5 text bar, hence
+ *    the entry.
  *  - `#CECAC0` (line.strong) is the week strip's future-day initials, faded on
  *    purpose so a Monday does not open the week reporting six failures.
  *
- * See ACTION-ITEMS.md: raising any of them changes the shipped light theme, so
- * they are a decision rather than a fix to be made in passing.
+ * What used to be here and is not any more: the category accents drawn as small
+ * text, which now use the `.text` variant `colors.ts` always carried for them,
+ * and `text.tertiary` on `track`, which was a 0.05 miss and is darkened.
  */
-const EXPECTED_LIGHT = [
-  'rgb(161, 158, 152)',
-  'rgb(206, 202, 192)',
-  'rgb(105, 103, 97)',
-  'rgb(42, 117, 186)',
-  'rgb(0, 136, 86)',
-  'rgb(177, 77, 81)',
-  'rgb(126, 93, 177)',
-  'rgb(153, 103, 0)',
-  'rgb(162, 80, 137)',
-  'rgb(0, 134, 149)',
-  'rgb(104, 124, 2)',
-  'rgb(174, 85, 40)',
-];
+const EXPECTED_LIGHT = ['rgb(136, 133, 125)', 'rgb(206, 202, 192)'];
 
 /** The dark counterpart: the faded week-strip initials, and nothing else. */
 const EXPECTED_DARK = ['rgb(80, 77, 69)'];

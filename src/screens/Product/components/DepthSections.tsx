@@ -15,7 +15,8 @@ export interface DepthSectionsProps {
   extraQuestions: number;
   /** Whether the reader has to subscribe first. */
   locked: boolean;
-  accent: string;
+  /** The category accent in its small-text variant; see `theme/colors.ts`. */
+  accentText: string;
   soft: string;
 }
 
@@ -37,7 +38,7 @@ export function DepthSections({
   sections,
   extraQuestions,
   locked,
-  accent,
+  accentText,
   soft,
 }: DepthSectionsProps) {
   const { colors } = useTheme();
@@ -77,7 +78,7 @@ export function DepthSections({
           <Text style={styles.sectionBody}>{section.content}</Text>
           {section.callout !== undefined && (
             <View style={[styles.callout, { backgroundColor: soft }]}>
-              <Text style={[styles.calloutLabel, { color: accent }]}>
+              <Text style={[styles.calloutLabel, { color: accentText }]}>
                 WORTH KNOWING
               </Text>
               <Text style={styles.calloutBody}>{section.callout}</Text>

@@ -35,7 +35,7 @@ function CategoryCard({ category }: { category: Category }) {
   const { goToCategory } = useNavigation();
   const { categoryPercent, masteredInCategory } = useProgress();
   const { categoryLocked } = useAccess();
-  const { accent } = getCategoryColors(category.id);
+  const { accent, text: accentText } = getCategoryColors(category.id);
 
   const locked = categoryLocked(category.id);
   const total = getProductsByCategory(category.id).length;
@@ -66,7 +66,7 @@ function CategoryCard({ category }: { category: Category }) {
           fillColor={accent}
           animated={false}
         >
-          <Text style={[styles.icon, { color: accent }]}>{category.icon}</Text>
+          <Text style={[styles.icon, { color: accentText }]}>{category.icon}</Text>
         </Ring>
         {/* The card still opens: seeing the route through an asset class is
             the case for paying for it, and a card that refuses to open says

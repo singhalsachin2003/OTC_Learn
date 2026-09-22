@@ -42,7 +42,7 @@ export function CategoryScreen() {
     );
   }
 
-  const { accent, soft } = getCategoryColors(category.id);
+  const { accent, soft, text: accentText } = getCategoryColors(category.id);
   const percent = categoryPercent(category.id);
   const mastered = masteredInCategory(category.id);
 
@@ -56,7 +56,7 @@ export function CategoryScreen() {
 
         <View style={[styles.header, { backgroundColor: soft }]}>
           <Ring size={54} innerSize={40} percent={percent} fillColor={accent}>
-            <Text style={[styles.headerIcon, { color: accent }]}>
+            <Text style={[styles.headerIcon, { color: accentText }]}>
               {category.icon}
             </Text>
           </Ring>
@@ -96,7 +96,7 @@ export function CategoryScreen() {
                     <Text
                       style={[
                         styles.markerText,
-                        step.state === 'current' && { color: accent },
+                        step.state === 'current' && { color: accentText },
                       ]}
                     >
                       {step.position}
@@ -115,7 +115,7 @@ export function CategoryScreen() {
                 {step.state === 'current' && !productLocked(product.id) && (
                   <Text
                     testID={`category-next-${step.productId}`}
-                    style={[styles.upNext, { color: accent }]}
+                    style={[styles.upNext, { color: accentText }]}
                   >
                     {steps.some((s) => s.state === 'done') ? 'NEXT' : 'START HERE'}
                   </Text>

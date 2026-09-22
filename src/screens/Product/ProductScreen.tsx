@@ -66,7 +66,7 @@ export function ProductScreen() {
     );
   }
 
-  const { accent, soft } = getCategoryColors(product.categoryId);
+  const { accent, soft, text: accentText } = getCategoryColors(product.categoryId);
   const mastery = masteryFor(product.id);
   const progress = progressFor(product.id);
   const bookmarked = bookmarks.includes(product.id);
@@ -142,7 +142,9 @@ export function ProductScreen() {
 
         <View style={styles.header}>
           <View style={styles.headerText}>
-            <Text style={[styles.tag, { backgroundColor: soft, color: accent }]}>
+            <Text
+              style={[styles.tag, { backgroundColor: soft, color: accentText }]}
+            >
               {product.difficulty.toUpperCase()}
             </Text>
             <Text accessibilityRole="header" style={styles.title}>
@@ -199,6 +201,7 @@ export function ProductScreen() {
               <WorkedExample
                 example={product.example}
                 accent={accent}
+                accentText={accentText}
                 soft={soft}
               />
             </Section>
@@ -213,7 +216,7 @@ export function ProductScreen() {
                   sections={product.depth.sections}
                   extraQuestions={product.depth.quiz.length}
                   locked={depthIsLocked}
-                  accent={accent}
+                  accentText={accentText}
                   soft={soft}
                 />
               </Section>
