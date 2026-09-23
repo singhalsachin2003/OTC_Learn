@@ -21,3 +21,15 @@ baseurl: /OTC_Learn
 # Gemfile.
 plugins:
   - jekyll-sitemap
+
+# `revenuecat.md` is a working note, not a page. It was published — and, on
+# 23 September 2026, submitted to Google in the sitemap — before anyone noticed
+# that nothing excludes it: it names install counts, the pricing reasoning and
+# why the lifetime tier is the dangerous one. No keys, but none of it is written
+# for a reader who arrived from a search.
+#
+# Cornerstone's config carries the same list for the same reason, and records
+# that its PRICING.md was public for a day before it was added. Anything under
+# `docs/` is published unless it is named here.
+exclude:
+  - revenuecat.md
