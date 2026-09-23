@@ -17,6 +17,7 @@
     "format:check": "prettier --check \"{src,__tests__}/**/*.{ts,tsx,json}\"",
     "type-check": "tsc --noEmit",
     "check:contrast": "node scripts/check-contrast.mjs",
+    "set:regions": "node scripts/set-subscription-regions.mjs",
     "verify": "npm run type-check && npm run lint && npm run format:check && npm run test",
     "prebuild": "expo prebuild --clean",
     "prebuild:android": "expo prebuild --platform android --clean",
