@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Credit-Linked Note — Funded, and wha
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Credit-Linked Note",
+    "description": "A bond whose repayment depends on a credit event",
+    "abstract": "A credit derivative wrapped in a security. The investor pays cash for a note, collects a coupon well above what the issuer’s ordinary debt pays, and accepts that principal comes back in full only if a reference entity or portfolio avoids a credit event. Because it is a bond rather than a swap, it reaches buyers whose mandates rule out derivatives — and because the cash is paid upfront, the protection the issuer has bought cannot fail for want of a solvent counterparty.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cln/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cln/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Credit-Linked Note",
+      "description": "A bond whose repayment depends on a credit event",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Credit-Linked Note — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cln/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Special purpose vehicle",
+        "description": "A standalone issuing entity created for one deal, holding the collateral and the swap that make the note work.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Embedded CDS",
+        "description": "The credit default swap inside the note, on which the investor is the protection seller.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Collateral",
+        "description": "The high-quality assets the note proceeds are invested in and pledged against, in a vehicle-issued structure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Enhanced coupon",
+        "description": "The above-market interest the note pays, made up of the collateral return plus the protection premium.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Contingent principal",
+        "description": "Repayment that is due in full only if no credit event occurs, and falls to recovery value if one does.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Funded protection",
+        "description": "Protection paid for in cash at the outset, so the buyer has nothing left to collect from the seller later.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Credit-Linked Note",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cln/"
+      }
+    ]
+  }
+]
+</script>

@@ -75,3 +75,104 @@ A subscription adds 3 further sections on Collateral and the CSA — Thresholds,
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Collateral and the CSA",
+    "description": "The cash and bonds that back an OTC exposure",
+    "abstract": "Two different kinds of margin answer two different questions, and almost every product in this catalogue leans on both without ever naming them. Variation margin settles what has already happened to a trade’s value; initial margin covers what could still happen before a defaulted counterparty’s positions are closed out. Both are set out in a Credit Support Annex, the document that turns a bilateral OTC exposure into a collateralised one — and, as later modules in this category show, decides more than just credit risk.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/collateral/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/collateral/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Collateral and the CSA",
+      "description": "The cash and bonds that back an OTC exposure",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Collateral and the CSA — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/collateral/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Variation margin (VM)",
+        "description": "Collateral that settles the change in a portfolio’s mark-to-market, so neither side carries an unpaid gain or loss.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Initial margin (IM)",
+        "description": "Collateral sized to cover the potential further loss between the last variation margin call and the time it takes to close out a defaulted counterparty.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Threshold",
+        "description": "The amount of uncollateralised exposure a CSA lets each side run before a margin call is triggered at all.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Minimum transfer amount (MTA)",
+        "description": "The minimum size a call must reach before it is actually made, so small movements are not settled daily.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Haircut",
+        "description": "The discount applied to non-cash collateral’s value, sized to the risk that its price falls before it can be sold.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Rehypothecation",
+        "description": "The right to reuse collateral received as if it were the receiving firm’s own, rather than ring-fencing it — routine for cash variation margin, prohibited for segregated initial margin.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Collateral and the CSA",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/collateral/"
+      }
+    ]
+  }
+]
+</script>

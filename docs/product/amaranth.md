@@ -46,3 +46,104 @@ In the app, Amaranth, 2006 carries a five-step lesson, a worked example and a ba
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Amaranth, 2006",
+    "description": "A spread trade too large to leave",
+    "abstract": "Amaranth Advisors, a multi-strategy hedge fund, ran enormous positions in natural gas calendar spreads — long one delivery month against short another. The trade was not directional in the obvious sense and the margin on it was small. What it was, was most of the open interest. When the spread moved against the fund it could not exit without trading against itself, and roughly $6.6bn went in a matter of weeks.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/amaranth/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/amaranth/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Amaranth, 2006",
+      "description": "A spread trade too large to leave",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Amaranth, 2006 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/amaranth/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Calendar spread",
+        "description": "Long one delivery month and short another in the same commodity, trading the gap rather than the level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Open interest",
+        "description": "The total number of contracts outstanding, and so the measure a position’s size should be read against.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Spread margin",
+        "description": "The reduced margin charged on offsetting legs, on the assumption that they move together.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Widow-maker",
+        "description": "The March–April natural gas spread, across the end of the withdrawal season, and its reputation for violence.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Position limits",
+        "description": "Caps on how much of a contract one participant may hold, applied on a regulated exchange.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Liquidation discount",
+        "description": "The gap between a portfolio’s marked value and what a buyer will pay to take it on whole.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Amaranth, 2006",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/amaranth/"
+      }
+    ]
+  }
+]
+</script>

@@ -71,3 +71,104 @@ A subscription adds 3 further sections on Valuation and Marking — Three levels
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Valuation and Marking",
+    "description": "What a trade is worth, and which curve says so",
+    "abstract": "Every derivative position has to be valued fresh, every day, whether or not any cash is actually changing hands. Getting that number right takes two separate curves doing two separate jobs — one forecasting a floating leg’s future fixings, another discounting every cash flow back to the present — and which curve does the discounting is not a modelling detail but a direct consequence of the CSA the trade sits under. A swap struck exactly at the market rate is worth zero on day one for a reason, and that reason stops applying the moment either curve moves.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/marking/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/marking/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Valuation and Marking",
+      "description": "What a trade is worth, and which curve says so",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Valuation and Marking — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/marking/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Projection curve",
+        "description": "The curve used to forecast what a floating leg will actually fix at on each future reset date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Discount curve",
+        "description": "The curve used to bring every cash flow on a trade, fixed and floating alike, back to a present value.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "OIS discounting",
+        "description": "Discounting off a curve built from overnight index swaps, adopted after 2008 because an overnight rate carries negligible term credit risk — the property a discount curve needs.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "DV01 (PV01)",
+        "description": "The dollar change in a position’s value for a one basis point move in the relevant curve, the standard measure of interest rate sensitivity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Mark-to-market",
+        "description": "Valuing a position from directly observable, quoted market inputs.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Mark-to-model",
+        "description": "Valuing a position with a pricing model, used where no direct market quote exists and the model’s own inputs are themselves estimated.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Valuation and Marking",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/marking/"
+      }
+    ]
+  }
+]
+</script>

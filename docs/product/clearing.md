@@ -74,3 +74,104 @@ A subscription adds 3 further sections on Central Clearing — The waterfall, in
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Central Clearing",
+    "description": "A central counterparty steps into every trade",
+    "abstract": "Central clearing replaces a bilateral trade with two trades and a new counterparty standing in the middle of both. When a cleared trade is submitted, the clearing house is novated into it — buyer to every seller and seller to every buyer — so neither original party ever faces the other again. The G20 asked for exactly this after 2008, and the machinery that makes it safe to concentrate so much risk in one institution is a strict, publicly documented order in which a default is actually paid for.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/clearing/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/clearing/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Central Clearing",
+      "description": "A central counterparty steps into every trade",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Central Clearing — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/clearing/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Novation",
+        "description": "The legal substitution of the CCP into a trade as counterparty to each side, replacing the original bilateral contract entirely.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Clearing member",
+        "description": "A firm that faces the CCP directly; most market participants access clearing through one rather than joining themselves.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Client clearing",
+        "description": "A clearing member facing the CCP on a client’s behalf, in a segregated account, with its own layer of margin and default provisions on top of the CCP’s.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Default waterfall",
+        "description": "The strict order in which a CCP’s financial resources absorb a defaulting member’s losses, ending only after the defaulter’s own resources and the CCP’s own capital are exhausted.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Guaranty fund",
+        "description": "The mutualised pool of collateral, contributed by every clearing member, that sits behind the CCP’s own capital as the last layer before further assessments.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Skin in the game",
+        "description": "The CCP’s own capital contribution to the waterfall, placed ahead of the mutualised guaranty fund so the CCP shares directly in the cost of a default it failed to price correctly.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Central Clearing",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/clearing/"
+      }
+    ]
+  }
+]
+</script>

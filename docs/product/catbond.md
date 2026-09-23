@@ -46,3 +46,104 @@ In the app, Catastrophe Bond carries a five-step lesson, a worked example and a 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Catastrophe Bond",
+    "description": "A coupon that stops if the hurricane arrives",
+    "abstract": "A catastrophe bond transfers the risk of a natural disaster from an insurer to capital markets. Investors buy notes, the money sits in a collateral account earning a money market return, and they are paid a spread on top. If a defined event occurs, the principal is written down and paid to the sponsor instead. It is a reinsurance contract in the shape of a bond, and its return has almost nothing to do with the economy.",
+    "articleSection": "Alternative Underlyings",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/catbond/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/catbond/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Catastrophe Bond",
+      "description": "A coupon that stops if the hurricane arrives",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Catastrophe Bond — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/catbond/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Sponsor",
+        "description": "The insurer or corporate transferring the risk, and the party the bond pays when an event occurs.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Collateral account",
+        "description": "Where the note proceeds are held, so the vehicle can always pay and the investor takes no credit risk.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Parametric trigger",
+        "description": "A payout condition based on physical measurements alone, settling quickly and matching losses imperfectly.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Attachment point",
+        "description": "The loss level at which the bond begins to lose principal.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Exhaustion point",
+        "description": "The loss level at which the bond’s principal is entirely gone.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Multiple",
+        "description": "The spread divided by the modelled expected loss — the market’s standard relative value measure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Alternative Underlyings",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Catastrophe Bond",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/catbond/"
+      }
+    ]
+  }
+]
+</script>

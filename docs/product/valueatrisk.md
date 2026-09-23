@@ -46,3 +46,104 @@ In the app, Value at Risk carries a five-step lesson, a worked example and a ban
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Value at Risk",
+    "description": "One number for tomorrow’s loss, and what it leaves out",
+    "abstract": "Value at risk states the loss a portfolio is not expected to exceed over a given horizon at a given confidence — a 99% one-day VaR of $1.4m says that on 99 days in 100 the loss should be smaller than that. It is the standard aggregate risk measure across every asset class, the basis of firm-wide limits, and it says nothing whatsoever about the size of the loss on the hundredth day. Everything difficult about it follows from that last sentence.",
+    "articleSection": "Risk & the Greeks",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/valueatrisk/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/valueatrisk/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Value at Risk",
+      "description": "One number for tomorrow’s loss, and what it leaves out",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Value at Risk — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/valueatrisk/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Value at risk",
+        "description": "The loss not expected to be exceeded over a stated horizon at a stated confidence level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Confidence level",
+        "description": "The quantile the measure is read at, commonly 97.5% or 99%.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Historical simulation",
+        "description": "Computing VaR by applying a window of past market moves to today’s portfolio.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Expected shortfall",
+        "description": "The average loss given that the threshold is breached — the mean of the tail rather than its edge.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Backtesting exception",
+        "description": "A day whose clean P&L loss exceeded the VaR the model predicted for it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Procyclicality",
+        "description": "The tendency of risk measures to rise together in a sell-off, forcing simultaneous deleveraging.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Risk & the Greeks",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Value at Risk",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/valueatrisk/"
+      }
+    ]
+  }
+]
+</script>

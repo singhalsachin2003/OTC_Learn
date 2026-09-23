@@ -46,3 +46,104 @@ In the app, The Swiss franc floor, 2015 carries a five-step lesson, a worked exa
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The Swiss franc floor, 2015",
+    "description": "A guarantee withdrawn in a morning",
+    "abstract": "For three years the Swiss National Bank held EUR/CHF above 1.20 and said it would continue to. On 15 January 2015 it stopped, without warning, and the rate fell by roughly a third within minutes. Stop-loss orders filled tens of figures away from where they were placed, retail clients ended the morning owing their brokers money, a hedge fund closed and several brokers failed. It is the clearest available lesson that a stable price is not a low-risk one.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/chffloor/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/chffloor/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "The Swiss franc floor, 2015",
+      "description": "A guarantee withdrawn in a morning",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "The Swiss franc floor, 2015 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/chffloor/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Currency floor",
+        "description": "A central bank commitment to prevent a rate falling below a level, held by intervening without limit.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Gap risk",
+        "description": "The risk that a price jumps rather than moves through intervening levels, defeating stops and hedges.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Stop-loss order",
+        "description": "An instruction to trade at the market once a level trades — an order, not a guaranteed price.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Negative client balance",
+        "description": "An account whose losses exceed its deposit, leaving the client owing the broker money.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Suppressed volatility",
+        "description": "Realised volatility held artificially low by intervention, which flatters every risk measure built on it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Carry trade",
+        "description": "Borrowing in a low-yielding currency to invest in a higher one — profitable until the exchange rate moves.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "The Swiss franc floor, 2015",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/chffloor/"
+      }
+    ]
+  }
+]
+</script>

@@ -46,3 +46,104 @@ In the app, Range Accrual Note carries a five-step lesson, a worked example and 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Range Accrual Note",
+    "description": "A coupon that only earns on the days you are right",
+    "abstract": "A range accrual note pays an above-market coupon, but only for the days its reference — a rate, a currency, a spread — sits inside an agreed range. Every day outside the range earns nothing. The investor is selling a strip of daily digital options and being paid for them in coupon, which makes the note a short volatility position dressed as a bond. It is the most common way a private client ends up short an option without ever having bought or sold one.",
+    "articleSection": "Exotics",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/rangeacc/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/rangeacc/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Range Accrual Note",
+      "description": "A coupon that only earns on the days you are right",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Range Accrual Note — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/rangeacc/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Accrual factor",
+        "description": "The fraction of days in the period on which the reference fixed inside the range.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference",
+        "description": "The observed rate, currency or spread whose daily fixing decides whether coupon accrues.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Headline coupon",
+        "description": "The maximum annual rate, earned only if the reference stays inside the range every day.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Issuer call",
+        "description": "The issuer’s right to redeem the note early, typically exercised when the structure has performed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dual range accrual",
+        "description": "A version conditioning the coupon on two references, paying only on days both are inside.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Frozen fixing",
+        "description": "The convention of carrying the last observed fix over the final days of a period so the coupon can be settled.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Exotics",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Range Accrual Note",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/rangeacc/"
+      }
+    ]
+  }
+]
+</script>

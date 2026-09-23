@@ -46,3 +46,104 @@ In the app, Ashanti Goldfields, 1999 carries a five-step lesson, a worked exampl
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Ashanti Goldfields, 1999",
+    "description": "Seven years of production, sold forward",
+    "abstract": "A West African gold producer hedged with forward sales and sold options covering around seven years of its own output. When fifteen European central banks agreed to limit gold sales in September 1999, the price jumped by about a quarter in two weeks. The hedges were deeply out of the money, the margin calls were larger than the company’s cash, and a business whose product had just become far more valuable was forced into a standstill with its banks and eventually out of independence.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/ashanti/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/ashanti/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Ashanti Goldfields, 1999",
+      "description": "Seven years of production, sold forward",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Ashanti Goldfields, 1999 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/ashanti/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Producer hedge",
+        "description": "Selling future output forward at a fixed price to insulate a mine or field from a falling market.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Forward sale",
+        "description": "An agreement to deliver a quantity at an agreed price on a future date — the orthodox hedging instrument.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Sold call",
+        "description": "An option written away for premium, which gives up the upside on the very asset the seller produces.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Hedge horizon",
+        "description": "How far ahead output is sold, and so how much unmined production a mark-to-market applies to.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Standstill agreement",
+        "description": "A negotiated pause in counterparties’ rights to call collateral or close out, bought here with equity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Washington Agreement",
+        "description": "The September 1999 accord in which European central banks capped gold sales, reversing a long price decline.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Ashanti Goldfields, 1999",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/ashanti/"
+      }
+    ]
+  }
+]
+</script>

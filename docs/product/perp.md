@@ -46,3 +46,104 @@ In the app, Perpetual Swap carries a five-step lesson, a worked example and a ba
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Perpetual Swap",
+    "description": "A future with no expiry, held to spot by a payment",
+    "abstract": "A perpetual swap tracks the price of an underlying without ever expiring. Nothing settles it, so it needs another mechanism to stop it drifting away from spot: a funding payment exchanged periodically between longs and shorts, whose sign depends on which side the contract is trading. It is the clearest example in modern markets of a contract kept honest by an incentive rather than by a delivery date.",
+    "articleSection": "Alternative Underlyings",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/perp/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/perp/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Perpetual Swap",
+      "description": "A future with no expiry, held to spot by a payment",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Perpetual Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/perp/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Funding rate",
+        "description": "The periodic payment between longs and shorts that keeps a perpetual contract close to the underlying index.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Funding interval",
+        "description": "How often that payment is exchanged — commonly every eight hours, which compounds quickly.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index price",
+        "description": "A composite of external spot sources used as the reference, rather than the venue’s own last trade.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Mark price",
+        "description": "The valuation used for margin and liquidation, built from the index so a single order cannot move it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Maintenance margin",
+        "description": "The equity level below which a position is closed out by the venue rather than allowed to go negative.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Insurance fund",
+        "description": "A pool absorbing the shortfall when a liquidation cannot be completed at better than the bankruptcy price.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Alternative Underlyings",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Perpetual Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/perp/"
+      }
+    ]
+  }
+]
+</script>

@@ -46,3 +46,104 @@ In the app, Metallgesellschaft, 1993 carries a five-step lesson, a worked exampl
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Metallgesellschaft, 1993",
+    "description": "The right hedge, on the wrong clock",
+    "abstract": "A German industrial group’s US oil subsidiary sold customers fixed-price supply contracts running up to ten years, and hedged them by holding short-dated futures rolled forward month after month. The economics offset almost exactly. The cash flows did not: the futures settled daily in cash while the customer contracts settled over a decade. When oil fell in 1993 the hedge haemorrhaged margin, the roll turned from a source of income into a cost, and the parent liquidated at the bottom for around $1.3bn.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/metallges/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/metallges/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Metallgesellschaft, 1993",
+      "description": "The right hedge, on the wrong clock",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Metallgesellschaft, 1993 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/metallges/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Stack and roll",
+        "description": "Holding the whole hedge in nearby contracts and rolling it forward, because distant months are not liquid enough.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Backwardation",
+        "description": "A curve where nearby prices exceed distant ones, which makes rolling a long position cost money.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Contango",
+        "description": "The opposite shape, where distant prices exceed nearby ones, and a long roll earns rather than costs.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Maturity mismatch",
+        "description": "A hedge whose settlement dates differ from the exposure’s, leaving a funding gap even when the economics offset.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Roll yield",
+        "description": "The gain or loss from replacing an expiring contract with a later one, which accumulates every month.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Liquidation decision",
+        "description": "The choice to close a hedge, which converts an unrealised offset into a realised loss.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Metallgesellschaft, 1993",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/metallges/"
+      }
+    ]
+  }
+]
+</script>

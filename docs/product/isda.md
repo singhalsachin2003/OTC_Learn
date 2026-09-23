@@ -73,3 +73,104 @@ A subscription adds 3 further sections on The ISDA Architecture — Close-out ne
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The ISDA Architecture",
+    "description": "The paperwork that makes every other product possible",
+    "abstract": "An OTC relationship is built from a stack of documents, not one contract, and the whole point of the stack is a single legal feature buried in its opening pages: every trade under one Master Agreement is, by its own terms, part of a single agreement with every other trade under it. That status is what makes close-out netting possible, and close-out netting is the entire commercial argument for the architecture — without it, a defaulting counterparty’s liquidator could cherry-pick which trades to honour and which to walk away from.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/isda/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/isda/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "The ISDA Architecture",
+      "description": "The paperwork that makes every other product possible",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "The ISDA Architecture — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/isda/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Master Agreement",
+        "description": "The standard-form core of an ISDA relationship, identical for every pair of counterparties that use it, setting out terms that would otherwise have to be renegotiated on every trade.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Schedule",
+        "description": "The document that amends and elects within the Master Agreement’s standard form, adding bespoke terms and naming any Additional Termination Events specific to one relationship.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Single agreement",
+        "description": "The status, stated in the Master Agreement itself, that every trade under it forms one contract with every other — the legal basis for close-out netting.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Close-out netting",
+        "description": "Terminating every trade under a Master Agreement together on a default and reducing them to one net figure, rather than settling each on its own.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Event of Default",
+        "description": "A trigger generally caused by one party’s own conduct — non-payment, bankruptcy, a breach of the agreement — giving the other side the right, not the obligation, to terminate everything.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Termination Event",
+        "description": "A largely no-fault trigger — a change in tax law, illegality, a merger leaving a weaker surviving entity — that can end the relationship without either side having done anything wrong.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "The ISDA Architecture",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/isda/"
+      }
+    ]
+  }
+]
+</script>

@@ -80,3 +80,104 @@ A subscription adds 3 further sections on Autocallable Note — What the issuer 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Autocallable Note",
+    "description": "A coupon note that can retire itself early",
+    "abstract": "An autocallable note is the format that dominates retail and private-bank structured product issuance in Europe and much of Asia, and the clearest example of a payoff that depends on the path an underlying takes rather than on where it finishes. It looks at the underlying on a schedule of observation dates: above a trigger it pays a coupon and redeems itself early, and below a barrier at maturity it hands the investor the fall in the underlying. In between it simply gives the money back. The coupon looks generous next to a plain bond because it is not really interest — it is the premium on an option the investor has sold, paid in instalments.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/autocall/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/autocall/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Autocallable Note",
+      "description": "A coupon note that can retire itself early",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Autocallable Note — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/autocall/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Observation date",
+        "description": "A scheduled date on which the underlying is compared with its initial level to decide whether the note calls or pays.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Autocall trigger",
+        "description": "The level at or above which the note redeems early on an observation date, usually the initial level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Coupon barrier",
+        "description": "The lower level the underlying must hold on an observation date for a coupon to be paid without the note calling.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Knock-in barrier",
+        "description": "The downside level that, once breached, removes the protection on principal and exposes the investor to the fall.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Memory feature",
+        "description": "A term that pays previously missed coupons once the coupon barrier is met again on a later date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Worst-of",
+        "description": "A basket convention under which every trigger and barrier test is run on the weakest of the underlyings.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Autocallable Note",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/autocall/"
+      }
+    ]
+  }
+]
+</script>

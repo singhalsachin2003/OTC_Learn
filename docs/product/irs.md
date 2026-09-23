@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Interest Rate Swap — Pricing it from
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Interest Rate Swap",
+    "description": "Trade fixed for floating payments",
+    "abstract": "The workhorse of the OTC market. Two parties agree to exchange interest payments on an agreed notional amount — one leg fixed, the other floating — for an agreed term. Nothing is lent and nothing is borrowed; the swap simply changes the character of interest a party pays or receives, which is why a borrower with a floating loan can end up with the economics of a fixed one without renegotiating the loan.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/irs/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/irs/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Interest Rate Swap",
+      "description": "Trade fixed for floating payments",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Interest Rate Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/irs/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Notional",
+        "description": "The reference amount interest is calculated on. It is never exchanged in a standard swap.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixed leg",
+        "description": "The side paying a rate agreed at inception that does not change for the life of the trade.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Floating leg",
+        "description": "The side paying a rate that resets periodically against a published benchmark such as SOFR.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reset date",
+        "description": "The date that starts a new calculation period and fixes which benchmark rate applies to it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Tenor",
+        "description": "The total life of the swap, from effective date to maturity — commonly 2, 5 or 10 years.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Day count convention",
+        "description": "The rule converting an annual rate into the fraction actually owed for a period, such as ACT/360.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Interest Rate Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/irs/"
+      }
+    ]
+  }
+]
+</script>

@@ -73,3 +73,104 @@ A subscription adds 3 further sections on Execution and Reporting — From agree
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Execution and Reporting",
+    "description": "How a trade gets done, and who has to know about it",
+    "abstract": "The clearing module in this category already quoted the G20’s full 2009 commitment — traded on exchanges or electronic platforms, cleared through central counterparties, reported to trade repositories. This module is the other two legs of that sentence. Standardised derivatives are meant to trade on regulated electronic venues rather than over the phone, and every derivative — cleared or not, venue-traded or not — has to be reported to a trade repository within a tight window of being done. Both mandates bind instrument by instrument, decided by a specific, named determination, not a blanket rule for a whole asset class.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/execution/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/execution/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Execution and Reporting",
+      "description": "How a trade gets done, and who has to know about it",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Execution and Reporting — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/execution/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "SEF / MTF / OTF",
+        "description": "The regulated electronic venues — Swap Execution Facilities in the US, Multilateral and Organised Trading Facilities in the EU — that a sufficiently standardised derivative is required to trade on rather than being negotiated bilaterally.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "RFQ (request-for-quote)",
+        "description": "An execution method where a client asks a chosen number of dealers to compete for one specific trade, rather than trading against a continuous public order book.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Made-available-to-trade (MAT) determination",
+        "description": "The named, instrument-specific finding that triggers the US trading mandate — once approved, that swap can no longer be executed bilaterally.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Block trade",
+        "description": "A trade above a published size threshold, permitted a short reporting delay so that publishing it does not itself move the market against whoever just dealt.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Trade repository",
+        "description": "The regulated entity every OTC derivative, cleared or not, has to be reported to — the systemic map of exposures that did not exist before 2008.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "UTI / UPI",
+        "description": "The Unique Transaction Identifier, generated once per trade so both counterparties’ reports can be matched, and the Unique Product Identifier, reused across every trade in the same instrument.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Execution and Reporting",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/execution/"
+      }
+    ]
+  }
+]
+</script>

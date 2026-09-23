@@ -76,3 +76,104 @@ A subscription adds 3 further sections on FX Option — Quoted in deltas, not st
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "FX Option",
+    "description": "The right to exchange currency at a strike",
+    "abstract": "A forward with an escape hatch, bought for a fee. The holder may exchange two currencies at an agreed strike rate but is never forced to, so a hedger keeps protection against an adverse move while retaining the benefit of a favourable one. That asymmetry is paid for upfront in premium, which makes an option a more expensive hedge than a forward at the moment it is put on and a better one only if spot travels far enough in the hedger’s favour.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/fxopt/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxopt/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "FX Option",
+      "description": "The right to exchange currency at a strike",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "FX Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxopt/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike",
+        "description": "The exchange rate at which the holder may buy or sell if the option is exercised.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium",
+        "description": "The price paid upfront for the option, kept by the seller whether or not the option is exercised.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Exercise style",
+        "description": "Whether the option may be exercised only at expiry (European) or at any time up to it (American).",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Implied volatility",
+        "description": "The volatility the market is pricing into the option — the main determinant of its premium.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta",
+        "description": "How much the option’s value changes for a small move in the spot rate.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Knock-out barrier",
+        "description": "A rate level that, if spot touches it, cancels the option before expiry.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "FX Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/fxopt/"
+      }
+    ]
+  }
+]
+</script>

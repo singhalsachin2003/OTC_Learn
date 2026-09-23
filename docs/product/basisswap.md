@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Basis Swap — What a tenor basis pric
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Basis Swap",
+    "description": "Swap one floating index for another",
+    "abstract": "The first swap here with no fixed leg at all. Both sides pay a floating index on the same notional in the same currency — SOFR against the effective federal funds rate, or compounded SOFR against three-month Term SOFR — and the price is not a rate but a spread in basis points added to one of the legs. The structure carries the lesson: \"the floating rate\" is plural, the curves for different indices do not move together, and the gap between them is itself something that trades.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/basisswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/basisswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Basis Swap",
+      "description": "Swap one floating index for another",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Basis Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/basisswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Basis spread",
+        "description": "The basis points added to one floating leg so both legs are worth the same at inception, and the price at which the swap trades.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "SOFR",
+        "description": "The Secured Overnight Financing Rate, an overnight rate derived from US Treasury repo transactions and published by the New York Fed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Effective federal funds rate",
+        "description": "The volume-weighted median rate on overnight unsecured borrowing in the US federal funds market, also published by the New York Fed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Term SOFR",
+        "description": "A forward-looking rate for a period such as three months, derived from SOFR derivatives and therefore known at the start of the period.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Tenor basis",
+        "description": "The spread between two floating legs referencing the same benchmark over different periods, such as one month against three months.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Projection curve",
+        "description": "The curve used to forecast a floating leg’s future settings, kept separate from the discount curve applied to the resulting cash flows.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Basis Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/basisswap/"
+      }
+    ]
+  }
+]
+</script>

@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Variance Swap — Why variance and not
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Variance Swap",
+    "description": "Trade realized volatility directly",
+    "abstract": "A variance swap turns volatility itself into something you can buy and sell. It settles once, at maturity, on the difference between the variance a stock or index actually realises and a strike agreed at the outset. The strike is quoted as a volatility number — 20, say — but the contract settles on that number squared, and that squaring is what gives the payoff its distinctive shape.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/varswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/varswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Variance Swap",
+      "description": "Trade realized volatility directly",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Variance Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/varswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Realised variance",
+        "description": "The annualised average of squared daily returns actually observed over the contract’s life.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Variance strike",
+        "description": "The level settlement is measured against — the square of the volatility number the trade is quoted at.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Variance notional",
+        "description": "The cash amount paid per point of difference between realised variance and the strike.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Vega notional",
+        "description": "The approximate payoff per volatility point at the strike, equal to twice the strike times the variance notional.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Observation period",
+        "description": "The run of trading days whose daily returns feed the realised variance calculation.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cap",
+        "description": "A ceiling on the realised volatility used at settlement, limiting how much a seller can lose.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Variance Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/varswap/"
+      }
+    ]
+  }
+]
+</script>

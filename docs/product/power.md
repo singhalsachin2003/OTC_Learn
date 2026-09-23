@@ -46,3 +46,104 @@ In the app, Power Derivatives carries a five-step lesson, a worked example and a
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Power Derivatives",
+    "description": "A commodity that cannot be stored, priced by the hour",
+    "abstract": "Electricity has to be produced at the instant it is consumed, which changes everything about how it is traded. A power contract specifies not just a price and a quantity but a shape — which hours, over which period — and a hedge that matches the total but not the shape leaves a residual bought and sold at whatever the spot market does. It is the purest case of delivery profile as a risk in its own right.",
+    "articleSection": "Alternative Underlyings",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/power/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/power/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Power Derivatives",
+      "description": "A commodity that cannot be stored, priced by the hour",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Power Derivatives — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/power/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Baseload block",
+        "description": "A constant delivery in every hour of the contract period — 1 MW for 31 days is 744 MWh.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Peak block",
+        "description": "Delivery only in defined weekday daytime hours, when demand and prices are typically highest.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Shape risk",
+        "description": "The residual left when a flat hedge covers the same total energy as a profile that is not flat.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Heat rate",
+        "description": "The gas needed per unit of electricity produced, the inverse of a plant’s efficiency.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Spark spread",
+        "description": "The power price less the fuel cost at a given heat rate — a gas generator’s gross margin.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Volumetric risk",
+        "description": "Exposure to how much is consumed, which moves with price rather than independently of it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Alternative Underlyings",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Power Derivatives",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/power/"
+      }
+    ]
+  }
+]
+</script>

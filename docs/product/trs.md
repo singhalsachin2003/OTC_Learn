@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Total Return Swap — The financing le
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Total Return Swap",
+    "description": "Rent the full return of an asset",
+    "abstract": "A financing trade dressed as a swap. One party hands over every economic consequence of holding an asset — coupons, dividends, price gains and price losses — and receives a floating financing rate in return. The receiver ends up with the exposure of an owner while committing only collateral, and the payer ends up with a funded position whose risk it has passed on. Title never moves, which makes the TRS a tool for leverage, for balance-sheet management and, occasionally, for exposure that does not show up in a public register.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/trs/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/trs/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Total Return Swap",
+      "description": "Rent the full return of an asset",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Total Return Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/trs/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference asset",
+        "description": "The bond, loan or portfolio whose economics the swap passes across, held throughout by the payer.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Total return receiver",
+        "description": "The side taking the asset’s income, gains and losses in exchange for paying the financing leg.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Financing leg",
+        "description": "The floating payment — typically SOFR or €STR plus a spread — that buys the exposure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Valuation date",
+        "description": "A scheduled date on which the asset is remarked so accrued gains or losses are settled in cash.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Haircut",
+        "description": "The portion of the exposure that must be covered by collateral, which fixes how much leverage the trade carries.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Independent amount",
+        "description": "The collateral posted at inception, before any variation margin starts moving with the mark.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Total Return Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/trs/"
+      }
+    ]
+  }
+]
+</script>

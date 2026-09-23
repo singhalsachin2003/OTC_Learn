@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Commodity Swap — The pricing window 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Commodity Swap",
+    "description": "Fixed price for floating market price",
+    "abstract": "A commodity swap exchanges a fixed price for a floating one on an agreed volume — barrels of crude, tonnes of wheat, ounces of gold — without either side buying or selling the physical goods. The floating leg is a published price index, usually averaged over each settlement period, and only the net difference changes hands. That separation is the point: a producer or consumer carries on buying and selling physically on its own terms, and lays the price risk off in a separate financial contract that never touches its supply chain.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cmswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Commodity Swap",
+      "description": "Fixed price for floating market price",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Commodity Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixed price",
+        "description": "The price agreed at inception for the whole life of the swap, quoted per unit of the commodity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Floating leg",
+        "description": "The side that pays a published market price, observed and averaged over each settlement period.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference index",
+        "description": "The named published price the floating leg settles against, such as a dated Brent or gold benchmark assessment.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Notional volume",
+        "description": "The quantity of the commodity the swap is calculated on — barrels, tonnes or ounces — never actually delivered.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Averaging convention",
+        "description": "The rule turning a series of daily published prices into the single floating price for a period.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Basis risk",
+        "description": "The residual exposure left when the hedged index differs from the grade or location actually bought or sold.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Commodity Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cmswap/"
+      }
+    ]
+  }
+]
+</script>

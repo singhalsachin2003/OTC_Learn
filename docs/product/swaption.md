@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Swaption — Reading the grid, Black, 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Swaption",
+    "description": "An option on an interest rate swap",
+    "abstract": "An option on a swap. The buyer pays a premium today for the right — never the obligation — to enter an agreed interest rate swap, at a rate agreed today, on a date agreed today. That asymmetry is the whole point: a forward-starting swap binds both sides whatever happens, whereas a swaption turns a future borrowing or investment rate into a worst case the holder can walk away from if the market offers something better.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/swaption/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/swaption/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Swaption",
+      "description": "An option on an interest rate swap",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Swaption — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/swaption/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike rate",
+        "description": "The fixed rate on the swap the holder may enter, agreed when the swaption is traded.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Payer swaption",
+        "description": "The right to enter a swap paying fixed and receiving floating, which gains value as rates rise.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Receiver swaption",
+        "description": "The right to enter a swap receiving fixed and paying floating, which gains value as rates fall.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium",
+        "description": "The upfront price of the option, paid whether or not the swaption is ever exercised.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Bermudan swaption",
+        "description": "A swaption exercisable on any one of several agreed dates rather than on a single expiry date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Implied volatility",
+        "description": "The market’s expectation of how much the underlying swap rate will move, and the main driver of the premium besides the rate level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Swaption",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/swaption/"
+      }
+    ]
+  }
+]
+</script>

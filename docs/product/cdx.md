@@ -77,3 +77,104 @@ A subscription adds 3 further sections on CDX Index — The roll, and what on-th
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "CDX Index",
+    "description": "A basket of CDS in one tradable index",
+    "abstract": "A single contract that behaves like a portfolio of credit default swaps on a fixed list of names. Rather than negotiating dozens of single-name trades, a buyer of index protection strikes one deal at one level and takes on an equally weighted slice of every constituent. Indices are the liquid end of the credit derivatives market — most days a position can be opened or closed in size in minutes, which is why they are the default instrument for a fast hedge or a macro view on credit.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cdx/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cdx/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "CDX Index",
+      "description": "A basket of CDS in one tradable index",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "CDX Index — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cdx/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Series",
+        "description": "One vintage of the index, with a fixed constituent list and coupon, replaced by a new series at each roll.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "On-the-run",
+        "description": "The most recently launched series, which concentrates almost all of the trading volume.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index factor",
+        "description": "The proportion of the original notional still running after defaulted names have been stripped out.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index coupon",
+        "description": "The fixed running premium the series pays — 100bp for investment-grade families, 500bp for high yield.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Tranche",
+        "description": "A slice of the basket’s losses between an attachment and a detachment point, sold as a separate contract.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index basis",
+        "description": "The difference between the index level and the aggregate of its constituents’ single-name spreads.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "CDX Index",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cdx/"
+      }
+    ]
+  }
+]
+</script>

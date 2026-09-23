@@ -46,3 +46,104 @@ In the app, Orange County, 1994 carries a five-step lesson, a worked example and
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Orange County, 1994",
+    "description": "A conservative bond portfolio, borrowed three times over",
+    "abstract": "A Californian county ran an investment pool for itself and around two hundred local public bodies. The securities in it were high grade — agency notes, not junk — but the pool borrowed against them through repo to hold nearly three times the money deposited, and much of what it bought had leverage built into the coupon as well. When US rates rose through 1994 the pool lost about $1.7bn and the county filed for bankruptcy, at the time the largest municipal failure in US history.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/orange/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/orange/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Orange County, 1994",
+      "description": "A conservative bond portfolio, borrowed three times over",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Orange County, 1994 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/orange/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Repurchase agreement",
+        "description": "Selling a security for cash with an agreement to buy it back, the standard way to borrow against bonds.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Inverse floater",
+        "description": "A note whose coupon falls as a benchmark rate rises, giving it far more interest rate risk than its maturity suggests.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Effective duration",
+        "description": "The true price sensitivity of a structured note to rates, which can be several times its stated maturity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Collateral call",
+        "description": "A repo lender’s demand for more security as the collateral falls, met by selling into the same fall.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Book value reporting",
+        "description": "Reporting holdings at cost rather than market, which conceals a loss until it must be realised.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Investment pool",
+        "description": "A shared fund holding cash for several public bodies, whose participants here could not see the risk taken.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Orange County, 1994",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/orange/"
+      }
+    ]
+  }
+]
+</script>

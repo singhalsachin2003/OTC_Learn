@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Commodity Option — Average price opt
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Commodity Option",
+    "description": "Cap or floor a commodity price",
+    "abstract": "A commodity option gives its buyer the right, but never the obligation, to transact at a fixed strike price — a call to buy, a put to sell. That asymmetry is what a hedger pays for: unlike a swap or a forward, an option protects against the move that hurts while leaving the move that helps intact. The price of that one-sidedness is the premium, paid up front and gone whether or not the option is ever exercised.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cmopt/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmopt/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Commodity Option",
+      "description": "Cap or floor a commodity price",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Commodity Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmopt/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike",
+        "description": "The price at which the option may be exercised, fixed when the trade is agreed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium",
+        "description": "The up-front price of the option, quoted per unit of volume and kept by the seller whatever happens.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Call",
+        "description": "The right to buy at the strike, which caps what a consumer effectively pays for the commodity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Put",
+        "description": "The right to sell at the strike, which puts a floor under what a producer effectively receives.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Asian settlement",
+        "description": "Settlement against the average of the reference price over a period rather than its level on one date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Contract volume",
+        "description": "The quantity the per-unit payoff is multiplied by to give the cash amount actually paid.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Commodity Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cmopt/"
+      }
+    ]
+  }
+]
+</script>

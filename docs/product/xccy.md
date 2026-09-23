@@ -79,3 +79,104 @@ A subscription adds 3 further sections on Cross-Currency Swap — Notionals real
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cross-Currency Swap",
+    "description": "Exchange principal and interest across two currencies",
+    "abstract": "The longer-dated relative an FX swap’s own glossary already points to. An FX swap exchanges principal now and reverses it later and nothing else; a cross-currency swap does the same two exchanges of principal but adds interest, paid on each side’s notional in its own currency, for every period in between. It is the standard way a genuine multi-year currency funding need is hedged, and the market for it prices something covered interest rate parity says should not exist at all: the cross-currency basis.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/xccy/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/xccy/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Cross-Currency Swap",
+      "description": "Exchange principal and interest across two currencies",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Cross-Currency Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/xccy/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Notional exchange",
+        "description": "The exchange of principal in both currencies at inception, and back again at maturity — the feature that separates a cross-currency swap from a same-currency interest rate swap.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cross-currency basis",
+        "description": "The spread added to one floating leg of a floating-for-floating cross-currency swap, which covered interest rate parity implies should be zero and, for the dollar since 2008, persistently is not.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Covered interest rate parity",
+        "description": "The no-arbitrage relationship implying that the interest rate differential between two currencies should already be fully reflected in forward points, leaving no room for an extra spread.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Mark-to-market reset",
+        "description": "A periodic true-up of part of the notional to the current spot rate, used on longer-dated swaps to stop the eventual re-exchange from building up outsized credit exposure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reverse Yankee",
+        "description": "A bond issued by a US company in a foreign currency, most often euros, and swapped back into dollars — the mirror of a Yankee bond, in which a foreign issuer borrows dollars in the US market.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cross-currency basis swap",
+        "description": "The floating-for-floating structure specifically, as distinct from the fixed-for-fixed and fixed-for-floating variants that also trade under the broader cross-currency swap name.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Cross-Currency Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/xccy/"
+      }
+    ]
+  }
+]
+</script>

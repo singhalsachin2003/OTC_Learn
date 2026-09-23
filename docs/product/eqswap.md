@@ -78,3 +78,104 @@ A subscription adds 3 further sections on Equity Swap — The borrow is the cons
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Equity Swap",
+    "description": "Swap equity returns for a funding rate",
+    "abstract": "An equity swap exchanges the return on a share, a basket or an index for a funding rate on the same notional. One leg pays whatever the equity delivers over each period — the price move and, in a total return swap, the dividends — while the other pays a benchmark rate plus a spread. No shares change hands, so the receiver ends up with the economics of a shareholder without the shares, the vote or the settlement and custody that come with them.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/eqswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/eqswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Equity Swap",
+      "description": "Swap equity returns for a funding rate",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Equity Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/eqswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Equity leg",
+        "description": "The side paying the return on the underlying share, basket or index over each period.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Financing leg",
+        "description": "The side paying a benchmark rate such as SOFR or SONIA plus an agreed spread.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reset date",
+        "description": "The date on which the period’s equity return is calculated and the two legs settle.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Notional reset",
+        "description": "A feature that re-strikes the notional at the current price each period so exposure tracks market value.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Total return",
+        "description": "An equity leg that passes on dividends as well as price changes, unlike a price return leg.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dividend adjustment",
+        "description": "The agreed proportion of a declared dividend passed through on the equity leg, often net of withholding tax.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Equity Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/eqswap/"
+      }
+    ]
+  }
+]
+</script>

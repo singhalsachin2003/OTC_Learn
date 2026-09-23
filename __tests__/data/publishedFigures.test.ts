@@ -128,6 +128,88 @@ it('never publishes the body of a paid depth section', () => {
   }
 });
 
+/**
+ * Structured data is only worth having if it describes what is on the page, so
+ * these read it back off the generated pages rather than trusting the
+ * generator. Each product page carries a `TechArticle`, its key terms as a
+ * `DefinedTermSet` and a `BreadcrumbList`; each category page a `CollectionPage`
+ * and a `BreadcrumbList`.
+ */
+function structuredData(file: string): Record<string, unknown>[] {
+  const blocks = [
+    ...read(file).matchAll(
+      /<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/g,
+    ),
+  ];
+  return blocks.flatMap((match) => {
+    const parsed: unknown = JSON.parse(match[1]);
+    return (Array.isArray(parsed) ? parsed : [parsed]) as Record<string, unknown>[];
+  });
+}
+
+it('carries valid structured data on every published page', () => {
+  for (const product of products) {
+    const types = structuredData(`docs/product/${product.id}.md`).map(
+      (b) => b['@type'],
+    );
+    expect(types).toEqual(['TechArticle', 'DefinedTermSet', 'BreadcrumbList']);
+  }
+  for (const category of categories) {
+    const types = structuredData(`docs/category/${category.id}.md`).map(
+      (b) => b['@type'],
+    );
+    expect(types).toEqual(['CollectionPage', 'BreadcrumbList']);
+  }
+});
+
+/**
+ * The same rule as the teaser test above, applied to the half of the page a
+ * reader cannot see. Describing paid content in JSON-LD would publish it just
+ * as surely as printing it, and Google treats markup that does not match the
+ * visible page as a manual-action matter rather than an oversight.
+ */
+it('never describes paid content in structured data', () => {
+  const paidProducts = products.filter((p) => paidIds.has(p.categoryId));
+  expect(paidProducts.length).toBeGreaterThan(0);
+
+  for (const product of paidProducts) {
+    const serialised = JSON.stringify(
+      structuredData(`docs/product/${product.id}.md`),
+    );
+    for (const lesson of product.lessons) {
+      expect(serialised).not.toContain(lesson.content);
+    }
+    for (const line of product.example.lines) {
+      expect(serialised).not.toContain(line);
+    }
+  }
+
+  for (const product of products.filter((p) => p.depth !== undefined)) {
+    const serialised = JSON.stringify(
+      structuredData(`docs/product/${product.id}.md`),
+    );
+    for (const section of product.depth!.sections) {
+      expect(serialised).not.toContain(section.content);
+    }
+  }
+});
+
+/** What it does describe has to be on the page, so it is read from the page. */
+it('describes the key terms the page actually prints', () => {
+  for (const product of products) {
+    const page = read(`docs/product/${product.id}.md`);
+    const terms = structuredData(`docs/product/${product.id}.md`).find(
+      (b) => b['@type'] === 'DefinedTermSet',
+    ) as { hasDefinedTerm: { name: string; description: string }[] };
+
+    expect(terms.hasDefinedTerm).toHaveLength(product.keyTerms.length);
+    for (const term of terms.hasDefinedTerm) {
+      expect(page).toContain(term.name);
+      expect(page).toContain(term.description);
+    }
+  }
+});
+
 /** And the free ones must still publish in full, which is what ranks. */
 it('publishes free products in full', () => {
   const product = products.find((p) => !paidIds.has(p.categoryId));

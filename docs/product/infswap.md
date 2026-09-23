@@ -80,3 +80,104 @@ A subscription adds 3 further sections on Inflation Swap — Breakeven and the r
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Inflation Swap",
+    "description": "Swap a fixed rate for realised inflation",
+    "abstract": "The one product here whose underlying is a government statistic rather than a market price. One party pays a fixed rate agreed today, the other pays whatever a published price index — UK RPI, euro HICP excluding tobacco, US CPI — actually turns out to have done. That fixed rate is therefore a price for inflation itself, and the standard version settles the whole thing in a single payment at maturity rather than netting period by period, which makes it behave quite unlike the swaps that come before it.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/infswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/infswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Inflation Swap",
+      "description": "Swap a fixed rate for realised inflation",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Inflation Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/infswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Zero-coupon inflation swap",
+        "description": "The standard form, which exchanges nothing until maturity and then settles the whole compounded difference in one payment.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index ratio",
+        "description": "The final reference index divided by the initial one, which less one is what the inflation leg pays.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Breakeven inflation",
+        "description": "The fixed rate that makes both legs settle at the same amount, and so the market’s implied average inflation for that maturity.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Publication lag",
+        "description": "The fixed number of months between the index month a payment references and the payment date itself — two months on a standard UK RPI swap.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Seasonality",
+        "description": "The repeating within-year pattern in a price index, which largely cancels over whole years but must be modelled on short-dated and broken-dated trades.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Year-on-year inflation swap",
+        "description": "The periodic alternative, exchanging each year’s change in the index against a fixed rate on every payment date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Inflation Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/infswap/"
+      }
+    ]
+  }
+]
+</script>

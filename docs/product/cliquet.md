@@ -46,3 +46,104 @@ In the app, Cliquet Option carries a five-step lesson, a worked example and a ba
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cliquet Option",
+    "description": "A chain of options, each struck where the last one ended",
+    "abstract": "A cliquet — or ratchet — is a series of forward-starting options whose strike resets at each observation date to wherever the underlying then stands. The payoff is the sum of the period returns, each usually capped and floored. Because the strike follows the market, the buyer is never left holding an option struck somewhere the underlying has long since left, which is what makes cliquets the standard engine inside capital-protected notes.",
+    "articleSection": "Exotics",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cliquet/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cliquet/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Cliquet Option",
+      "description": "A chain of options, each struck where the last one ended",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Cliquet Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cliquet/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Reset date",
+        "description": "The date on which the strike for the next period is set to the underlying’s current level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Forward-starting option",
+        "description": "An option whose strike is fixed at a future date rather than today, the building block of a cliquet.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Local cap and floor",
+        "description": "The limits applied to each period’s return before the periods are summed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Global cap and floor",
+        "description": "Limits applied to the total payoff after the individual period returns have been added together.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Forward volatility",
+        "description": "The volatility expected between two future dates, which is what a cliquet is priced on.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reverse cliquet",
+        "description": "A variant paying a high fixed coupon reduced by the sum of the negative period returns.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Exotics",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Cliquet Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cliquet/"
+      }
+    ]
+  }
+]
+</script>

@@ -76,3 +76,104 @@ A subscription adds 3 further sections on OTC Equity Option — Dividends and ea
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "OTC Equity Option",
+    "description": "A custom, bilaterally negotiated option",
+    "abstract": "A privately negotiated right — not an obligation — to buy or sell a share, a basket or an index at an agreed strike on an agreed date. Everything a listed contract fixes for you is negotiable here: the strike, the size, the expiry, the underlying and features such as barriers. The price of that flexibility is that the contract exists only between the two parties who signed it, with no exchange or clearing house standing behind it.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/eqopt/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/eqopt/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "OTC Equity Option",
+      "description": "A custom, bilaterally negotiated option",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "OTC Equity Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/eqopt/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike",
+        "description": "The price at which the option lets its holder buy or sell the underlying.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium",
+        "description": "The amount paid upfront for the option, and the most a buyer can lose on it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Implied volatility",
+        "description": "The volatility figure that makes a model return the option’s traded price — the language dealers quote in.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta",
+        "description": "How much the option’s value moves for a small move in the underlying, and so how much stock hedges it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Vega",
+        "description": "How much the option’s value moves when implied volatility changes by one point.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Barrier",
+        "description": "A price level that brings an option into existence or extinguishes it if the underlying trades through it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "OTC Equity Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/eqopt/"
+      }
+    ]
+  }
+]
+</script>

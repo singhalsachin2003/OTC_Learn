@@ -46,3 +46,104 @@ In the app, Société Générale, 2008 carries a five-step lesson, a worked exam
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Société Générale, 2008",
+    "description": "Fictitious hedges, and a €4.9bn exit",
+    "abstract": "A trader on an equity derivatives desk built directional positions of around €50bn in European index futures and concealed them with fictitious offsetting trades entered into the bank’s systems. When the positions were discovered in January 2008 the bank unwound them over three days into a falling market, crystallising a loss of €4.9bn. The case is about how a control that checks net exposure can be defeated by inventing the other side, and about how much of a loss can belong to the exit rather than the position.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/socgen/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/socgen/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Société Générale, 2008",
+      "description": "Fictitious hedges, and a €4.9bn exit",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Société Générale, 2008 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/socgen/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Fictitious trade",
+        "description": "An invented offsetting position booked to make a real exposure appear hedged.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Confirmation",
+        "description": "Agreement of a trade’s terms with the counterparty — the check an invented trade cannot survive.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Exception handling",
+        "description": "What happens after an alert fires, and the step that decides whether a control works at all.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta One",
+        "description": "Desks trading instruments that track their underlying one-for-one, such as index futures and swaps.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Unwind cost",
+        "description": "The loss incurred while exiting a position, distinct from the loss the position already carried.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Supervision",
+        "description": "The obligation on a desk head to know what the desk holds, which no system replaces.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Société Générale, 2008",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/socgen/"
+      }
+    ]
+  }
+]
+</script>

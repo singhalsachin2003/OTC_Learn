@@ -46,3 +46,104 @@ In the app, Cash and Carry Basis carries a five-step lesson, a worked example an
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cash and Carry Basis",
+    "description": "Buy the asset, sell the future, collect the difference",
+    "abstract": "When a dated future trades above spot, the gap can be captured by buying the asset and selling the future against it, then holding both to expiry. The trade is as old as futures markets and is arithmetically simple: the return is the basis, annualised. What makes it worth studying is everything that is not in the arithmetic — the margin on the short leg, the cost of holding the long leg, and the assumption that both legs survive to expiry.",
+    "articleSection": "Alternative Underlyings",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cryptobasis/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cryptobasis/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Cash and Carry Basis",
+      "description": "Buy the asset, sell the future, collect the difference",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Cash and Carry Basis — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cryptobasis/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Basis",
+        "description": "The difference between a future’s price and the spot price of the underlying it references.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cash and carry",
+        "description": "Buying the underlying and selling the future against it to capture the basis until expiry.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cost of carry",
+        "description": "Interest, storage and insurance less any income — what the basis should equal in an orthodox market.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Annualised basis",
+        "description": "The spread scaled to a yearly rate, which is the only form in which two contracts are comparable.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reverse cash and carry",
+        "description": "The mirror trade — short the asset, long the future — which requires borrowing the underlying.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Convergence",
+        "description": "The narrowing of the basis to zero at expiry, which is what makes the captured spread a return.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Alternative Underlyings",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/alt/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Cash and Carry Basis",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cryptobasis/"
+      }
+    ]
+  }
+]
+</script>

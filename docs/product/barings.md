@@ -46,3 +46,104 @@ In the app, Barings, 1995 carries a five-step lesson, a worked example and a ban
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Barings, 1995",
+    "description": "One trader, both sides of his own desk",
+    "abstract": "A single trader in Singapore ran both the trading and the settlement of his own book, which meant nothing he reported had to be true. What began as concealed errors became a very large bet that the Nikkei would stay in a range, funded by short options and by margin wired from head office against positions nobody had reconciled. The Kobe earthquake broke the range, the losses reached about £827m, and a 233-year-old bank was sold for one pound.",
+    "articleSection": "Case Studies",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/barings/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/barings/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Barings, 1995",
+      "description": "One trader, both sides of his own desk",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Barings, 1995 — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/barings/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Segregation of duties",
+        "description": "Keeping trading, confirmation and settlement in separate hands so no one person can both trade and record.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Error account",
+        "description": "An account for correcting mistaken bookings, and here the place concealed losses were parked.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Short straddle",
+        "description": "Selling a call and a put at the same strike: premium now, unbounded loss if the market moves far.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Index arbitrage",
+        "description": "Trading the same index future on two exchanges for a small price difference, with little directional risk.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reconciliation",
+        "description": "Checking the firm’s records against the exchange’s and the cash actually paid — the control that was absent.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Operational risk",
+        "description": "Loss from failed processes, people or systems, as distinct from market or credit risk.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Case Studies",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/cases/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Barings, 1995",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/barings/"
+      }
+    ]
+  }
+]
+</script>

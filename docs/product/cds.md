@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Credit Default Swap — Fixed coupons 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Credit Default Swap",
+    "description": "Insurance against a borrower defaulting",
+    "abstract": "A bilateral contract that pays out if a named borrower fails. One side buys protection on a reference entity and pays a premium for it; the other side sells that protection and pockets the premium until something goes wrong. It behaves like insurance, but neither party need own the underlying debt, and the buyer of protection is short credit risk — the position gains value as the market grows more worried about the name and loses value as that worry recedes.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cds/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cds/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Credit Default Swap",
+      "description": "Insurance against a borrower defaulting",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Credit Default Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cds/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference entity",
+        "description": "The borrower whose default the contract is written on, identified together with the debt that qualifies for settlement.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Protection buyer",
+        "description": "The side paying the coupon and receiving the payout, which leaves it short the credit.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Standard coupon",
+        "description": "The fixed 100bp or 500bp running premium that standardised contracts pay instead of the traded spread.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Upfront payment",
+        "description": "The lump sum exchanged at inception that reconciles the fixed coupon with the level the name actually trades at.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Credit event",
+        "description": "The defined trigger — bankruptcy, failure to pay, restructuring and, for financials, governmental intervention — that terminates the contract.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Auction final price",
+        "description": "The single recovery price set by the industry auction, which every contract on that name settles against.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Credit Default Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cds/"
+      }
+    ]
+  }
+]
+</script>

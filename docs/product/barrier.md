@@ -46,3 +46,104 @@ In the app, Barrier Option carries a five-step lesson, a worked example and a ba
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Barrier Option",
+    "description": "A vanilla that switches on or off at a level",
+    "abstract": "A barrier option is a vanilla call or put with a trigger attached: it either comes to life when the underlying reaches a level (knock-in) or dies when it does (knock-out). The trigger is what the buyer sells to cheapen the option — a knock-out call costs less than the vanilla because it pays nothing along the paths that go furthest in its favour. Barriers are the most heavily traded exotic in FX and sit inside most structured notes, where the knock-out is what funds the enhanced coupon.",
+    "articleSection": "Exotics",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/barrier/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/barrier/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Barrier Option",
+      "description": "A vanilla that switches on or off at a level",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Barrier Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/barrier/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Knock-out",
+        "description": "A barrier option that ceases to exist if the underlying reaches the barrier level.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Knock-in",
+        "description": "A barrier option that only becomes a live option once the barrier is reached.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "In-out parity",
+        "description": "The rule that a matching knock-in and knock-out together equal the plain vanilla option.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Rebate",
+        "description": "A fixed amount paid to the holder when a knock-out barrier triggers, softening the loss.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reverse knock-out",
+        "description": "A barrier set in the money, so the option is extinguished exactly when it is most valuable.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Barrier shift",
+        "description": "A dealer’s practice of hedging to a level slightly beyond the contractual barrier to make the risk tradable.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Exotics",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Barrier Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/barrier/"
+      }
+    ]
+  }
+]
+</script>

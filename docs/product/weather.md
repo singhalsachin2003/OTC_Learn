@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Weather Swap — Degree days, and how 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Weather Swap",
+    "description": "A payout driven by temperature, not price",
+    "abstract": "A weather swap settles against the weather itself — a count of heating or cooling degree days accumulated at a named weather station over a season, compared with an agreed strike. There is nothing to buy, sell short, store or deliver, so no cost of carry links its price to anything and no portfolio replicates its payout. It exists because a great deal of commercial risk is about how much you sell rather than what you sell it for: a mild winter costs a gas utility volume, not price, and nothing else in this catalogue addresses that.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/weather/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/weather/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Weather Swap",
+      "description": "A payout driven by temperature, not price",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Weather Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/weather/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Heating degree day",
+        "description": "One unit for each degree the day’s average temperature falls below the base, and none at all for a day above it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cooling degree day",
+        "description": "The mirror image, counting degrees above the base, used for contracts written on summer cooling demand.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference station",
+        "description": "The named weather station whose published observations settle the contract, standing in for a whole region.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Tick value",
+        "description": "The cash amount attached to each degree day of difference between the settlement index and the strike.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Payout cap",
+        "description": "The agreed limit on the total either side can be asked to pay, fixed when the contract is written.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Volumetric risk",
+        "description": "Exposure to how much you sell rather than the price you sell it for, which a price hedge leaves untouched.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Weather Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/weather/"
+      }
+    ]
+  }
+]
+</script>

@@ -46,3 +46,104 @@ In the app, Vega and the Volatility Surface carries a five-step lesson, a worked
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Vega and the Volatility Surface",
+    "description": "What a book loses when volatility reprices",
+    "abstract": "Vega is the change in an option’s value for a one point move in implied volatility. Unlike delta it cannot be hedged in the underlying — only with other options — and unlike delta there is no single volatility to hedge against: every strike and every expiry has its own, and the shape they make is the volatility surface. Most of what an options desk argues about is a point on that surface.",
+    "articleSection": "Risk & the Greeks",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/vega/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/vega/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Vega and the Volatility Surface",
+      "description": "What a book loses when volatility reprices",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Vega and the Volatility Surface — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/vega/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Vega",
+        "description": "The change in an option’s value for a one point move in implied volatility.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Implied volatility",
+        "description": "The volatility input that makes a model’s price equal the option’s market price.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Volatility surface",
+        "description": "Implied volatility mapped across every strike and every maturity for one underlying.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Skew",
+        "description": "The slope of implied volatility across strikes, quoted in the market as a risk reversal.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Volga",
+        "description": "The sensitivity of vega to volatility itself — the convexity of the volatility exposure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Vanna",
+        "description": "The cross sensitivity: how vega moves with the underlying, or delta with volatility.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Risk & the Greeks",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Vega and the Volatility Surface",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/vega/"
+      }
+    ]
+  }
+]
+</script>

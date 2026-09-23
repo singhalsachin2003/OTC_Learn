@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Risk Reversal — Building a smile fro
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Risk Reversal",
+    "description": "Sell an option to fund the one you actually want",
+    "abstract": "Every option in this catalogue has so far been priced as if volatility were one flat number. A risk reversal is where that stops being true. It is both a trading structure — buy one option and sell another, opposite type, same expiry, most often sized so the premiums roughly cancel — and the market’s standard way of quoting how lopsided volatility actually is: the implied vol of a call minus the implied vol of a put at the same delta. One instrument, two jobs, and both come from the same asymmetry.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/fxrr/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxrr/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Risk Reversal",
+      "description": "Sell an option to fund the one you actually want",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Risk Reversal — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxrr/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Risk reversal (quote)",
+        "description": "The implied volatility of a call minus the implied volatility of a put at the same delta and tenor — the market’s standard shorthand for which side of the distribution carries the fatter tail.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Zero-cost collar",
+        "description": "A risk reversal sized so the premium received on the sold option roughly offsets the premium paid on the bought one, for no net premium.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Volatility skew",
+        "description": "The pattern of implied volatility across different strikes, which a flat single-number vol does not capture and a risk reversal is the standard way to measure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "25-delta",
+        "description": "The market’s usual reference point away from at-the-money, naming a strike by its delta rather than its rate so quotes stay comparable as spot moves.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium financing",
+        "description": "Using the premium collected on the leg sold to fund some or all of the premium owed on the leg bought.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta",
+        "description": "How much an option’s value changes for a small move in the spot rate, and the number the market uses to pick which strike a quoted risk reversal refers to.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Risk Reversal",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/fxrr/"
+      }
+    ]
+  }
+]
+</script>

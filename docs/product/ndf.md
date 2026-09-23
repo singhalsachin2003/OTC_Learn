@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Non-Deliverable Forward — The fixing
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Non-Deliverable Forward",
+    "description": "A cash-settled forward for restricted currencies",
+    "abstract": "A forward on a currency that cannot leave its own borders. The economics are those of an ordinary forward — a rate agreed today for a date in the future — but nothing is ever delivered in the restricted currency. Instead the two sides compare their agreed rate with an official fixing on the fixing date and settle the difference as a single payment in a convertible currency, almost always US dollars. That one design change is what lets an offshore investor take a position in a currency it is not permitted to hold.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/ndf/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/ndf/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Non-Deliverable Forward",
+      "description": "A cash-settled forward for restricted currencies",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Non-Deliverable Forward — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/ndf/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixing rate",
+        "description": "The official reference rate published on the fixing date, against which the contract rate is compared.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixing source",
+        "description": "The named publisher of that rate, such as a central bank or an industry benchmark administrator.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Settlement currency",
+        "description": "The convertible currency the net difference is paid in, most often US dollars.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixing date",
+        "description": "The date the reference rate is observed, normally a day or two before the cash actually settles.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Restricted currency",
+        "description": "The currency the contract references but never delivers, because capital controls block offshore settlement.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Basis risk",
+        "description": "The residual exposure left when the fixing differs from the rate the hedger transacts at onshore.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Non-Deliverable Forward",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/ndf/"
+      }
+    ]
+  }
+]
+</script>

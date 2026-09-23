@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Swing Option — A bundle of constrain
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Swing Option",
+    "description": "The right to choose how much you take",
+    "abstract": "Every option so far has been a right to transact a fixed amount: the buyer chooses whether to deal, and the strike fixes the price. A swing option turns that around. The price is agreed at the outset and the quantity is what gets chosen, day by day, between a daily minimum and maximum and within overall limits for the year. Those overall limits are the whole lesson — the daily rights share one budget, so flexibility spent today is gone tomorrow, and the annual minimum is not a right at all but an obligation to pay.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/swing/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/swing/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Swing Option",
+      "description": "The right to choose how much you take",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Swing Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/swing/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Nomination",
+        "description": "The buyer’s notice, given by a deadline in the contract, of the volume it will take on the coming day.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Daily contract quantity",
+        "description": "The reference daily volume that the minimum and maximum daily nominations are expressed against.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Annual contract quantity",
+        "description": "The reference volume for the contract year, around which the overall minimum and maximum takes are set.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Take-or-pay",
+        "description": "The obligation to pay for the annual minimum volume whether or not the buyer actually takes it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Swing factor",
+        "description": "The maximum daily nomination divided by the average daily volume, measuring how much flexibility the contract carries.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Continuation value",
+        "description": "What the remaining allowance is worth if today’s is left unused — the figure a nomination decision is really judged against.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Swing Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/swing/"
+      }
+    ]
+  }
+]
+</script>

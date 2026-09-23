@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Forward Rate Agreement — Against a f
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Forward Rate Agreement",
+    "description": "Lock a rate for one future period",
+    "abstract": "The simplest way to fix a rate for one future window. Two parties agree today what the interest rate will be on a notional amount over a period that starts later, and at fixing they settle the difference between that agreed rate and whatever the market rate turns out to be. Nothing is borrowed and nothing is lent — the FRA sits alongside a real loan or deposit and neutralises the rate on it for that one period.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/fra/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fra/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Forward Rate Agreement",
+      "description": "Lock a rate for one future period",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Forward Rate Agreement — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fra/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "FRA notation",
+        "description": "The \"3x6\" form, giving the months from now to the start and to the end of the period covered.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Contract rate",
+        "description": "The rate agreed on the trade date, against which the reference rate is compared at fixing.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Fixing date",
+        "description": "The day the reference rate is observed and the settlement amount is calculated.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Buyer",
+        "description": "The side that is the notional borrower, and so gains when the reference rate fixes above the contract rate.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Discounted settlement",
+        "description": "The convention of paying the interest difference at the start of the period, reduced to its present value.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Strip of FRAs",
+        "description": "A run of FRAs covering consecutive periods, used where a single contract would leave later periods unhedged.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Forward Rate Agreement",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/fra/"
+      }
+    ]
+  }
+]
+</script>

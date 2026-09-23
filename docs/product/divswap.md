@@ -78,3 +78,104 @@ A subscription adds 3 further sections on Dividend Swap — Three kinds of divid
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Dividend Swap",
+    "description": "Trade dividends without owning the shares",
+    "abstract": "A dividend swap takes one component of an equity’s return — the cash it hands to shareholders — and makes it tradable on its own. One side pays a fixed amount agreed at the outset; the other pays whatever dividends the underlying index or share actually declares over an agreed period, usually a calendar year. The price of the underlying never enters the settlement. Because each year trades as its own contract, the strip of them forms a curve with a term structure of its own, and that curve has a persistent tilt: the far end trades below what anyone forecasts, because the people who most need to trade it are all on the same side.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/divswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/divswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Dividend Swap",
+      "description": "Trade dividends without owning the shares",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Dividend Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/divswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Implied dividend",
+        "description": "The fixed strike at which a given year’s dividends can be traded today, before any of them are known.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Realised dividends",
+        "description": "The dividends that actually went ex-dividend during the accrual period, which the settlement is measured against.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dividend points",
+        "description": "The contribution dividends make to an index level, the unit an index dividend swap is quoted and settled in.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Accrual period",
+        "description": "The window whose ex-dividend dates count — conventionally a single calendar year.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dividend notional",
+        "description": "The cash amount paid per point of difference between realised dividends and the strike.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dividend curve",
+        "description": "The strip of successive annual maturities, whose shape shows what the market will pay for each future year.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Dividend Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/divswap/"
+      }
+    ]
+  }
+]
+</script>

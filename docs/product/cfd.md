@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Contract for Difference — Financing,
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Contract for Difference",
+    "description": "Cash-settled exposure to a price move",
+    "abstract": "A contract for difference pays the change in an asset’s price between opening and closing a position, in cash, with no ownership of the asset at any point. It is traded on margin with a dealer as the counterparty on every trade, which makes it a cheap way to take a leveraged position in either direction — and the reason regulators have singled it out, banning it for retail clients in the US and capping the leverage retail clients may use in the UK and EU.",
+    "articleSection": "Equity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cfd/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cfd/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Contract for Difference",
+      "description": "Cash-settled exposure to a price move",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Contract for Difference — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cfd/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Margin",
+        "description": "The cash posted to open and maintain a position, a fraction of its full value.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Leverage",
+        "description": "The ratio of position value to margin posted, which magnifies gains and losses alike.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Overnight financing",
+        "description": "The daily charge for funding the full value of a long position, accruing for as long as it is held.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Spread",
+        "description": "The gap between the dealer’s buy and sell prices, paid on entry and exit of every trade.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Margin close-out",
+        "description": "The dealer’s closing of positions once account equity falls below a set fraction of required margin.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Dividend adjustment",
+        "description": "A cash credit to long positions and debit to short ones when the underlying share goes ex-dividend.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Equity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/equity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Contract for Difference",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cfd/"
+      }
+    ]
+  }
+]
+</script>

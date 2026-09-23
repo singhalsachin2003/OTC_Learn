@@ -78,3 +78,104 @@ A subscription adds 3 further sections on Credit Index Option — Exercising int
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Credit Index Option",
+    "description": "An option on a credit index spread",
+    "abstract": "An option whose underlying is a credit index and whose strike is a spread rather than a price, a rate or an exchange rate. The buyer of a payer acquires the right to buy protection at an agreed spread on a fixed date; the buyer of a receiver acquires the right to sell it. The naming is borrowed from interest-rate swap options and runs against equity intuition — the payer is the bearish position — and the payoff carries a mechanism found nowhere else: if a name in the index defaults before expiry, the loss travels into the option rather than being lost with it. This is where credit volatility itself is bought and sold, and the standard way a large book buys a convex hedge against a credit selloff.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cdxopt/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cdxopt/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Credit Index Option",
+      "description": "An option on a credit index spread",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Credit Index Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cdxopt/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Payer option",
+        "description": "The right to buy protection on the index at the strike spread, which gains value as spreads widen.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Receiver option",
+        "description": "The right to sell protection on the index at the strike spread, which gains value as spreads tighten.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike spread",
+        "description": "The spread level, in basis points, at which the holder may enter the underlying index swap on exercise.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Front-end protection",
+        "description": "Compensation carried into a payer’s payoff for credit events occurring between trade date and expiry.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Risky annuity",
+        "description": "The duration-like factor that converts one basis point of index spread into an amount of cash.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta exchange",
+        "description": "The offsetting index position traded alongside the option so the buyer starts without a directional view.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Credit Index Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cdxopt/"
+      }
+    ]
+  }
+]
+</script>

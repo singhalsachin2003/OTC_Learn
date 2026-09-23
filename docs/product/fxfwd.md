@@ -77,3 +77,104 @@ A subscription adds 3 further sections on FX Forward — Where forward points co
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "FX Forward",
+    "description": "Lock in a future exchange rate",
+    "abstract": "The simplest way to remove currency uncertainty from a future cash flow. Two parties agree today to exchange one currency for another on a fixed date at a fixed rate, and both are obliged to go through with it whatever spot does in the meantime. The rate is not a forecast: it is today’s spot adjusted by the interest rate gap between the two currencies, because anything else would let someone borrow in one currency, lend in the other and pocket the difference risk-free.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/fxfwd/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxfwd/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "FX Forward",
+      "description": "Lock in a future exchange rate",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "FX Forward — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxfwd/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Spot rate",
+        "description": "The rate for an exchange settling on the standard spot date, normally two business days after the trade.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Forward points",
+        "description": "The adjustment added to or subtracted from spot to give the forward rate, driven by the interest rate differential.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Value date",
+        "description": "The date on which the two currencies are actually delivered to each other.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Base currency",
+        "description": "The first currency in a pair — the one whose price is being quoted, so EUR/USD is dollars per euro.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Outright forward",
+        "description": "A single exchange of two currencies on one future date, with no offsetting near leg.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Window forward",
+        "description": "A forward the client may settle on any date within an agreed range rather than one fixed date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "FX Forward",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/fxfwd/"
+      }
+    ]
+  }
+]
+</script>

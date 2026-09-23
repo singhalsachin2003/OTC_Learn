@@ -73,3 +73,104 @@ A subscription adds 3 further sections on XVA and Counterparty Risk — CVA is a
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "XVA and Counterparty Risk",
+    "description": "Why the same swap is never quite the same price twice",
+    "abstract": "A swap’s textbook value — its legs discounted off the right curves — assumes both sides always pay in full and that funding is free. Neither is true, and XVA is the family of adjustments dealers add to price what that assumption leaves out: the cost of each side’s own default risk, and the cost of actually funding the trade and the margin it requires. None of it changes where the swap curve sits, which is exactly why two dealers can agree on rates and still quote two different prices.",
+    "articleSection": "Market Foundations",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/xva/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/xva/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "XVA and Counterparty Risk",
+      "description": "Why the same swap is never quite the same price twice",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "XVA and Counterparty Risk — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/xva/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "XVA",
+        "description": "The family of valuation adjustments — credit, funding, margin and others — added to a trade’s textbook value to price what a frictionless, default-free assumption leaves out.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "CVA",
+        "description": "Credit valuation adjustment: the expected cost of the counterparty’s own default risk, subtracted from the textbook value.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "DVA",
+        "description": "Debit valuation adjustment: the mirror-image value of the dealer’s own default risk, which a deteriorating dealer can — controversially — book as a gain.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "FVA",
+        "description": "Funding valuation adjustment: the cost of funding the uncollateralised part of a trade’s exposure over its life.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "MVA",
+        "description": "Margin valuation adjustment: the cost of funding the initial margin a trade requires to be posted into segregated custody.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Wrong-way risk",
+        "description": "The case where a counterparty’s probability of default is itself correlated with the dealer’s exposure to it, so the two get worse together rather than independently.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Market Foundations",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/foundations/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "XVA and Counterparty Risk",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/xva/"
+      }
+    ]
+  }
+]
+</script>

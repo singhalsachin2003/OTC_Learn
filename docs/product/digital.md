@@ -46,3 +46,104 @@ In the app, Digital Option carries a five-step lesson, a worked example and a ba
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Digital Option",
+    "description": "All or nothing, decided at one level",
+    "abstract": "A digital — or binary — option pays a fixed amount if the underlying finishes on the right side of a level, and nothing if it does not. There is no proportional payoff: finishing a pip beyond the strike pays the same as finishing a figure beyond it. That makes the price a clean statement of probability, and it makes the option almost impossible to hedge in the last hours of its life, because the payoff jumps rather than slopes.",
+    "articleSection": "Exotics",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/digital/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/digital/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Digital Option",
+      "description": "All or nothing, decided at one level",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Digital Option — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/digital/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Cash-or-nothing",
+        "description": "A digital paying a fixed cash amount if the condition is met, and nothing if it is not.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Payout",
+        "description": "The fixed sum a digital pays on exercise; the price is quoted as a percentage of it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Call spread replication",
+        "description": "Hedging a digital with a long and a short vanilla struck either side of the trigger.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "One-touch",
+        "description": "An American digital paying if the level is reached at any time before expiry, not only at it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "No-touch",
+        "description": "The mirror contract, paying only if the level is never reached during the option’s life.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Pin risk",
+        "description": "The unhedgeable exposure left when the underlying sits on the strike as the option expires.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Exotics",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/exotics/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Digital Option",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/digital/"
+      }
+    ]
+  }
+]
+</script>

@@ -46,3 +46,104 @@ In the app, Delta and Gamma carries a five-step lesson, a worked example and a b
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Delta and Gamma",
+    "description": "The hedge, and how fast the hedge goes stale",
+    "abstract": "Delta is how much an option’s value moves for a one-unit move in the underlying, and it is therefore the size of the hedge. Gamma is how fast the delta itself changes, and it is therefore how often that hedge has to be redone. A delta-hedged option position is not a position in the underlying at all: it is a position in gamma against theta, which is the trade an options desk is actually running.",
+    "articleSection": "Risk & the Greeks",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/delta/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/delta/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Delta and Gamma",
+      "description": "The hedge, and how fast the hedge goes stale",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Delta and Gamma — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/delta/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta",
+        "description": "The change in an option’s value per unit change in the underlying, and so the size of the hedge.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Gamma",
+        "description": "The rate of change of delta, and so how fast an existing hedge becomes wrong.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Theta",
+        "description": "The value lost per day from the passage of time, which is what pays for gamma.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delta hedging",
+        "description": "Holding an offsetting position in the underlying so the option position has no directional exposure.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Break-even move",
+        "description": "The daily move at which re-hedging profit exactly covers the position’s theta.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Gap risk",
+        "description": "The exposure left when the underlying jumps rather than moves smoothly, giving no chance to re-hedge.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Risk & the Greeks",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Delta and Gamma",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/delta/"
+      }
+    ]
+  }
+]
+</script>

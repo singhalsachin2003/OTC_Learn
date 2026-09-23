@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Cap and Floor — A cap is a strip of 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cap and Floor",
+    "description": "Set a ceiling or floor on a floating rate",
+    "abstract": "Insurance on a floating rate. A cap is a strip of options that pays the holder whenever the reference rate sets above an agreed strike, so the reference rate a borrower effectively pays is capped at that level, with their credit margin still payable on top; a floor does the mirror image for someone receiving floating income. Unlike a swap, which fixes the rate in both directions, the buyer pays a premium up front and keeps the benefit if rates move their way.",
+    "articleSection": "Interest Rate",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/capfloor/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/capfloor/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Cap and Floor",
+      "description": "Set a ceiling or floor on a floating rate",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Cap and Floor — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/capfloor/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Strike",
+        "description": "The rate above which a cap begins to pay out, or below which a floor does.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Caplet",
+        "description": "One option within a cap, covering a single reset period of the underlying schedule.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Floorlet",
+        "description": "One option within a floor, covering a single reset period of the underlying schedule.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Collar",
+        "description": "A bought cap combined with a sold floor, which cuts the net premium in exchange for giving up gains below the floor.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Premium",
+        "description": "The upfront cost of the cap or floor, paid whether or not any caplet ever pays out.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reset frequency",
+        "description": "How often the reference rate is compared with the strike, which also sets how many caplets the strip contains.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Interest Rate",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/ir/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Cap and Floor",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/capfloor/"
+      }
+    ]
+  }
+]
+</script>

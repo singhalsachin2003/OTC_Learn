@@ -76,3 +76,104 @@ A subscription adds 3 further sections on Commodity Forward — The theory of st
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Commodity Forward",
+    "description": "Agree a price today for delivery later",
+    "abstract": "A commodity forward is a private agreement to buy or sell a specific quantity of a specific grade, at a specific place and time, for a price agreed now. It is the oldest derivative there is, and it is still the contract of choice for anyone whose problem is not just price but supply. Unlike a cash-settled swap, it ends with goods moving, which makes the grade, the delivery point and the delivery date as negotiated as the price itself.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/cmfwd/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmfwd/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Commodity Forward",
+      "description": "Agree a price today for delivery later",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "foundational"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Commodity Forward — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/cmfwd/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Contract price",
+        "description": "The price agreed today that the buyer will pay per unit on the delivery date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Grade specification",
+        "description": "The quality standard the delivered commodity must meet for the seller to have performed.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delivery point",
+        "description": "The named place where the goods change hands, which fixes who bears freight and where risk passes.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Delivery date",
+        "description": "The agreed date, or window, on which payment is made and the commodity is handed over.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Physical settlement",
+        "description": "Settlement by delivering the actual goods rather than paying a cash difference.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cost of carry",
+        "description": "The storage, insurance and financing cost of holding a commodity until delivery, which shapes the forward price.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Commodity Forward",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/cmfwd/"
+      }
+    ]
+  }
+]
+</script>

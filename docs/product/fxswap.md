@@ -78,3 +78,104 @@ A subscription adds 3 further sections on FX Swap — Funding, wearing an FX lab
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "FX Swap",
+    "description": "Exchange currencies now and reverse it later",
+    "abstract": "Two exchanges bundled into a single trade: currencies swap one way today and back the other way on an agreed future date, both rates fixed at inception. Because the second leg undoes the first, the trade takes almost no view on where the exchange rate goes — what it does is move cash from one currency to another for a defined period, which makes it a funding and liquidity tool rather than a directional one. It is the busiest instrument in the FX market.",
+    "articleSection": "FX",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/fxswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "FX Swap",
+      "description": "Exchange currencies now and reverse it later",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "FX Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/fxswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Near leg",
+        "description": "The first exchange, usually at or close to the spot rate and the spot date.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Far leg",
+        "description": "The reversing exchange on the later value date, struck at the forward rate agreed at inception.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Swap points",
+        "description": "The difference between the far and near rates, which is the price of the swap and reflects the interest differential.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Tom-next",
+        "description": "A one-day swap rolling a position from tomorrow’s value date to the next business day.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Value date",
+        "description": "A date on which one of the two legs delivers; every FX swap has two of them.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Cross-currency swap",
+        "description": "A longer-dated relative that also exchanges interest payments over its life, which an FX swap does not.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FX",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/fx/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "FX Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/fxswap/"
+      }
+    ]
+  }
+]
+</script>

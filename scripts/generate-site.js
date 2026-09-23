@@ -72,6 +72,104 @@ function yamlString(value) {
   return `"${value.replace(/"/g, '\\"')}"`;
 }
 
+/** Where these pages are published. Structured data needs absolute URLs. */
+const SITE = 'https://singhalsachin2003.github.io/OTC_Learn';
+const PUBLISHER = { '@type': 'Person', name: 'Sachin Singhal' };
+
+/**
+ * A JSON-LD block, to be appended to a page body.
+ *
+ * In the body rather than the document head because this site is built by
+ * GitHub Pages with a stock theme and has no layout to edit; JSON-LD is read
+ * the same way in either place.
+ *
+ * **Everything described below has to be visible on the page that carries it.**
+ * Structured data that describes content a reader cannot see is a manual-action
+ * risk, not an SEO win — which is why the lesson body never appears here for a
+ * paid product, and why `isAccessibleForFree` is true on every page including
+ * the teasers: the *page* is free to read in full, whatever the app charges for.
+ */
+function jsonLd(...blocks) {
+  return [
+    '<script type="application/ld+json">',
+    JSON.stringify(blocks.length === 1 ? blocks[0] : blocks, null, 2),
+    '</script>',
+    '',
+  ];
+}
+
+/** Home → asset class → product, which is how the site is actually organised. */
+function breadcrumbs(category, product) {
+  const trail = [
+    { name: 'OTC Learn', item: `${SITE}/` },
+    { name: category.name, item: `${SITE}/category/${category.id}/` },
+  ];
+  if (product) trail.push({ name: product.name, item: `${SITE}/product/${product.id}/` });
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((entry, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: entry.name,
+      item: entry.item,
+    })),
+  };
+}
+
+/**
+ * The page itself. `TechArticle` rather than `Article` because that is what it
+ * is — an explainer about one instrument, written for people studying it.
+ *
+ * `about` carries the product as a `DefinedTerm`, which is the honest shape for
+ * a page whose subject is a named thing in a vocabulary rather than an event or
+ * a product for sale. Nothing on these pages is for sale; the app is.
+ */
+function articleBlock(product, category) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: product.name,
+    description: product.hook,
+    abstract: product.summary,
+    articleSection: category.name,
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    mainEntityOfPage: `${SITE}/product/${product.id}/`,
+    url: `${SITE}/product/${product.id}/`,
+    author: PUBLISHER,
+    publisher: PUBLISHER,
+    about: {
+      '@type': 'DefinedTerm',
+      name: product.name,
+      description: product.hook,
+      inDefinedTermSet: `${SITE}/category/${category.id}/`,
+    },
+    proficiencyLevel: product.difficulty,
+  };
+}
+
+/**
+ * The key terms, which every page publishes in full — free or paid — because
+ * they are the part the app leaves open in its glossary anyway. Six per
+ * product, each with the definition printed above it.
+ */
+function keyTermsBlock(product, category) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    name: `${product.name} — key terms`,
+    url: `${SITE}/product/${product.id}/`,
+    inLanguage: 'en',
+    hasDefinedTerm: product.keyTerms.map((term) => ({
+      '@type': 'DefinedTerm',
+      name: term.term,
+      description: term.definition,
+      inDefinedTermSet: `${SITE}/category/${category.id}/`,
+    })),
+  };
+}
+
 /**
  * A premium product's page: enough to be worth landing on and to resolve the
  * App Link, and not the lesson itself.
@@ -127,6 +225,14 @@ function teaserPage(product, category, products) {
     '',
     'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',
     '',
+    // The teaser's structured data describes the teaser: the summary, the step
+    // titles and the key terms, which is all that is on the page. The lesson
+    // body is not here for the same reason it is not above it.
+    ...jsonLd(
+      articleBlock(product, category),
+      keyTermsBlock(product, category),
+      breadcrumbs(category, product),
+    ),
   );
 
   return lines.join('\n');
@@ -203,6 +309,11 @@ function productPage(product, category, products) {
     '',
     'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',
     '',
+    ...jsonLd(
+      articleBlock(product, category),
+      keyTermsBlock(product, category),
+      breadcrumbs(category, product),
+    ),
   );
 
   return lines.join('\n');
@@ -237,6 +348,32 @@ function categoryPage(category, products) {
     '',
     '[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)',
     '',
+    // A list page, described as one: the products named on it, in the order
+    // they are named, and nothing that is not.
+    ...jsonLd(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: category.name,
+        description: category.description,
+        url: `${SITE}/category/${category.id}/`,
+        inLanguage: 'en',
+        isAccessibleForFree: true,
+        publisher: PUBLISHER,
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: mine.length,
+          itemListElement: mine.map((product, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: product.name,
+            description: product.hook,
+            url: `${SITE}/product/${product.id}/`,
+          })),
+        },
+      },
+      breadcrumbs(category),
+    ),
   );
   return lines.join('\n');
 }

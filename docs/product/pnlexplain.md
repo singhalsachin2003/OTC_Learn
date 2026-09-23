@@ -46,3 +46,104 @@ In the app, P&L Attribution carries a five-step lesson, a worked example and a b
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "P&L Attribution",
+    "description": "Yesterday’s profit, accounted for line by line",
+    "abstract": "P&L attribution — the explain — decomposes a day’s profit or loss into the risk factors that produced it: so much from the market direction, so much from gamma, so much from volatility, so much from time. What is left over is the unexplained, and it is the most closely watched number on the report, because an explain that does not tie out means a mark, a model or a risk figure is wrong and nobody yet knows which.",
+    "articleSection": "Risk & the Greeks",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/pnlexplain/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/pnlexplain/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "P&L Attribution",
+      "description": "Yesterday’s profit, accounted for line by line",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "P&L Attribution — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/pnlexplain/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Explain",
+        "description": "The decomposition of a day’s P&L into the risk factors that produced it.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Unexplained P&L",
+        "description": "The residual between actual profit and what the risk factors account for.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Hypothetical P&L",
+        "description": "Yesterday’s portfolio revalued on today’s market data, with no intraday trading or fees.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Risk-theoretical P&L",
+        "description": "The profit the risk model predicts from its own risk factors and sensitivities.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Carry",
+        "description": "The funding, borrow and roll-down component of a day’s P&L, separate from market moves.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Day-one P&L",
+        "description": "Profit recognised when a trade is booked, on a model price rather than an observed one.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Risk & the Greeks",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/risk/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "P&L Attribution",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/pnlexplain/"
+      }
+    ]
+  }
+]
+</script>

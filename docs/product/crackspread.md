@@ -77,3 +77,104 @@ A subscription adds 3 further sections on Crack Spread Swap — Why three, two a
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Crack Spread Swap",
+    "description": "Hedge the margin between crude and its products",
+    "abstract": "A refiner does not really trade oil — it buys crude, converts it and sells products, and lives on the difference. That difference is the crack spread, and it can be squeezed even when the outright oil price is flat. A crack spread swap fixes the spread rather than either price on its own, which is why it is the hedge that matches how a refinery actually earns money.",
+    "articleSection": "Commodity",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/crackspread/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/crackspread/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Crack Spread Swap",
+      "description": "Hedge the margin between crude and its products",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+    },
+    "proficiencyLevel": "advanced"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Crack Spread Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/crackspread/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Crack spread",
+        "description": "The difference between the value of refined products and the cost of the crude used to make them.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "3-2-1 ratio",
+        "description": "The standard bundle of three barrels of crude against two of gasoline and one of distillate.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Distillate",
+        "description": "The middle-distillate product group covering diesel and heating oil, the third leg of the 3-2-1.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Reference index",
+        "description": "The published price each leg settles against, one for crude and one for each refined product.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Settlement period",
+        "description": "The month or other window over which each leg’s index is observed and the spread is calculated.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Quality basis",
+        "description": "The gap between the index grade and the crude or products a particular refinery actually handles.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Commodity",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/commodity/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Crack Spread Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/crackspread/"
+      }
+    ]
+  }
+]
+</script>

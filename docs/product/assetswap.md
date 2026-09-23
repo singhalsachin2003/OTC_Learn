@@ -78,3 +78,104 @@ A subscription adds 3 further sections on Asset Swap — Par-par, and where the 
 [Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Asset Swap",
+    "description": "Turn a fixed-rate bond into a floating one",
+    "abstract": "A package rather than a single instrument: a fixed-rate bond bought together with an interest rate swap that pays its coupon away and returns a floating rate in its place. What the holder is left with is the issuer’s credit risk expressed as a spread over SOFR, with the interest rate risk stripped out. That number — the asset swap spread — is the cash market’s price for the same default risk a CDS covers, which is why the two can be set side by side, and why the gap between them says something neither figure says alone.",
+    "articleSection": "Credit",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "mainEntityOfPage": "https://singhalsachin2003.github.io/OTC_Learn/product/assetswap/",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/assetswap/",
+    "author": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Sachin Singhal"
+    },
+    "about": {
+      "@type": "DefinedTerm",
+      "name": "Asset Swap",
+      "description": "Turn a fixed-rate bond into a floating one",
+      "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+    },
+    "proficiencyLevel": "intermediate"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "Asset Swap — key terms",
+    "url": "https://singhalsachin2003.github.io/OTC_Learn/product/assetswap/",
+    "inLanguage": "en",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Asset swap spread",
+        "description": "The running spread over the floating benchmark the package pays, and the cash market’s measure of the issuer’s credit risk.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Par-par structure",
+        "description": "The standard form, in which the investor pays par for the bond and the swap notional is par, whatever the bond is actually worth.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Annuity factor",
+        "description": "The sum of the discount factors over the bond’s remaining life, which converts an upfront price difference into a running spread.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Z-spread",
+        "description": "The constant spread over the zero-coupon curve that makes a bond’s discounted cashflows equal its market price.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "CDS-bond basis",
+        "description": "The CDS spread minus the asset swap spread on the same issuer and maturity, negative when the bond pays more than protection costs.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Repo specialness",
+        "description": "The premium a particular bond commands in the repo market, which cheapens the cost of funding it and tightens its asset swap spread.",
+        "inDefinedTermSet": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "OTC Learn",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Credit",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/category/credit/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Asset Swap",
+        "item": "https://singhalsachin2003.github.io/OTC_Learn/product/assetswap/"
+      }
+    ]
+  }
+]
+</script>
