@@ -262,10 +262,30 @@ rather than objections to the plan:
   lifetime will be the common choice and revenue per user is effectively capped
   at ₹399. That is a fine outcome if the goal is reach; it is worth knowing it
   is the outcome.
-- **These are the India prices.** Play will generate the other 176 countries by
-  conversion unless each is set. ₹29 converts to roughly a third of a US dollar,
-  which is likely below what the same content would sell for elsewhere — worth
-  reviewing the auto-converted table rather than accepting it wholesale.
+- ~~**These are the India prices.**~~ **Settled 2026-09-23 — 173 regions, LIVE.**
+  Both base plans are ACTIVE in 173 regions, applied with
+  `npm run set:regions -- --commit` and read back from the live product.
+
+  | Band         | Monthly  | Yearly    | Regions                             |
+  | ------------ | -------- | --------- | ----------------------------------- |
+  | **Anchor**   | USD 3.99 | USD 24.99 | everywhere not listed below         |
+  | **Override** | INR 29   | INR 199   | IN PK BD LK NP NG KE GH EG VN PH ID |
+
+  Play converts each band into local currency itself — GBP 3.59, JPY 700,
+  CAD 5.49, PKR 79, NGN 435 — using `pricing:convertRegionPrices`. **Never
+  hand-build an FX table**: Play returns the price *point* each market expects.
+
+  The worry this replaces was the right one. Letting Play convert ₹199 outward
+  publishes a **$2.30-a-year** subscription to the United States; anchoring in
+  USD and overriding twelve markets downward is what avoids it in both
+  directions, since converting USD inward lands at ₹380/month instead. India is
+  pinned rather than converted, because conversion rounds ₹29 to ₹30 and Play
+  restricts raising a price in a region that already has one.
+
+  **Until this ran, the subscription was unavailable outside India** — not an
+  error, just an app that never offered the upgrade. The same two bands, the
+  same override list and the same script now cover both apps; see
+  `~/CornerStone/docs/PRICING.md` for the full reasoning.
 
 Both of the gates that used to sit here are now open: the uploaded binary
 declares `BILLING`, the products were created on 2026-09-02, and **BillDesk
