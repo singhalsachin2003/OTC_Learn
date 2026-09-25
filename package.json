@@ -20,6 +20,7 @@
     "set:regions": "node scripts/set-subscription-regions.mjs",
     "apply:deletion": "node scripts/apply-account-deletion.mjs",
     "check:aab": "node scripts/check-aab.mjs",
+    "promote": "node scripts/promote-release.mjs",
     "verify": "npm run type-check && npm run lint && npm run format:check && npm run test",
     "prebuild": "expo prebuild --clean",
     "prebuild:android": "expo prebuild --platform android --clean",

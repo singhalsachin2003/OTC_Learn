@@ -386,7 +386,25 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 2. **App bundle:** upload the `.aab` from the EAS production build
    (`npm run build:android`, then download from the EAS dashboard).
 3. **Release name:** leave Play's default — it uses the version code.
-4. **Release notes** (500 max):
+4. **Release notes** (500 max), read by `npm run promote` from the fenced block
+   directly below the sentence marker — so the text here is the text that ships,
+   and the count here is the count that is enforced. **Keep the marker
+   version-free**: Cornerstone's said "the v1.1 text" and stopped matching on
+   the first release that was not v1.1.
+
+The current text, at 438:
+
+```
+Dark mode. Profile → Appearance offers System, Light or Dark; System follows your phone, so it dims in the evening on its own.
+
+Also new:
+• Delete your account, and everything backed up under it, from Profile → Account
+• The subscription is now priced for 173 countries — outside India it could not be bought at all before
+• Category labels and badges read more clearly, in both themes
+• A faster engine, with the memory fix from upstream
+```
+
+### Superseded: the 1.2.0 text, at 464
 
 ```
 • Four new asset classes — Exotics, Risk & the Greeks, twelve Case Studies and Alternative Underlyings: 30 more products
@@ -395,8 +413,6 @@ AndroidX receiver permission. There is no `AD_ID` permission.
 • Share a product or a result, and open a lesson straight from a link
 • Already using OTC Learn? All of it stays free for you, permanently — the new asset classes included
 ```
-
-[464]
 
 **These describe the change, not the catalogue** — which is the opposite of what
 this section used to hold. Release notes are read by people who already have the
