@@ -453,3 +453,79 @@ production is what was reviewed.
   step needs no new binary, so nothing else will force the form to be corrected.
 - Screenshots show current content — recapture with
   `scripts/capture-screenshots.sh` if the UI or catalogue changes.
+
+---
+
+## Custom store listing — derivatives search keywords (PREPARED, not yet created)
+
+Drafted 26 September 2026, mirroring the one that went live for Cornerstone the
+same day. Everything below is decided; the Console work is mechanical. It was not
+created on the day because the Play Console UI stopped responding — see the end
+of this section.
+
+### Why this app wants one
+
+Cornerstone's case was a trademark constraint: its title legally cannot say "CFA"
+or "FRM", so a searcher has nothing confirming they are in the right place. This
+app has no such constraint — "OTC" is generic and already in the name.
+
+The problem here is narrower and still real. `OTC Learn` tells a searcher the
+subject but not the *coverage*. Somebody typing "interest rate swap" or "credit
+default swap" cannot tell from the title whether this app covers their
+instrument or is a glossary that mentions it once. The custom listing exists to
+answer that in the two lines underneath the title, which is the only surface a
+keyword searcher reads before deciding.
+
+### Targeting — 18 keywords, no country filter
+
+```
+otc derivatives, derivatives, interest rate swap, swaps, swaption,
+credit default swap, cds, fx options, fx forward, cross currency swap,
+total return swap, variance swap, structured products, isda, xva,
+central clearing, collateral management, derivatives trading
+```
+
+**Every keyword maps to a product in the free catalogue**, deliberately. Targeting
+a term whose content sits behind the subscription would put the app in front of
+someone who then hits a paywall on the thing they searched for — the fastest
+route to a one-star review. That is why Exotics, the Greeks and the Case Studies
+are absent from this list despite being the most distinctive content in the app.
+
+### Settings
+
+| Field | Value |
+| --- | --- |
+| Setup | Duplicate an existing listing → Default store listing (carries icon, feature graphic, screenshots) |
+| Reference name | `Derivatives search keywords` — **cannot be changed later** |
+| Target audience | Search keyword |
+| Listing rollout | 100% — cannot be decreased once published; unlocks A/B experiments, which Play gates behind a full rollout |
+| Duration | Run with no set end date |
+| AI asset declaration | Don't label assets |
+
+### The only two strings that differ from the default
+
+App name stays `OTC Learn`. Short description (71 chars):
+
+```
+Interest rate swaps, CDS, FX options, XVA — worked examples and quizzes
+```
+
+Full description: identical to the default, with one line prepended before
+"OTC Learn teaches the over-the-counter derivatives…":
+
+```
+Interest Rate Swaps. Credit Default Swaps. FX Options. Collateral, clearing and XVA. Thirty-six products, one at a time.
+```
+
+That lead line names only free-catalogue content for the same reason the keyword
+list does. It is the sentence a searcher reads to decide whether their instrument
+is in here, so it must not promise the paid half.
+
+### Blocked on
+
+The Play Console app ID for this app is not recorded anywhere in the repo, and
+the app-list page has to be opened to get it. Both browser tabs timed out on that
+page on 26 September. Once it loads, the listing lives at
+`play.google.com/console/u/1/developers/8996095320563569647/app/<app-id>/store-listings`
+— **record the app ID here when you have it**, so this is never blocked on the
+app list again. Cornerstone's, for reference, is `4973277887599855563`.
