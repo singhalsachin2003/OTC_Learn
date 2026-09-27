@@ -15,11 +15,18 @@
 # It costs about 32 seconds, most of it the 72 test suites. That is slower than
 # Cornerstone's 11s; it is still cheaper than a red `main`.
 #
-# If it fails on something you did not touch, re-run before assuming you broke
-# it. This suite failed intermittently on 26 September 2026 — one to three tests
-# out of 1,150, in the React-timing-heavy suites — and then passed fourteen
-# consecutive runs, including under full CPU saturation. The trigger was never
-# identified. A second run is the cheap way to tell a flake from a real break.
+# If it fails in __tests__/navigation or __tests__/integration on something you
+# did not touch, check `uptime` before you debug. Those suites render real
+# component trees and assert on state that settles asynchronously, so they lose
+# races when the machine is oversubscribed. On 27 September 2026 they produced
+# 22 failures at load average 102 on a 10-core machine, and 0 failures across
+# three consecutive runs once load fell to 41. Nothing in the code changed
+# between those runs.
+#
+# Each of those files passes on its own even under load — `npx jest
+# __tests__/navigation/quizExit.test.tsx` was 10/10 green while the full run was
+# red — so a file that passes alone and fails in the suite is the signature.
+# That is contention, not a bug you introduced.
 #
 # Bypass with `git commit --no-verify` when you genuinely mean to — a
 # work-in-progress commit on a branch, say. Do not make a habit of it on `main`.

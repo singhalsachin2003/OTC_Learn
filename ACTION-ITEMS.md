@@ -53,27 +53,31 @@ be done.
 
 Two repos are involved:
 
-| App | Repo | Package | Branch to work on |
+| App | Repo | Package | Branch |
 | --- | --- | --- | --- |
-| OTC Learn | `~/otc-learning-app` | `com.otclearn.app` | `feat/ux-and-compliance` |
-| Cornerstone | `~/CornerStone` | `io.cornerstone.study` | `feat/ux-and-compliance` |
+| OTC Learn | `~/otc-learning-app` | `com.otclearn.app` | `main` |
+| Cornerstone | `~/CornerStone` | `io.cornerstone.study` | `main` |
 
-`main` is untouched in both. Both branches are pushed and carry an open PR as of
-22 September 2026.
+**Work on `main` in both.** The `feat/ux-and-compliance` branches this file was
+originally written against were merged on 22 September 2026 — Cornerstone PR #3,
+OTC Learn PR #1, both squashed — and everything they carried shipped to
+production in Cornerstone 1.2.0 and OTC Learn 1.3.0 on 25 September. The
+branches still exist locally and on `origin`; they are history, not a place to
+start from.
 
 ---
 
 ## 0. Read before touching anything
 
-**Check out the right branch first.** Everything below builds on work already
-committed there. Do not start from `main`.
+**Both repos sit on `main` and everything below builds on what is already
+committed there.** Nothing needs checking out.
 
 ```bash
-cd ~/otc-learning-app && git checkout feat/ux-and-compliance
-cd ~/CornerStone      && git checkout feat/ux-and-compliance
+cd ~/otc-learning-app && git status -sb   # expect: ## main...origin/main
+cd ~/CornerStone      && git status -sb
 ```
 
-**What is already committed on those branches** — do not redo any of it:
+**What the merged branches carried** — do not redo any of it:
 
 - `34c4a9e` (OTC) in-app account deletion, human error messages, promo grant
   clamped at redemption, notes sync keeping both sides of a conflict
@@ -490,3 +494,76 @@ Recorded so nobody re-opens them:
   `src/screens/Lesson/components/LessonStep.tsx`. Leave it.
 - **Cornerstone's question-bank depth.** Five per topic area is thin and the
   README says so. That is a content problem, not an engineering one.
+
+---
+
+## Console audit, 27 September 2026
+
+Neither app's Console declarations had been checked against the shipped code
+since the subscription landed. This is what that turned up. **Nothing here is
+fixed yet** — each item is a declaration with policy weight, and the ones that
+are wrong are wrong in the direction Play suspends for.
+
+### 1. DEX code optimisation — both apps, deadline Feb 2027
+
+Monitor and improve → Take action, on **both** apps, identically:
+
+> **DEX code optimisation is below our threshold.** Obfuscation (2%).
+> Percentages under 25% in any category of your app may impact your visibility
+> and publishing capabilities on Google Play.
+
+Cause is almost certainly that R8/ProGuard minification is off in the release
+build, which is the Expo default. `android.enableProguardInReleaseBuilds` and
+`enableShrinkResourcesInReleaseBuilds` in the Expo build properties plugin are
+the levers. Turning them on changes what ships, so it needs a real device test
+and an `npm run check:aab` pass before it goes near production — R8 stripping
+something React Native reflects into is the classic failure.
+
+Feb 2027 is far away; the point of recording it is that nobody rediscovers it
+in January.
+
+### 2. Data safety — the two apps disagree, and they run the same SDKs
+
+Both ship `react-native-purchases` and both use Supabase auth. Their
+declarations do not match:
+
+| | Cornerstone | OTC Learn |
+| --- | --- | --- |
+| Personal info | Name, Email address | Email address |
+| Financial info | Purchase history | Purchase history |
+| App activity | Other user-generated content | Other actions |
+| **Device or other IDs** | **not declared** | **declared** |
+| **Partial data deletion** | **unanswered** | answered — "Manage app data" URL |
+
+Name differs legitimately: Cornerstone has `profiles.display_name`, OTC Learn
+has no name field. The other two rows are a genuine inconsistency — at least one
+app is wrong, and Cornerstone is the one declaring less.
+
+**`User IDs` is unchecked on both**, which deserves a deliberate answer rather
+than the default. Every table in `supabase/schema.sql` is keyed on
+`user_id uuid references auth.users (id)` — profiles, settings, topic_progress,
+stats, review_queue, bookmarks. That UUID is an account identifier stored off
+the device. Play's definition of User IDs is "identifiers that relate to an
+identifiable person… an account ID, account number or account name."
+
+`scripts/promote-release.ts` already states the stakes: *"A build that collects
+data its listing denies collecting is the under-declaring direction, and that is
+what Play suspends apps for."* This is that direction.
+
+### 3. Content rating questionnaire predates the subscription — Cornerstone
+
+IARC questionnaire submitted **9 August 2026, 10:19**, never resubmitted. The
+subscription shipped in v1.1 in September. This file's own checklist says:
+*"**Purchases: yes** — from version 1.1 there is a subscription. This answer
+changed; the rating itself does not."* That change was never made, and Play's
+page says to submit a new questionnaire when a change would affect previous
+responses. The ratings themselves (Everyone / PEGI 3) are unaffected.
+
+### What is clean
+
+Policy status reports **no policy issues** on both apps. Both Data safety
+previews correctly show data being collected — the "No data collected" trap from
+September is properly fixed, and the delete-account URL, encryption-in-transit
+and privacy-policy rows are all present and correct on both. Android developer
+verification is satisfied for both packages. Play Integrity API is not
+integrated on either, which is optional and carries no deadline.
