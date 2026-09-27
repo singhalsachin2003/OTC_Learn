@@ -456,6 +456,18 @@ production is what was reviewed.
 
 ---
 
+## Keeping the listing and this file in step
+
+`npm run sync:listing` diffs the three text blocks above against what Play is
+actually serving; `npm run sync:listing -- --commit` sends this file's version
+for review. Run the dry form whenever this file is edited.
+
+It cannot check the custom listing — no Play API reaches those. That is the half
+that rotted for six weeks here, so after any commit, open the `Keywords` listing
+and bring it into step in the same sitting.
+
+---
+
 ## Custom store listing — "Keywords"
 
 **It already existed.** Live since 17 August 2026, reference name `Keywords`,
