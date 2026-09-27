@@ -456,76 +456,82 @@ production is what was reviewed.
 
 ---
 
-## Custom store listing — derivatives search keywords (PREPARED, not yet created)
+## Custom store listing — "Keywords"
 
-Drafted 26 September 2026, mirroring the one that went live for Cornerstone the
-same day. Everything below is decided; the Console work is mechanical. It was not
-created on the day because the Play Console UI stopped responding — see the end
-of this section.
+**It already existed.** Live since 17 August 2026, reference name `Keywords`,
+targeting **500 search keywords across 176 countries** at 100% rollout, no end
+date. Nothing in this repo mentioned it, which is how a plan to "create a custom
+store listing" got as far as the Console before hitting the create form and
+finding one already there. Check Grow users → Store presence → Store listings
+before drafting another.
 
-### Why this app wants one
+Five hundred keywords is Play's per-listing maximum. Whoever built it went wide
+rather than narrow, and that is a defensible strategy — nothing here proposes
+trimming it.
 
-Cornerstone's case was a trademark constraint: its title legally cannot say "CFA"
-or "FRM", so a searcher has nothing confirming they are in the right place. This
-app has no such constraint — "OTC" is generic and already in the name.
+### Console app ID
 
-The problem here is narrower and still real. `OTC Learn` tells a searcher the
-subject but not the *coverage*. Somebody typing "interest rate swap" or "credit
-default swap" cannot tell from the title whether this app covers their
-instrument or is a glossary that mentions it once. The custom listing exists to
-answer that in the two lines underneath the title, which is the only surface a
-keyword searcher reads before deciding.
-
-### Targeting — 18 keywords, no country filter
+**`4973361652578894415`** — OTC Learn. Cornerstone's, for comparison, is
+`4973277887599855563`; the two are close enough to misread, so copy rather than
+retype. The store listings page is:
 
 ```
-otc derivatives, derivatives, interest rate swap, swaps, swaption,
-credit default swap, cds, fx options, fx forward, cross currency swap,
-total return swap, variance swap, structured products, isda, xva,
-central clearing, collateral management, derivatives trading
+play.google.com/console/u/1/developers/8996095320563569647/app/4973361652578894415/store-listings
 ```
 
-**Every keyword maps to a product in the free catalogue**, deliberately. Targeting
-a term whose content sits behind the subscription would put the app in front of
-someone who then hits a paywall on the thing they searched for — the fastest
-route to a one-star review. That is why Exotics, the Greeks and the Case Studies
-are absent from this list despite being the most distinctive content in the app.
+Written down because getting it cost an afternoon on 26 September. The app-list
+page is the only route to it in the Console UI, that page failed to load through
+a network outage, and no Play API exposes the Console's numeric app ID — the
+Publisher API keys off `com.otclearn.app` instead. With the ID here, every app
+page can be reached directly and the app list never has to load again.
 
-### Settings
+### What was wrong with it, and what was fixed on 27 September 2026
 
-| Field | Value |
-| --- | --- |
-| Setup | Duplicate an existing listing → Default store listing (carries icon, feature graphic, screenshots) |
-| Reference name | `Derivatives search keywords` — **cannot be changed later** |
-| Target audience | Search keyword |
-| Listing rollout | 100% — cannot be decreased once published; unlocks A/B experiments, which Play gates behind a full rollout |
-| Duration | Run with no set end date |
-| AI asset declaration | Don't label assets |
+**The copy was a frozen August snapshot, and it understated the app badly.** This
+is the trap written up in Cornerstone's `docs/STORE_LISTING.md`: *a custom listing
+is a copy, not an overlay*. The default listing was rewritten as the catalogue
+grew; this one silently kept the old text for six weeks.
 
-### The only two strings that differ from the default
+What it said, against what was true:
 
-App name stays `OTC Learn`. Short description (71 chars):
+| | Custom listing (stale) | Default listing (current) |
+| --- | --- | --- |
+| Short description | `Learn OTC derivatives: 24 products, lessons and quizzes that adapt. Offline.` | no count, deliberately |
+| Full description | "**Twenty** products across five asset classes" | "**Thirty-six** products … plus the market infrastructure they all sit on" |
+| Length | 1,215 chars | 3,772 chars |
+| Asset classes listed | five, four products each | six, six products each |
+| Market Foundations | **absent entirely** | present |
+
+The Market Foundations omission is the damaging one. That class is Collateral and
+the CSA, Central Clearing, Valuation and Marking, The ISDA Architecture, XVA and
+Counterparty Risk, and Execution and Reporting — and `isda`, `xva`, `collateral`
+and `central clearing` are exactly the sort of terms in a 500-keyword list.
+Someone searching "XVA" was shown a listing that never used the word.
+
+The short description was independently wrong: its "24 products" is a number the
+default listing deliberately removed, for the reason recorded above — a count is
+misleading in both directions once a paid half exists, and has to be maintained
+forever.
+
+**The fix.** Both fields replaced. Short description (71):
 
 ```
 Interest rate swaps, CDS, FX options, XVA — worked examples and quizzes
 ```
 
-Full description: identical to the default, with one line prepended before
-"OTC Learn teaches the over-the-counter derivatives…":
+Full description: the current default text verbatim, with one line prepended
+(3,894 of 4,000 characters):
 
 ```
 Interest Rate Swaps. Credit Default Swaps. FX Options. Collateral, clearing and XVA. Thirty-six products, one at a time.
 ```
 
-That lead line names only free-catalogue content for the same reason the keyword
-list does. It is the sentence a searcher reads to decide whether their instrument
-is in here, so it must not promise the paid half.
+Both name only free-catalogue content. Leading with Exotics or the Greeks would
+put the app in front of someone who then hits a paywall on the thing they
+searched for, which is how you earn a one-star review.
 
-### Blocked on
+Keywords, countries, rollout and the AI asset declaration were left untouched.
+Submitted for review 27 September 2026; two changes, short and full description.
 
-The Play Console app ID for this app is not recorded anywhere in the repo, and
-the app-list page has to be opened to get it. Both browser tabs timed out on that
-page on 26 September. Once it loads, the listing lives at
-`play.google.com/console/u/1/developers/8996095320563569647/app/<app-id>/store-listings`
-— **record the app ID here when you have it**, so this is never blocked on the
-app list again. Cornerstone's, for reference, is `4973277887599855563`.
+**When the default listing changes, change this one in the same sitting.** That
+is the whole lesson of the six weeks above.
