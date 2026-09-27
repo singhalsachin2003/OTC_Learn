@@ -30,3 +30,39 @@ jobs:
       # type-check + lint + format:check + test
       - name: Verify
         run: npm run verify
+
+  # Separate from `verify` on purpose. The walk needs a web export and a browser,
+  # which takes minutes, and `npm run verify` is the gate people run locally and
+  # is meant to stay fast — so `check:contrast` is deliberately not part of it.
+  # Nothing ran it between commits, though, which is the gap this closes: a
+  # palette or type-scale change that puts text under WCAG AA in either theme now
+  # reddens the PR instead of waiting for someone to remember.
+  contrast:
+    name: Contrast, every screen in both themes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Export the app for web
+        run: npx expo export --platform web --output-dir .expo-web
+
+      # A pinned Chromium rather than the runner image's Chrome: the browser
+      # computes the colours this gate asserts on, so it should not change
+      # underneath the gate when GitHub refreshes the image.
+      - name: Install the browser the walk drives
+        run: npx playwright-core install --with-deps chromium
+
+      - name: Contrast
+        run: |
+          CHROME_PATH="$(node -e "const { chromium } = require('playwright-core'); console.log(chromium.executablePath())")" \
+            npm run check:contrast

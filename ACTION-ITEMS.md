@@ -559,6 +559,29 @@ changed; the rating itself does not."* That change was never made, and Play's
 page says to submit a new questionnaire when a change would affect previous
 responses. The ratings themselves (Everyone / PEGI 3) are unaffected.
 
+### 4. Both apps still serve v1.0 from a testing track — Cornerstone's is *open*
+
+Read off the Console's release overview and each track's own page, 27 September 2026.
+
+| App | Track | Serving | Status |
+| --- | --- | --- | --- |
+| Cornerstone | Production / Internal | 13 (1.2.0) | full roll-out, 177/177 |
+| Cornerstone | **Open testing** | **5 (1.0.0)** | **Active — unlimited testers, 177 countries**, since 4 Sept |
+| Cornerstone | Closed · Alpha | 5 (1.0.0) | full roll-out, since 11 Aug |
+| OTC Learn | Production / Internal | 10 (1.3.0) | full roll-out, 177/177 |
+| OTC Learn | Open testing | 4 (1.1.0) | **paused** — nothing serves from it |
+| OTC Learn | Closed · Alpha | 3 (1.0.0) | full roll-out, since 30 July |
+
+Cornerstone's open testing track is the one that matters: active, joinable by anyone
+with the opt-in link, and serving a build with no account, no in-app account deletion
+and the privacy copy that was corrected in `53792fa`. The deletion requirement is
+satisfied in production and **not** on that track, which is the same policy exposure
+item 1 of the handoff closed, reopened through a door nobody was looking at.
+
+Each is two clicks on the track's own page — **Promote release** to the current
+versionCode, or **Pause track**. Promote where the track earns its keep, pause where it
+does not; OTC Learn's paused open track is the pattern.
+
 ### What is clean
 
 Policy status reports **no policy issues** on both apps. Both Data safety
