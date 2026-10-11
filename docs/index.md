@@ -12,6 +12,8 @@ optional subscription adds the asset classes released after it.
 
 No account, no ads, no tracking. Progress is stored on your device.
 
+Follow the [OTC Learn desk quiz on WhatsApp](https://whatsapp.com/channel/0029Vb9Pn6h9hXF2IeUaPU3K) for a derivatives question or case study a few times a week.
+
 ## The catalogue
 
 - [Interest Rate](category/ir/) — swaps, swaptions, FRAs, caps and floors
