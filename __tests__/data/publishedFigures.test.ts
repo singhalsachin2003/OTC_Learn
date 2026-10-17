@@ -220,8 +220,10 @@ it('publishes free products in full', () => {
 });
 
 // The site index says the figure in words, which no script generates. It is
-// pinned here so a further asset class cannot leave "thirty-six" behind.
+// pinned here so a further asset class cannot leave "thirty-six" behind. The
+// landing page became hand-built HTML when the Markdown one was retired; the
+// sentence survived the rewrite, and the assertion follows it to the new file.
 it('states the size of the free catalogue on the site', () => {
   expect(free.products).toBe(36);
-  expect(read('docs/index.md')).toContain('thirty-six products');
+  expect(read('docs/index.html')).toContain('thirty-six products');
 });
