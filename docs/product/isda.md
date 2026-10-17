@@ -56,6 +56,8 @@ Netting only works where the underlying insolvency law actually respects it, whi
 - **Event of Default** — A trigger generally caused by one party’s own conduct — non-payment, bankruptcy, a breach of the agreement — giving the other side the right, not the obligation, to terminate everything.
 - **Termination Event** — A largely no-fault trigger — a change in tax law, illegality, a merger leaving a weaker surviving entity — that can end the relationship without either side having done anything wrong.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every OTC derivatives relationship of any size sits on top of a negotiated ISDA Master Agreement and Schedule, usually the product of weeks or months of legal negotiation before a single trade is ever done. Legal and credit teams, not the trading desk, own that negotiation, because the Schedule’s elections — which close-out method, which Additional Termination Events, whose credit rating triggers what — decide how the relationship actually behaves under stress, long after the deal desk has moved on to the next relationship.
@@ -70,7 +72,7 @@ The app adds a twelve-question bank for The ISDA Architecture, drawn differently
 
 A subscription adds 3 further sections on The ISDA Architecture — Close-out netting, and why capital depends on it, Default, termination, and the difference, The schedule is where the negotiation lives — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

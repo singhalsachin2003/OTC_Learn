@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Unwind cost** — The loss incurred while exiting a position, distinct from the loss the position already carried.
 - **Supervision** — The obligation on a desk head to know what the desk holds, which no system replaces.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 The direct legacy is confirmation discipline and exception governance: unconfirmed trades chased and escalated regardless of who raised them, alerts closed by someone independent of the desk, and periodic checks that a trader’s system permissions do not still reflect a previous role in operations.
@@ -43,7 +45,7 @@ The direct legacy is confirmation discipline and exception governance: unconfirm
 
 In the app, Société Générale, 2008 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

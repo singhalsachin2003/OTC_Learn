@@ -61,6 +61,8 @@ Because both legs are fixed at inception, outright FX risk largely cancels out �
 - **Value date** — A date on which one of the two legs delivers; every FX swap has two of them.
 - **Cross-currency swap** — A longer-dated relative that also exchanges interest payments over its life, which an FX swap does not.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Banks use FX swaps continuously to fund balance sheets that borrow in one currency and lend in another, and corporate treasuries and money-market funds use them to push cash to whichever currency needs it that week. Fund managers use them to roll currency hedges: when a forward hedging an overseas portfolio matures, a single FX swap closes the old leg and opens the next one.
@@ -75,7 +77,7 @@ The app adds a twelve-question bank for FX Swap, drawn differently every sitting
 
 A subscription adds 3 further sections on FX Swap — Funding, wearing an FX label, Rolling overnight, When the funding market tightens — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

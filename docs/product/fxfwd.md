@@ -60,6 +60,8 @@ A forward is a firm obligation, so if the underlying exposure disappears — an 
 - **Outright forward** — A single exchange of two currencies on one future date, with no offsetting near leg.
 - **Window forward** — A forward the client may settle on any date within an agreed range rather than one fixed date.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 A UK importer paying dollar invoices ninety days after shipment uses forwards so the margin priced into the sale survives to the accounts, and an exporter selling into Europe does the mirror trade on its receivables. Fund managers run the same hedge at portfolio level, selling the currency of overseas holdings forward against the fund’s base currency and rolling the hedge as each contract matures.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for FX Forward, drawn differently every sitt
 
 A subscription adds 3 further sections on FX Forward — Where forward points come from, Dates, and why they are half the trade, Rolling and pre-delivering — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

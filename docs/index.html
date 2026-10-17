@@ -111,6 +111,8 @@ section{padding:96px 0}
 .cat h3{font-size:19px;letter-spacing:-.015em;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .cat h3 small{font:700 11px/1 var(--font);letter-spacing:.1em;text-transform:uppercase;color:var(--c);white-space:nowrap}
 .cat p{margin:0;font-size:15px;line-height:1.5}
+.more{margin:24px 0 0;font-weight:700}
+.more a{text-decoration:none}
 
 /* steps */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
@@ -182,6 +184,7 @@ footer{padding:56px 0 64px;font-size:15px;color:var(--muted);border-top:1px soli
   .qr{display:none}
   .steps{grid-template-columns:1fr;gap:56px}
   .split .duo{order:-1}
+  .nav a:not(.btn){display:none}
   section{padding:72px 0}
 }
 @media (max-width:640px){
@@ -201,6 +204,7 @@ footer{padding:56px 0 64px;font-size:15px;color:var(--muted);border-top:1px soli
       <a class="brand" href="./"><img src="assets/icon-192.png" alt="" width="40" height="40">OTC Learn</a>
       <nav class="nav" aria-label="Main">
         <a href="#catalogue">Catalogue</a>
+        <a href="glossary/">Glossary</a>
         <a href="#video">Intro video</a>
         <a href="https://whatsapp.com/channel/0029Vb9Pn6h9hXF2IeUaPU3K">WhatsApp</a>
         <a class="btn btn-sky" href="get/?c=web">Get the app</a>
@@ -248,6 +252,7 @@ footer{padding:56px 0 64px;font-size:15px;color:var(--muted);border-top:1px soli
         <a class="cat" href="category/cases/" style="--c:#8A5A2B"><h3>Case Studies <small>Subscription</small></h3><p>Twelve failures, from Barings and Orange County to the gilt LDI crisis and Archegos</p></a>
         <a class="cat" href="category/alt/" style="--c:#5B7A2E"><h3>Alternative Underlyings <small>Subscription</small></h3><p>Perpetual swaps and basis, freight, power, catastrophe bonds and longevity swaps</p></a>
       </div>
+      <p class="more"><a href="glossary/">Every key term from all 66 products, A to Z →</a></p>
     </div>
   </section>
 
@@ -369,6 +374,7 @@ footer{padding:56px 0 64px;font-size:15px;color:var(--muted);border-top:1px soli
       <ul>
         <li><a href="get/?c=web">Google Play</a></li>
         <li><a href="#catalogue">Catalogue</a></li>
+        <li><a href="glossary/">Glossary</a></li>
         <li><a href="https://x.com/otclearn">X</a></li>
         <li><a href="https://www.instagram.com/otclearn/">Instagram</a></li>
         <li><a href="https://www.youtube.com/@otclearn">YouTube</a></li>
@@ -394,6 +400,20 @@ document.querySelectorAll('.video').forEach(function (box) {
     btn.replaceWith(f);
   });
 });
+/* A bio link such as ?c=x keeps its channel through every install button on the site.
+   The tag lives only in this tab's sessionStorage and only ever reaches Google Play. */
+(function () {
+  var ok = ['ig', 'x', 'yt', 'wa', 'mail'], c = '';
+  try {
+    c = (new URLSearchParams(location.search).get('c') || '').toLowerCase();
+    if (ok.indexOf(c) > -1) sessionStorage.setItem('otc-channel', c);
+    else c = sessionStorage.getItem('otc-channel') || '';
+  } catch (e) {}
+  if (ok.indexOf(c) < 0) return;
+  document.querySelectorAll('a[href*="get/?c=web"]').forEach(function (a) {
+    a.setAttribute('href', a.getAttribute('href').replace('c=web', 'c=' + c));
+  });
+})();
 </script>
 
 <!--

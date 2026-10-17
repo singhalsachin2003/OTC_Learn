@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **Forward volatility** — The volatility expected between two future dates, which is what a cliquet is priced on.
 - **Reverse cliquet** — A variant paying a high fixed coupon reduced by the sum of the negative period returns.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Cliquets sit inside a large share of the capital-protected notes sold to retail and insurance investors in Europe and Asia, and the exposure they create is one of the structural risks equity derivatives desks manage rather than trade. The desk’s position is the mirror of the note book, and unwinding it is a matter of years rather than days.
@@ -43,7 +45,7 @@ Cliquets sit inside a large share of the capital-protected notes sold to retail 
 
 In the app, Cliquet Option carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

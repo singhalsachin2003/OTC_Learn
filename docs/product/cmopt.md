@@ -59,6 +59,8 @@ Premiums can be steep for volatile commodities, and the whole premium is lost if
 - **Asian settlement** — Settlement against the average of the reference price over a period rather than its level on one date.
 - **Contract volume** — The quantity the per-unit payoff is multiplied by to give the cash amount actually paid.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Airlines and hauliers buy calls when they want a budget ceiling without forfeiting the windfall of a price collapse, and oil producers buy puts to guarantee a minimum realised price to lenders financing a field. Banks and trading houses write the other side and hedge the resulting exposure dynamically in futures.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Commodity Option, drawn differently ever
 
 A subscription adds 3 further sections on Commodity Option — Average price options are the default, Options on what, exactly, Volatility with a season in it — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

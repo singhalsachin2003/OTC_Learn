@@ -60,6 +60,8 @@ Take-or-pay is a liability, not an option: a buyer whose demand collapses still 
 - **Swing factor** — The maximum daily nomination divided by the average daily volume, measuring how much flexibility the contract carries.
 - **Continuation value** — What the remaining allowance is worth if today’s is left unused — the figure a nomination decision is really judged against.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 The buyers are utilities, energy retailers and industrial users whose load follows the weather or a production schedule they cannot fix a year ahead. The sellers are producers, storage operators and the large portfolio traders who can net one buyer’s cold day against another’s mild one. Long-term European gas supply has been written this way for decades, and the same flexibility trades in its own right whenever a desk leases storage capacity and runs it as a swing contract against the hub price.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Swing Option, drawn differently every si
 
 A subscription adds 3 further sections on Swing Option — A bundle of constraints, not one option, Valuing a decision that depends on the future, Take-or-pay, and the obligation half — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -31,6 +31,8 @@ Risk & the Greeks is part of the OTC Learn subscription. Everything the app ship
 - **Backtesting exception** — A day whose clean P&L loss exceeded the VaR the model predicted for it.
 - **Procyclicality** — The tendency of risk measures to rise together in a sell-off, forcing simultaneous deleveraging.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 VaR sits at the top of the risk report at every bank and most funds, aggregating across desks and asset classes into one figure the board sees. Its limits are as well known as the measure, which is why it is always paired with stress scenarios — and why the interesting question in a risk meeting is usually about the assumptions rather than the number.
@@ -43,7 +45,7 @@ VaR sits at the top of the risk report at every bank and most funds, aggregating
 
 In the app, Value at Risk carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

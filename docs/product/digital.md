@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **No-touch** — The mirror contract, paying only if the level is never reached during the option’s life.
 - **Pin risk** — The unhedgeable exposure left when the underlying sits on the strike as the option expires.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 FX options desks quote digitals continuously and use them as the building block for touch structures and accrual notes. Buyers are typically hedgers with a threshold exposure — a payment triggered by a rate breaching a level — and macro funds expressing a dated view on an event rather than on the size of a move.
@@ -43,7 +45,7 @@ FX options desks quote digitals continuously and use them as the building block 
 
 In the app, Digital Option carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

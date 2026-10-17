@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **Exhaustion point** — The loss level at which the bond’s principal is entirely gone.
 - **Multiple** — The spread divided by the modelled expected loss — the market’s standard relative value measure.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Pension funds and specialist funds are the main investors, usually as a diversifying allocation rather than a core one. Sponsors are insurers, reinsurers and occasionally public bodies covering earthquake or storm exposure. The same structure has been extended to other rare, measurable events, and the design questions are always the same three: what triggers it, where does it attach, and who modelled the loss.
@@ -43,7 +45,7 @@ Pension funds and specialist funds are the main investors, usually as a diversif
 
 In the app, Catastrophe Bond carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

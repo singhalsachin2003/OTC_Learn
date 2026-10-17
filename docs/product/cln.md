@@ -60,6 +60,8 @@ The investor is exposed three ways at once — to the reference entity, to the i
 - **Contingent principal** — Repayment that is due in full only if no credit event occurs, and falls to recovery value if one does.
 - **Funded protection** — Protection paid for in cash at the outset, so the buyer has nothing left to collect from the seller later.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Banks issue credit-linked notes to move the risk of a loan book to investors and free up regulatory capital, and to place single-name credit risk with buyers who want a bond rather than a swap. On the other side, insurers, pension funds and credit funds whose mandates permit securities but not derivatives use them to earn spread on credits they have a view on — accepting illiquidity and issuer risk as the price of that access.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Credit-Linked Note, drawn differently ev
 
 A subscription adds 3 further sections on Credit-Linked Note — Funded, and what that changes, Two credits, not one, Settling when it goes wrong — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

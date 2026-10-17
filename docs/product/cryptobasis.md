@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **Reverse cash and carry** — The mirror trade — short the asset, long the future — which requires borrowing the underlying.
 - **Convergence** — The narrowing of the basis to zero at expiry, which is what makes the captured spread a return.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Cash and carry is run in every futures market there is — commodities, equity index, government bonds, digital assets — usually by participants whose real business is lending cash or holding inventory. Where the basis is unusually wide, the first question is not "free money" but "what stops everyone doing this", and the answer is normally balance sheet, borrow, or access.
@@ -43,7 +45,7 @@ Cash and carry is run in every futures market there is — commodities, equity i
 
 In the app, Cash and Carry Basis carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -63,6 +63,8 @@ The upside is capped at the coupon while the downside below the barrier is the u
 - **Memory feature** — A term that pays previously missed coupons once the coupon barrier is met again on a later date.
 - **Worst-of** — A basket convention under which every trigger and barrier test is run on the weakest of the underlyings.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 These are sold to private-bank and retail clients across France, Italy, Switzerland, Korea, Japan and Taiwan as an income substitute for someone who believes a major index will not fall by 40%. On the other side, issuing and hedging them is the core business of a bank’s equity derivatives desk, and the aggregate of that hedging is what keeps the far end of the dividend curve permanently on offer in the indices the notes reference.
@@ -77,7 +79,7 @@ The app adds a twelve-question bank for Autocallable Note, drawn differently eve
 
 A subscription adds 3 further sections on Autocallable Note — What the issuer is left holding, The observation date effect, Worst-of, and the correlation inside it — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

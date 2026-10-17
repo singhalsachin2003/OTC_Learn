@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **Reverse knock-out** — A barrier set in the money, so the option is extinguished exactly when it is most valuable.
 - **Barrier shift** — A dealer’s practice of hedging to a level slightly beyond the contractual barrier to make the risk tradable.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Corporate treasurers buy knock-out forwards and calls to cut the cost of a hedge they only need within a band, and structured note desks embed knock-ins to manufacture the conditional downside that funds a coupon. On the dealer side, barrier books are where FX options desks concentrate their gamma risk, and where the trading day is organised around which levels are close.
@@ -43,7 +45,7 @@ Corporate treasurers buy knock-out forwards and calls to cut the cost of a hedge
 
 In the app, Barrier Option carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

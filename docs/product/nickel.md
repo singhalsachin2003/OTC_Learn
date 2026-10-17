@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Trade cancellation** — An exchange’s power to void executed trades, used here for a whole session’s nickel business.
 - **Liquidity risk** — The risk of being unable to fund a position that is economically sound, which is what closes most of them.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Commodity producers hedge in exactly this way every day, and the fix is unglamorous: match the deliverable grade where possible, price the basis where it is not, and hold a funding facility sized for a move nobody expects. Exchanges and clearing houses have since paid closer attention to concentration in a single participant’s position.
@@ -43,7 +45,7 @@ Commodity producers hedge in exactly this way every day, and the fix is unglamor
 
 In the app, The LME nickel squeeze, 2022 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

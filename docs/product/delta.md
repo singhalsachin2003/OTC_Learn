@@ -31,6 +31,8 @@ Risk & the Greeks is part of the OTC Learn subscription. Everything the app ship
 - **Break-even move** — The daily move at which re-hedging profit exactly covers the position’s theta.
 - **Gap risk** — The exposure left when the underlying jumps rather than moves smoothly, giving no chance to re-hedge.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every options market maker runs this trade whether it wants to or not: quoting two-way prices leaves the desk long or short gamma, and the hedging programme is what turns that into P&L. The same arithmetic drives the “gamma squeeze” stories in equity markets, where dealers short a heavily traded strike have to buy into a rally to stay hedged.
@@ -43,7 +45,7 @@ Every options market maker runs this trade whether it wants to or not: quoting t
 
 In the app, Delta and Gamma carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

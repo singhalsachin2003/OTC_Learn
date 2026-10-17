@@ -60,6 +60,8 @@ Protection is only as good as the seller, and wrong-way risk arises when the sel
 - **Credit event** — The defined trigger — bankruptcy, failure to pay, restructuring and, for financials, governmental intervention — that terminates the contract.
 - **Auction final price** — The single recovery price set by the industry auction, which every contract on that name settles against.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 A bank that has lent more to one borrower than its limits allow buys protection to free up the line without selling the loan and upsetting a client; a credit fund buys protection on a name it thinks is deteriorating and never touches the bonds at all; insurers and asset managers sell protection to earn spread on credits they would happily own. Standard index contracts are subject to mandatory clearing in both the US and the EU, and dealers run large offsetting single-name books behind the scenes.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Credit Default Swap, drawn differently e
 
 A subscription adds 3 further sections on Credit Default Swap — Fixed coupons and an upfront, Who decides a credit event happened, The auction, and what recovery really is — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

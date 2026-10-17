@@ -17,7 +17,7 @@ Products that manage exposure to interest rate movements on loans, bonds and cas
 - [Inflation Swap](/OTC_Learn/product/infswap/) — Swap a fixed rate for realised inflation
 - [Basis Swap](/OTC_Learn/product/basisswap/) — Swap one floating index for another
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

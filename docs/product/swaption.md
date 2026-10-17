@@ -59,6 +59,8 @@ Quoted as "1y into 5y" — one year to expiry, then a five-year swap. Value depe
 - **Bermudan swaption** — A swaption exercisable on any one of several agreed dates rather than on a single expiry date.
 - **Implied volatility** — The market’s expectation of how much the underlying swap rate will move, and the main driver of the premium besides the rate level.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Corporate treasurers buy payer swaptions ahead of a planned bond issue to cap the coupon they will end up paying without committing to borrow at all, and insurers and pension funds buy receiver swaptions to protect against falling rates, which inflate the present value of the liabilities they owe. Dealers who sell them manage the resulting exposure on a volatility book, hedging the rate risk separately with swaps.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Swaption, drawn differently every sittin
 
 A subscription adds 3 further sections on Swaption — Reading the grid, Black, and then Bachelier, Cash settlement and its annuity — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

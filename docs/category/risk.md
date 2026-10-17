@@ -19,7 +19,7 @@ Risk & the Greeks is part of the OTC Learn subscription; the 36 products the app
 - [P&L Attribution](/OTC_Learn/product/pnlexplain/) — Yesterday’s profit, accounted for line by line
 - [Value at Risk](/OTC_Learn/product/valueatrisk/) — One number for tomorrow’s loss, and what it leaves out
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

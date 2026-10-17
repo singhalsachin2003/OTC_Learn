@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Beneficial ownership** — Who is treated as holding a share for disclosure purposes — the dealer hedging a swap, not the fund receiving its return.
 - **Disorderly unwind** — A forced liquidation in which sellers compete, so the price achieved is far below the marked value.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Prime brokers now ask for portfolio-level margin that scales with concentration and liquidation horizon, and supervisors have pressed banks on whether they can see a client’s exposure across the street rather than only on their own book. The disclosure gap the trade exploited has been narrowed but not closed.
@@ -43,7 +45,7 @@ Prime brokers now ask for portfolio-level margin that scales with concentration 
 
 In the app, Archegos, 2021 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

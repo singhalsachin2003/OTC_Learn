@@ -60,6 +60,8 @@ The standard ratio rarely matches a specific refinery’s real yield, leaving re
 - **Settlement period** — The month or other window over which each leg’s index is observed and the spread is calculated.
 - **Quality basis** — The gap between the index grade and the crude or products a particular refinery actually handles.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Independent refiners without an integrated crude supply use crack spread swaps to protect the margin a lender or a board has been promised, particularly before a maintenance turnaround when volumes are known. Trading houses and bank commodity desks quote the spread and warehouse the risk, often laying it off in the listed crack futures at NYMEX or ICE.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Crack Spread Swap, drawn differently eve
 
 A subscription adds 3 further sections on Crack Spread Swap — Why three, two and one, The spread has a time dimension, What the spread does not cover — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

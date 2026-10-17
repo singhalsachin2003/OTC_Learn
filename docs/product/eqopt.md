@@ -59,6 +59,8 @@ There is no clearing house standing behind the trade, so each side carries the o
 - **Vega** — How much the option’s value moves when implied volatility changes by one point.
 - **Barrier** — A price level that brings an option into existence or extinguishes it if the underlying trades through it.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Company founders and executives use bespoke puts and collars to protect stock they cannot easily sell, and pension funds buy index puts to cap the drawdown on an equity book. On the other side sit dealers, who warehouse the risk and hedge it with listed options and the underlying shares.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for OTC Equity Option, drawn differently eve
 
 A subscription adds 3 further sections on OTC Equity Option — Dividends and early exercise, Borrow, and what it does to parity, Corporate actions and the adjustment — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

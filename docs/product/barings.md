@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Reconciliation** — Checking the firm’s records against the exchange’s and the cash actually paid — the control that was absent.
 - **Operational risk** — Loss from failed processes, people or systems, as distinct from market or credit risk.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 The direct legacy is structural: independent middle and back offices, mandatory leave for traders, position reconciliation against exchange records, and limits monitored by people who do not report to the desk. Every one of those exists because they were all absent in one place at one time.
@@ -43,7 +45,7 @@ The direct legacy is structural: independent middle and back offices, mandatory 
 
 In the app, Barings, 1995 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

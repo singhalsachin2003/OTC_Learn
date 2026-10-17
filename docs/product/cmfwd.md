@@ -59,6 +59,8 @@ It is a firm obligation, so a buyer must take delivery even if demand has evapor
 - **Physical settlement** — Settlement by delivering the actual goods rather than paying a cash difference.
 - **Cost of carry** — The storage, insurance and financing cost of holding a commodity until delivery, which shapes the forward price.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Refiners buy crude forward to keep a plant fed at a known cost, millers and brewers buy grain forward so a year’s recipe costs are set before the season, and mining companies sell metal forward to bank the price behind a shipment already scheduled. The counterparty is typically a producer, a merchant trading house or a bank with a physical commodity arm.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Commodity Forward, drawn differently eve
 
 A subscription adds 3 further sections on Commodity Forward — The theory of storage, Roll yield, and why it dominates returns, Delivery, and the options inside it — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

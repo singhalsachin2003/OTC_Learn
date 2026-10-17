@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Suppressed volatility** — Realised volatility held artificially low by intervention, which flatters every risk measure built on it.
 - **Carry trade** — Borrowing in a low-yielding currency to invest in a higher one — profitable until the exchange rate moves.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 European regulators later capped retail FX leverage and required negative balance protection, which moves the gap risk from the client to the broker and forces brokers to hold capital against it. On the institutional side, the episode is the standard scenario for stress-testing a currency book: not a large move, a discontinuous one.
@@ -43,7 +45,7 @@ European regulators later capped retail FX leverage and required negative balanc
 
 In the app, The Swiss franc floor, 2015 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

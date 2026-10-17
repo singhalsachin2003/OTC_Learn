@@ -61,6 +61,8 @@ The premium on a payer is lost in full if spreads do not widen past the strike, 
 - **Risky annuity** — The duration-like factor that converts one basis point of index spread into an amount of cash.
 - **Delta exchange** — The offsetting index position traded alongside the option so the buyer starts without a directional view.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Macro funds and multi-asset managers buy payers on CDX.NA.IG or iTraxx Europe Main as a tail hedge, because a few basis points of premium buys a payoff that grows as spreads gap — cheaper to carry through a long calm stretch than holding index protection outright. Pension funds and insurers with large corporate bond books do the same ahead of events they cannot trade around. On the other side, dealers and volatility funds sell options to earn the premium and hedge the delta with the underlying index, and relative-value desks trade the payer skew against realised spread volatility.
@@ -75,7 +77,7 @@ The app adds a twelve-question bank for Credit Index Option, drawn differently e
 
 A subscription adds 3 further sections on Credit Index Option — Exercising into an index position, Front-end protection, A volatility surface for credit — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

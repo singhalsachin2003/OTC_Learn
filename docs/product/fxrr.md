@@ -59,6 +59,8 @@ The premium collected on the sold leg is not free money: it is compensation for 
 - **Premium financing** — Using the premium collected on the leg sold to fund some or all of the premium owed on the leg bought.
 - **Delta** — How much an option’s value changes for a small move in the spot rate, and the number the market uses to pick which strike a quoted risk reversal refers to.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Corporate treasuries are the largest natural users, collaring receivables and payables to strip the premium cost out of a hedging programme without a cash outlay. Hedge funds and real-money managers trade risk reversals outright to express a skew view or as a capital-efficient way to buy convexity around an event, and every FX options desk quotes and risk-manages the 25-delta risk reversal as one of the three standard points — alongside at-the-money vol and the butterfly — that define its volatility surface for a given tenor.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Risk Reversal, drawn differently every s
 
 A subscription adds 3 further sections on Risk Reversal — Building a smile from three numbers, What the skew is telling you, and what it is not, Term structure of the tilt — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

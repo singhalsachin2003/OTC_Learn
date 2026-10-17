@@ -60,6 +60,8 @@ An index rarely matches a specific portfolio, so hedging with one leaves basis r
 - **Tranche** — A slice of the basket’s losses between an attachment and a detachment point, sold as a separate contract.
 - **Index basis** — The difference between the index level and the aggregate of its constituents’ single-name spreads.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 An insurer holding several hundred corporate bonds buys index protection to cut credit exposure ahead of a nervous few weeks, rather than selling paper it would struggle to buy back; macro funds trade the index outright as a view on the credit cycle; dealers use it to hedge the residual risk of bond inventory they cannot offset name by name. The main indices are cleared through a central counterparty and are among the few credit instruments with a continuous two-way market.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for CDX Index, drawn differently every sitti
 
 A subscription adds 3 further sections on CDX Index — The roll, and what on-the-run means, Index against intrinsic, What happens when a constituent defaults — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

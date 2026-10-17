@@ -19,7 +19,7 @@ Exotics is part of the OTC Learn subscription; the 36 products the app shipped w
 - [Target Redemption Forward](/OTC_Learn/product/tarf/) — A better rate that stops once you have won enough
 - [Cliquet Option](/OTC_Learn/product/cliquet/) — A chain of options, each struck where the last one ended
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

@@ -61,6 +61,8 @@ Positions are usually leveraged and marked frequently, so an adverse move brings
 - **Total return** — An equity leg that passes on dividends as well as price changes, unlike a price return leg.
 - **Dividend adjustment** — The agreed proportion of a declared dividend passed through on the equity leg, often net of withholding tax.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Hedge funds use equity swaps with a prime broker to run long and short books without settling every share, and asset managers use them to take index exposure in markets where opening local custody would be slow or costly. Dealers on the other side usually hedge by holding the underlying shares themselves.
@@ -75,7 +77,7 @@ The app adds a twelve-question bank for Equity Swap, drawn differently every sit
 
 A subscription adds 3 further sections on Equity Swap — The borrow is the constraint, Resetting notionals and what they do to exposure, Dividends and corporate actions — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -25,7 +25,7 @@ Case Studies is part of the OTC Learn subscription; the 36 products the app ship
 - [Metallgesellschaft, 1993](/OTC_Learn/product/metallges/) — The right hedge, on the wrong clock
 - [The Swiss franc floor, 2015](/OTC_Learn/product/chffloor/) — A guarantee withdrawn in a morning
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

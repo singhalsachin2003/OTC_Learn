@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **Route basis** — The gap between one ship’s actual economics and the index average the hedge references.
 - **Voyage charter** — Hiring a vessel for a specific cargo and route, priced per tonne, as opposed to per day.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Shipowners, commodity trading houses, mining companies and utilities all use freight forwards, most of them cleared. The market is small relative to the commodities it moves, which is why liquidity thins quickly outside the nearest contracts and the largest vessel classes.
@@ -43,7 +45,7 @@ Shipowners, commodity trading houses, mining companies and utilities all use fre
 
 In the app, Freight Forward Agreement carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

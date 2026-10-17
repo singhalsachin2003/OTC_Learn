@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **Spark spread** — The power price less the fuel cost at a given heat rate — a gas generator’s gross margin.
 - **Volumetric risk** — Exposure to how much is consumed, which moves with price rather than independently of it.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Utilities, industrial consumers and generators trade blocks for the bulk of the exposure and manage the residual shape with more granular products and with spot. The structural features here — no storage, hourly granularity, volume correlated with price — apply to any market where the product is consumed at the instant it is made.
@@ -43,7 +45,7 @@ Utilities, industrial consumers and generators trade blocks for the bulk of the 
 
 In the app, Power Derivatives carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

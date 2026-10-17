@@ -17,7 +17,7 @@ Contracts used to hedge or speculate on currency exchange rate movements.
 - [Cross-Currency Swap](/OTC_Learn/product/xccy/) — Exchange principal and interest across two currencies
 - [Risk Reversal](/OTC_Learn/product/fxrr/) — Sell an option to fund the one you actually want
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

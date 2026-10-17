@@ -17,7 +17,7 @@ Instruments that transfer or hedge the credit/default risk of borrowers.
 - [Asset Swap](/OTC_Learn/product/assetswap/) — Turn a fixed-rate bond into a floating one
 - [Credit Index Option](/OTC_Learn/product/cdxopt/) — An option on a credit index spread
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

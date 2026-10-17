@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **Dual range accrual** — A version conditioning the coupon on two references, paying only on days both are inside.
 - **Frozen fixing** — The convention of carrying the last observed fix over the final days of a period so the coupon can be settled.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Range accruals are a private banking and insurance staple, sold as yield enhancement to buyers who want income without an explicit derivatives mandate. Dealers run the other side as a short-dated digital book and hedge the skew; the note’s call feature is what lets the issuer keep the funding cheap when the hedge becomes expensive.
@@ -43,7 +45,7 @@ Range accruals are a private banking and insurance staple, sold as yield enhance
 
 In the app, Range Accrual Note carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

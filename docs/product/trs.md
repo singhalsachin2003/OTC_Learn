@@ -60,6 +60,8 @@ Leverage magnifies losses, and a falling asset value triggers collateral calls t
 - **Haircut** — The portion of the exposure that must be covered by collateral, which fixes how much leverage the trade carries.
 - **Independent amount** — The collateral posted at inception, before any variation margin starts moving with the mark.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Hedge funds use total return swaps through their prime brokers to hold bond and loan positions several times the size of the cash they have posted; banks act as payer to earn the financing spread on assets they were funding anyway; an insurer barred from holding a particular loan can take its return synthetically. The same structure lets a holder keep an asset on its books for accounting or client reasons while passing the risk to someone else.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Total Return Swap, drawn differently eve
 
 A subscription adds 3 further sections on Total Return Swap — The financing leg is the product, What the dealer actually holds, Termination, and the value nobody agrees on — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -17,7 +17,7 @@ The infrastructure every other product runs through — collateral, clearing, va
 - [XVA and Counterparty Risk](/OTC_Learn/product/xva/) — Why the same swap is never quite the same price twice
 - [Execution and Reporting](/OTC_Learn/product/execution/) — How a trade gets done, and who has to know about it
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

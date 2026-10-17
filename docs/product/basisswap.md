@@ -59,6 +59,8 @@ The spread is small but it is not stable, and it tends to move most under fundin
 - **Tenor basis** — The spread between two floating legs referencing the same benchmark over different periods, such as one month against three months.
 - **Projection curve** — The curve used to forecast a floating leg’s future settings, kept separate from the discount curve applied to the resulting cash flows.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 US regional banks are the archetypal user: their loan documentation references Term SOFR while their bonds and hedges reference compounded SOFR, and a basis swap is what keeps the margin between them intact. Bank treasuries and short-end rates desks trade the SOFR against fed funds basis to line a portfolio up with the index their own liabilities actually pay, and dealers run a basis book because every index needs a curve of its own.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Basis Swap, drawn differently every sitt
 
 A subscription adds 3 further sections on Basis Swap — What a tenor basis prices, The cross-currency version, After LIBOR — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

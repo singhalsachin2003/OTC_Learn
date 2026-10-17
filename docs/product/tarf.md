@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **Knock-in knock-out forward** — A close relative pairing a barrier that cancels protection with one that activates a geared obligation.
 - **Pivot TARF** — A variant with two strikes, paying inside a band and gearing outside it on either side.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 TARFs are quoted by bank FX structuring desks to corporate treasuries and to funds running carry strategies, most heavily in currencies with a wide forward premium — the rupee, the real, the lira, the won. Regulatory reporting requirements mean the volumes are now visible in trade repositories, which was not true in 2008.
@@ -43,7 +45,7 @@ TARFs are quoted by bank FX structuring desks to corporate treasuries and to fun
 
 In the app, Target Redemption Forward carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

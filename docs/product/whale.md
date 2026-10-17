@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **VaR model change** — A revision to the risk model itself, which can reduce measured risk while the position is unchanged.
 - **Restatement** — A correction of previously published financial results, here for the quarter in which the marks were wrong.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every credit desk reports CS01 by name and by curve bucket, jump-to-default by issuer, and index basis separately, because this episode is the standard argument for why one net number is not a control. Risk model changes now carry their own governance, with the old and new measures run in parallel.
@@ -43,7 +45,7 @@ Every credit desk reports CS01 by name and by curve bucket, jump-to-default by i
 
 In the app, The London Whale, 2012 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

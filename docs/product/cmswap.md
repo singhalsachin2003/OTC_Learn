@@ -59,6 +59,8 @@ Basis risk appears when the published index does not match the grade or delivery
 - **Averaging convention** — The rule turning a series of daily published prices into the single floating price for a period.
 - **Basis risk** — The residual exposure left when the hedged index differs from the grade or location actually bought or sold.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Airlines and shipping lines pay fixed to budget fuel, gold and copper miners receive fixed to underwrite a mine plan, and utilities swap gas to fix the input cost behind a regulated tariff. The dealer on the other side is usually a bank commodity desk or a merchant trading house, which hedges its own book in exchange-traded futures.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Commodity Swap, drawn differently every 
 
 A subscription adds 3 further sections on Commodity Swap — The pricing window is the contract, Whose price, published where, Grade and location basis — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

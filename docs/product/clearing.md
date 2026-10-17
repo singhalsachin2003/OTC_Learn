@@ -57,6 +57,8 @@ A clearing member’s own default has to happen before any of this machinery is 
 - **Guaranty fund** — The mutualised pool of collateral, contributed by every clearing member, that sits behind the CCP’s own capital as the last layer before further assessments.
 - **Skin in the game** — The CCP’s own capital contribution to the waterfall, placed ahead of the mutualised guaranty fund so the CCP shares directly in the cost of a default it failed to price correctly.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Nearly all standardised interest rate swaps and index CDS now clear through CCPs such as LCH, CME or ICE, following the G20 mandate; end users reach them through a clearing member, almost always a large bank, rather than joining directly. Buy-side risk teams monitor their clearing member’s own financial strength as closely as the CCP’s, because a clearing member’s own default is the first thing that has to go wrong before any of this machinery is triggered at all.
@@ -71,7 +73,7 @@ The app adds a twelve-question bank for Central Clearing, drawn differently ever
 
 A subscription adds 3 further sections on Central Clearing — The waterfall, in order, Margin, and the period of risk, Porting and the auction — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

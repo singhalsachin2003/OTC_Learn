@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Doom loop** — A self-reinforcing spiral where meeting a call requires selling the asset whose fall caused the call.
 - **Financial stability operation** — A central bank intervention aimed at restoring orderly markets rather than at setting monetary policy.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 LDI is still how UK schemes hedge, and it is meant to be — the alternative is an unhedged liability. What changed is the buffer, the governance around topping it up, and the operational speed of moving collateral, which for several schemes in 2022 was slower than the market moved.
@@ -43,7 +45,7 @@ LDI is still how UK schemes hedge, and it is meant to be — the alternative is 
 
 In the app, The gilt LDI crisis, 2022 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -54,6 +54,8 @@ Mark-to-model is a judgement, not a fact, and the same trade can be marked two d
 - **Mark-to-market** — Valuing a position from directly observable, quoted market inputs.
 - **Mark-to-model** — Valuing a position with a pricing model, used where no direct market quote exists and the model’s own inputs are themselves estimated.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every derivatives desk marks its book at least daily, feeding the same numbers into P&L, margin calls and risk limits, so a valuation model is shared infrastructure rather than one trader’s private tool. Product control and valuation control functions exist specifically to test front-office marks against independent curves and market data, precisely because a mark-to-model number is a judgement a trader has every incentive to lean one way on.
@@ -68,7 +70,7 @@ The app adds a twelve-question bank for Valuation and Marking, drawn differently
 
 A subscription adds 3 further sections on Valuation and Marking — Three levels of observability, Mid, and the adjustments away from it, Independent price verification — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -59,6 +59,8 @@ The premium is paid upfront and is lost entirely if the rate never breaches the 
 - **Premium** — The upfront cost of the cap or floor, paid whether or not any caplet ever pays out.
 - **Reset frequency** — How often the reference rate is compared with the strike, which also sets how many caplets the strip contains.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Property developers and leveraged borrowers are frequently required by their lenders to buy a cap as a condition of a floating-rate loan, so the interest bill can be stressed to a known maximum. Funds holding floating-rate notes buy floors to defend a minimum coupon, and treasurers who find the cap premium too expensive sell a floor against it to build a cheaper collar.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Cap and Floor, drawn differently every s
 
 A subscription adds 3 further sections on Cap and Floor — A cap is a strip of caplets, Flat volatility and stripped volatility, Cap minus floor is a swap — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

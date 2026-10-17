@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **q-forward** — A forward on a published mortality rate for an age cohort — the standardised, index-based alternative.
 - **Basis risk** — The gap between a scheme’s own members and the national population an index hedge references.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 UK and Dutch pension schemes are the main users, with insurers and reinsurers on the other side and investment banks often intermediating. The transactions are large, slow to arrange and heavily negotiated on collateral rather than on price, because both sides know the price is the easy part of a fifty-year contract.
@@ -43,7 +45,7 @@ UK and Dutch pension schemes are the main users, with insurers and reinsurers on
 
 In the app, Longevity Swap carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

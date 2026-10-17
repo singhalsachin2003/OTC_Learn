@@ -59,6 +59,8 @@ Only one period is covered, so hedging a rolling exposure needs a strip of FRAs 
 - **Discounted settlement** — The convention of paying the interest difference at the start of the period, reduced to its present value.
 - **Strip of FRAs** — A run of FRAs covering consecutive periods, used where a single contract would leave later periods unhedged.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Bank treasury and asset–liability desks use FRAs to square a known funding gap — a deposit maturing in three months against a loan that runs for six — and corporate treasurers use them when the date and size of a future drawdown are already fixed. Rate traders use them to take a view on a single point of the curve rather than on its whole shape.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Forward Rate Agreement, drawn differentl
 
 A subscription adds 3 further sections on Forward Rate Agreement — Against a futures contract, Settled at the start, discounted, A strip is a curve — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

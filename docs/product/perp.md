@@ -31,6 +31,8 @@ Alternative Underlyings is part of the OTC Learn subscription. Everything the ap
 - **Maintenance margin** — The equity level below which a position is closed out by the venue rather than allowed to go negative.
 - **Insurance fund** — A pool absorbing the shortfall when a liquidation cannot be completed at better than the bankruptcy price.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Perpetuals are the highest-volume derivative in digital asset markets, and the funding rate is watched as a positioning indicator in its own right. The design is now being borrowed elsewhere: the question it answers — how do you anchor a never-settling contract to a reference price — applies to anything continuously traded.
@@ -43,7 +45,7 @@ Perpetuals are the highest-volume derivative in digital asset markets, and the f
 
 In the app, Perpetual Swap carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

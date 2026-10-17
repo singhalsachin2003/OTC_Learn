@@ -62,6 +62,8 @@ The principal re-exchange at maturity carries real credit exposure precisely bec
 - **Reverse Yankee** — A bond issued by a US company in a foreign currency, most often euros, and swapped back into dollars — the mirror of a Yankee bond, in which a foreign issuer borrows dollars in the US market.
 - **Cross-currency basis swap** — The floating-for-floating structure specifically, as distinct from the fixed-for-fixed and fixed-for-floating variants that also trade under the broader cross-currency swap name.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Corporates issuing bonds in whichever currency offers the tightest spread, then swapping the proceeds home, are the routine end-user flow — reverse Yankees from US issuers alongside the equivalent trade run by European and Asian companies borrowing dollars. Life insurers and pension funds, particularly in Japan and Taiwan, run some of the largest positions, hedging foreign-currency bond portfolios back into their own currency for years at a time. Dealers run a basis book because supply and demand for each pair’s long-dated funding rarely balance, and that imbalance is what the basis is actually pricing.
@@ -76,7 +78,7 @@ The app adds a twelve-question bank for Cross-Currency Swap, drawn differently e
 
 A subscription adds 3 further sections on Cross-Currency Swap — Notionals really are exchanged, Resetting the mark to market, Why a borrower uses one — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

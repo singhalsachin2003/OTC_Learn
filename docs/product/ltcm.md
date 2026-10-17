@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Funding liquidity** — The ability to keep financing a position — the thing that decides whether you can wait for convergence.
 - **Crowded position** — One whose size and holder are known to the market, so an unwind can be anticipated and traded against.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Relative value trading is a large and respectable part of the market, and the arithmetic above is why it is run with leverage limits, liquidity horizons and stress scenarios in which every spread widens together. The lesson is quoted in risk committees more often than any other, usually in the form: what happens if we cannot wait?
@@ -43,7 +45,7 @@ Relative value trading is a large and respectable part of the market, and the ar
 
 In the app, Long-Term Capital Management, 1998 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

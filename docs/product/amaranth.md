@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Position limits** — Caps on how much of a contract one participant may hold, applied on a regulated exchange.
 - **Liquidation discount** — The gap between a portfolio’s marked value and what a buyer will pay to take it on whole.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Exchanges and clearing houses now scrutinise concentration in spread positions rather than only net risk, and the reporting gap between regulated exchanges and other venues has largely closed. The trade itself is unremarkable and still runs on every energy desk — at sizes the market can absorb.
@@ -43,7 +45,7 @@ Exchanges and clearing houses now scrutinise concentration in spread positions r
 
 In the app, Amaranth, 2006 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

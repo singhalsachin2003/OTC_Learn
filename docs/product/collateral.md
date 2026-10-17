@@ -58,6 +58,8 @@ A CSA reduces credit risk; it does not remove it. The margin period of risk — 
 - **Haircut** — The discount applied to non-cash collateral’s value, sized to the risk that its price falls before it can be sold.
 - **Rehypothecation** — The right to reuse collateral received as if it were the receiving firm’s own, rather than ring-fencing it — routine for cash variation margin, prohibited for segregated initial margin.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every dealer relationship and most buy-side-to-dealer relationships now run on a CSA, calling variation margin daily against the current mark and, for the largest counterparty pairs, exchanging initial margin into segregated custodian accounts under the uncleared margin rules. Treasury and collateral management desks exist purely to manage this — sourcing eligible collateral, optimising which asset to post against which CSA, and funding the calls a big move in rates or credit can generate overnight.
@@ -72,7 +74,7 @@ The app adds a twelve-question bank for Collateral and the CSA, drawn differentl
 
 A subscription adds 3 further sections on Collateral and the CSA — Thresholds, minimums and the independent amount, What may be posted, and what it is worth, Whose collateral is it — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

@@ -59,6 +59,8 @@ The swap only hedges what it matches — a mismatch in dates or amounts leaves r
 - **Tenor** — The total life of the swap, from effective date to maturity — commonly 2, 5 or 10 years.
 - **Day count convention** — The rule converting an annual rate into the fraction actually owed for a period, such as ACT/360.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Corporate treasurers use these to turn a floating bank loan into a predictable budget line, and pension funds use long-dated swaps to match the fixed liabilities they owe retirees. Most standardised swaps now clear through a central counterparty rather than settling bilaterally.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Interest Rate Swap, drawn differently ev
 
 A subscription adds 3 further sections on Interest Rate Swap — Pricing it from the curve, Two curves, not one, Carry, roll-down and the swap spread — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

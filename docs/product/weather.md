@@ -60,6 +60,8 @@ The cover is only ever a proxy. The station is not the service area and degree d
 - **Payout cap** — The agreed limit on the total either side can be asked to pay, fixed when the contract is written.
 - **Volumetric risk** — Exposure to how much you sell rather than the price you sell it for, which a price hedge leaves untouched.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Gas and power utilities and energy retailers are the natural buyers, hedging the volume they will sell rather than the price they will pay, while brewers, agricultural processors, ski operators and event promoters buy smaller and more bespoke structures. Reinsurers, specialist weather funds and a few energy trading houses take the other side, precisely because temperature risk has almost no correlation with equity or credit markets. The market began in the US power sector in the late 1990s, and although the CME lists standardised heating and cooling degree day futures on a set of cities, most weather risk still changes hands over-the-counter in bespoke periods and sizes.
@@ -74,7 +76,7 @@ The app adds a twelve-question bank for Weather Swap, drawn differently every si
 
 A subscription adds 3 further sections on Weather Swap — Degree days, and how they are counted, Station basis, Pricing from history, not from a model of the sky — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

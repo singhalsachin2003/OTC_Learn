@@ -61,6 +61,8 @@ A dividend is discretionary. A board can cut it to nothing in an afternoon, and 
 - **Dividend notional** — The cash amount paid per point of difference between realised dividends and the strike.
 - **Dividend curve** — The strip of successive annual maturities, whose shape shows what the market will pay for each future year.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 The natural sellers are bank equity derivatives desks, left long dividend risk by hedging the autocallable notes they sell to private-bank and retail investors, and keen to pass it on. The buyers are hedge funds and multi-asset managers paid to hold a risk nobody else wants, alongside investors expressing a view on a payout rather than a share price. Euro Stoxx 50 dividends are the deepest part of the market, with listed futures trading alongside the OTC swap; single-name dividend swaps exist but trade thinly.
@@ -75,7 +77,7 @@ The app adds a twelve-question bank for Dividend Swap, drawn differently every s
 
 A subscription adds 3 further sections on Dividend Swap — Three kinds of dividend, Where the supply comes from, Index points and their arithmetic — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

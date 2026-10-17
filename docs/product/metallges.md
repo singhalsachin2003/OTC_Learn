@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Roll yield** — The gain or loss from replacing an expiring contract with a later one, which accumulates every month.
 - **Liquidation decision** — The choice to close a hedge, which converts an unrealised offset into a realised loss.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Long-dated physical supply is still hedged with shorter instruments, because the liquidity is where it is. What changed is that the roll and the funding are modelled explicitly, financed in advance, and governed by people who know that unwinding the hedge is itself a position.
@@ -43,7 +45,7 @@ Long-dated physical supply is still hedged with shorter instruments, because the
 
 In the app, Metallgesellschaft, 1993 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

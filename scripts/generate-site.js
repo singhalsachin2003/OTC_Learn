@@ -34,7 +34,16 @@ const os = require('os');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const DOCS = path.join(ROOT, 'docs');
+// SITE_OUT redirects the output, so a run can be diffed against docs/ before it
+// replaces anything there. Unset, it writes straight into docs/ as before.
+const DOCS = process.env.SITE_OUT || path.join(ROOT, 'docs');
+
+/**
+ * The install link on every generated page. Through /get/ rather than straight
+ * to Play, so the redirector can attribute the visit to the `web` custom store
+ * listing (created in the Console on 17 October 2026).
+ */
+const INSTALL = '[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)';
 
 function loadCatalogue() {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'otc-site-'));
@@ -208,6 +217,7 @@ function teaserPage(product, category, products) {
   for (const term of product.keyTerms) {
     lines.push(`- **${term.term}** — ${term.definition}`);
   }
+  lines.push('', '[Every key term, A to Z](/OTC_Learn/glossary/)');
   lines.push('', '## In practice', '', product.inPractice, '');
 
   if (related.length > 0) {
@@ -221,7 +231,7 @@ function teaserPage(product, category, products) {
   lines.push(
     `In the app, ${product.name} carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.`,
     '',
-    '[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)',
+    INSTALL,
     '',
     'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',
     '',
@@ -279,6 +289,7 @@ function productPage(product, category, products) {
   for (const term of product.keyTerms) {
     lines.push(`- **${term.term}** — ${term.definition}`);
   }
+  lines.push('', '[Every key term, A to Z](/OTC_Learn/glossary/)');
   lines.push('', '## In practice', '', product.inPractice, '');
 
   if (related.length > 0) {
@@ -305,7 +316,7 @@ function productPage(product, category, products) {
   }
 
   lines.push(
-    '[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)',
+    INSTALL,
     '',
     'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',
     '',
@@ -346,7 +357,7 @@ function categoryPage(category, products) {
   }
   lines.push(
     '',
-    '[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)',
+    INSTALL,
     '',
     // A list page, described as one: the products named on it, in the order
     // they are named, and nothing that is not.
@@ -376,6 +387,92 @@ function categoryPage(category, products) {
     ),
   );
   return lines.join('\n');
+}
+
+/** A stable anchor for a term, so a glossary entry can be linked to directly. */
+function anchor(term) {
+  return term
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/**
+ * Every product's key terms on one page, A to Z. A term that several products
+ * share appears once, with the first product's definition (catalogue order) and
+ * a link to every product that teaches it. Key terms are published on the
+ * premium teasers too, so nothing here is paid content.
+ */
+function glossaryPage(products) {
+  const byKey = new Map();
+  for (const product of products) {
+    for (const t of product.keyTerms) {
+      const key = anchor(t.term);
+      if (!byKey.has(key)) byKey.set(key, { term: t.term, definition: t.definition, products: [] });
+      const entry = byKey.get(key);
+      if (!entry.products.some((p) => p.id === product.id)) entry.products.push(product);
+    }
+  }
+  const entries = [...byKey.entries()].sort((a, b) =>
+    a[1].term.localeCompare(b[1].term, 'en', { sensitivity: 'base' }),
+  );
+  const letterOf = (term) => {
+    const c = term.normalize('NFKD').charAt(0).toUpperCase();
+    return /[A-Z]/.test(c) ? c : '#';
+  };
+  const letters = [...new Set(entries.map(([, e]) => letterOf(e.term)))];
+
+  const lines = [
+    '---',
+    `title: ${yamlString('OTC derivatives glossary: key terms A to Z')}`,
+    `description: ${yamlString(`${entries.length} OTC derivatives terms in plain English, from the ${products.length} products in OTC Learn, each linked to the lesson that teaches it.`)}`,
+    'permalink: /glossary/',
+    '---',
+    '',
+    '# OTC derivatives glossary',
+    '',
+    `${entries.length} key terms from the ${products.length} products in OTC Learn, each linked to the product that teaches it. Where several products use a term, the first definition is shown and every product is listed.`,
+    '',
+    letters.map((l) => `[${l === '#' ? '0–9' : l}](#letter-${l === '#' ? 'num' : l.toLowerCase()})`).join(' · '),
+    '',
+  ];
+  let current = null;
+  for (const [key, e] of entries) {
+    const l = letterOf(e.term);
+    if (l !== current) {
+      current = l;
+      lines.push(`## ${l === '#' ? '0–9' : l} {#letter-${l === '#' ? 'num' : l.toLowerCase()}}`, '');
+    }
+    lines.push(`### ${e.term} {#${key}}`, '', e.definition, '');
+    lines.push(
+      `In: ${e.products.map((p) => `[${p.name}](/OTC_Learn/product/${p.id}/)`).join(', ')}`,
+      '',
+    );
+  }
+  lines.push(
+    'Each product in the app adds a five-step lesson, a worked example and a bank of twelve questions.',
+    '',
+    INSTALL,
+    '',
+    'Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.',
+    '',
+    ...jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'DefinedTermSet',
+      name: 'OTC derivatives glossary',
+      url: `${SITE}/glossary/`,
+      inLanguage: 'en',
+      publisher: PUBLISHER,
+      hasDefinedTerm: entries.map(([key, e]) => ({
+        '@type': 'DefinedTerm',
+        name: e.term,
+        description: e.definition,
+        url: `${SITE}/glossary/#${key}`,
+      })),
+    }),
+  );
+  return { body: lines.join('\n'), count: entries.length };
 }
 
 function writeAll(dir, files) {
@@ -414,6 +511,10 @@ function main() {
       categoryPage(category, products),
     ]),
   );
+
+  const glossary = glossaryPage(products);
+  fs.writeFileSync(path.join(DOCS, 'glossary.md'), glossary.body);
+  console.log(`Wrote the glossary: ${glossary.count} terms.`);
 
   fs.rmSync(tempDir, { recursive: true, force: true });
   const teasers = products.length - FREE_PRODUCT_COUNT;

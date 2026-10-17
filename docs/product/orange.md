@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Book value reporting** — Reporting holdings at cost rather than market, which conceals a loss until it must be realised.
 - **Investment pool** — A shared fund holding cash for several public bodies, whose participants here could not see the risk taken.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Public investment pools are now constrained on leverage, on maturity and on the instruments they may hold, and they report at market. The structures themselves are unremarkable: inverse floaters are a legitimate way to take a rates view, priced accordingly, and used by funds that know that is what they are doing.
@@ -43,7 +45,7 @@ Public investment pools are now constrained on leverage, on maturity and on the 
 
 In the app, Orange County, 1994 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

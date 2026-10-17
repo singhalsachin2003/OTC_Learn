@@ -56,6 +56,8 @@ XVA desks exist because these adjustments are themselves risks that move, not on
 - **MVA** — Margin valuation adjustment: the cost of funding the initial margin a trade requires to be posted into segregated custody.
 - **Wrong-way risk** — The case where a counterparty’s probability of default is itself correlated with the dealer’s exposure to it, so the two get worse together rather than independently.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every major dealer runs a dedicated XVA desk that prices and hedges these adjustments centrally across the whole trading book, rather than leaving each individual desk to price its own counterparty and funding risk trade by trade. A corporate treasurer negotiating a swap notices XVA only as a wider price than a textbook calculation would suggest — and as the reason a better-rated counterparty, or one prepared to post more collateral, is quoted a tighter one.
@@ -70,7 +72,7 @@ The app adds a twelve-question bank for XVA and Counterparty Risk, drawn differe
 
 A subscription adds 3 further sections on XVA and Counterparty Risk — CVA is a traded exposure, not an accounting entry, Wrong-way risk, The rest of the family, and the argument about it — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

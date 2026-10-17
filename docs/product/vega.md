@@ -31,6 +31,8 @@ Risk & the Greeks is part of the OTC Learn subscription. Everything the app ship
 - **Volga** — The sensitivity of vega to volatility itself — the convexity of the volatility exposure.
 - **Vanna** — The cross sensitivity: how vega moves with the underlying, or delta with volatility.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Volatility is quoted, traded and risk-managed as its own asset on every options desk: the market makes prices in the at-the-money level, the risk reversal and the butterfly rather than in individual option premiums. Variance swaps exist because they give exposure to the whole surface at once without a delta hedging programme attached.
@@ -43,7 +45,7 @@ Volatility is quoted, traded and risk-managed as its own asset on every options 
 
 In the app, Vega and the Volatility Surface carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

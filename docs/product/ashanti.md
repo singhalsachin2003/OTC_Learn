@@ -31,6 +31,8 @@ Case Studies is part of the OTC Learn subscription. Everything the app shipped w
 - **Standstill agreement** — A negotiated pause in counterparties’ rights to call collateral or close out, bought here with equity.
 - **Washington Agreement** — The September 1999 accord in which European central banks capped gold sales, reversing a long price decline.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Miners still hedge, and lenders often require it, but books are sized against near-term production, margin terms are negotiated up front and many producers now prefer forwards to sold options for exactly this reason. The industry largely de-hedged through the 2000s as the gold price rose.
@@ -43,7 +45,7 @@ Miners still hedge, and lenders often require it, but books are sized against ne
 
 In the app, Ashanti Goldfields, 1999 carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

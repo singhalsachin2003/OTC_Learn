@@ -31,6 +31,8 @@ Risk & the Greeks is part of the OTC Learn subscription. Everything the app ship
 - **Carry** — The funding, borrow and roll-down component of a day’s P&L, separate from market moves.
 - **Day-one P&L** — Profit recognised when a trade is booked, on a model price rather than an observed one.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Every bank trading desk produces an explain daily, and under the Basel market risk framework the comparison between hypothetical and risk-theoretical P&L decides whether a desk may use its own model for capital at all. It is one of the few places where a risk-management practice and a capital rule are the same exercise.
@@ -43,7 +45,7 @@ Every bank trading desk produces an explain daily, and under the Basel market ri
 
 In the app, P&L Attribution carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

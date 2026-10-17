@@ -17,7 +17,7 @@ Contracts that hedge or speculate on the price of physical commodities.
 - [Weather Swap](/OTC_Learn/product/weather/) — A payout driven by temperature, not price
 - [Swing Option](/OTC_Learn/product/swing/) — The right to choose how much you take
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

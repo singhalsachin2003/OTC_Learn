@@ -63,6 +63,8 @@ The swap hedges one named index, and a liability linked to a different one leave
 - **Seasonality** — The repeating within-year pattern in a price index, which largely cancels over whole years but must be modelled on short-dated and broken-dated trades.
 - **Year-on-year inflation swap** — The periodic alternative, exchanging each year’s change in the index against a fixed rate on every payment date.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 UK defined benefit schemes and the liability-driven investment managers who run their hedges are the dominant receivers of inflation, because the benefits they owe are indexed by statute or by scheme rules. Opposite them sit utilities, rail and social housing operators whose revenues are index-linked by regulation or contract, and dealers warehousing what is left of the imbalance. Macro funds trade breakevens outright when they think the market’s implied inflation is wrong.
@@ -77,7 +79,7 @@ The app adds a twelve-question bank for Inflation Swap, drawn differently every 
 
 A subscription adds 3 further sections on Inflation Swap — Breakeven and the risk premium, Lags and seasonality, Zero-coupon against year-on-year — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

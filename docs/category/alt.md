@@ -19,7 +19,7 @@ Alternative Underlyings is part of the OTC Learn subscription; the 36 products t
 - [Catastrophe Bond](/OTC_Learn/product/catbond/) — A coupon that stops if the hurricane arrives
 - [Longevity Swap](/OTC_Learn/product/longevity/) — Insuring against people living longer than planned
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

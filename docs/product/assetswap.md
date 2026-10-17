@@ -61,6 +61,8 @@ The swap does not die with the bond. A plain asset swap has no credit terminatio
 - **CDS-bond basis** — The CDS spread minus the asset swap spread on the same issuer and maturity, negative when the bond pays more than protection costs.
 - **Repo specialness** — The premium a particular bond commands in the repo market, which cheapens the cost of funding it and tightens its asset swap spread.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Bank treasury and credit portfolios asset-swap most of the fixed-rate paper they buy, so the position earns a spread over SOFR and the book carries credit risk rather than duration — new corporate issues are often marketed in asset swap terms for exactly that audience. Relative-value desks at hedge funds trade the CDS-bond basis directly, buying the bond on asset swap and protection against it when the basis is negative enough to survive their funding cost. Dealers quote the bond and its swap as one package rather than two trades.
@@ -75,7 +77,7 @@ The app adds a twelve-question bank for Asset Swap, drawn differently every sitt
 
 A subscription adds 3 further sections on Asset Swap — Par-par, and where the money goes, What the spread measures, The swap survives the bond — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

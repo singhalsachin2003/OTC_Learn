@@ -59,6 +59,8 @@ The payoff is linear in variance, which makes it convex in volatility: a seller�
 - **Observation period** — The run of trading days whose daily returns feed the realised variance calculation.
 - **Cap** — A ceiling on the realised volatility used at settlement, limiting how much a seller can lose.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Bank volatility desks, which often end up structurally short volatility from selling structured products to retail investors, buy index variance to offset that exposure. On the other side are hedge funds trading the gap between implied and realised volatility, running dispersion between an index and its constituents, or holding index variance as a hedge that pays when an equity book is losing.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Variance Swap, drawn differently every s
 
 A subscription adds 3 further sections on Variance Swap — Why variance and not volatility, The replicating strip, and where it fails, Caps, and what they admit — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

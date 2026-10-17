@@ -8,7 +8,7 @@
 
 title: OTC Learn
 description: Learn OTC derivatives — 36 products, short lessons and quizzes.
-theme: jekyll-theme-minimal
+# theme removed: every page is wrapped by _layouts/default.html (shared branded layout)
 
 # Needed for absolute URLs in the generated sitemap. The site is served from a
 # project path, not the user root, so both halves have to be here.
@@ -33,3 +33,12 @@ plugins:
 # `docs/` is published unless it is named here.
 exclude:
   - revenuecat.md
+
+# Every Markdown page (including the privacy and account-deletion pages, which have
+# no layout of their own) is wrapped in _layouts/default.html. The landing page opts
+# out with `layout: null`; get/index.html has no front matter so it is served as-is.
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

@@ -17,7 +17,7 @@ OTC instruments giving synthetic exposure to stocks, baskets, or indices.
 - [Dividend Swap](/OTC_Learn/product/divswap/) — Trade dividends without owning the shares
 - [Autocallable Note](/OTC_Learn/product/autocall/) — A coupon note that can retire itself early
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 <script type="application/ld+json">
 [

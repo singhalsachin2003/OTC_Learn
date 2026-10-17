@@ -56,6 +56,8 @@ Two overlapping venue regimes, built independently and years apart, created cros
 - **Trade repository** — The regulated entity every OTC derivative, cleared or not, has to be reported to — the systemic map of exposures that did not exist before 2008.
 - **UTI / UPI** — The Unique Transaction Identifier, generated once per trade so both counterparties’ reports can be matched, and the Unique Product Identifier, reused across every trade in the same instrument.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Standardised interest rate swaps and index CDS trade almost exclusively on SEFs and MTFs/OTFs today, with RFQ the dominant execution method and a shrinking share still done by voice for the largest or most bespoke sizes. Every derivatives desk of any size runs a dedicated regulatory reporting function feeding trade repositories in every jurisdiction it operates in, because the reporting obligation runs trade by trade and mistakes are a compliance matter, not just an administrative one.
@@ -70,7 +72,7 @@ The app adds a twelve-question bank for Execution and Reporting, drawn different
 
 A subscription adds 3 further sections on Execution and Reporting — From agreement to record, Compression, and why notional shrinks, Identifiers, and the reason for them — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

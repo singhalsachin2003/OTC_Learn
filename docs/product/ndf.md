@@ -59,6 +59,8 @@ The official fixing can differ from the rate a firm actually achieves onshore, l
 - **Restricted currency** — The currency the contract references but never delivers, because capital controls block offshore settlement.
 - **Basis risk** — The residual exposure left when the fixing differs from the rate the hedger transacts at onshore.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Exporters and importers dealing with Brazil, India, Korea or Taiwan use NDFs to hedge invoices they cannot settle offshore, and emerging-market bond funds use them to strip currency risk out of local-currency debt they already hold. Macro funds are heavy users too, because for an offshore account an NDF is often the only practical way to take a position in a currency it is not allowed to own.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Non-Deliverable Forward, drawn different
 
 A subscription adds 3 further sections on Non-Deliverable Forward — The fixing is the contract, Onshore, offshore, and the gap between them, Settlement currency and its own exposure — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

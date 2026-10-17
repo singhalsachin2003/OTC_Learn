@@ -31,6 +31,8 @@ Exotics is part of the OTC Learn subscription. Everything the app shipped with �
 - **Decumulator** — The mirror structure, selling a daily quantity above spot and geared into a rally.
 - **Zero premium** — A structure with no up-front cost, funded by options the client has sold rather than bought.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 Accumulators are a private banking product, written on single shares, indices and currencies for clients with margin facilities. Regulators in Hong Kong and Singapore tightened suitability and disclosure requirements after the 2008 losses, and the structure is now generally restricted to professional or accredited investors — which is a statement about who was sold it before.
@@ -43,7 +45,7 @@ Accumulators are a private banking product, written on single shares, indices an
 
 In the app, Accumulator carries a five-step lesson, a worked example and a bank of twelve questions drawn differently every sitting.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 

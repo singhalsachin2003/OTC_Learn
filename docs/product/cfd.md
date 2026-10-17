@@ -59,6 +59,8 @@ Leverage cuts both ways: a loss is calculated on the full position, not the marg
 - **Margin close-out** — The dealer’s closing of positions once account equity falls below a set fraction of required margin.
 - **Dividend adjustment** — A cash credit to long positions and debit to short ones when the underlying share goes ex-dividend.
 
+[Every key term, A to Z](/OTC_Learn/glossary/)
+
 ## In practice
 
 CFDs are mostly used by retail and professional traders at online brokers in the UK, Europe, Australia and Singapore for short-dated directional bets and for shorting a share without arranging a borrow. Institutions take the same synthetic exposure through equity swaps with a prime broker instead, and no CFD is available to a US retail client at all.
@@ -73,7 +75,7 @@ The app adds a twelve-question bank for Contract for Difference, drawn different
 
 A subscription adds 3 further sections on Contract for Difference — Financing, day by day, Close-out, and how fast it happens, Dividends, and what a synthetic holder receives — and 12 more questions to its bank.
 
-[Get OTC Learn on Google Play](https://play.google.com/store/apps/details?id=com.otclearn.app)
+[Get OTC Learn on Google Play](/OTC_Learn/get/?c=web)
 
 Educational content only. Nothing here is financial advice, an offer to trade, or a recommendation to buy or sell any instrument.
 
