@@ -5,7 +5,7 @@
 @font-face{font-family:"Plus Jakarta Sans";src:url(pjs-800.woff2) format("woff2");font-weight:800;font-display:swap}
 
 :root{
-  color-scheme:light dark;
+  color-scheme:only light;
   --bg:#EFEDE6; --surface:#FFFFFF; --ink:#181611; --body:#3C3A35; --muted:#696761;
   --accent:#2A75BA; --accent-soft:#E2EEF9; --line:#DEDBD2;
   --navy:#181611; --on-navy:#FFFFFF; --on-navy-sub:#A5A19A; --gold:#7FB3E8;
@@ -14,7 +14,7 @@
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){
-  :root{--bg:#121110; --surface:#1C1B18; --ink:#F3F1EC; --body:#C9C6BF; --muted:#9A968E;
+  :root{color-scheme:dark; --bg:#121110; --surface:#1C1B18; --ink:#F3F1EC; --body:#C9C6BF; --muted:#9A968E;
         --accent:#7FB3E8; --accent-soft:#1E2A36; --line:#2C2A26;}
 }
 *{box-sizing:border-box}
