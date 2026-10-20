@@ -135,5 +135,5 @@ Store Data safety section as well.
 
 ## Contact
 
-Questions about this policy: email <singhalsachin2003@gmail.com>, or file an
+Questions about this policy: email <contactgroundlearn@gmail.com>, or file an
 issue at <https://github.com/singhalsachin2003/OTC_Learn/issues>.
