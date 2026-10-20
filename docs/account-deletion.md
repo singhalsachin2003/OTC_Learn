@@ -25,7 +25,7 @@ That is the whole process and it needs no email.
 ## Or by email
 
 If you no longer have the app installed, email
-**<singhalsachin2003@gmail.com>** from the address you signed up with, asking
+**<contactgroundlearn@gmail.com>** from the address you signed up with, asking
 for your account to be deleted. Using the same address is what lets us match the
 request to the account; if you cannot, say so and we will find another way to
 confirm it is yours.
